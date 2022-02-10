@@ -10,12 +10,11 @@
    .banner{
         width: 100%;
         height: 405px;
-        background-color: rgb(140, 198, 224);
         position: relative;
     }
     img{
       width: 100%;
-      height: 405px;
+      height: 100%;
       object-fit: cover;
     }
 </style>
