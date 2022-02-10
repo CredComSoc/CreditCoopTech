@@ -1,56 +1,86 @@
 <template>
-  <div class="top-nav">
-    <div class="left-logos">
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
-          <figcaption class="l-text"> Shop </figcaption>
-        </figure>
+  <header>
+    <nav>
+      <div class="left-logos">
+          <div class="navlogo">
+            <figure class="logo-click">
+              <a href="#">
+                <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
+                <figcaption class="l-text">Shop</figcaption>
+              </a>
+            </figure>
+          </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
+              <figcaption class="l-text"> Events </figcaption>
+            </a>
+          </figure>
+        </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Lägg upp </figcaption>
+            </a>
+          </figure>
+        </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Medlemmar </figcaption>
+            </a>
+          </figure>
+        </div>
       </div>
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
-          <figcaption class="l-text"> Events </figcaption>
-        </figure>
+      <div class="middle-logo">
+        <div class="navlogo">
+          <figure>
+            <a href="#">
+              <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
+            </a>
+          </figure>
+        </div>
       </div>
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-          <figcaption class="l-text"> Lägg upp </figcaption>
-        </figure>
+      <div class="right-logos">
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img id="notice" src="../assets/navbar_logos/notice.png"/>
+              <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Notiser </figcaption>
+            </a>
+          </figure>
+        </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Meddelanden </figcaption>
+            </a>
+          </figure>
+        </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Varukorg </figcaption>
+            </a>
+          </figure>
+        </div>
+        <div class="navlogo">
+          <figure class="logo-click">
+            <a href="#">
+              <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+              <figcaption class="l-text"> Min sida </figcaption>
+            </a>
+          </figure>
+        </div>
       </div>
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
-          <figcaption class="l-text"> Medlemmar </figcaption>
-        </figure>
-      </div>
-    </div>
-    <div class="middle-logo">
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
-          <figcaption class="l-text"> Shop </figcaption>
-        </figure>
-      </div>
-    </div>
-    <div class="right-logos">
-      <div class="navlogo">
-        <figure>
-          <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
-          <figcaption class="l-text"> Shop </figcaption>
-        </figure>
-      </div>
-    </div>
-      <!-- <a href="#home">Shop</a>
-      <a href="#news">Events</a>
-      <a href="#contact">Lägg upp</a>
-      <a href="#about">Medlemmar</a>
-      <a href="#about">Notiser</a>
-      <a href="#about">Meddelanden</a>
-      <a href="#about">Varukorg</a>
-      <a href="#about">Min Sida</a> -->
-  </div>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -62,7 +92,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* Add a black background color to the top navigation */
- .top-nav {
+ header nav {
   background-color: white;
   overflow: hidden;
   display: flex;
@@ -70,15 +100,16 @@ export default {
   justify-content: space-around;
 }
 
- /* Style the links inside the navigation bar  */
-.top-nav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
+a {
   text-decoration: none;
-  font-size: 17px;
+  color: black;
 }
+
+a:hover {
+  color: black;
+}
+
+ /* Style the links inside the navigation bar  */
 
 .l-text {
   font-family: 'Roboto';
@@ -95,29 +126,36 @@ export default {
   margin-bottom: 40px;
 }
 
- /* Change the color of links on hover  */
-.top-nav a:hover {
-  background-color: #ddd;
-  color: black;
+.left-logos, .right-logos {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
-.left-logos {
-  display: flex;
-  justify-content: space-around;
+#notice {
+  position: absolute;
+  height: 11px;
+  width: 11px;
+  margin-top: 4px;
 }
-
-.right-logos {
-  display: flex;
+#profile:hover {
 }
 
 .navlogo{
-  padding-left: 40px;
-  background-color: blue;
+  margin-top: 10%;
 }
 
-img{
-  padding-left:20%;
-  padding-bottom:10%;
-  margin-top:30%;
+figure {
+  display: inline-block;
+  text-align: center;
+}
+
+.logo-click:hover {
+  border-bottom: 2px solid black;
+}
+
+figcaption {
+  margin-top: 7px;
+  text-align: center;
 }
 </style>
