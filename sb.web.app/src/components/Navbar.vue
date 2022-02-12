@@ -46,21 +46,38 @@
       </div>
       <div class="right-logos">
         <div class="navlogo">
-          <div class="dropdown">
-            <figure class="logo-click">
+          <div id="click-dropdown" class="dropdown">
+            <figure id="bell-logo" class="logo-click">
               <a href="#">
                 <img id="notice" src="../assets/navbar_logos/notice.png"/>
                 <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
                 <figcaption class="l-text"> Notiser </figcaption>
               </a>
             </figure>
-            <div class="dropdown-content">
-                  <a href="#">
-                    <div>
-                      <h4>Nya</h4>
-                      <p>Du har fått en ny köpförfrågan. Gå till Mina sidor för att godkänna eller ej</p>
-                    </div>
-                  </a>
+            <div id="bell-dropdown" class="dropdown-content">
+              <div id="new-notice-list">
+                <a href="#">
+                  <div>
+                    <p class="notice-title">Nya</p>
+                    <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                    <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                  </div>
+                </a>
+                <a href="#">
+                  <div>
+                    <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                    <p class="notice-desc">Hello</p>
+                  </div>
+                </a>
+              </div>
+              <div id="previous-notice-list">
+                <a href="#">
+                  <div>
+                    <p class="notice-title">Tidigare</p>
+                    <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -163,8 +180,8 @@ a:hover {
 }
 
 .middle-logo {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 60px;
+  margin-right: 60px;
   margin-bottom: 7px;
 }
 
@@ -173,9 +190,6 @@ a:hover {
   height: 11px;
   width: 11px;
   margin-top: 4px;
-}
-
-#profile:hover {
 }
 
 figure {
@@ -199,7 +213,10 @@ figcaption {
 .dropdown {
   position: relative;
   display: inline-block;
-  float: right;
+}
+
+#bell-dropdown {
+  margin-top: 3px;
 }
 
 .dropdown-content a {
@@ -235,6 +252,28 @@ figcaption {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+#click-
+
+.notice-desc, .notice-title {
+  font-family: Ubuntu;
+}
+
+.notice-desc {
+  font-weight: 300;
+  font-size: 10px;
+}
+
+.notice-title {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.notice-img {
+  float: right;
+  top: 50%;
 }
 
 </style>
