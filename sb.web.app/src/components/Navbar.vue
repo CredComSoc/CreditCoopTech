@@ -92,12 +92,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* Add a black background color to the top navigation */
+
+* {
+  margin-bottom: 0;
+}
+
  header nav {
   background-color: white;
   overflow: hidden;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  border-bottom: 1px solid black;
 }
 
 a {
@@ -120,9 +127,6 @@ a:hover {
 }
 
 .logo-text {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
   margin-bottom: 40px;
 }
 
@@ -132,17 +136,28 @@ a:hover {
   gap: 40px;
 }
 
+.left-logos {
+  margin-left: 250px;
+}
+
+.right-logos {
+  margin-right: 250px;
+}
+
+.middle-logo {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 7px;
+}
+
 #notice {
   position: absolute;
   height: 11px;
   width: 11px;
   margin-top: 4px;
 }
-#profile:hover {
-}
 
-.navlogo{
-  margin-top: 10%;
+#profile:hover {
 }
 
 figure {
@@ -152,10 +167,16 @@ figure {
 
 .logo-click:hover {
   border-bottom: 2px solid black;
+  margin-top:2px;
+  /* margin-top:2px; if no raising of icon */
+}
+
+.navlogo {
+  flex-shrink: 0;
 }
 
 figcaption {
   margin-top: 7px;
-  text-align: center;
 }
+
 </style>
