@@ -46,13 +46,23 @@
       </div>
       <div class="right-logos">
         <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img id="notice" src="../assets/navbar_logos/notice.png"/>
-              <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Notiser </figcaption>
-            </a>
-          </figure>
+          <div class="dropdown">
+            <figure class="logo-click">
+              <a href="#">
+                <img id="notice" src="../assets/navbar_logos/notice.png"/>
+                <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                <figcaption class="l-text"> Notiser </figcaption>
+              </a>
+            </figure>
+            <div class="dropdown-content">
+                  <a href="#">
+                    <div>
+                      <h4>Nya</h4>
+                      <p>Du har fått en ny köpförfrågan. Gå till Mina sidor för att godkänna eller ej</p>
+                    </div>
+                  </a>
+            </div>
+          </div>
         </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -71,18 +81,26 @@
           </figure>
         </div>
         <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Min sida </figcaption>
-            </a>
-          </figure>
+            <div class="dropdown">
+                <figure class="logo-click">
+                  <a href="#">
+                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Min sida </figcaption>
+                  </a>
+                </figure>
+              <div class="dropdown-content">
+                <a href="#">Min profil </a>
+                <a href="#">Mina artiklar </a>
+                <a href="#">Min statistik </a>
+                <a href="#">Mina köpförfrågningar </a>
+                <a href="#">Inställningar </a>
+              </div>
+            </div>
         </div>
       </div>
     </nav>
   </header>
 </template>
-
 <script>
 export default {
   name: 'Navbar'
@@ -99,7 +117,7 @@ export default {
 
  header nav {
   background-color: white;
-  overflow: hidden;
+  overflow:visible;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -167,8 +185,7 @@ figure {
 
 .logo-click:hover {
   border-bottom: 2px solid black;
-  margin-top:2px;
-  /* margin-top:2px; if no raising of icon */
+  transform: scale(1.05);
 }
 
 .navlogo {
@@ -177,6 +194,47 @@ figure {
 
 figcaption {
   margin-top: 7px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  float: right;
+}
+
+.dropdown-content a {
+  color:black;
+  text-decoration: none;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 10px;
+  font-style: normal;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #E5E5E5;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom: 1px solid #CBCACA;
+}
+
+.dropdown-content a:hover {
+  display: block;
+  background-color: #E5F0FD;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 </style>
