@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav>
-      <div class="left-logos" ref="left">
+      <div class="left-logos" v-if="this.desc">
           <div class="navlogo">
             <figure class="logo-click">
               <a href="#">
@@ -9,6 +9,9 @@
                 <figcaption class="l-text">Shop</figcaption>
               </a>
             </figure>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Shop </span>
+            </a>
           </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -17,6 +20,9 @@
               <figcaption class="l-text"> Events </figcaption>
             </a>
           </figure>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Events </span>
+          </a>
         </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -25,6 +31,9 @@
               <figcaption class="l-text"> Lägg upp </figcaption>
             </a>
           </figure>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Lägg upp </span>
+          </a>
         </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -33,6 +42,9 @@
               <figcaption class="l-text"> Medlemmar </figcaption>
             </a>
           </figure>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Medlemmar </span>
+          </a>
         </div>
       </div>
       <div class="middle-logo">
@@ -44,7 +56,7 @@
           </figure>
         </div>
       </div>
-      <div class="right-logos" ref="right">
+      <div class="right-logos" v-if="this.desc">
         <div class="navlogo">
           <div id="click-dropdown" class="dropdown">
             <figure id="bell-logo" class="logo-click">
@@ -66,7 +78,7 @@
                 <a href="#">
                   <div>
                     <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                    <p class="notice-desc">Hello</p>
+                    <p class="notice-desc">Notiser</p>
                   </div>
                 </a>
               </div>
@@ -80,6 +92,9 @@
               </div>
             </div>
           </div>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Notiser </span>
+          </a>
         </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -88,6 +103,9 @@
               <figcaption class="l-text"> Meddelanden </figcaption>
             </a>
           </figure>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Meddelanden </span>
+          </a>
         </div>
         <div class="navlogo">
           <figure class="logo-click">
@@ -96,6 +114,9 @@
               <figcaption class="l-text"> Varukorg </figcaption>
             </a>
           </figure>
+          <a href="#" v-if="this.isActive">
+            <span class="mob-cap"> Varukorg </span>
+          </a>
         </div>
         <div class="navlogo">
             <div class="dropdown">
@@ -113,6 +134,9 @@
                 <a href="#">Inställningar </a>
               </div>
             </div>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Min sida </span>
+            </a>
         </div>
       </div>
       <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
@@ -126,22 +150,36 @@
 <script>
 
 export default {
+  data () {
+    return {
+      desc: true,
+      isActive: false
+    }
+  },
   name: 'Navbar',
+
+  mounted () {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+  },
   methods: {
     openNav () {
-      const left = this.$refs.left
-      const right = this.$refs.right
-
-      if (left.style.display === 'flex') {
-        left.style.display = 'none'
+      if (this.desc) {
+        this.desc = false
+        this.isActive = false
       } else {
-        left.style.display = 'flex'
+        this.desc = true
+        this.isActive = true
       }
-
-      if (right.style.display === 'flex') {
-        right.style.display = 'none'
+    },
+    onResize () {
+      if (window.innerWidth < 861 && !this.isActive) {
+        this.desc = false
       } else {
-        right.style.display = 'flex'
+        this.desc = true
+        if (window.innerWidth > 861) {
+          this.isActive = false
+        }
       }
     }
   }
@@ -300,9 +338,10 @@ figcaption {
 }
 
 @media (max-width: 860px) {
+
   header nav {
     overflow: hidden;
-    background-color: #333;
+    background-color: #fff;
     position: relative;
     margin: 0;
     flex-direction: column-reverse;
@@ -316,24 +355,44 @@ figcaption {
   }
 
   nav .left-logos {
+    border-top: 1px solid #CBCACA;
     order: 3;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    padding-top: 25px;
   }
 
   /* Hide the links inside the navigation menu (except for logo/home) */
   .left-logos, .right-logos {
     flex-direction: column;
     margin: 0;
-    justify-content: center;
-    align-content: center;
-    gap: 15px;
-    display: none;
+    gap: 30px;
+    align-items: center;
   }
 
-  nav .left-logos a, nav .right-logos a {
-    color: white;
+  .left-logos .navlogo, .right-logos .navlogo {
+    width: 100%;
+    border-bottom: 1px solid #CBCACA;
+  }
+
+  .left-logos .navlogo, .right-logos .navlogo {
+    height: 50px;
+  }
+
+  .l-text {
+    color: black;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 0px;
+  }
+
+  .left-logos figure, .right-logos figure {
+    margin-left: 70px;
+  }
+
+  .mob-cap {
+    position: absolute;
+    left: 50%;
+    font-family: Roboto;
+    font-size: 20px;
   }
 
   /* Style the hamburger menu */
