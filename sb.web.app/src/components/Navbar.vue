@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav>
-      <div class="left-logos">
+      <div class="left-logos" ref="left">
           <div class="navlogo">
             <figure class="logo-click">
               <a href="#">
@@ -44,7 +44,7 @@
           </figure>
         </div>
       </div>
-      <div class="right-logos">
+      <div class="right-logos" ref="right">
         <div class="navlogo">
           <div id="click-dropdown" class="dropdown">
             <figure id="bell-logo" class="logo-click">
@@ -115,24 +115,45 @@
             </div>
         </div>
       </div>
+      <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+      <a href="#" class="icon" @click="openNav">
+        <i class="fa fa-bars"></i>
+      </a>
     </nav>
   </header>
 </template>
+
 <script>
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    openNav () {
+      const left = this.$refs.left
+      const right = this.$refs.right
+
+      if (left.style.display === 'flex') {
+        left.style.display = 'none'
+      } else {
+        left.style.display = 'flex'
+      }
+
+      if (right.style.display === 'flex') {
+        right.style.display = 'none'
+      } else {
+        right.style.display = 'flex'
+      }
+    }
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* Add a black background color to the top navigation */
-
 * {
   margin-bottom: 0;
 }
 
- header nav {
+header nav {
   background-color: white;
   overflow:visible;
   display: flex;
@@ -150,8 +171,6 @@ a {
 a:hover {
   color: black;
 }
-
- /* Style the links inside the navigation bar  */
 
 .l-text {
   font-family: 'Roboto';
@@ -197,11 +216,6 @@ figure {
   text-align: center;
 }
 
-.logo-click:hover {
-  border-bottom: 2px solid black;
-  transform: scale(1.05);
-}
-
 .navlogo {
   flex-shrink: 0;
 }
@@ -216,7 +230,7 @@ figcaption {
 }
 
 #bell-dropdown {
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .dropdown-content a {
@@ -244,17 +258,11 @@ figcaption {
   display: block;
   border-bottom: 1px solid #CBCACA;
 }
-
+ /* Style the links inside the navigation bar  */
 .dropdown-content a:hover {
   display: block;
   background-color: #E5F0FD;
 }
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-#click-
 
 .notice-desc, .notice-title {
   font-family: Ubuntu;
@@ -274,6 +282,74 @@ figcaption {
 .notice-img {
   float: right;
   top: 50%;
+}
+
+.logo-click:hover {
+    border-bottom: 2px solid black;
+    transform: scale(1.05);
+}
+
+.icon {
+    display: none;
+}
+
+@media (min-width: 1100px) {
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+@media (max-width: 860px) {
+  header nav {
+    overflow: hidden;
+    background-color: #333;
+    position: relative;
+    margin: 0;
+    flex-direction: column-reverse;
+}
+
+  nav .middle-logo {
+    left: 0;
+    top: 0;
+    margin:0;
+    order: 4;
+  }
+
+  nav .left-logos {
+    order: 3;
+    margin-bottom: 15px;
+  }
+
+  /* Hide the links inside the navigation menu (except for logo/home) */
+  .left-logos, .right-logos {
+    flex-direction: column;
+    margin: 0;
+    justify-content: center;
+    align-content: center;
+    gap: 15px;
+    display: none;
+  }
+
+  nav .left-logos a, nav .right-logos a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  /* Style the hamburger menu */
+  .icon {
+    position: absolute;
+    top:0;
+    right:0;
+    transform: scale(2.0);
+    margin-right: 10px;
+    margin-top: 20px;
+    display: block;
+  }
+
+  nav a:hover {
+    color: grey;
+  }
 }
 
 </style>
