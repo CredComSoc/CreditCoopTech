@@ -85,7 +85,7 @@ export default {
     }
 
     .all-action {
-        font-size: 20px;
+        font-size: 17px;
         line-height: 23px;
         letter-spacing: 0.06em;
         color: #FFF;
