@@ -1,31 +1,39 @@
 <template>
     <div class="footer">
-        <p class="line-right"><a href="#">Om oss</a></p>
-        <p class="line-right"><a href="#">Om Barter</a></p>
-        <p><a href="#">Kontakta oss</a></p>
+        <p class="side-items" id="e"><a href="#">Om oss</a></p>
+        <p id="middle-item"><a href="#">Om Barter</a></p>
+        <p class="side-items"><a href="#">Kontakta oss</a></p>
     </div>
 </template>
 
 <style scoped>
     .footer{
-        position: fixed;
-        left: 0;
+        display: flex;
+        position: absolute;
         bottom: 0;
-        height: 5%;
+        justify-content: space-evenly;
+        justify-items: center;
         width: 100%;
-        min-width:600px;
         text-align: center;
     }
 
     p{
         display: inline;
-        padding-right: 10%;
-        padding-left:10%;
-        padding-top:0.5%;
+        font-family: 'Ubuntu';
+        font-weight: 300;
+        font-size:95%;
     }
 
-    .line-right{
+    #middle-item{
+        border-left: 0.5px solid  black;
+        padding-left:15%;
         border-right: 0.5px solid  black;
+        padding-right:15%;
+    }
+
+    .side-items{
+        margin-left:10%;
+        margin-right: 10%;
     }
 
     a{
