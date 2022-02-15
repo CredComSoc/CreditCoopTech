@@ -157,7 +157,6 @@ export default {
     }
   },
   name: 'Navbar',
-
   mounted () {
     this.onResize()
     window.addEventListener('resize', this.onResize)
@@ -197,8 +196,11 @@ header nav {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-top: 20px;
   border-bottom: 1px solid black;
+  z-index:1;
+  top: 0px;
+  position:fixed;
+  width: 100%;
 }
 
 a {
@@ -342,7 +344,6 @@ figcaption {
   header nav {
     overflow: hidden;
     background-color: #fff;
-    position: relative;
     margin: 0;
     flex-direction: column-reverse;
 }
