@@ -46,7 +46,7 @@ export default {
     }
 
     .card-themed {
-        width: 50%;
+        width: 45%;
         height: 373px;
         border-radius: 20px;
         margin: auto;
@@ -97,4 +97,26 @@ export default {
         border: 1px solid #4690CD;
     }
 
+    @media (max-width: 1994px) {
+        .card-themed {
+            width: 60%;
+        }
+    }
+
+     @media (max-width: 1513px) {
+        .card-themed {
+            width: 75%;
+        }
+    }
+
+     @media (max-width: 1212px) {
+        .card-themed {
+            width: 98%;
+        }
+    }
+
+     @media (max-width: 929px) {
+        .card-themed {
+        }
+    }
 </style>
