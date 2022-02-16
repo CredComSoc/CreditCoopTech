@@ -19,10 +19,28 @@
 
 <script>
 export default {
+  data () {
+    return {
+      isActive: false
+    }
+  },
   name: 'SaldoCard',
   components: {
   },
-  props: ['saldo']
+  props: ['saldo'],
+  mounted () {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+  },
+  methods: {
+    onResize () {
+      if (window.innerWidth < 861) {
+        this.isActive = true
+      } else {
+        this.isActive = false
+      }
+    }
+  }
 }
 </script>
 
