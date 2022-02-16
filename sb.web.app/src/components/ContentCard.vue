@@ -2,7 +2,7 @@
     <div :class="[`card-themed`, theme]">
         <h3> {{ title }} </h3>
         <h4> {{ description }} </h4>
-        <ContentList :toList=toList />
+        <ContentList :data=data />
         <div :class="[`outer-btn`, theme_btn]">
             <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
         </div>
@@ -17,16 +17,7 @@ export default {
   components: {
     ContentList
   },
-  data () {
-    return {
-      toList: [{ id: 0, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser' },
-        { id: 1, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser' },
-        { id: 2, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser' },
-        { id: 3, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser' },
-        { id: 4, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser' }]
-    }
-  },
-  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt']
+  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data']
 }
 </script>
 

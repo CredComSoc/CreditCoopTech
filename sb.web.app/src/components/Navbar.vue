@@ -195,7 +195,7 @@ export default {
 .header-container {
   width: 100%;
   top: 0px;
-  z-index:1;
+  z-index:3;
   position: sticky;
   background: #fff;
   border-bottom: 1px solid black;

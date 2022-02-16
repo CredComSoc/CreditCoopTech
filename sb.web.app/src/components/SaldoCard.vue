@@ -3,7 +3,7 @@
         <figure id='top-logo'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
-              <figcaption class="l-text" id='top-logo-text'> Saldo {{saldo}}</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> Saldo: {{saldo}} bKr</figcaption>
             </a>
           </figure>
           <div class="line"></div>
@@ -17,6 +17,15 @@
     </div>
 </template>
 
+<script>
+export default {
+  name: 'SaldoCard',
+  components: {
+  },
+  props: ['saldo']
+}
+</script>
+
 <style scoped>
     #card{
         background-color: #F9C661;
@@ -27,7 +36,7 @@
         border-radius: 10px 0px 0px 10px;
         top:50%;
         bottom: 50%;
-        z-index: 1;
+        z-index: 2;
     }
 
     a{
@@ -67,13 +76,3 @@
     }
 
 </style>
-
-<script>
-
-export default {
-  name: 'SaldoCard',
-  components: {
-  },
-  props: ['saldo']
-}
-</script>
