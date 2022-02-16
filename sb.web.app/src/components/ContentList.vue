@@ -1,7 +1,7 @@
 <template>
     <div class="list-container" >
         <ListElement
-        v-for="(el, index) in toList"
+        v-for="(el, index) in data"
         :elementInfo="el"
         :index="index"
         :key="el.id"
@@ -18,7 +18,7 @@ export default {
   components: {
     ListElement
   },
-  props: ['toList']
+  props: ['data']
 }
 </script>
 
@@ -40,7 +40,7 @@ export default {
     }
 
     .arrow {
-        height:43.85px;
+        height: 43.85px;
         margin-top: 45px;
     }
 
