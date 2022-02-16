@@ -9,7 +9,7 @@
         <figure id='top-logo'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
-              <figcaption class="l-text" id='top-logo-text'> Saldo: {{saldo}} bKr</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
             </a>
           </figure>
           <div class="line"></div>
@@ -52,7 +52,6 @@ export default {
     openCard () {
       this.isActive = true
     }
-
   }
 }
 </script>
