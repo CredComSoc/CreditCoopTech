@@ -159,9 +159,20 @@ export default {
     }
   },
   name: 'Navbar',
-  mounted () {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
+  props: ['screenWidth'],
+  watch: {
+    screenWidth: {
+      handler: function (scrWidth) {
+        if (scrWidth < 861 && !this.isActive) {
+          this.desc = false
+        } else {
+          this.desc = true
+          if (scrWidth > 861) {
+            this.isActive = false
+          }
+        }
+      }
+    }
   },
   methods: {
     openNav () {
@@ -171,16 +182,6 @@ export default {
       } else {
         this.desc = true
         this.isActive = true
-      }
-    },
-    onResize () {
-      if (window.innerWidth < 861 && !this.isActive) {
-        this.desc = false
-      } else {
-        this.desc = true
-        if (window.innerWidth > 861) {
-          this.isActive = false
-        }
       }
     }
   }

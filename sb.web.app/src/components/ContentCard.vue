@@ -17,7 +17,24 @@ export default {
   components: {
     ContentList
   },
-  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data']
+  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth']
+  //   watch: {
+  //     screenWidth: {
+  //       handler: function (scrWidth) {
+  //         if (scrWidth < this.widthLimits[0]) {
+  //           this.dataList = this.dataList.slice(0,-1)
+  //           this.widthLimits.shift()
+  //         }
+  //       }
+  //     }
+  //  },
+  //   data () {
+  //     return {
+  //       removedAlready: false,
+  //       widthLimits: [1212, 900, 700, 600, 500],
+  //       index: 0
+  //     }
+  //   }
 }
 </script>
 

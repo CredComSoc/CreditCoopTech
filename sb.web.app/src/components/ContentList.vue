@@ -1,9 +1,8 @@
 <template>
     <div class="list-container" >
         <ListElement
-        v-for="(el, index) in data"
+        v-for="(el) in data"
         :elementInfo="el"
-        :index="index"
         :key="el.id"
         ></ListElement>
         <img class="arrow" src="../assets/list_images/arrow.png" alt="rotera shop" />

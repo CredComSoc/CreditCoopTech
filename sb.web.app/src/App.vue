@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :screenWidth="screenWidth"/>
     <Banner />
     <SaldoCard :saldo="saldo"/>
     <!-- <ContentCard title="Events" description="Bläddra bland senast upplagda produkter och tjänster." /> -->
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" />
-    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" />
+    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="screenWidth" />
+    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="screenWidth" />
+    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="screenWidth" />
     <Footer />
   </div>
 </template>
@@ -28,6 +28,19 @@ export default {
     ContentCard,
     SaldoCard
   },
+  mounted () {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+  },
+  methods: {
+    onResize () {
+      this.screenWidth = window.innerWidth
+      if (this.screenWidth < 1212) {
+        this.removeElement = true
+      } else {
+      }
+    }
+  },
   data () {
     return {
       shop: [{ id: 0, img_path: 'Event_11.png', title: 'Hyr lokal', desc: 'Kontorsplatser', theme: 'regular' },
@@ -47,7 +60,12 @@ export default {
         { id: 2, img_path: 'Ellipse_3.png', title: 'Hemstäd Linköping', theme: 'ellipse' },
         { id: 3, img_path: 'Ellipse_8.png', title: 'IT-support', theme: 'ellipse' },
         { id: 4, img_path: 'Ellipse_6.png', title: 'Hemfixare', theme: 'ellipse' }],
-      saldo: 2000
+
+      saldo: 2000,
+
+      removeElement: true,
+
+      screenWidth: 0
     }
   }
 }
