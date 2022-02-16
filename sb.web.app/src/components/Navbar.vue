@@ -1,150 +1,152 @@
 <template>
-  <header>
-    <nav>
-      <div class="left-logos" v-if="this.desc">
+  <div class="header-container">
+    <header>
+      <nav>
+        <div class="left-logos" v-if="this.desc">
+            <div class="navlogo">
+              <figure class="logo-click">
+                <a href="#">
+                  <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
+                  <figcaption class="l-text">Shop</figcaption>
+                </a>
+              </figure>
+              <a href="#" v-if="this.isActive">
+                <span class="mob-cap"> Shop </span>
+              </a>
+            </div>
           <div class="navlogo">
             <figure class="logo-click">
               <a href="#">
-                <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
-                <figcaption class="l-text">Shop</figcaption>
+                <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
+                <figcaption class="l-text"> Events </figcaption>
               </a>
             </figure>
             <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Shop </span>
+              <span class="mob-cap"> Events </span>
             </a>
           </div>
-        <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
-              <figcaption class="l-text"> Events </figcaption>
-            </a>
-          </figure>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Events </span>
-          </a>
-        </div>
-        <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Lägg upp </figcaption>
-            </a>
-          </figure>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Lägg upp </span>
-          </a>
-        </div>
-        <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Medlemmar </figcaption>
-            </a>
-          </figure>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Medlemmar </span>
-          </a>
-        </div>
-      </div>
-      <div class="middle-logo">
-        <div class="navlogo">
-          <figure>
-            <a href="#">
-              <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
-            </a>
-          </figure>
-        </div>
-      </div>
-      <div class="right-logos" v-if="this.desc">
-        <div class="navlogo">
-          <div id="click-dropdown" class="dropdown">
-            <figure id="bell-logo" class="logo-click">
+          <div class="navlogo">
+            <figure class="logo-click">
               <a href="#">
-                <img id="notice" src="../assets/navbar_logos/notice.png"/>
-                <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Notiser </figcaption>
+                <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                <figcaption class="l-text"> Lägg upp </figcaption>
               </a>
             </figure>
-            <div id="bell-dropdown" class="dropdown-content">
-              <div id="new-notice-list">
-                <a href="#">
-                  <div>
-                    <p class="notice-title">Nya</p>
-                    <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                    <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
-                  </div>
-                </a>
-                <a href="#">
-                  <div>
-                    <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                    <p class="notice-desc">Notiser</p>
-                  </div>
-                </a>
-              </div>
-              <div id="previous-notice-list">
-                <a href="#">
-                  <div>
-                    <p class="notice-title">Tidigare</p>
-                    <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
-                  </div>
-                </a>
-              </div>
-            </div>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Lägg upp </span>
+            </a>
           </div>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Notiser </span>
-          </a>
-        </div>
-        <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Meddelanden </figcaption>
+          <div class="navlogo">
+            <figure class="logo-click">
+              <a href="#">
+                <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
+                <figcaption class="l-text"> Medlemmar </figcaption>
+              </a>
+            </figure>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Medlemmar </span>
             </a>
-          </figure>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Meddelanden </span>
-          </a>
+          </div>
         </div>
-        <div class="navlogo">
-          <figure class="logo-click">
-            <a href="#">
-              <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
-              <figcaption class="l-text"> Varukorg </figcaption>
-            </a>
-          </figure>
-          <a href="#" v-if="this.isActive">
-            <span class="mob-cap"> Varukorg </span>
-          </a>
+        <div class="middle-logo">
+          <div class="navlogo">
+            <figure>
+              <a href="#">
+                <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
+              </a>
+            </figure>
+          </div>
         </div>
-        <div class="navlogo">
-            <div class="dropdown">
-                <figure class="logo-click">
+        <div class="right-logos" v-if="this.desc">
+          <div class="navlogo">
+            <div id="click-dropdown" class="dropdown">
+              <figure id="bell-logo" class="logo-click">
+                <a href="#">
+                  <img id="notice" src="../assets/navbar_logos/notice.png"/>
+                  <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Notiser </figcaption>
+                </a>
+              </figure>
+              <div id="bell-dropdown" class="dropdown-content">
+                <div id="new-notice-list">
                   <a href="#">
-                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
-                    <figcaption class="l-text"> Min sida </figcaption>
+                    <div>
+                      <p class="notice-title">Nya</p>
+                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                      <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                    </div>
                   </a>
-                </figure>
-              <div class="dropdown-content">
-                <a href="#">Min profil </a>
-                <a href="#">Mina artiklar </a>
-                <a href="#">Min statistik </a>
-                <a href="#">Mina köpförfrågningar </a>
-                <a href="#">Inställningar </a>
+                  <a href="#">
+                    <div>
+                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                      <p class="notice-desc">Notiser</p>
+                    </div>
+                  </a>
+                </div>
+                <div id="previous-notice-list">
+                  <a href="#">
+                    <div>
+                      <p class="notice-title">Tidigare</p>
+                      <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
             <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Min sida </span>
+              <span class="mob-cap"> Notiser </span>
             </a>
+          </div>
+          <div class="navlogo">
+            <figure class="logo-click">
+              <a href="#">
+                <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
+                <figcaption class="l-text"> Meddelanden </figcaption>
+              </a>
+            </figure>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Meddelanden </span>
+            </a>
+          </div>
+          <div class="navlogo">
+            <figure class="logo-click">
+              <a href="#">
+                <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+                <figcaption class="l-text"> Varukorg </figcaption>
+              </a>
+            </figure>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Varukorg </span>
+            </a>
+          </div>
+          <div class="navlogo">
+              <div class="dropdown">
+                  <figure class="logo-click">
+                    <a href="#">
+                      <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                      <figcaption class="l-text"> Min sida </figcaption>
+                    </a>
+                  </figure>
+                <div class="dropdown-content">
+                  <a href="#">Min profil </a>
+                  <a href="#">Mina artiklar </a>
+                  <a href="#">Min statistik </a>
+                  <a href="#">Mina köpförfrågningar </a>
+                  <a href="#">Inställningar </a>
+                </div>
+              </div>
+              <a href="#" v-if="this.isActive">
+                <span class="mob-cap"> Min sida </span>
+              </a>
+          </div>
         </div>
-      </div>
-      <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-      <a href="#" class="icon" @click="openNav">
-        <i class="fa fa-bars"></i>
-      </a>
-    </nav>
-  </header>
+        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+        <button class="icon" @click="openNav">
+          <i class="fa fa-bars"></i>
+        </button>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <script>
@@ -190,17 +192,27 @@ export default {
   margin-bottom: 0;
 }
 
-header nav {
+.header-container {
+  width: 100%;
+  top: 0px;
+  z-index:1;
+  position: sticky;
+  background: #fff;
+  border-bottom: 1px solid black;
+}
+
+header {
+  margin: 0 auto;
+  width: 75%;
+}
+
+ nav {
+  width: 100%;
   background-color: white;
   overflow:visible;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  border-bottom: 1px solid black;
-  z-index:1;
-  top: 0px;
-  position:fixed;
-  width: 100%;
 }
 
 a {
@@ -230,17 +242,9 @@ a:hover {
   gap: 40px;
 }
 
-.left-logos {
-  margin-left: 250px;
-}
-
-.right-logos {
-  margin-right: 250px;
-}
-
 .middle-logo {
-  margin-left: 60px;
-  margin-right: 60px;
+  margin-left: 30px;
+  margin-right: 30px;
   margin-bottom: 7px;
 }
 
@@ -341,6 +345,14 @@ figcaption {
 
 @media (max-width: 860px) {
 
+ .header-container {
+    position: fixed;
+ }
+
+  header {
+    width: 100%;
+  }
+
   header nav {
     overflow: hidden;
     background-color: #fff;
@@ -405,6 +417,8 @@ figcaption {
     margin-right: 10px;
     margin-top: 20px;
     display: block;
+    border: none;
+    background: #fff;
   }
 
   nav a:hover {

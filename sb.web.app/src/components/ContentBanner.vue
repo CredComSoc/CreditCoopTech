@@ -11,7 +11,6 @@
         width: 100%;
         height: 405px;
         position: relative;
-        margin-top: 73px;
     }
     img{
       width: 100%;
