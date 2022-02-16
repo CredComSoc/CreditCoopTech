@@ -1,5 +1,11 @@
 <template>
-    <div id='card'>
+     <div class="arrow" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
+        <img src="../assets/sidecard_logos/right-arrow.png"/>
+    </div>
+    <div class="arrow" id="left-arrow-button" type=button>
+         <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
+    </div>
+    <div id='card' v-if="isActive">
         <figure id='top-logo'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
@@ -21,7 +27,7 @@
 export default {
   data () {
     return {
-      isActive: false
+      isActive: true
     }
   },
   name: 'SaldoCard',
@@ -35,11 +41,18 @@ export default {
   methods: {
     onResize () {
       if (window.innerWidth < 861) {
-        this.isActive = true
-      } else {
         this.isActive = false
+      } else {
+        this.isActive = true
       }
+    },
+    closeCard () {
+      this.isActive = false
+    },
+    openCard () {
+      this.isActive = true
     }
+
   }
 }
 </script>
@@ -47,7 +60,7 @@ export default {
 <style scoped>
     #card{
         background-color: #F9C661;
-        width:140px;
+        width:130px;
         height: 100px;
         position:fixed;
         right: 0;
@@ -76,7 +89,7 @@ export default {
     #dots{
         position: absolute;
         top:60px;
-        left: 62px;
+        left: 57px;
     }
 
     #kund{
@@ -91,6 +104,24 @@ export default {
 
     #top-logo{
         margin-top:4px
+    }
+
+    .arrow{
+        background-color: #F9C661;
+        width:25px;
+        position:fixed;
+        z-index: 2;
+        top: 385px;
+        height: 30px;
+        border-radius: 10px 0px 0px 10px;
+    }
+
+    #right-arrow-button{
+        right: 130px;
+    }
+
+    #left-arrow-button{
+        right: 0;
     }
 
 </style>
