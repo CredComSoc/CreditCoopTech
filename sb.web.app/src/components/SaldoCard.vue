@@ -103,12 +103,6 @@ export default {
         text-align: center;
     }
 
-    #dots{
-        position: absolute;
-        top: 66px;
-        left: 78px;
-    }
-
     #kund{
         position: relative;
     }
