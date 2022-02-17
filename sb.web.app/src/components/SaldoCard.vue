@@ -1,11 +1,12 @@
 <template>
-     <div class="arrow" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
+    <div id=outline>
+      <div class="arrow" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
         <img src="../assets/sidecard_logos/right-arrow.png"/>
-    </div>
-    <div class="arrow" id="left-arrow-button" type=button>
+      </div>
+      <div class="arrow" id="left-arrow-button" type=button v-if="!isActive">
          <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
-    </div>
-    <div id='card' v-if="isActive">
+      </div>
+      <div id='card' v-if="isActive">
         <figure id='top-logo'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
@@ -20,6 +21,7 @@
               <figcaption class="l-text" id='bottom-logo-text'> Kundtjänst </figcaption>
             </a>
           </figure>
+      </div>
     </div>
 </template>
 
@@ -57,16 +59,22 @@ export default {
 </script>
 
 <style scoped>
+    #outline{
+      width: 150px;
+      height: 100px;
+      top:50%;
+      bottom: 50%;
+      position:fixed;
+      right: 0;
+    }
     #card{
         background-color: #F9C661;
         width:130px;
         height: 100px;
-        position:fixed;
-        right: 0;
         border-radius: 10px 0px 0px 10px;
-        top:50%;
-        bottom: 50%;
         z-index: 2;
+        float:right;
+
     }
 
     a{
@@ -88,7 +96,7 @@ export default {
     #dots{
         position: absolute;
         top:60px;
-        left: 57px;
+        left: 77px;
     }
 
     #kund{
@@ -110,17 +118,14 @@ export default {
         width:25px;
         position:fixed;
         z-index: 2;
-        top: 385px;
-        height: 30px;
         border-radius: 10px 0px 0px 10px;
     }
-
     #right-arrow-button{
-        right: 130px;
+      width:30px;
     }
-
     #left-arrow-button{
         right: 0;
+        width:25px;
     }
 
 </style>
