@@ -190,7 +190,9 @@ export default {
 
 <style scoped>
 * {
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .header-container {

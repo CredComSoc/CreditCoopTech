@@ -7,7 +7,7 @@
          <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
       </div>
       <div id='card' v-if="isActive">
-        <figure id='top-logo'>
+          <figure id='top-log'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
               <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
@@ -59,26 +59,34 @@ export default {
 </script>
 
 <style scoped>
-    #outline{
-      width: 150px;
-      height: 100px;
-      top:50%;
-      bottom: 50%;
-      position:fixed;
-      right: 0;
-      z-index: 2;
-    }
-    #card{
-        background-color: #F9C661;
-        width: 85%;
-        height: 100%;
-        border-radius: 10px 0px 0px 10px;
-        float:right;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-    }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  #outline{
+    width: 150px;
+    height: 100px;
+    top:50%;
+    bottom: 50%;
+    position:fixed;
+    right: 0;
+    z-index: 2;
+  }
+
+  #card{
+      background-color: #F9C661;
+      width: 85%;
+      height: 100%;
+      border-radius: 10px 0px 0px 10px;
+      float: right;
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      align-items: center;
+  }
 
     a{
         text-decoration: none;
@@ -98,7 +106,7 @@ export default {
 
     #dots{
         position: absolute;
-        top: 62px;
+        top: 66px;
         left: 78px;
     }
 
@@ -111,7 +119,7 @@ export default {
         width:100%;
     }
 
-    #top-logo{
+    #top-log{
       width: 100%;
     }
 
@@ -128,7 +136,7 @@ export default {
 
     #left-arrow-button{
         right: 0;
-        width: 2%;
+        width: 25px;
     }
 
 </style>
