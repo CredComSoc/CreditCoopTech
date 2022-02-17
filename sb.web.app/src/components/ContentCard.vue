@@ -2,7 +2,7 @@
     <div :class="[`card-themed`, theme]">
         <h3> {{ title }} </h3>
         <h4> {{ description }} </h4>
-        <ContentList :data=data />
+        <ContentList :data=data :screenWidth=screenWidth />
         <div :class="[`outer-btn`, theme_btn]">
             <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
         </div>
@@ -18,23 +18,6 @@ export default {
     ContentList
   },
   props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth']
-  //   watch: {
-  //     screenWidth: {
-  //       handler: function (scrWidth) {
-  //         if (scrWidth < this.widthLimits[0]) {
-  //           this.dataList = this.dataList.slice(0,-1)
-  //           this.widthLimits.shift()
-  //         }
-  //       }
-  //     }
-  //  },
-  //   data () {
-  //     return {
-  //       removedAlready: false,
-  //       widthLimits: [1212, 900, 700, 600, 500],
-  //       index: 0
-  //     }
-  //   }
 }
 </script>
 

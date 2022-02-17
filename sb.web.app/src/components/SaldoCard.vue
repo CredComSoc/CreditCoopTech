@@ -7,7 +7,7 @@
          <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
       </div>
       <div id='card' v-if="isActive">
-        <figure id='top-logo'>
+          <figure id='top-log'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
               <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     onResize () {
-      if (window.innerWidth < 861) {
+      if (window.innerWidth < 1212) {
         this.isActive = false
       } else {
         this.isActive = true
@@ -58,23 +58,34 @@ export default {
 </script>
 
 <style scoped>
-    #outline{
-      width: 150px;
-      height: 100px;
-      top:50%;
-      bottom: 50%;
-      position:fixed;
-      right: 0;
-    }
-    #card{
-        background-color: #F9C661;
-        width:130px;
-        height: 100px;
-        border-radius: 10px 0px 0px 10px;
-        z-index: 2;
-        float:right;
 
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  #outline{
+    width: 150px;
+    height: 100px;
+    top:50%;
+    bottom: 50%;
+    position:fixed;
+    right: 0;
+    z-index: 2;
+  }
+
+  #card{
+      background-color: #F9C661;
+      width: 85%;
+      height: 100%;
+      border-radius: 10px 0px 0px 10px;
+      float: right;
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      align-items: center;
+  }
 
     a{
         text-decoration: none;
@@ -94,8 +105,8 @@ export default {
 
     #dots{
         position: absolute;
-        top:60px;
-        left: 77px;
+        top: 66px;
+        left: 78px;
     }
 
     #kund{
@@ -104,27 +115,27 @@ export default {
 
     .line{
         border-top: 1px solid #000000;
-        top:50%;
-        margin-top:-11px;
+        width:100%;
     }
 
-    #top-logo{
-        margin-top:4px
+    #top-log{
+      width: 100%;
     }
 
     .arrow{
         background-color: #F9C661;
-        width:25px;
         position:fixed;
-        z-index: 2;
         border-radius: 10px 0px 0px 10px;
     }
+
     #right-arrow-button{
-      width:30px;
+      width: 100%;
+      z-index: -1;
     }
+
     #left-arrow-button{
         right: 0;
-        width:25px;
+        width: 25px;
     }
 
 </style>

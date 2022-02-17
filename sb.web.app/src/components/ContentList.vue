@@ -1,7 +1,7 @@
 <template>
     <div class="list-container" >
         <ListElement
-        v-for="(el) in data"
+        v-for="(el) in data.slice(0,counter)"
         :elementInfo="el"
         :key="el.id"
         ></ListElement>
@@ -17,7 +17,28 @@ export default {
   components: {
     ListElement
   },
-  props: ['data']
+  props: ['data', 'screenWidth'],
+  watch: {
+    screenWidth: {
+      handler: function (scrWidth) {
+        if (scrWidth > 1212) {
+          this.counter = 5
+        } else if (scrWidth < 1212 && scrWidth > 900) {
+          this.counter = 4
+        } else if (scrWidth < 900 && scrWidth > 750) {
+          this.counter = 3
+        } else if (scrWidth < 600) {
+          this.counter = 2
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      // make a variable that signal start of for loop above
+      counter: 5
+    }
+  }
 }
 </script>
 
