@@ -16,8 +16,7 @@
           <div class="line"></div>
           <figure>
             <a href="#">
-              <img src="../assets/sidecard_logos/Kund.png" id="kund"/>
-              <img src="../assets/sidecard_logos/Dots.png" id="dots"/>
+              <img src="../assets/sidecard_logos/KundDonts.png" id="kund"/>
               <figcaption class="l-text" id='bottom-logo-text'> Kundtjänst </figcaption>
             </a>
           </figure>
