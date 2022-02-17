@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     onResize () {
-      if (window.innerWidth < 861) {
+      if (window.innerWidth < 1212) {
         this.isActive = false
       } else {
         this.isActive = true
@@ -66,15 +66,18 @@ export default {
       bottom: 50%;
       position:fixed;
       right: 0;
+      z-index: 2;
     }
     #card{
         background-color: #F9C661;
-        width:130px;
-        height: 100px;
+        width: 85%;
+        height: 100%;
         border-radius: 10px 0px 0px 10px;
-        z-index: 2;
         float:right;
-
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
     }
 
     a{
@@ -95,8 +98,8 @@ export default {
 
     #dots{
         position: absolute;
-        top:60px;
-        left: 77px;
+        top: 62px;
+        left: 78px;
     }
 
     #kund{
@@ -105,27 +108,27 @@ export default {
 
     .line{
         border-top: 1px solid #000000;
-        top:50%;
-        margin-top:-11px;
+        width:100%;
     }
 
     #top-logo{
-        margin-top:4px
+      width: 100%;
     }
 
     .arrow{
         background-color: #F9C661;
-        width:25px;
         position:fixed;
-        z-index: 2;
         border-radius: 10px 0px 0px 10px;
     }
+
     #right-arrow-button{
-      width:30px;
+      width: 100%;
+      z-index: -1;
     }
+
     #left-arrow-button{
         right: 0;
-        width:25px;
+        width: 2%;
     }
 
 </style>
