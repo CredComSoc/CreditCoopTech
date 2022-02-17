@@ -195,23 +195,29 @@ export default {
 
 .header-container {
   width: 100%;
+  height: 80px;
   top: 0px;
-  z-index:3;
+  z-index: 3;
   position: sticky;
   background: #fff;
   border-bottom: 1px solid black;
 }
 
 header {
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  margin-bottom: 0;
+  margin-top: 0;
   width: 75%;
 }
 
  nav {
-  width: 100%;
   background-color: white;
-  overflow:visible;
+  overflow: visible;
   display: flex;
+  margin-bottom: 0;
+  margin-top: 0;
   flex-direction: row;
   justify-content: space-evenly;
 }
@@ -244,9 +250,11 @@ a:hover {
 }
 
 .middle-logo {
+  flex-shrink: 0;
   margin-left: 30px;
   margin-right: 30px;
   margin-bottom: 7px;
+  height: 100%;
 }
 
 #notice {
