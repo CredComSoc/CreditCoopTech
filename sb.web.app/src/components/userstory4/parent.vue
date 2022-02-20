@@ -30,6 +30,8 @@ export default {
         allListings: [
           { title: 'annas bullar', ign: 'random', desc: 'goda bullar för virtuella pengar' },
           { title: 'kalles bullar', ign: 'random', desc: 'fina bullar jaja' },
+          { title: 'thomas bullar', ign: 'random', desc: 'kom o köp bullar' },
+          { title: 'thomas bullar', ign: 'random', desc: 'kom o köp bullar' },
           { title: 'thomas bullar', ign: 'random', desc: 'kom o köp bullar' }
         ]
       }
