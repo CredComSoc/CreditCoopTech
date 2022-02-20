@@ -34,19 +34,19 @@ export default {
   name: 'SaldoCard',
   components: {
   },
-  props: ['saldo'],
-  mounted () {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
+  props: ['saldo', 'screenWidth'],
+  watch: {
+    screenWidth: {
+      handler: function (scrWidth) {
+        if (scrWidth < 1212) {
+          this.isActive = false
+        } else {
+          this.isActive = true
+        }
+      }
+    }
   },
   methods: {
-    onResize () {
-      if (window.innerWidth < 1212) {
-        this.isActive = false
-      } else {
-        this.isActive = true
-      }
-    },
     closeCard () {
       this.isActive = false
     },

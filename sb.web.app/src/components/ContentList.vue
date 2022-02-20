@@ -1,11 +1,12 @@
 <template>
-    <div class="list-container" >
+    <div :id="name" :class="['list-container']" >
+        <img class="arrow" src="../assets/list_images/left_arrow.png" alt="rotera shop" v-if="startIndex != 0" @click="rotateLeft"/>
         <ListElement
-        v-for="(el) in data.slice(0,counter)"
+        v-for="(el) in data.slice(startIndex,endIndex)"
         :elementInfo="el"
         :key="el.id"
         ></ListElement>
-        <img class="arrow" src="../assets/list_images/arrow.png" alt="rotera shop" />
+        <img class="arrow" src="../assets/list_images/right_arrow.png" alt="rotera shop" v-if="endIndex != data.length" @click="rotateRight" />
     </div>
 </template>
 
@@ -17,18 +18,18 @@ export default {
   components: {
     ListElement
   },
-  props: ['data', 'screenWidth'],
+  props: ['data', 'screenWidth', 'name'],
   watch: {
     screenWidth: {
       handler: function (scrWidth) {
         if (scrWidth > 1212) {
-          this.counter = 5
+          this.endIndex = 5
         } else if (scrWidth < 1212 && scrWidth > 900) {
-          this.counter = 4
+          this.endIndex = 4
         } else if (scrWidth < 900 && scrWidth > 750) {
-          this.counter = 3
+          this.endIndex = 3
         } else if (scrWidth < 600) {
-          this.counter = 2
+          this.endIndex = 2
         }
       }
     }
@@ -36,7 +37,45 @@ export default {
   data () {
     return {
       // make a variable that signal start of for loop above
-      counter: 5
+      startIndex: 0,
+      endIndex: 5
+    }
+  },
+  mounted () {
+    const list = document.getElementById(this.name)
+    list.classList.add('animate__animated')
+    list.classList.add('animate__faster')
+    list.addEventListener('animationend', () => {
+      list.classList.remove('animate__backInLeft')
+      list.classList.remove('animate__backInRight')
+    })
+  },
+  methods: {
+    rotateLeft () {
+      if (this.endIndex - this.data.length >= 5) {
+        this.endIndex -= 5
+        this.startIndex -= 5
+      } else {
+        this.endIndex -= this.data.length - this.endIndex
+        this.startIndex -= this.endIndex + 1
+        console.log(this.endIndex)
+        console.log(this.startIndex)
+      }
+      const list = document.getElementById(this.name)
+      list.classList.add('animate__backInLeft')
+    },
+    rotateRight () {
+      if (this.data.length - this.endIndex >= 5) {
+        this.endIndex += 5
+        this.startIndex += 5
+      } else {
+        this.endIndex += this.data.length - this.endIndex
+        this.startIndex += this.endIndex - 1
+        console.log(this.endIndex)
+        console.log(this.startIndex)
+      }
+      const list = document.getElementById(this.name)
+      list.classList.add('animate__backInRight')
     }
   }
 }

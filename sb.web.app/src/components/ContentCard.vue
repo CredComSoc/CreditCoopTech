@@ -2,7 +2,7 @@
     <div :class="[`card-themed`, theme]">
         <h3> {{ title }} </h3>
         <h4> {{ description }} </h4>
-        <ContentList :data=data :screenWidth=screenWidth />
+        <ContentList :data=data :screenWidth=screenWidth :name=name />
         <div :class="[`outer-btn`, theme_btn]">
             <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
         </div>
@@ -17,7 +17,7 @@ export default {
   components: {
     ContentList
   },
-  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth']
+  props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth', 'name']
 }
 </script>
 
