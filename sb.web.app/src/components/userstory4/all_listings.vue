@@ -1,6 +1,10 @@
 <template>
     <div>
-      <p> {{searchKeyword}} </p>
+      <ul>
+        <li v-for="item in searchData['allListings']" :key="item.title">
+          {{ item.title }}
+        </li>
+      </ul>
     </div>
 </template>
 
@@ -9,7 +13,7 @@
 
 export default {
   props: {
-    searchKeyword: String
+    searchData: Array
   }
 }
 </script>

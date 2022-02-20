@@ -2,7 +2,6 @@
   <div>
     <Navbar />
     <Parent />
-    <img src="välkommen_banner.png" alt="Välkommen">
   </div>
 </template>
 

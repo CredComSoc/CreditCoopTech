@@ -1,7 +1,7 @@
 <template>
     <Searchfield @searchEvent="testMethod" />
     <br>
-    <Alllistings :key=searchKeyword :search-keyword=searchKeyword />
+    <Alllistings :key=searchData :search-data=searchData />
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
 
   data () {
     return {
-      searchKeyword: ''
+      searchData: []
     }
   },
 
@@ -23,7 +23,16 @@ export default {
 
   methods: {
     testMethod (newSearchWord) {
-      this.searchKeyword = newSearchWord
+      this.searchData = this.backendFunction()
+    },
+    backendFunction () {
+      return {
+        allListings: [
+          { title: 'annas bullar', ign: 'random', desc: 'goda bullar för virtuella pengar' },
+          { title: 'kalles bullar', ign: 'random', desc: 'fina bullar jaja' },
+          { title: 'thomas bullar', ign: 'random', desc: 'kom o köp bullar' }
+        ]
+      }
     }
   }
 }
