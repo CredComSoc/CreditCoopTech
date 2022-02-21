@@ -11,6 +11,12 @@ let url = "mongodb://localhost:27017/"
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+// Test Route
+router.get("/", (req, res) => {
+  res.status(200).send("Hello There ;)")
+})
+
 // Om användaren loggar in,
 // params = användarnamn, hashat lösenord
 // kolla om användarnamn finns, om det finns, kolla om hashat lösenord matchar
@@ -136,6 +142,65 @@ router.patch("/logout", (req, res) => {
     })
   })
   
+
+
+// Routes required by the Credits Common Node
+// https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
+// /filter/{full} is unused?
+
+  
+router.get("/filter", (req, res) => {
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").find({}).toArray(function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else  {
+        let userArray = []
+        if (result != null) {
+          result.forEach(user => userArray.push(user.name))
+        }
+        res.status(200).send(userArray)
+        db.close();
+      }
+    })
+  })
+})
+
+router.get("/:acc_id", (req, res) => {
+  let myquery = { userID: req.params.tagId}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        let userData = {
+          "name"    : result.name,
+          "min"     : result.min_limit,
+          "max"     : result.max_limit,
+          "blocked" : !result.is_active,
+          "url"     : "",   // not implemented yet
+          "ip"      : "",   // no? ip to what?
+          "rate"    : "1"   // bartering rate, we don't use this
+        }
+        res.status(200).send(userData)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The account doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
   
 
 module.exports = router;
