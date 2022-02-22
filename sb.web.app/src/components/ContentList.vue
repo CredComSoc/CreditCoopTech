@@ -2,7 +2,7 @@
     <div :id="name" :class="['list-container']" >
         <img class="arrow" src="../assets/list_images/left_arrow.png" alt="rotera shop" v-if="startIndex != 0" @click="rotateLeft"/>
         <ListElement
-        v-for="(el) in data.slice(startIndex,endIndex)"
+        v-for="(el) in this.data.slice(0,endIndex)"
         :elementInfo="el"
         :key="el.id"
         ></ListElement>
@@ -23,25 +23,13 @@ export default {
     screenWidth: {
       handler: function (scrWidth) {
         if (scrWidth > 1212) {
-          if (this.startIndex === 0) {
-            this.endIndex = 5
-          }
-          this.counter = 5
+          this.endIndex = 5
         } else if (scrWidth < 1212 && scrWidth > 900) {
-          if (this.startIndex === 0) {
-            this.endIndex = 4
-          }
-          this.counter = 4
+          this.endIndex = 4
         } else if (scrWidth < 900 && scrWidth > 750) {
-          if (this.startIndex === 0) {
-            this.endIndex = 3
-          }
-          this.counter = 3
+          this.endIndex = 3
         } else if (scrWidth < 600) {
-          if (this.startIndex === 0) {
-            this.endIndex = 2
-          }
-          this.counter = 2
+          this.endIndex = 2
         }
       }
     }
@@ -50,8 +38,7 @@ export default {
     return {
       // make a variable that signal start of for loop above
       startIndex: 0,
-      endIndex: 5,
-      counter: 5
+      endIndex: 5
     }
   },
   mounted () {
@@ -64,30 +51,16 @@ export default {
   },
   methods: {
     rotateLeft () {
-      if (this.startIndex > this.counter) {
-        this.endIndex = this.startIndex
-        this.startIndex -= this.counter
-      } else {
-        this.endIndex = this.startIndex
-        this.startIndex = 0
-        console.log(this.endIndex)
-        console.log(this.startIndex)
-      }
       // const list = document.getElementById(this.name)
       // list.classList.add('animate__fadeInLeft')
     },
     rotateRight () {
-      if (this.data.length - this.endIndex >= this.counter) {
-        this.startIndex = this.endIndex
-        this.endIndex += this.counter
-        console.log(this.endIndex)
-        console.log(this.startIndex)
-      } else {
-        this.startIndex = this.endIndex
-        this.endIndex = this.data.length
-        console.log(this.endIndex)
-        console.log(this.startIndex)
+      const dataCopy = this.data
+      for (let i = 0; i < this.endIndex; i++) {
+        dataCopy.push(dataCopy.shift())
       }
+      const returnVal = { arr: dataCopy, n: this.name }
+      this.$emit('updateData', returnVal)
       // const list = document.getElementById(this.name)
       // list.classList.add('animate__fadeInRight')
     }
