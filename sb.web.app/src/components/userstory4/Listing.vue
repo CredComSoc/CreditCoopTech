@@ -1,13 +1,22 @@
 <template>
+  <div>
+    <ListingPopup v-if="true"/>
     <div class="element-container" @click="moreInfo">
         <img src="./images/bulles2.png" alt="Coffea">
         <h4 class="element-title"> {{ title }} </h4>
         <p class="element-desc"> {{ description }}  </p>
     </div>
-
+  </div>
 </template>
 <script>
+
+import ListingPopup from '@/components/userstory4/ListingPopup.vue'
+
 export default {
+
+  components: {
+    ListingPopup
+  },
 
   props: {
     title: String,
