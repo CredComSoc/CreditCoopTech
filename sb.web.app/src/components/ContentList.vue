@@ -23,13 +23,25 @@ export default {
     screenWidth: {
       handler: function (scrWidth) {
         if (scrWidth > 1212) {
-          this.endIndex = 5
+          if (this.startIndex === 0) {
+            this.endIndex = 5
+          }
+          this.counter = 5
         } else if (scrWidth < 1212 && scrWidth > 900) {
-          this.endIndex = 4
+          if (this.startIndex === 0) {
+            this.endIndex = 4
+          }
+          this.counter = 4
         } else if (scrWidth < 900 && scrWidth > 750) {
-          this.endIndex = 3
+          if (this.startIndex === 0) {
+            this.endIndex = 3
+          }
+          this.counter = 3
         } else if (scrWidth < 600) {
-          this.endIndex = 2
+          if (this.startIndex === 0) {
+            this.endIndex = 2
+          }
+          this.counter = 2
         }
       }
     }
@@ -38,44 +50,46 @@ export default {
     return {
       // make a variable that signal start of for loop above
       startIndex: 0,
-      endIndex: 5
+      endIndex: 5,
+      counter: 5
     }
   },
   mounted () {
     const list = document.getElementById(this.name)
     list.classList.add('animate__animated')
-    list.classList.add('animate__faster')
     list.addEventListener('animationend', () => {
-      list.classList.remove('animate__backInLeft')
-      list.classList.remove('animate__backInRight')
+      list.classList.remove('animate__fadeInLeft')
+      list.classList.remove('animate__fadeInRight')
     })
   },
   methods: {
     rotateLeft () {
-      if (this.endIndex - this.data.length >= 5) {
-        this.endIndex -= 5
-        this.startIndex -= 5
+      if (this.startIndex > this.counter) {
+        this.endIndex = this.startIndex
+        this.startIndex -= this.counter
       } else {
-        this.endIndex -= this.data.length - this.endIndex
-        this.startIndex -= this.endIndex + 1
+        this.endIndex = this.startIndex
+        this.startIndex = 0
         console.log(this.endIndex)
         console.log(this.startIndex)
       }
-      const list = document.getElementById(this.name)
-      list.classList.add('animate__backInLeft')
+      // const list = document.getElementById(this.name)
+      // list.classList.add('animate__fadeInLeft')
     },
     rotateRight () {
-      if (this.data.length - this.endIndex >= 5) {
-        this.endIndex += 5
-        this.startIndex += 5
+      if (this.data.length - this.endIndex >= this.counter) {
+        this.startIndex = this.endIndex
+        this.endIndex += this.counter
+        console.log(this.endIndex)
+        console.log(this.startIndex)
       } else {
-        this.endIndex += this.data.length - this.endIndex
-        this.startIndex += this.endIndex - 1
+        this.startIndex = this.endIndex
+        this.endIndex = this.data.length
         console.log(this.endIndex)
         console.log(this.startIndex)
       }
-      const list = document.getElementById(this.name)
-      list.classList.add('animate__backInRight')
+      // const list = document.getElementById(this.name)
+      // list.classList.add('animate__fadeInRight')
     }
   }
 }
