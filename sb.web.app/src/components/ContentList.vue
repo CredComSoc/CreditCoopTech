@@ -1,12 +1,12 @@
 <template>
     <div :id="name" :class="['list-container']" >
-        <img class="arrow" src="../assets/list_images/left_arrow.png" alt="rotera shop" v-if="startIndex != 0" @click="rotateLeft"/>
+        <img class="arrow" src="../assets/list_images/left_arrow.png" alt="rotera shop" @click="rotateLeft"/>
         <ListElement
         v-for="(el) in this.data.slice(0,endIndex)"
         :elementInfo="el"
         :key="el.id"
         ></ListElement>
-        <img class="arrow" src="../assets/list_images/right_arrow.png" alt="rotera shop" v-if="endIndex != data.length" @click="rotateRight" />
+        <img class="arrow" src="../assets/list_images/right_arrow.png" alt="rotera shop" @click="rotateRight" />
     </div>
 </template>
 
@@ -53,6 +53,10 @@ export default {
     rotateLeft () {
       // const list = document.getElementById(this.name)
       // list.classList.add('animate__fadeInLeft')
+      const dataCopy = this.data
+      for (let i = 0; i < this.endIndex; i++) {
+        dataCopy.unshift(dataCopy.pop())
+      }
     },
     rotateRight () {
       const dataCopy = this.data
@@ -88,6 +92,14 @@ export default {
     .arrow {
         height: 43.85px;
         margin-top: 45px;
+    }
+
+    img {
+      cursor: pointer;
+    }
+
+    img:hover {
+      transform: scale(1.1);
     }
 
 </style>
