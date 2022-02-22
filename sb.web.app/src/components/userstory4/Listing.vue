@@ -1,12 +1,8 @@
 <template>
-    <div class="listingStyle">
-      <div class="listingImage">
-        <p>{{ image }}</p>
-      </div>
-      <div class="listingFooter">
-        <p class="listingTitle">{{ title }}</p>
-        <p class="listingDescription">{{ description }}</p>
-      </div>
+    <div class="element-container" @click="moreInfo">
+        <img src="./images/bulles2.png" alt="Coffea">
+        <h4 class="element-title"> {{ title }} </h4>
+        <p class="element-desc"> {{ description }}  </p>
     </div>
 
 </template>
@@ -17,38 +13,49 @@ export default {
     title: String,
     description: String,
     image: String
+  },
+  methods: {
+    moreInfo (event) {
+      console.log('CLICKED')
+    }
   }
 }
 </script>
 
 <style scoped>
-.listingStyle {
-  /**border: solid black 1px;**/
-  margin: 1rem;
-  width: 200px;
-  height:265px;
-  box-shadow: 0px 4px 4px 0 rgba(0,0,0,0.16);
-}
+ * {
+        font-family: Ubuntu;
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0.05em;
+        padding: 0;
+        margin:0;
+        font-weight: 500;
+        font-size: 12px;
+    }
 
-.listingImage {
-  width: 200px;
-  height: 180px;
-}
+    .element-container {
+        width: 200px;
+        height:265px;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin: 1rem;
+    }
 
-.listingFooter {
-}
+     .element-container h4 {
+        margin-top: 4px;
+        font-weight: bold;
+     }
 
-.listingTitle {
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 3.5px;
-}
+    .element-title {
+        margin-left: 8px;
+        font-size: 20px
+    }
 
-.listingDescription {
-  font-size: 11px;
-  font-weight: normal;
-  line-height: normal;
-
-}
+    .element-desc {
+        color: grey;
+        margin-left: 9px;
+        margin-right: 30px;
+    }
 
 </style>
