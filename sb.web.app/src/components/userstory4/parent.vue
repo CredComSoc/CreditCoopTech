@@ -1,7 +1,19 @@
 <template>
-    <Searchfield @searchEvent="testMethod" />
-    <br>
-    <Alllistings :key=searchData :search-data=searchData />
+  <b-container fluid>
+    <b-row align-h="center">
+      <b-col cols="4" class="d-flex align-items-center justify-content-center">
+        <h2>SHOP</h2>
+      </b-col>
+    </b-row>
+    <b-row align-h="center">
+      <b-col cols="4" class="d-flex align-items-center justify-content-center">
+        <Searchfield @searchEvent="testMethod" />
+      </b-col>
+    </b-row>
+    <b-row>
+      <Alllistings :key=searchData :search-data=searchData />
+    </b-row>
+  </b-container>
 </template>
 
 <script>

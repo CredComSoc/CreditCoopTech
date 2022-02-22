@@ -1,7 +1,7 @@
 <template>
   <b-container class="mb-12">
     <ul>
-      <b-row cols="4">
+      <b-row cols="4" class="row g-0">
         <li v-for="item in searchData['allListings']" :key="item.title">
           <b-col>
             <Listing :title="item.title" :description="item.desc" :image="item.ign"/>
@@ -32,5 +32,4 @@ export default {
 li {
   display: inline-block;
 }
-
 </style>
