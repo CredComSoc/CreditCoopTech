@@ -2,7 +2,7 @@
     <div :id="name" :class="['list-container']" >
         <img class="arrow" src="../assets/list_images/left_arrow.png" alt="rotera shop" v-if="startIndex != 0" @click="rotateLeft"/>
         <ListElement
-        v-for="(el) in data.slice(startIndex,endIndex)"
+        v-for="(el) in this.data.slice(0,endIndex)"
         :elementInfo="el"
         :key="el.id"
         ></ListElement>
@@ -44,38 +44,25 @@ export default {
   mounted () {
     const list = document.getElementById(this.name)
     list.classList.add('animate__animated')
-    list.classList.add('animate__faster')
     list.addEventListener('animationend', () => {
-      list.classList.remove('animate__backInLeft')
-      list.classList.remove('animate__backInRight')
+      list.classList.remove('animate__fadeInLeft')
+      list.classList.remove('animate__fadeInRight')
     })
   },
   methods: {
     rotateLeft () {
-      if (this.endIndex - this.data.length >= 5) {
-        this.endIndex -= 5
-        this.startIndex -= 5
-      } else {
-        this.endIndex -= this.data.length - this.endIndex
-        this.startIndex -= this.endIndex + 1
-        console.log(this.endIndex)
-        console.log(this.startIndex)
-      }
-      const list = document.getElementById(this.name)
-      list.classList.add('animate__backInLeft')
+      // const list = document.getElementById(this.name)
+      // list.classList.add('animate__fadeInLeft')
     },
     rotateRight () {
-      if (this.data.length - this.endIndex >= 5) {
-        this.endIndex += 5
-        this.startIndex += 5
-      } else {
-        this.endIndex += this.data.length - this.endIndex
-        this.startIndex += this.endIndex - 1
-        console.log(this.endIndex)
-        console.log(this.startIndex)
+      const dataCopy = this.data
+      for (let i = 0; i < this.endIndex; i++) {
+        dataCopy.push(dataCopy.shift())
       }
-      const list = document.getElementById(this.name)
-      list.classList.add('animate__backInRight')
+      const returnVal = { arr: dataCopy, n: this.name }
+      this.$emit('updateData', returnVal)
+      // const list = document.getElementById(this.name)
+      // list.classList.add('animate__fadeInRight')
     }
   }
 }
