@@ -28,7 +28,8 @@
 export default {
   data () {
     return {
-      isActive: true
+      isActive: true,
+      opend: false
     }
   },
   name: 'SaldoCard',
@@ -38,20 +39,38 @@ export default {
   watch: {
     screenWidth: {
       handler: function (scrWidth) {
-        if (scrWidth < 1212) {
+        const outline = document.getElementById('outline')
+        if (scrWidth < 1212 && !this.opend) {
           this.isActive = false
-        } else {
+          outline.style.width = '25px'
+          outline.style.height = '25px'
+        } else if (scrWidth >= 1212 && this.opend) {
           this.isActive = true
+          this.opend = false
+          outline.style.width = '150px'
+          outline.style.height = '100px'
         }
       }
     }
   },
   methods: {
-    closeCard () {
+    closeCard (scrWidth) {
       this.isActive = false
+      if (scrWidth.x >= 1212) {
+        this.opend = false
+      }
+      const outline = document.getElementById('outline')
+      outline.style.width = '25px'
+      outline.style.height = '25px'
     },
-    openCard () {
+    openCard (scrWidth) {
       this.isActive = true
+      if (scrWidth.x < 1212) {
+        this.opend = true
+      }
+      const outline = document.getElementById('outline')
+      outline.style.width = '150px'
+      outline.style.height = '100px'
     }
   }
 }
