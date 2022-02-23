@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <img src="../assets/banner.jpg" alt="välkommen">
-    <Welcome />
+    <Welcome :companyName="companyName"/>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
   name: 'Banner',
   components: {
     Welcome
-  }
+  },
+  props: ['companyName']
 }
 </script>

@@ -1,11 +1,20 @@
 <template>
     <div class="welcome">
         <div class="text">
-            <h1 id="welcome_text">Välkommen Florist AB</h1><!--Looks weird when name to large-->
+            <h1 id="welcome_text">Välkommen {{ companyName }}</h1><!--Looks weird when name to large-->
             <h1 id="inspired_text">Bli inspererad nedan</h1>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+  name: 'WelcomeMessage',
+  components: {
+  },
+  props: ['companyName']
+}
+</script>
 
 <style scoped>
     .welcome{
@@ -58,6 +67,23 @@
         border-bottom: 2px solid white;
         margin: 0 auto;
         padding: 5px 5px;
+    }
+
+    @media (max-width: 500px) {
+        .text{
+            margin-top: 30px;
+        }
+       #welcome_text {
+           font-size: 150%;
+       }
+
+       #inspired_text{
+           font-size: 100%;
+       }
+
+       #inspired_text::after, #inspired_text::before {
+        max-width: 250px;
+       }
     }
 
 </style>
