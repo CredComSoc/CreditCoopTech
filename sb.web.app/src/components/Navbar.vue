@@ -383,7 +383,6 @@ figcaption {
 @media (max-width: 860px) {
 
  .header-container {
-    position: fixed;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
  }

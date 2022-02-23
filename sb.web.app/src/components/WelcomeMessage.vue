@@ -50,7 +50,7 @@ export default {
         font-size: 250%;
         margin-left:50px;
         margin-right:50px;
-        line-height: 35px;
+        line-height: 50px;
         letter-spacing: 7px;
     }
 
