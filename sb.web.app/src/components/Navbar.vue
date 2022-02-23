@@ -1,5 +1,5 @@
 <template>
-  <div class="header-container">
+  <div id="header-box" class="header-container">
     <header>
       <nav>
         <div class="left-logos" v-if="this.desc">
@@ -141,7 +141,7 @@
           </div>
         </div>
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-        <button class="icon" @click="openNav">
+        <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
         </button>
       </nav>
@@ -169,10 +169,17 @@ export default {
           this.desc = true
           if (scrWidth > 861) {
             this.isActive = false
+            const box = document.getElementById('header-box')
+            box.style.height = 'fit-content'
+            box.style.overflow = 'inherit'
           }
         }
       }
     }
+  },
+  mounted () {
+    this.resizeNav()
+    window.addEventListener('resize', this.resizeNav)
   },
   methods: {
     openNav () {
@@ -182,6 +189,25 @@ export default {
       } else {
         this.desc = true
         this.isActive = true
+      }
+      this.resizeNav()
+    },
+    resizeNav () {
+      if (this.isActive) {
+        const box = document.getElementById('header-box')
+        const height = window.innerHeight
+
+        if (height < 730) {
+          box.style.height = '' + height + 'px'
+        } else {
+          box.style.height = 'fit-content'
+        }
+
+        box.style.overflow = 'scroll'
+      } else {
+        const box = document.getElementById('header-box')
+        box.style.height = 'fit-content'
+        box.style.overflow = 'inherit'
       }
     }
   }
@@ -358,6 +384,8 @@ figcaption {
 
  .header-container {
     position: fixed;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
  }
 
   header {
