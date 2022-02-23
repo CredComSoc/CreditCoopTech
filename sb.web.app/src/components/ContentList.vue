@@ -24,12 +24,14 @@ export default {
       handler: function (scrWidth) {
         if (scrWidth > 1212) {
           this.endIndex = 5
-        } else if (scrWidth < 1212 && scrWidth > 900) {
+        } else if (scrWidth <= 1212 && scrWidth > 900) {
           this.endIndex = 4
-        } else if (scrWidth < 900 && scrWidth > 650) {
+        } else if (scrWidth <= 900 && scrWidth > 650) {
           this.endIndex = 3
-        } else if (scrWidth < 650) {
+        } else if (scrWidth < 650 && scrWidth > 350) {
           this.endIndex = 2
+        } else if (scrWidth <= 350) {
+          this.endIndex = 1
         }
       }
     }
