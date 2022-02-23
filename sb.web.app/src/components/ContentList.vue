@@ -26,9 +26,9 @@ export default {
           this.endIndex = 5
         } else if (scrWidth < 1212 && scrWidth > 900) {
           this.endIndex = 4
-        } else if (scrWidth < 900 && scrWidth > 750) {
+        } else if (scrWidth < 900 && scrWidth > 650) {
           this.endIndex = 3
-        } else if (scrWidth < 600) {
+        } else if (scrWidth < 650) {
           this.endIndex = 2
         }
       }
