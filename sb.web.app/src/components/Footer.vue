@@ -33,14 +33,16 @@
 
     #middle-item{
         border-left: 0.5px solid  black;
-        padding-left:15%;
+        padding-left: 15%;
         border-right: 0.5px solid  black;
-        padding-right:15%;
+        padding-right: 15%;
+        flex-shrink: 0;
     }
 
     .side-items{
-        margin-left:10%;
+        margin-left: 10%;
         margin-right: 10%;
+        flex-shrink: 0;
     }
 
     a{
