@@ -4,7 +4,7 @@
       <b-row cols="4" class="row g-0">
         <li v-for="item in searchData['allListings']" :key="item.title">
           <b-col>
-            <Listing :title="item.title" :description="item.desc" :image="item.ign"/>
+            <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
           </b-col>
         </li>
       </b-row>
@@ -20,6 +20,12 @@ export default {
 
   components: {
     Listing
+  },
+
+  methods: {
+    togglePopup (listingObj) {
+      this.$emit('togglePopupEvent', listingObj)
+    }
   },
 
   props: {

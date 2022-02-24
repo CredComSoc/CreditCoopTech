@@ -47,7 +47,8 @@
     },
     "rules": {
       "no-unused-vars": "off",
-      "spaced-comment": "off"
+      "spaced-comment": "off",
+      "no-trailing-spaces": "off"
     }
   },
   "browserslist": [

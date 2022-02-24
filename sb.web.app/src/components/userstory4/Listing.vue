@@ -1,31 +1,25 @@
 <template>
   <div>
-    <ListingPopup v-if="true"/>
-    <div class="element-container" @click="moreInfo">
+    <!-- <ListingPopup v-if="true"/> -->
+    <div class="element-container" @click="togglePopup">
         <img src="./images/bulles2.png" alt="Coffea">
-        <h4 class="element-title"> {{ title }} </h4>
-        <p class="element-desc"> {{ description }}  </p>
+        <h4 class="element-title"> {{ listingObj.title }} </h4>
+        <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
     </div>
   </div>
 </template>
 <script>
 
-import ListingPopup from '@/components/userstory4/ListingPopup.vue'
+// import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 
 export default {
 
-  components: {
-    ListingPopup
-  },
-
   props: {
-    title: String,
-    description: String,
-    image: String
+    listingObj: Object
   },
   methods: {
-    moreInfo (event) {
-      console.log('CLICKED')
+    togglePopup () {
+      this.$emit('togglePopupEvent', this.listingObj)
     }
   }
 }
