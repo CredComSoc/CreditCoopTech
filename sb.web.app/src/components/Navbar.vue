@@ -26,12 +26,18 @@
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="#">
-                <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Lägg upp </figcaption>
-              </a>
-            </figure>
+            <div class="dropdown">
+              <figure class="logo-click">
+                <a href="#">
+                  <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Lägg upp </figcaption>
+                </a>
+              </figure>
+              <div id="upload-dropdown" class="dropdown-content">
+                  <a href="#">Ny artikel </a>
+                  <a href="#">Nytt event </a>
+              </div>
+            </div>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Lägg upp </span>
             </a>
@@ -310,7 +316,11 @@ figcaption {
   display: inline-block;
 }
 
-#bell-dropdown {
+#bell-dropdown, #upload-dropdown {
+  margin-top: 2px;
+}
+
+#bell-dropdown, #upload-dropdown {
   margin-top: 2px;
 }
 
