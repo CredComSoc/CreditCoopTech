@@ -1,8 +1,9 @@
 <template>
+    <div>
     <div v-if="elementInfo.theme === `regular`" class="element-container">
         <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
         <h4 class="element-title"> {{ elementInfo.title }} </h4>
-        <p class="element-desc"> {{ elementInfo.desc }}  </p>
+        <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
     </div>
     <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
         <figure>
@@ -12,6 +13,7 @@
             <h4 class="element-title"> {{ elementInfo.title }} </h4>
         </div>
     </div>
+    </div>
 </template>
 
 <script>
@@ -19,7 +21,28 @@ export default {
   name: 'ListElement',
   components: {
   },
-  props: ['elementInfo']
+  props: ['elementInfo'],
+  methods: {
+    formatText (str) {
+      if (str.length > 35) {
+        if (str.substring(0, 35).replace(/[a-z]/g, '').length > 20) {
+          return str.substring(0, 30) + '...'
+        } else {
+          return str.substring(0, 35) + '...'
+        }
+      } else {
+        if (str.length > 30) {
+          if (str.replace(/[a-z]/g, '').length > 25) {
+            return str.substring(0, 30) + '...'
+          } else {
+            return str
+          }
+        } else {
+          return str
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -51,6 +74,7 @@ export default {
         height: 160px;
         background: #FFFFFF;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        word-break: break-all;
     }
 
     .ellipse-container {
