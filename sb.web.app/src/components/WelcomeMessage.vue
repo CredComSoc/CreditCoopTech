@@ -37,6 +37,7 @@ export default {
 
     .text{
         margin-top: 60px;
+        word-wrap: break-word
     }
 
     h1{
@@ -47,15 +48,14 @@ export default {
     }
 
     #welcome_text{
-        font-size: 250%;
+        font-size: 4vw;
         margin-left:50px;
         margin-right:50px;
-        line-height: 50px;
         letter-spacing: 7px;
     }
 
     #inspired_text{
-        font-size: 120%;
+        font-size: 3vw;
         letter-spacing: 3px;
         margin-bottom: 40px;
     }
@@ -66,24 +66,27 @@ export default {
         max-width: 350px;
         border-bottom: 2px solid white;
         margin: 0 auto;
-        padding: 5px 5px;
+        padding: 5px 0px 5px 5px;
+    }
+
+    @media (min-width: 710px) {
+        #welcome_text{
+            font-size: 250%;
+        }
+       #inspired_text{
+           font-size: 120%;
+       }
     }
 
     @media (max-width: 500px) {
-        .text{
-            margin-top: 30px;
+        #welcome_text{
+            font-size: 110%;
         }
-       #welcome_text {
-           font-size: 150%;
-       }
 
-       #inspired_text{
-           font-size: 100%;
-       }
-
-       #inspired_text::after, #inspired_text::before {
-        max-width: 250px;
-       }
+        #inspired_text::after, #inspired_text::before {
+            max-width: 230px;
+            padding: 3px;
+        }
     }
 
 </style>
