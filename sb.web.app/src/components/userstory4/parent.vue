@@ -12,7 +12,7 @@
     </b-row>
     <b-row>
       <Alllistings @togglePopupEvent="togglePopup" :key=searchData :search-data=searchData />
-      <ListingPopup v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
+      <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
     </b-row>
   </b-container>
 </template>
@@ -46,6 +46,9 @@ export default {
     togglePopup (listingObj) {
       this.popupActive = true
       this.listingObjPopup = listingObj
+    },
+    closePopup (listingObj) {
+      this.popupActive = false
     },
     backendFunction () {
       return {

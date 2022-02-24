@@ -1,14 +1,16 @@
 <template>
   <b-container>
     <b-row>
-      <div class="popup">
-        <div class="popup-inner">
+      <div @click="$emit('closePopup')" class="popup"></div>
+      <div class="popup-inner">
           <b-col cols="8">
             <img class="p-image" src="./images/bulles2.png" alt="Coffea">
           </b-col>
           <b-col cols="4" class="content-right">
             <b-row>
-              <p>x</p>
+              <b-col cols="1" offset="10" class="d-flex align-items-right" >
+                <button @click="$emit('closePopup')">x</button>
+              </b-col>
             </b-row>
             <b-row>
               <b-col class="d-flex align-items-center justify-content-center">
@@ -28,11 +30,12 @@
               <p>{{amount}}</p>
             </b-row>
             <b-row>
-              <p>lägg i varukorg</p>
+              <b-col class="d-flex align-items-right justify-content-right text-right">
+                <b-button variant="primary" @click="emit('placeInCart', amount)">lägg i varukorg</b-button>
+              </b-col>
             </b-row>
           </b-col>
         </div>
-      </div>
     </b-row>
   </b-container>
 </template>
@@ -50,6 +53,11 @@ export default {
 
 <style scoped>
 
+body {
+  align-items: center;
+  justify-content: center;
+}
+
 .popup {
   position: fixed;
   top: 0;
@@ -59,24 +67,32 @@ export default {
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.05);
   display: flex;
-  align-items: center;
-  justify-content: center;
+
+  z-index: 2
 }
 
 .popup-inner {
+  position: fixed; 
   background: #FFFFFF;
   border: 4px solid #C4C4C4;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 45rem;
+  width: 50rem;
   height: 30rem;
+  font-size-adjust: 0.58;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding:0;
+
+  z-index: 5
 }
 
-.content-left {
-  width: 60%;
+/* .content-left {
+  width: 100%;
   height: 100%;
-}
+} */
 
 .content-right {
   background-color: white;

@@ -1,7 +1,7 @@
 <template>
   <b-container class="mb-12">
     <ul>
-      <b-row cols="4" class="row g-0">
+      <b-row cols-xs="1" cols-sm="2" cols-md="3" cols-xl="4" class="row g-0">
         <li v-for="item in searchData['allListings']" :key="item.title">
           <b-col>
             <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
