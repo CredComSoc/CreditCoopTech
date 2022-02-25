@@ -1,8 +1,8 @@
 <template>
-    <div class="welcome">
-        <div class="text">
-            <h1 id="welcome_text">Välkommen {{ companyName }}</h1><!--Looks weird when name to large-->
-            <h1 id="inspired_text">Bli inspererad nedan</h1>
+    <div class="welcome-container">
+        <div class="text-container">
+            <h1 id="welcome-text">Välkommen {{ companyName }}</h1>
+            <h1 id="inspired-text">Bli inspererad nedan</h1>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style scoped>
-    .welcome{
+    .welcome-container{
         background-color: white;
         background: hsla(0, 0%, 100%, 0.4);
         position: absolute;
@@ -35,7 +35,7 @@ export default {
         color: #fdca63;
     }
 
-    .text{
+    .text-container{
         margin-top: 60px;
         word-wrap: break-word
     }
@@ -47,20 +47,20 @@ export default {
         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
 
-    #welcome_text{
+    #welcome-text{
         font-size: 4vw;
         margin-left:50px;
         margin-right:50px;
-        letter-spacing: 7px;
+        letter-spacing: 5px;
     }
 
-    #inspired_text{
+    #inspired-text{
         font-size: 3vw;
         letter-spacing: 3px;
         margin-bottom: 40px;
     }
 
-    #inspired_text::after, #inspired_text::before {
+    #inspired-text::after, #inspired-text::before {
         display:block;
         content : "";
         max-width: 350px;
@@ -70,20 +70,20 @@ export default {
     }
 
     @media (min-width: 710px) {
-        #welcome_text{
+        #welcome-text{
             font-size: 250%;
         }
-       #inspired_text{
+       #inspired-text{
            font-size: 120%;
        }
     }
 
     @media (max-width: 500px) {
-        #welcome_text{
+        #welcome-text{
             font-size: 110%;
         }
 
-        #inspired_text::after, #inspired_text::before {
+        #inspired-text::after, #inspired-text::before {
             max-width: 230px;
             padding: 3px;
         }

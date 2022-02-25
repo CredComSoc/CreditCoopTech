@@ -25,6 +25,7 @@
 </template>
 
 <script>
+/* Component that contains the saldo card */
 export default {
   data () {
     return {

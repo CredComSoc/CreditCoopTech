@@ -153,6 +153,8 @@
       </nav>
     </header>
   </div>
+  <div id="space">
+  </div>
 </template>
 
 <script>
@@ -231,12 +233,16 @@ html {
   scroll-behavior: smooth;
 }
 
+#space {
+  height:75px;
+}
+
 .header-container {
-  position: sticky;
   width: 100%;
   height: 80px;
   top: 0;
   z-index: 3;
+  position: fixed;
   background: #fff;
   border-bottom: 1px solid black;
 }
@@ -384,7 +390,7 @@ figcaption {
 
 @media (min-width: 1100px) {
   .dropdown:hover .dropdown-content {
-    display: block;
+    display: block;  border-top: 1px
   }
 }
 
@@ -393,6 +399,10 @@ figcaption {
  .header-container {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+ }
+
+ #space {
+   height: 69px;
  }
 
  /* Hide scrollbar for Chrome, Safari and Opera */
