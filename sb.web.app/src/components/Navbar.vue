@@ -232,7 +232,7 @@ export default {
   height: 80px;
   top: 0px;
   z-index: 3;
-  position: sticky;
+  position: fixed;
   background: #fff;
   border-bottom: 1px solid black;
 }
@@ -287,7 +287,8 @@ a:hover {
   flex-shrink: 0;
   margin-left: 30px;
   margin-right: 30px;
-  margin-bottom: 7px;
+  margin-bottom: 3px;
+  margin-top: 3px;
   height: 100%;
 }
 
@@ -316,14 +317,6 @@ figcaption {
   display: inline-block;
 }
 
-#bell-dropdown, #upload-dropdown {
-  margin-top: 2px;
-}
-
-#bell-dropdown, #upload-dropdown {
-  margin-top: 2px;
-}
-
 .dropdown-content a {
   color:black;
   text-decoration: none;
@@ -340,6 +333,7 @@ figcaption {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  margin-top: 2px;
 }
 
 .dropdown-content a {
@@ -395,6 +389,11 @@ figcaption {
  .header-container {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+ }
+
+ /* Hide scrollbar for Chrome, Safari and Opera */
+ .header-container::-webkit-scrollbar {
+    display: none;
  }
 
   header {
@@ -461,12 +460,13 @@ figcaption {
     position: absolute;
     top:0;
     right:0;
-    transform: scale(2.0);
-    margin-right: 10px;
-    margin-top: 20px;
+    transform: scale(2.4);
+    margin-right: 20px;
+    margin-top: 25px;
     display: block;
     border: none;
     background: #fff;
+    cursor: pointer;
   }
 
   nav a:hover {

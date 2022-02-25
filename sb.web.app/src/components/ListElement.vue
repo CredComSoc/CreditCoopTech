@@ -2,7 +2,7 @@
     <div>
     <div v-if="elementInfo.theme === `regular`" class="element-container">
         <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
-        <h4 class="element-title"> {{ elementInfo.title }} </h4>
+        <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
         <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
     </div>
     <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
@@ -10,7 +10,7 @@
             <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
         </figure>
         <div class="chin-card">
-            <h4 class="element-title"> {{ elementInfo.title }} </h4>
+            <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
         </div>
     </div>
     </div>
@@ -34,6 +34,25 @@ export default {
         if (str.length > 30) {
           if (str.replace(/[a-z]/g, '').length > 25) {
             return str.substring(0, 30) + '...'
+          } else {
+            return str
+          }
+        } else {
+          return str
+        }
+      }
+    },
+    formatTitle (str) {
+      if (str.length > 20) {
+        if (str.substring(0, 20).replace(/[a-z]/g, '').length > 10) {
+          return str.substring(0, 15) + '...'
+        } else {
+          return str.substring(0, 20) + '...'
+        }
+      } else {
+        if (str.length >= 15) {
+          if (str.replace(/[a-z]/g, '').length > 10) {
+            return str.substring(0, 15) + '...'
           } else {
             return str
           }
