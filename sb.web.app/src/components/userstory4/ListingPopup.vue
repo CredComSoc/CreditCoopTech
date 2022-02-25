@@ -4,12 +4,14 @@
       <div @click="$emit('closePopup')" class="popup"></div>
       <div class="popup-inner">
           <b-col cols="8">
-            <img class="p-image" src="./images/bulles2.png" alt="Coffea">
+            <img class="p-image" src="./images/bulles1.png" alt="Coffea">
           </b-col>
           <b-col cols="4" class="content-right">
             <b-row>
-              <b-col cols="1" offset="10" class="d-flex align-items-right" >
-                <button @click="$emit('closePopup')">x</button>
+              <b-col>
+                <div class="float-end">
+                  <button className="xBtn marginRight" @click="$emit('closePopup')">x</button>
+                </div>
               </b-col>
             </b-row>
             <b-row>
@@ -17,21 +19,29 @@
                <h5>{{listingObj.title}}</h5>
               </b-col>
             </b-row>
-            <b-row>
+            <b-row class="marginLeft">
               <p>{{listingObj.longDesc}}</p>
             </b-row>
-            <b-row>
+            <b-row class="marginLeft">
               <p>{{listingObj.destination}}</p>
             </b-row>
-            <b-row>
+            <b-row class="marginLeft">
               <p>{{listingObj.price}}</p>
             </b-row>
-            <b-row>
-              <p>{{amount}}</p>
+            <b-row class="fixed-bottom">
+              <b-col>
+                <div class="float-end amountRow">
+                  <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
+                  <p class="amountText"> {{amount}} </p>
+                  <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
+                </div>
+              </b-col>
             </b-row>
-            <b-row>
-              <b-col class="d-flex align-items-right justify-content-right text-right">
-                <b-button variant="primary" @click="emit('placeInCart', amount)">lägg i varukorg</b-button>
+            <b-row class="fixed-bottom">
+              <b-col>
+                <div class="float-end">
+                  <b-button class="cartBtn marginRight" variant="primary" @click="emit('placeInCart', amount)">Lägg i varukorg</b-button>
+                </div>
               </b-col>
             </b-row>
           </b-col>
@@ -46,7 +56,23 @@ export default {
     listingObj: Object
   },
 
+  data () {
+    return {
+      amount: 1
+    }
+  },
+
   methods: {
+    decreaseAmount () {
+      if (this.amount > 1) {
+        this.amount--
+      }
+    },
+    increaseAmount () {
+      if (this.amount < 99) {
+        this.amount++
+      }
+    }
   }
 }
 </script>
@@ -56,6 +82,39 @@ export default {
 body {
   align-items: center;
   justify-content: center;
+}
+
+.decreaseBtn, .increaseBtn {
+  display: inline-block;
+}
+
+.amountRow {
+  margin-bottom: 3rem;
+}
+
+.cartBtn {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.lastRow {
+  margin-top: auto;
+}
+
+.marginLeft {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.marginRight {
+  margin-right: 0.5rem;
+}
+
+.amountText {
+  display: inline-block;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  
 }
 
 .popup {
@@ -78,15 +137,19 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 50rem;
-  height: 30rem;
+  width: 70rem;
+  height: 50rem;
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding:0;
+  z-index: 5;
+  font-size: 1.4rem;
+}
 
-  z-index: 5
+h5 {
+  font-size: 1.8rem;
 }
 
 /* .content-left {
@@ -100,6 +163,11 @@ body {
 
 .p-image {
   height: 100%
+}
+
+.xBtn {
+  border: none;
+  background-color: white;
 }
 
 </style>
