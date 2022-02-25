@@ -232,7 +232,7 @@ export default {
   height: 80px;
   top: 0px;
   z-index: 3;
-  position: fixed;
+  position: sticky;
   background: #fff;
   border-bottom: 1px solid black;
 }
