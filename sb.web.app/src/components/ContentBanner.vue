@@ -7,16 +7,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-   .banner{
-        width: 100%;
-        height: 405px;
-        position: relative;
-    }
-    img{
+  .banner{
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      height: 405px;
+      position: relative;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
 
 <script>

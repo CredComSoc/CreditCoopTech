@@ -227,12 +227,16 @@ export default {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .header-container {
+  position: sticky;
   width: 100%;
   height: 80px;
-  top: 0px;
+  top: 0;
   z-index: 3;
-  position: fixed;
   background: #fff;
   border-bottom: 1px solid black;
 }

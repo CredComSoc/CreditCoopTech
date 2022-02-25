@@ -139,6 +139,7 @@ export default {
         background-color: #F9C661;
         position:fixed;
         border-radius: 10px 0px 0px 10px;
+        cursor: pointer;
     }
 
     #right-arrow-button{
