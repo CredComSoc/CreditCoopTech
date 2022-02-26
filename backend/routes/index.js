@@ -71,6 +71,7 @@ router.post("/login", (req, res) => {
 // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
 // användare.
 // returnear status (ok)
+// LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
 router.post("/register", (req, res) => {
 
     let username = req.body.username;
@@ -154,6 +155,36 @@ router.patch("/logout", (req, res) => {
 // /filter/{full} is unused?
 
   
+router.get("/filter/full", (req, res) => { 
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").find({}).toArray(function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else  {
+        let userArray = []
+        if (result != null) {
+          for (user of result) {
+            let userData = {
+          	"id"      : user.userID,
+          	"status"  : user.is_active,
+          	"min"     : user.min_limit,
+          	"max"     : user.max_limit,
+          	"admin"   : user.is_admin ? 1 : 0
+            }
+            userArray.push(userData);
+          
+          } 
+        }
+        res.status(200).send(userArray)
+        db.close();
+      }
+    })
+  })
+}) 
+  
 router.get("/filter", (req, res) => {
 
   MongoClient.connect(url, (err, db) => {
@@ -187,13 +218,11 @@ router.get("/:acc_id", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "name"    : result.userID,
+          "id"      : result.userID,
+          "status"  : result.is_active,
           "min"     : result.min_limit,
           "max"     : result.max_limit,
-          "blocked" : !result.is_active,
-          "url"     : "",   // not implemented yet
-          "ip"      : "",   // no? ip to what?
-          "rate"    : "1"   // bartering rate, we don't use this
+          "admin"   : result.is_admin ? 1 : 0
         }
         res.status(200).send(userData)
         db.close();
