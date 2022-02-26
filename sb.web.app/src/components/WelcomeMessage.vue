@@ -9,6 +9,8 @@
 
 <script>
 export default {
+  // component that represent the container for the welcome text
+
   name: 'WelcomeMessage',
   components: {
   },

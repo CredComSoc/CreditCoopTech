@@ -3,9 +3,9 @@
     <Navbar :screenWidth="screenWidth"/>
     <Banner :companyName="companyName"/>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" @updateData="newData" :screenWidth="screenWidth" name="shop" />
-    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" @updateData="newData" :screenWidth="screenWidth" name="events" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" @updateData="newData" :data="members" :screenWidth="screenWidth" name="members" />
+    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="screenWidth" name="shop" />
+    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="screenWidth" name="events" />
+    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="screenWidth" name="members" />
     <Footer />
   </div>
 </template>
@@ -34,9 +34,6 @@ export default {
   methods: {
     onResize () {
       this.screenWidth = window.innerWidth
-    },
-    newData (dataPar) {
-      this.data.dataPar.n = dataPar.arr
     }
   },
   data () {

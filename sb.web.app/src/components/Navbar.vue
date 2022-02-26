@@ -82,12 +82,12 @@
                       <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
                     </div>
                   </a>
-                  <a href="#">
+                  <!-- <a href="#">
                     <div>
                       <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                       <p class="notice-desc">Notiser</p>
                     </div>
-                  </a>
+                  </a> -->
                 </div>
                 <div id="previous-notice-list">
                   <a href="#">
@@ -158,17 +158,19 @@
 </template>
 
 <script>
+// Component that represent the navbar, is responsive for mobile aswell
 
 export default {
   data () {
     return {
-      desc: true,
-      isActive: false
+      desc: true, // is in desktop mode of navbar
+      isActive: false // if mobile version has its button pressed
     }
   },
   name: 'Navbar',
   props: ['screenWidth'],
   watch: {
+    // When screen resize, make navbar responsive
     screenWidth: {
       handler: function (scrWidth) {
         if (scrWidth < 861 && !this.isActive) {
@@ -190,6 +192,7 @@ export default {
     window.addEventListener('resize', this.resizeNav)
   },
   methods: {
+    // open mobile version of navbar
     openNav () {
       if (this.desc) {
         this.desc = false
@@ -200,6 +203,7 @@ export default {
       }
       this.resizeNav()
     },
+    // make height for mobile navbar responsive and scrollable
     resizeNav () {
       if (this.isActive) {
         const box = document.getElementById('header-box')
