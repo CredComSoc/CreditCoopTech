@@ -1,16 +1,15 @@
 <template>
-  <Navbar />
-  <img src="välkommen_banner.png" alt="Välkommen">
+  <MinSida />
 </template>
 
 <script>
 // @ is an alias to /src
-import Navbar from '@/components/Navbar.vue'
+import MinSida from '@/components/MinSida.vue'
 
 export default {
   name: 'Home',
   components: {
-    Navbar
+    MinSida
   }
 }
 </script>
