@@ -75,8 +75,13 @@ router.post("/register", (req, res) => {
 
     let username = req.body.username;
     let pw = req.body.password;
+    let mail = req.body.email;
+    let min = req.body.min_limit;
+    let max = req.body.max_limit;
+    let active = req.body.is_active;
+    let admin = req.body.is_admin
+    
     let myquery = { userID: username}
-  
     MongoClient.connect(url, (err, db) => {
       let dbo = db.db("tvitter");
       dbo.collection("users").findOne(myquery, function(err, result) {
@@ -91,7 +96,7 @@ router.post("/register", (req, res) => {
         else {
           //skapa användarobjekt
           let id = uuidv4();
-          let newUser = {userID: username, password: pw, email: mail, sessionID: id, min_limit: min, max_limit: max, is_active: yes, admin: no, posts: []}
+          let newUser = {userID: username, password: pw, email: mail, sessionID: null, min_limit: min, max_limit: max, is_active: active, is_admin: admin, posts: []}
           dbo.collection('users').insertOne(newUser, function(err, result) {
             if (err) {throw err}
             else {
@@ -161,7 +166,7 @@ router.get("/filter", (req, res) => {
       else  {
         let userArray = []
         if (result != null) {
-          result.forEach(user => userArray.push(user.name))
+          result.forEach(user => userArray.push(user.userID))
         }
         res.status(200).send(userArray)
         db.close();
@@ -171,7 +176,7 @@ router.get("/filter", (req, res) => {
 })
 
 router.get("/:acc_id", (req, res) => {
-  let myquery = { userID: req.params.tagId}
+  let myquery = { userID: req.params.acc_id}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -182,7 +187,7 @@ router.get("/:acc_id", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "name"    : result.name,
+          "name"    : result.userID,
           "min"     : result.min_limit,
           "max"     : result.max_limit,
           "blocked" : !result.is_active,
