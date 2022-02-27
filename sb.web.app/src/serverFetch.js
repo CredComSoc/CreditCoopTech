@@ -1,4 +1,7 @@
 import * as JsSHA from 'jssha'
+import fetchNoCors from 'fetch-no-cors'
+
+const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -79,23 +82,48 @@ export async function logout (sessionID) {
     })
 }
 
-export async function minSida (ccUser, ccAuth) {
-  fetch('http://155.4.159.231/localhost/cc-node/transaction', {
+export async function myTransactions (ccUser, ccAuth) {
+  const allTransactionPromise = fetchNoCors('155.4.159.231/localhost/cc-node/transaction', {
     method: 'GET',
     headers: {
       'cc-user': ccUser,
-      'cc-auth': ccAuth
+      'cc-auth': ccAuth,
+      'Content-Type': 'application/json'
     }
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        console.log('Loading my page')
-        return (true)
-      }
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
     })
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
+  return allTransactionPromise
+}
+
+export async function transaction (ccUser, ccAuth, id) {
+  const transactionPromise = fetchNoCors('155.4.159.231/localhost/cc-node/transaction/' + id + '/full', {
+    method: 'GET',
+    headers: {
+      'cc-user': ccUser,
+      'cc-auth': ccAuth,
+      'Content-Type': 'application/json'
+    }
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return transactionPromise
 }

@@ -1,42 +1,56 @@
 <template>
   <h1> MIN SIDA </h1>
-  <div class="topnav" id="myTopnav">
-    <a href="#profil" class="active" id="profil">Min profil</a>
-    <a href="#kop" name="#kop">Mina köp</a>
-    <a href="#artiklar" id="artiklar">Mina artiklar</a>
-    <a href="#statistik" id="statistik">Min statistik</a>
-    <a href="#kopforfragningar" id="kopforfragningarr">Mina köpförfrågningar</a>
-    <a href="#installningar" id="installningar">Inställningar</a>
+  <div class='topnav' id='myTopnav'>
+    <a href='#profil' @click="activate('profil'); profil=true" :class="{ active: profil }" id='profil'>Min profil</a>
+    <a href='#kop' @click="activate('kop'); kop=true" :class="{ active: kop }" id='kop'>Mina köp</a>
+    <a href='#artiklar' @click="activate('artiklar'); artiklar=true" :class="{ active: artiklar }" id='artiklar'>Mina artiklar</a>
+    <a id='statistik'>Min statistik</a>
+    <a href='#forfragningar' @click="activate('forfragningar'); forfragningar=true" :class="{ active: forfragningar }" id='kopforfragningar'>Mina köpförfrågningar</a>
+    <a id='installningar'>Inställningar</a>
   </div>
     <div>
-      <MinaKop/>
+      <MinaKop v-if="kop"/>
+      <MinaArtiklar v-else-if="artiklar"/>
+      <MinaKopforfragningar v-else-if="forfragningar"/>
+      <MinProfil v-else/>
     </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import MinProfil from '@/components/MinProfil.vue'
 import MinaKop from '@/components/MinaKop.vue'
+import MinaArtiklar from '@/components/MinaArtiklar.vue'
+import MinaKopforfragningar from '@/components/MinaKopforfragningar.vue'
 
 export default {
+  data () {
+    return {
+      profil: !((window.location.href.indexOf('#kop') > -1) || (window.location.href.indexOf('#artiklar') > -1) || (window.location.href.indexOf('#forfragningar') > -1)),
+      kop: (window.location.href.indexOf('#kop') > -1),
+      artiklar: (window.location.href.indexOf('#artiklar') > -1),
+      forfragningar: (window.location.href.indexOf('#forfragningar') > -1)
+    }
+  },
   components: {
-    MinaKop
+    MinProfil,
+    MinaKop,
+    MinaArtiklar,
+    MinaKopforfragningar
+  },
+  methods: {
+    activate: function (element) {
+      this.profil = (element === 'profil')
+      this.kop = (element === 'kop')
+      this.artiklar = (element === 'artiklar')
+      this.forfragningar = (element === 'forfragningar')
+    }
   }
 }
 
-const paramString = window.location.href
-const test = paramString.split('/')
-const test2 = test[test.length - 1]
-console.log(test)
-console.log(test2)
-var current = document.getElementsByClassName('active')
-console.log(typeof current[0])
-// current[0].className = current[0].className.replace(' active', '')
-var newActive = document.getElementsByName(test2)
-newActive.className += 'active'
-
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 .topnav {
   overflow: hidden;
