@@ -5,7 +5,7 @@
         <div class="left-logos" v-if="this.desc">
             <div class="navlogo">
               <figure class="logo-click">
-                <a href="#">
+                <a href="http://localhost:8080/shop">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
                   <figcaption class="l-text">Shop</figcaption>
                 </a>
@@ -16,7 +16,7 @@
             </div>
           <div class="navlogo">
             <figure class="logo-click">
-              <a href="#">
+              <a href="http://localhost:8080/events">
                 <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
                 <figcaption class="l-text"> Events </figcaption>
               </a>
@@ -44,7 +44,7 @@
           </div>
           <div class="navlogo">
             <figure class="logo-click">
-              <a href="#">
+              <a href="http://localhost:8080/members">
                 <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
                 <figcaption class="l-text"> Medlemmar </figcaption>
               </a>
@@ -57,7 +57,7 @@
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <a href="#">
+              <a href="/">
                 <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
               </a>
             </figure>
@@ -128,17 +128,18 @@
           <div class="navlogo">
               <div class="dropdown">
                   <figure class="logo-click">
-                    <a href="#">
+                    <a href="http://localhost:8080/profile">
                       <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                       <figcaption class="l-text"> Min sida </figcaption>
                     </a>
                   </figure>
                 <div class="dropdown-content">
-                  <a href="#">Min profil </a>
-                  <a href="#">Mina artiklar </a>
-                  <a href="#">Min statistik </a>
-                  <a href="#">Mina köpförfrågningar </a>
-                  <a href="#">Inställningar </a>
+                  <a href="http://localhost:8080/profile/#profile">Min profil </a>
+                  <a href="http://localhost:8080/profile/#purchases">Mina köp </a>
+                  <a href="http://localhost:8080/profile/#products">Mina artiklar </a>
+                  <a href="http://localhost:8080/profile/#statistics">Min statistik </a>
+                  <a href="http://localhost:8080/profile/#requests">Mina köpförfrågningar </a>
+                  <a href="http://localhost:8080/profile/#settings">Inställningar </a>
                 </div>
               </div>
               <a href="#" v-if="this.isActive">

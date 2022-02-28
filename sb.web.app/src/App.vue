@@ -2,37 +2,29 @@
   <MinSida />
   <div id="app">
     <Navbar :screenWidth="screenWidth"/>
-    <Banner :companyName="companyName"/>
-    <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="screenWidth" name="shop" />
-    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="screenWidth" name="events" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="screenWidth" name="members" />
-    <Footer />
-  </div>
-  <div>
-    <Navbar />
-    <Parent />
+      <div className='body'>
+        <router-view></router-view>
+      </div>
+      <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
+    <Footer className='footer'/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import MinSida from '@/components/MinSida.vue'
 import Navbar from './components/Navbar.vue'
-import Banner from '@/components/ContentBanner.vue'
 import Footer from '@/components/Footer.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import SaldoCard from '@/components/SaldoCard.vue'
 import Parent from '@/components/userstory4/parent.vue'
+import SaldoCard from '@/components/SaldoCard.vue'
+
+// import Home from '@/components/Home.vue'
+//import Parent from '@/components/userstory4/parent.vue'
 
 export default {
   name: 'Home',
   components: {
-    MinSida,
-    Banner,
-    Footer,
     Navbar,
-    ContentCard,
+    Footer,
     SaldoCard
   },
   mounted () {
@@ -83,3 +75,12 @@ export default {
   }
 }
 </script>
+
+<!-- Add 'scoped' attribute to limit CSS to this component only -->
+<style scoped>
+
+.footer {
+  bottom: 0;
+}
+
+</style>
