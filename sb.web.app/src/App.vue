@@ -8,6 +8,7 @@
     <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="screenWidth" name="events" />
     <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="screenWidth" name="members" />
     <Footer />
+  </div>
   <div>
     <Navbar />
     <Parent />
@@ -22,7 +23,6 @@ import Banner from '@/components/ContentBanner.vue'
 import Footer from '@/components/Footer.vue'
 import ContentCard from '@/components/ContentCard.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
-import Navbar from '@/components/Navbar.vue'
 import Parent from '@/components/userstory4/parent.vue'
 
 export default {
@@ -78,8 +78,8 @@ export default {
 
       companyName: 'Florist AB'
     }
-    Navbar,
-    Parent
+    // Navbar,
+    // Parent
   }
 }
 </script>
