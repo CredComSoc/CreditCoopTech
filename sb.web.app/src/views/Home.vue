@@ -1,18 +1,16 @@
 <template>
-  <div class="home">
+  <div class="home"> 
     <Banner :companyName="companyName"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="screenWidth" name="shop" />
-    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="screenWidth" name="events" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="screenWidth" name="members" />
-  
+    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="scrWidth" name="shop" />
+    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" :screenWidth="scrWidth" name="events" />
+    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="scrWidth" name="members" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+
 import Banner from '@/components/ContentBanner.vue'
 import ContentCard from '@/components/ContentCard.vue'
-import Parent from '@/components/userstory4/parent.vue'
 
 export default {
   name: 'Home',
@@ -20,15 +18,7 @@ export default {
     Banner,
     ContentCard
   },
-  mounted () {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize () {
-      this.screenWidth = window.innerWidth
-    }
-  },
+  props: ['scrWidth'],
   data () {
     return {
       shop: [{ id: 0, img_path: 'Event_11.png', title: '1Hyr lokal', desc: 'Kontorsplatser', theme: 'regular' },
@@ -57,14 +47,9 @@ export default {
         { id: 4, img_path: 'Ellipse_6.png', title: 'Hemfixare', theme: 'ellipse' },
         { id: 5, img_path: 'Ellipse_6.png', title: 'Hemfixare', theme: 'ellipse' }],
 
-      saldo: 2000,
-
-      screenWidth: 0,
-
       companyName: 'Florist AB'
     }
-    // Navbar,
-    // Parent
   }
 }
+
 </script>
