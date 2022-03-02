@@ -4,18 +4,23 @@
         <h4> {{ description }} </h4>
         <ContentList :data=data :screenWidth=screenWidth :name=name />
         <div :class="[`outer-btn`, theme_btn]">
+            <NestedAtagInDiv />
             <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
         </div>
     </div>
 </template>
 
 <script>
+// Component that represent the outer container that hold ContentList
+
 import ContentList from './ContentList.vue'
+import NestedAtagInDiv from './NestedAtagInDiv.vue'
 
 export default {
   name: 'ContentCard',
   components: {
-    ContentList
+    ContentList,
+    NestedAtagInDiv
   },
   props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth', 'name']
 }
@@ -85,6 +90,7 @@ export default {
         width: 100%;
         height:100%;
         border-radius: 10px;
+        cursor: pointer;
     }
 
     .yellow-btn {
@@ -115,8 +121,8 @@ export default {
         }
     }
 
-     @media (max-width: 929px) {
+    /* @media (max-width: 929px) {
         .card-themed {
         }
-    }
+    } */
 </style>

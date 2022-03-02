@@ -1,81 +1,78 @@
 <template>
+  <!-- <MinSida /> -->
   <div id="app">
     <Navbar :screenWidth="screenWidth"/>
-    <!--<Banner :companyName="companyName"/>-->
+      <div className='body'>
+        <router-view></router-view>
+      </div>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <InputField/>
-    <!--<ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" @updateData="newData" :screenWidth="screenWidth" name="shop" />
-    <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" @updateData="newData" :screenWidth="screenWidth" name="events" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" @updateData="newData" :data="members" :screenWidth="screenWidth" name="members" />
-    <Footer />-->
+    <Footer id="footer" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import InputField from './components/InputField.vue'
 import Navbar from './components/Navbar.vue'
-// import Banner from '@/components/ContentBanner.vue'
-// import Footer from '@/components/Footer.vue'
-// import ContentCard from '@/components/ContentCard.vue'
+import Footer from '@/components/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+ 
+// import Home from '@/components/Home.vue'
+//import Parent from '@/components/userstory4/parent.vue'
 
 export default {
   name: 'Home',
   components: {
-    InputField,
-    // Banner,
-    // Footer,
     Navbar,
-    // ContentCard,
+    Footer,
     SaldoCard
   },
-  mounted () {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize () {
-      this.screenWidth = window.innerWidth
-    },
-    newData (dataPar) {
-      this.data.dataPar.n = dataPar.arr
+  setup () {
+    const route = useRoute()
+    const router = useRouter()
+    
+    onMounted(async () => {
+      await router.isReady()
+      console.log(route.path)
+      onResize()
+      window.addEventListener('resize', onResize)
+    })
+
+    const screenWidth = ref(0)
+    const onResize = () => {
+      const scrWidth = window.innerWidth
+      screenWidth.value = scrWidth
+      if (route.path === 'Home' || route.path === '/') {
+        router.push({
+          name: 'Home',
+          params: { scrWidth }
+        })
+      }
+    }
+
+    return {
+      screenWidth
     }
   },
   data () {
     return {
-      shop: [{ id: 0, img_path: 'Event_11.png', title: '1Hyr lokal', desc: 'Kontorsplatser', theme: 'regular' },
-        { id: 1, img_path: 'Event_21.png', title: '2Frukostpaketet', desc: 'Färdiga mackor', theme: 'regular' },
-        { id: 2, img_path: 'Event_6.png', title: '3Fönsterputs', desc: 'Vi putsar era fönster 8h', theme: 'regular' },
-        { id: 3, img_path: 'Event_13.png', title: '4Konsulttjänst', desc: 'Affärsutveckling', theme: 'regular' },
-        { id: 4, img_path: 'Event_7.png', title: '5Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 5, img_path: 'Event_7.png', title: '6Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 6, img_path: 'Event_7.png', title: '7Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 7, img_path: 'Event_7.png', title: '8Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 8, img_path: 'Event_7.png', title: '9Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 9, img_path: 'Event_7.png', title: '10Kontosstäd', desc: 'Städ 4h', theme: 'regular' },
-        { id: 10, img_path: 'Event_7.png', title: '11Kontosstäd', desc: 'Städ 4h', theme: 'regular' }],
-
-      events: [{ id: 0, img_path: 'Event_2.png', title: 'Barterbowling', desc: '18/12-21', theme: 'regular' },
-        { id: 1, img_path: 'Event_15.png', title: 'Yoga med SB', desc: '12/11-21', theme: 'regular' },
-        { id: 2, img_path: 'Event_3.png', title: 'Barter-fika', desc: '12/12-21', theme: 'regular' },
-        { id: 3, img_path: 'Event_9.png', title: 'Svensk Barter 5-kamp', desc: '5/11-21', theme: 'regular' },
-        { id: 5, img_path: 'Event_10.png', title: 'Systuga', desc: '1/12-21', theme: 'regular' },
-        { id: 6, img_path: 'Event_10.png', title: 'Systuga', desc: '1/12-21', theme: 'regular' }],
-
-      members: [{ id: 0, img_path: 'Ellipse_1.png', title: 'Fotografgänget', theme: 'ellipse' },
-        { id: 1, img_path: 'Ellipse_2.png', title: 'Cafegruppen', theme: 'ellipse' },
-        { id: 2, img_path: 'Ellipse_3.png', title: 'Hemstäd Linköping', theme: 'ellipse' },
-        { id: 3, img_path: 'Ellipse_8.png', title: 'IT-support', theme: 'ellipse' },
-        { id: 4, img_path: 'Ellipse_6.png', title: 'Hemfixare', theme: 'ellipse' },
-        { id: 5, img_path: 'Ellipse_6.png', title: 'Hemfixare', theme: 'ellipse' }],
-
-      saldo: 2000,
-
-      screenWidth: 0,
-
-      companyName: 'Florist AB'
+      saldo: 2000
     }
   }
 }
 </script>
+
+<!-- Add 'scoped' attribute to limit CSS to this component only -->
+<style scoped>
+html, body {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+.body {  
+  min-height: calc(100vh - 70px);
+}
+
+</style>

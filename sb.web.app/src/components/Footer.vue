@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <div class="footer">
+        <div class="footer-container">
             <p class="side-items" id="e"><a href="#">Om oss</a></p>
             <p id="middle-item"><a href="#">Om Barter</a></p>
             <p class="side-items"><a href="#">Kontakta oss</a></p>
@@ -8,14 +8,21 @@
     </footer>
 </template>
 
+<script>
+// Component that represent the footer of the website
+
+export default {
+  name: 'Footer'
+}
+</script>
+
 <style scoped>
     footer {
         margin: 0 auto;
-        position: relative;
         width: 60%;
     }
 
-    .footer{
+    .footer-container{
         margin-top: 100px;
         display: flex;
         justify-content: space-evenly;

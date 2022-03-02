@@ -10,6 +10,8 @@
 <script>
 /* Component that contains the welcome message in the banner */
 export default {
+  // component that represent the container for the welcome text
+
   name: 'WelcomeMessage',
   components: {
   },
@@ -52,7 +54,7 @@ export default {
         font-size: 4vw;
         margin-left:50px;
         margin-right:50px;
-        letter-spacing: 7px;
+        letter-spacing: 5px;
     }
 
     #inspired-text{

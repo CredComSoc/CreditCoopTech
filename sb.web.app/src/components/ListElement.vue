@@ -1,28 +1,35 @@
 <template>
-    <div>
-    <div v-if="elementInfo.theme === `regular`" class="element-container">
-        <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
-        <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
-        <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
-    </div>
-    <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
+    <a href="#">
+      <span v-if="elementInfo.theme === `regular`" class="element-container">
+          <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
+          <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
+          <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
+      </span>
+    </a>
+      <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
         <figure>
             <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
         </figure>
         <div class="chin-card">
-            <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
+          <NestedAtagInDiv />
+          <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
         </div>
-    </div>
-    </div>
+      </div>
 </template>
 
 <script>
+// Component that represent a list element in ContentList, can have rectangle (regular) theme or ellipse theme
+
+import NestedAtagInDiv from './NestedAtagInDiv.vue'
+
 export default {
   name: 'ListElement',
   components: {
+    NestedAtagInDiv
   },
   props: ['elementInfo'],
   methods: {
+    // Set limits for number of chars depending on Upper or lower case for the description in list element
     formatText (str) {
       if (str.length > 35) {
         if (str.substring(0, 35).replace(/[a-z]/g, '').length > 20) {
@@ -42,6 +49,7 @@ export default {
         }
       }
     },
+    // Set limits for number of chars depending on Upper or lower case for the title in list element
     formatTitle (str) {
       if (str.length > 20) {
         if (str.substring(0, 20).replace(/[a-z]/g, '').length > 10) {
@@ -88,7 +96,17 @@ export default {
         border-radius: 50%;
     }
 
+    a {
+      text-decoration: none;
+      color: black;
+    }
+
+    a:hover {
+      color: black;
+    }
+
     .element-container {
+        display: block;
         width: 160px;
         height: 160px;
         background: #FFFFFF;
