@@ -20,6 +20,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/add_article',
+    name: 'New_Article',
+    component: NewArticle
   }
 
 ]

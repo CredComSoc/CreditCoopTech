@@ -48,7 +48,7 @@ export default {
           name: 'Home',
           params: { scrWidth }
         })
-      }
+      } 
     }
 
     return {
@@ -72,7 +72,7 @@ html, body {
 }
 
 .body {  
-  min-height: calc(100vh - 70px);
+  min-height: calc(90vh - 70px);
 }
 
 </style>
