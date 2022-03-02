@@ -25,12 +25,12 @@
               <span class="mob-cap"> Events </span>
             </a>
           </div>
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
               <a href="#">
-                <figure class="logo-click">
-                    <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                    <figcaption class="l-text"> Lägg upp </figcaption>
+                <figure id="add-logo" :class="[`logo-click`,`add`]">
+                    <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                    <figcaption :class="[`l-text`,`add`]"> Lägg upp </figcaption>
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
@@ -64,12 +64,12 @@
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div id="click-dropdown" class="dropdown">
               <a href="#">
-                <figure id="bell-logo" class="logo-click">
-                    <img id="notice" src="../assets/navbar_logos/notice.png"/>
-                    <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                <figure id="bell-logo" :class="[`logo-click`,`notice`]">
+                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
+                    <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Notiser </figcaption>
                 </figure>
               </a>
@@ -125,15 +125,15 @@
               <span class="mob-cap"> Varukorg </span>
             </a>
           </div>
-          <div class="navlogo">
-              <div class="dropdown">
+          <div @mouseover="displayDropdown" class="navlogo">
+              <div id="profile-dropdown" class="dropdown">
                 <a href="http://localhost:8080/profile">
-                  <figure class="logo-click">
+                  <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
                 </a>
-                <div class="dropdown-content">
+                <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <a href="http://localhost:8080/profile/#profile">Min profil </a>
                   <a href="http://localhost:8080/profile/#purchases">Mina köp </a>
                   <a href="http://localhost:8080/profile/#products">Mina artiklar </a>
@@ -165,7 +165,8 @@ export default {
   data () {
     return {
       desc: true, // is in desktop mode of navbar
-      isActive: false // if mobile version has its button pressed
+      isActive: false, // if mobile version has its button pressed
+      dropdownActive: false // if a dropdown menu is active
     }
   },
   name: 'Navbar',
@@ -191,6 +192,38 @@ export default {
   mounted () {
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
+    window.addEventListener('click', (e) => {
+      const profileDrop = document.getElementById('profile-content')
+      profileDrop.style.display = 'none'
+      const profileLogo = document.getElementById('profile-logo')
+      profileLogo.classList.remove('active-dropdown')
+
+      if (this.dropdownActive) {
+        let dropdown = document.getElementById('upload-dropdown')
+        dropdown.style.display = 'none'
+        dropdown = document.getElementById('bell-dropdown')
+        dropdown.style.display = 'none'
+        this.dropdownActive = false
+        let logo = document.getElementById('add-logo')
+        logo.classList.remove('active-dropdown')
+        logo = document.getElementById('bell-logo')
+        logo.classList.remove('active-dropdown')
+      } else {
+        if ([...e.target.classList].includes('add')) {
+          const dropdown = document.getElementById('upload-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('add-logo')
+          logo.classList.add('active-dropdown')
+        } else if ([...e.target.classList].includes('notice')) {
+          const dropdown = document.getElementById('bell-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('bell-logo')
+          logo.classList.add('active-dropdown')
+        }
+      }
+    })
   },
   methods: {
     // open mobile version of navbar
@@ -210,7 +243,7 @@ export default {
         const box = document.getElementById('header-box')
         const height = window.innerHeight
 
-        if (height < 730) {
+        if (height < 550) {
           box.style.height = '' + height + 'px'
         } else {
           box.style.height = 'fit-content'
@@ -221,6 +254,18 @@ export default {
         const box = document.getElementById('header-box')
         box.style.height = 'fit-content'
         box.style.overflow = 'inherit'
+      }
+    },
+    highlightLogo () {
+      if (!this.isActive) {
+        const logo = document.getElementById('profile-logo')
+        logo.classList.add('active-dropdown')
+      }
+    },
+    displayDropdown () {
+      if (!this.dropdownActive && !this.isActive) {
+        const content = document.getElementById('profile-content')
+        content.style.display = 'block'
       }
     }
   }
@@ -384,6 +429,11 @@ figcaption {
   top: 50%;
 }
 
+.active-dropdown {
+  border-bottom: 2px solid black;
+  transform: scale(1.05);
+}
+
 .logo-click:hover {
     border-bottom: 2px solid black;
     transform: scale(1.05);
@@ -394,8 +444,9 @@ figcaption {
 }
 
 @media (min-width: 1100px) {
-  .dropdown:hover .dropdown-content {
-    display: block;  border-top: 1px
+  #profile-dropdown:hover .dropdown-content {
+    display: block;  
+    border-top: 1px;
   }
 }
 
