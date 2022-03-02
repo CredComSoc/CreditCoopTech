@@ -27,14 +27,14 @@
           </div>
           <div class="navlogo">
             <div class="dropdown">
-              <a href="#">
+              <a href="">
                 <figure class="logo-click">
                     <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Lägg upp </figcaption>
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="#">Ny artikel </a>
+                  <a href="http://localhost:8080/new_article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>

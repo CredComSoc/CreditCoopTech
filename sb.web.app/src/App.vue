@@ -48,7 +48,7 @@ export default {
           name: 'Home',
           params: { scrWidth }
         })
-      }
+      } 
     }
 
     return {

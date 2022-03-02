@@ -55,6 +55,10 @@ export default {
      float: right;
   }
 
+  a:hover{
+      color: black;
+  }
+
  a#shop{
      float:left;
  }
@@ -85,10 +89,12 @@ export default {
 
  #title{
      height: 30px;
+     font-size: 13px;
  }
 
  select{
      color:rgb(190, 190, 190);
+     font-size: 13px;
  }
 
  .input{
@@ -103,6 +109,7 @@ export default {
      border-radius: 4px;
      border: 2px solid rgb(190, 190, 190);
      font-family: 'Ubuntu';
+     font-size: 13px;
  }
 
  input {
@@ -129,4 +136,56 @@ export default {
  textarea:focus::placeholder {
   color: transparent;
  }
+
+ @media (max-width: 900px) {
+      #input-field{
+          width: 60%;
+      }
+   }
+
+   @media (max-width: 800px) {
+      #input-field{
+          width: 70%;
+      }
+   }
+
+   @media (max-width: 700px) {
+      #input-field{
+          width: 80%;
+      }
+   }
+
+   @media (max-width: 600px) {
+      #input-field{
+          width: 90%;
+      }
+   }
+
+   @media (max-width: 500px) {
+      #input-field{
+          width: 100%;
+      }
+   }
+
+   @media (max-width: 400px) {
+
+       input {
+         width: 250px;
+        }
+       #description{
+           width: 250px;
+           font-size: 10px;
+       }
+       #title{
+           font-size: 10px;
+       }
+       select{
+         width: 250px;
+         font-size: 10px;
+       }
+
+      .input{
+         margin-left: 20px;
+       }
+   }
 </style>
