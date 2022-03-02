@@ -1,22 +1,22 @@
 <template>
-    <div id=outline>
-      <div class="arrow" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
+    <div id=saldo-card-outline>
+      <div class="arrow-button" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
         <img src="../assets/sidecard_logos/right-arrow.png"/>
       </div>
-      <div class="arrow" id="left-arrow-button" type=button v-if="!isActive">
+      <div class="arrow-button" id="left-arrow-button" type=button v-if="!isActive">
          <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
       </div>
-      <div id='card' v-if="isActive">
+      <div id='saldo-card' v-if="isActive">
           <figure id='top-log'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
               <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
             </a>
           </figure>
-          <div class="line"></div>
+          <div id="line"></div>
           <figure>
             <a href="#">
-              <img src="../assets/sidecard_logos/KundDonts.png" id="kund"/>
+              <img src="../assets/sidecard_logos/KundDots.png" id="kund"/>
               <figcaption class="l-text" id='bottom-logo-text'> Kundtjänst </figcaption>
             </a>
           </figure>
@@ -40,7 +40,7 @@ export default {
   watch: {
     screenWidth: {
       handler: function (scrWidth) {
-        const outline = document.getElementById('outline')
+        const outline = document.getElementById('saldo-card-outline')
         if (scrWidth < 1212 && !this.opend) {
           this.isActive = false
           outline.style.width = '25px'
@@ -60,7 +60,7 @@ export default {
       if (scrWidth.x >= 1212) {
         this.opend = false
       }
-      const outline = document.getElementById('outline')
+      const outline = document.getElementById('saldo-card-outline')
       outline.style.width = '25px'
       outline.style.height = '25px'
     },
@@ -69,7 +69,7 @@ export default {
       if (scrWidth.x < 1212) {
         this.opend = true
       }
-      const outline = document.getElementById('outline')
+      const outline = document.getElementById('saldo-card-outline')
       outline.style.width = '150px'
       outline.style.height = '100px'
     }
@@ -85,7 +85,7 @@ export default {
     box-sizing: border-box;
   }
 
-  #outline{
+  #saldo-card-outline{
     width: 150px;
     height: 100px;
     top:50%;
@@ -95,7 +95,7 @@ export default {
     z-index: 2;
   }
 
-  #card{
+  #saldo-card{
       background-color: #F9C661;
       width: 85%;
       height: 100%;
@@ -127,7 +127,7 @@ export default {
         position: relative;
     }
 
-    .line{
+    #line{
         border-top: 1px solid #000000;
         width:100%;
     }
@@ -136,7 +136,7 @@ export default {
       width: 100%;
     }
 
-    .arrow{
+    .arrow-button{
         background-color: #F9C661;
         position:fixed;
         border-radius: 10px 0px 0px 10px;

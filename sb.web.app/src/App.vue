@@ -1,30 +1,33 @@
 <template>
   <div id="app">
     <Navbar :screenWidth="screenWidth"/>
-    <Banner :companyName="companyName"/>
+    <!--<Banner :companyName="companyName"/>-->
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" @updateData="newData" :screenWidth="screenWidth" name="shop" />
+    <InputField/>
+    <!--<ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" @updateData="newData" :screenWidth="screenWidth" name="shop" />
     <ContentCard title="EVENTS" description="Bläddra bland senast upplagda event." theme="blue-card" theme_btn="blue-btn" btn_txt="Till events" :data="events" @updateData="newData" :screenWidth="screenWidth" name="events" />
     <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" @updateData="newData" :data="members" :screenWidth="screenWidth" name="members" />
-    <Footer />
+    <Footer />-->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import InputField from './components/InputField.vue'
 import Navbar from './components/Navbar.vue'
-import Banner from '@/components/ContentBanner.vue'
-import Footer from '@/components/Footer.vue'
-import ContentCard from '@/components/ContentCard.vue'
+// import Banner from '@/components/ContentBanner.vue'
+// import Footer from '@/components/Footer.vue'
+// import ContentCard from '@/components/ContentCard.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 
 export default {
   name: 'Home',
   components: {
-    Banner,
-    Footer,
+    InputField,
+    // Banner,
+    // Footer,
     Navbar,
-    ContentCard,
+    // ContentCard,
     SaldoCard
   },
   mounted () {
