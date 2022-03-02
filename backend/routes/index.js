@@ -65,7 +65,7 @@ router.post("/login", (req, res) => {
     })
   })
 })
-
+/** */
 // Om användaren registerar sig,
 // params = användarnamn, hashat lösenord
 // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
