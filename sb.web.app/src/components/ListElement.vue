@@ -101,6 +101,10 @@ export default {
       color: black;
     }
 
+    a:hover {
+      color: black;
+    }
+
     .element-container {
         display: block;
         width: 160px;

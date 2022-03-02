@@ -5,8 +5,8 @@
       <div className='body'>
         <router-view></router-view>
       </div>
-      <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <Footer />
+    <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
+    <Footer id="footer" />
   </div>
 </template>
 
@@ -65,4 +65,14 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
+html, body {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+.body {  
+  min-height: calc(100vh - 70px);
+}
+
 </style>

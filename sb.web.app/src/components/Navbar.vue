@@ -4,35 +4,35 @@
       <nav>
         <div class="left-logos" v-if="this.desc">
             <div class="navlogo">
-              <figure class="logo-click">
-                <a href="http://localhost:8080/shop">
+              <a href="http://localhost:8080/shop">
+                <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
                   <figcaption class="l-text">Shop</figcaption>
-                </a>
-              </figure>
+                </figure>
+              </a>
               <a href="#" v-if="this.isActive">
                 <span class="mob-cap"> Shop </span>
               </a>
             </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="http://localhost:8080/events">
-                <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
-                <figcaption class="l-text"> Events </figcaption>
-              </a>
-            </figure>
+            <a href="http://localhost:8080/events">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
+                  <figcaption class="l-text"> Events </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Events </span>
             </a>
           </div>
           <div class="navlogo">
             <div class="dropdown">
-              <figure class="logo-click">
-                <a href="#">
-                  <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                  <figcaption class="l-text"> Lägg upp </figcaption>
-                </a>
-              </figure>
+              <a href="#">
+                <figure class="logo-click">
+                    <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Lägg upp </figcaption>
+                </figure>
+              </a>
               <div id="upload-dropdown" class="dropdown-content">
                   <a href="#">Ny artikel </a>
                   <a href="#">Nytt event </a>
@@ -43,12 +43,12 @@
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="http://localhost:8080/members">
-                <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Medlemmar </figcaption>
-              </a>
-            </figure>
+            <a href="http://localhost:8080/members">
+              <figure class="logo-click">              
+                  <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Medlemmar </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Medlemmar </span>
             </a>
@@ -66,13 +66,13 @@
         <div class="right-logos" v-if="this.desc">
           <div class="navlogo">
             <div id="click-dropdown" class="dropdown">
-              <figure id="bell-logo" class="logo-click">
-                <a href="#">
-                  <img id="notice" src="../assets/navbar_logos/notice.png"/>
-                  <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                  <figcaption class="l-text"> Notiser </figcaption>
-                </a>
-              </figure>
+              <a href="#">
+                <figure id="bell-logo" class="logo-click">
+                    <img id="notice" src="../assets/navbar_logos/notice.png"/>
+                    <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Notiser </figcaption>
+                </figure>
+              </a>
               <div id="bell-dropdown" class="dropdown-content">
                 <div id="new-notice-list">
                   <a href="#">
@@ -104,35 +104,35 @@
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="#">
-                <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Meddelanden </figcaption>
-              </a>
-            </figure>
+            <a href="#">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Meddelanden </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="#">
-                <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Varukorg </figcaption>
-              </a>
-            </figure>
+            <a href="#">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Varukorg </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Varukorg </span>
             </a>
           </div>
           <div class="navlogo">
               <div class="dropdown">
+                <a href="http://localhost:8080/profile">
                   <figure class="logo-click">
-                    <a href="http://localhost:8080/profile">
-                      <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
-                      <figcaption class="l-text"> Min sida </figcaption>
-                    </a>
+                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
+                </a>
                 <div class="dropdown-content">
                   <a href="http://localhost:8080/profile/#profile">Min profil </a>
                   <a href="http://localhost:8080/profile/#purchases">Mina köp </a>
