@@ -1,17 +1,19 @@
 <template>
 <div id="input-field">
-    <a href="#" id="shop"><img class="arrow" src="../assets/link_arrow/left_arrow_link.png"/>Shop</a>
-    <img src="../assets/link_arrow/one_three.png" id="one-three"/>
+    <div id="header">
+        <a href="#" id="shop"><img class="arrow" src="../assets/link_arrow/left_arrow_link.png"/>Shop</a>
+        <img src="../assets/link_arrow/one_three.png" id="one-three"/>
+    </div>
     <div id="title-field" class="input">
-        <lable for="title"><strong>Rubrik</strong></lable><br>
+        <lable for="title" class="input-title">Rubrik</lable><br>
         <input type="text" placeholder="Vad ska din artikel heta?" id="title" name="title"><br><br>
     </div>
     <div class="input">
-        <lable for="description"><strong>Beskriving</strong></lable><br>
+        <lable for="description" class="input-title">Beskriving</lable><br>
         <textarea placeholder="Beskriv vad som ingår i din artikel" id="description" name="description"/><br><br>
     </div>
     <div class="input">
-        <lable for="artical-type"><strong>Typ av artikel</strong></lable><br>
+        <lable for="artical-type" class="input-title">Typ av artikel</lable><br>
         <select id="artical-type" name="artical-type" @click="colorDropDown">
             <option value="" disabled selected hidden>Är din artikel en produkt eller tjänst?</option>
             <option value="product" >Produkt</option>
@@ -19,7 +21,7 @@
         </select><br><br>
     </div>
     <div class="input">
-        <lable for="category"><strong>Kategori</strong></lable><br>
+        <lable class="input-title" for="category">Kategori</lable><br>
         <select id="category" name="category" @click="colorDropDown">
             <option value="" disabled selected hidden>Vilken av Kategorierna nedan tillhör din produkt?</option>
             <option value="product" >Produkt</option>
@@ -44,11 +46,18 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
  #input-field{
      margin: 0 auto;
      margin-top: 30px;
      width:50%;
      font-family: 'Ubuntu';
+   }
+
+   .input-title{
+       font-size: 24px;
+       font-family: 'Ubuntu', sans-serif;
+       font-weight: 700;
    }
 
  a{
@@ -80,7 +89,7 @@ export default {
  }
 
  select{
-     width: 328px;
+     width: 420px;
      height: 35px;
      margin-top:10px;
      border-radius: 4px;
@@ -91,6 +100,7 @@ export default {
  #title{
      height: 30px;
      font-size: 13px;
+     width: 420px;
  }
 
  select{
@@ -101,11 +111,12 @@ export default {
 
  .input{
      margin-left: 80px;
+     margin-top: 15px;
  }
 
  #description{
      height: 100px;
-     width: 318px;
+     width: 420px;
      resize: none;
      margin-top:10px;
      border-radius: 4px;
@@ -138,19 +149,6 @@ export default {
  textarea:focus::placeholder {
   color: transparent;
  }
-
-  @media (max-width: 1600px) {
-      #input-field{
-          width: 800px;
-      }
-  }
-
- @media (max-width: 900px) {
-      #input-field{
-          width: 60%;
-      }
-   }
-
    @media (max-width: 800px) {
       #input-field{
           width: 70%;
