@@ -28,13 +28,17 @@
             <option value="service">Tjänst</option>
         </select><br><br>
     </div>
-     <a href="#">Nästa<img class="arrow" src="../assets/link_arrow/Right_arrow_link.png"/></a>
+     <NewArticleFooter ButtonText="Nästa"/>
      
 </div>
 </template>
 
 <script>
+import NewArticleFooter from '@/components/NewArticleFooter.vue'
 export default {
+  components: {
+    NewArticleFooter
+  },
   methods: {
     colorDropDown (id) {
       const selcetOption = document.getElementById(id.target.id)
@@ -59,7 +63,6 @@ export default {
        font-family: 'Ubuntu', sans-serif;
        font-weight: 700;
    }
-
  a{
      color: black;
      float: right;
@@ -149,25 +152,72 @@ export default {
  textarea:focus::placeholder {
   color: transparent;
  }
-   @media (max-width: 800px) {
+
+ @media (min-width: 1500px) {
+      #input-field{
+          width: 900px;
+      }
+  }
+
+  @media (max-width: 1350px) {
+      #input-field{
+          width: 60%;
+      }
+  }
+
+  @media (max-width: 1150px) {
       #input-field{
           width: 70%;
       }
-   }
+  }
 
-   @media (max-width: 700px) {
+ @media (max-width: 900px) {
       #input-field{
           width: 80%;
       }
-   }
-
-   @media (max-width: 600px) {
+ }
+   @media (max-width: 750px) {
       #input-field{
           width: 90%;
       }
    }
 
-   @media (max-width: 500px) {
+   @media (max-width: 700px) {
+      input {
+         width: 350px;
+        }
+
+        #title{
+            width: 350px;
+        }
+       #description{
+           width: 350px;
+       }
+       select{
+         width: 350px;
+       }
+   }
+
+   @media (max-width: 620px) {
+
+        input {
+         width: 300px;
+        }
+
+        #title{
+            width: 300px;
+            font-size: 12px;
+        }
+       #description{
+           width: 300px;
+           font-size: 12px;
+       }
+       select{
+         width: 300px;
+         font-size: 12px;
+       }
+   }
+   @media (max-width: 540px) {
       #input-field{
           width: 100%;
       }
@@ -184,6 +234,7 @@ export default {
        }
        #title{
            font-size: 10px;
+           width: 250px;
        }
        select{
          width: 250px;
