@@ -25,16 +25,16 @@
               <span class="mob-cap"> Events </span>
             </a>
           </div>
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
-              <a href="">
-                <figure class="logo-click">
-                    <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                    <figcaption class="l-text"> Lägg upp </figcaption>
+              <a href="#">
+                <figure id="add-logo" :class="[`logo-click`,`add`]">
+                    <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                    <figcaption :class="[`l-text`,`add`]"> Lägg upp </figcaption>
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="http://localhost:8080/new_article">Ny artikel </a>
+                  <a href="http://localhost:8080/add_article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>
@@ -64,20 +64,20 @@
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div id="click-dropdown" class="dropdown">
               <a href="#">
-                <figure id="bell-logo" class="logo-click">
-                    <img id="notice" src="../assets/navbar_logos/notice.png"/>
-                    <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                    <figcaption class="l-text"> Notiser </figcaption>
+                <figure id="bell-logo" :class="[`logo-click`,`notice`]">
+                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
+                    <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                    <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
                 </figure>
               </a>
               <div id="bell-dropdown" class="dropdown-content">
                 <div id="new-notice-list">
                   <a href="#">
-                    <div>
-                      <p class="notice-title">Nya</p>
+                    <p class="notice-title">Nya</p>
+                    <div id="new-list-content">
                       <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                       <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
                     </div>
@@ -91,8 +91,8 @@
                 </div>
                 <div id="previous-notice-list">
                   <a href="#">
-                    <div>
-                      <p class="notice-title">Tidigare</p>
+                    <p class="notice-title">Tidigare</p>
+                    <div id="prev-list-content">
                       <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
                     </div>
                   </a>
@@ -125,15 +125,15 @@
               <span class="mob-cap"> Varukorg </span>
             </a>
           </div>
-          <div class="navlogo">
-              <div class="dropdown">
+          <div @mouseover="displayDropdown" class="navlogo">
+              <div id="profile-dropdown" class="dropdown">
                 <a href="http://localhost:8080/profile">
-                  <figure class="logo-click">
+                  <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
                 </a>
-                <div class="dropdown-content">
+                <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <a href="http://localhost:8080/profile/#profile">Min profil </a>
                   <a href="http://localhost:8080/profile/#purchases">Mina köp </a>
                   <a href="http://localhost:8080/profile/#products">Mina artiklar </a>
@@ -165,7 +165,8 @@ export default {
   data () {
     return {
       desc: true, // is in desktop mode of navbar
-      isActive: false // if mobile version has its button pressed
+      isActive: false, // if mobile version has its button pressed
+      dropdownActive: false // if a dropdown menu is active
     }
   },
   name: 'Navbar',
@@ -191,6 +192,38 @@ export default {
   mounted () {
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
+    window.addEventListener('click', (e) => {
+      const profileDrop = document.getElementById('profile-content')
+      profileDrop.style.display = 'none'
+      const profileLogo = document.getElementById('profile-logo')
+      profileLogo.classList.remove('active-dropdown')
+
+      if (this.dropdownActive) {
+        let dropdown = document.getElementById('upload-dropdown')
+        dropdown.style.display = 'none'
+        dropdown = document.getElementById('bell-dropdown')
+        dropdown.style.display = 'none'
+        this.dropdownActive = false
+        let logo = document.getElementById('add-logo')
+        logo.classList.remove('active-dropdown')
+        logo = document.getElementById('bell-logo')
+        logo.classList.remove('active-dropdown')
+      } else {
+        if ([...e.target.classList].includes('add')) {
+          const dropdown = document.getElementById('upload-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('add-logo')
+          logo.classList.add('active-dropdown')
+        } else if ([...e.target.classList].includes('notice')) {
+          const dropdown = document.getElementById('bell-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('bell-logo')
+          logo.classList.add('active-dropdown')
+        }
+      }
+    })
   },
   methods: {
     // open mobile version of navbar
@@ -210,7 +243,7 @@ export default {
         const box = document.getElementById('header-box')
         const height = window.innerHeight
 
-        if (height < 730) {
+        if (height < 550) {
           box.style.height = '' + height + 'px'
         } else {
           box.style.height = 'fit-content'
@@ -221,6 +254,18 @@ export default {
         const box = document.getElementById('header-box')
         box.style.height = 'fit-content'
         box.style.overflow = 'inherit'
+      }
+    },
+    highlightLogo () {
+      if (!this.isActive) {
+        const logo = document.getElementById('profile-logo')
+        logo.classList.add('active-dropdown')
+      }
+    },
+    displayDropdown () {
+      if (!this.dropdownActive && !this.isActive) {
+        const content = document.getElementById('profile-content')
+        content.style.display = 'block'
       }
     }
   }
@@ -284,7 +329,7 @@ a:hover {
   font-family: 'Roboto';
   font-weight: 300;
   font-style: normal;
-  font-size: 10px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -332,12 +377,12 @@ figcaption {
   display: inline-block;
 }
 
-.dropdown-content a {
+.dropdown-content a, #prev-list-content p, #new-list-content p {
   color:black;
   text-decoration: none;
   font-family: Roboto;
   font-weight: 300;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
 }
 
@@ -375,13 +420,18 @@ figcaption {
 
 .notice-title {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
 .notice-img {
   float: right;
   top: 50%;
+}
+
+.active-dropdown {
+  border-bottom: 2px solid black;
+  transform: scale(1.05);
 }
 
 .logo-click:hover {
@@ -394,8 +444,9 @@ figcaption {
 }
 
 @media (min-width: 1100px) {
-  .dropdown:hover .dropdown-content {
-    display: block;  border-top: 1px
+  #profile-dropdown:hover .dropdown-content {
+    display: block;  
+    border-top: 1px;
   }
 }
 

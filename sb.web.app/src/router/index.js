@@ -22,7 +22,7 @@ const routes = [
     component: Profile
   },
   {
-    path: '/new_article',
+    path: '/add_article',
     name: 'New_Article',
     component: NewArticle
   }
