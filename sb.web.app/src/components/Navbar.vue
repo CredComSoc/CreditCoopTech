@@ -4,37 +4,37 @@
       <nav>
         <div class="left-logos" v-if="this.desc">
             <div class="navlogo">
-              <figure class="logo-click">
-                <a href="http://localhost:8080/shop">
+              <a href="http://localhost:8080/shop">
+                <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
                   <figcaption class="l-text">Shop</figcaption>
-                </a>
-              </figure>
+                </figure>
+              </a>
               <a href="#" v-if="this.isActive">
                 <span class="mob-cap"> Shop </span>
               </a>
             </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="http://localhost:8080/events">
-                <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
-                <figcaption class="l-text"> Events </figcaption>
-              </a>
-            </figure>
+            <a href="http://localhost:8080/events">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
+                  <figcaption class="l-text"> Events </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Events </span>
             </a>
           </div>
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
-              <figure class="logo-click">
-                <a href="#">
-                  <img src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                  <figcaption class="l-text"> Lägg upp </figcaption>
-                </a>
-              </figure>
+              <a href="#">
+                <figure id="add-logo" :class="[`logo-click`,`add`]">
+                    <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                    <figcaption :class="[`l-text`,`add`]"> Lägg upp </figcaption>
+                </figure>
+              </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="#">Ny artikel </a>
+                  <a href="http://localhost:8080/add_article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>
@@ -43,12 +43,12 @@
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="http://localhost:8080/members">
-                <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Medlemmar </figcaption>
-              </a>
-            </figure>
+            <a href="http://localhost:8080/members">
+              <figure class="logo-click">              
+                  <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Medlemmar </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Medlemmar </span>
             </a>
@@ -64,15 +64,15 @@
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <div id="click-dropdown" class="dropdown">
-              <figure id="bell-logo" class="logo-click">
-                <a href="#">
-                  <img id="notice" src="../assets/navbar_logos/notice.png"/>
-                  <img id="bell" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                  <figcaption class="l-text"> Notiser </figcaption>
-                </a>
-              </figure>
+              <a href="#">
+                <figure id="bell-logo" :class="[`logo-click`,`notice`]">
+                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
+                    <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Notiser </figcaption>
+                </figure>
+              </a>
               <div id="bell-dropdown" class="dropdown-content">
                 <div id="new-notice-list">
                   <a href="#">
@@ -104,36 +104,36 @@
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="#">
-                <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Meddelanden </figcaption>
-              </a>
-            </figure>
+            <a href="#">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Meddelanden </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
             </a>
           </div>
           <div class="navlogo">
-            <figure class="logo-click">
-              <a href="#">
-                <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
-                <figcaption class="l-text"> Varukorg </figcaption>
-              </a>
-            </figure>
+            <a href="#">
+              <figure class="logo-click">
+                  <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Varukorg </figcaption>
+              </figure>
+            </a>
             <a href="#" v-if="this.isActive">
               <span class="mob-cap"> Varukorg </span>
             </a>
           </div>
-          <div class="navlogo">
-              <div class="dropdown">
-                  <figure class="logo-click">
-                    <a href="http://localhost:8080/profile">
-                      <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
-                      <figcaption class="l-text"> Min sida </figcaption>
-                    </a>
+          <div @mouseover="displayDropdown" class="navlogo">
+              <div id="profile-dropdown" class="dropdown">
+                <a href="http://localhost:8080/profile">
+                  <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
+                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                    <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
-                <div class="dropdown-content">
+                </a>
+                <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <a href="http://localhost:8080/profile/#profile">Min profil </a>
                   <a href="http://localhost:8080/profile/#purchases">Mina köp </a>
                   <a href="http://localhost:8080/profile/#products">Mina artiklar </a>
@@ -165,7 +165,8 @@ export default {
   data () {
     return {
       desc: true, // is in desktop mode of navbar
-      isActive: false // if mobile version has its button pressed
+      isActive: false, // if mobile version has its button pressed
+      dropdownActive: false // if a dropdown menu is active
     }
   },
   name: 'Navbar',
@@ -191,6 +192,38 @@ export default {
   mounted () {
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
+    window.addEventListener('click', (e) => {
+      const profileDrop = document.getElementById('profile-content')
+      profileDrop.style.display = 'none'
+      const profileLogo = document.getElementById('profile-logo')
+      profileLogo.classList.remove('active-dropdown')
+
+      if (this.dropdownActive) {
+        let dropdown = document.getElementById('upload-dropdown')
+        dropdown.style.display = 'none'
+        dropdown = document.getElementById('bell-dropdown')
+        dropdown.style.display = 'none'
+        this.dropdownActive = false
+        let logo = document.getElementById('add-logo')
+        logo.classList.remove('active-dropdown')
+        logo = document.getElementById('bell-logo')
+        logo.classList.remove('active-dropdown')
+      } else {
+        if ([...e.target.classList].includes('add')) {
+          const dropdown = document.getElementById('upload-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('add-logo')
+          logo.classList.add('active-dropdown')
+        } else if ([...e.target.classList].includes('notice')) {
+          const dropdown = document.getElementById('bell-dropdown')
+          dropdown.style.display = 'block'
+          this.dropdownActive = true
+          const logo = document.getElementById('bell-logo')
+          logo.classList.add('active-dropdown')
+        }
+      }
+    })
   },
   methods: {
     // open mobile version of navbar
@@ -210,7 +243,7 @@ export default {
         const box = document.getElementById('header-box')
         const height = window.innerHeight
 
-        if (height < 730) {
+        if (height < 550) {
           box.style.height = '' + height + 'px'
         } else {
           box.style.height = 'fit-content'
@@ -221,6 +254,18 @@ export default {
         const box = document.getElementById('header-box')
         box.style.height = 'fit-content'
         box.style.overflow = 'inherit'
+      }
+    },
+    highlightLogo () {
+      if (!this.isActive) {
+        const logo = document.getElementById('profile-logo')
+        logo.classList.add('active-dropdown')
+      }
+    },
+    displayDropdown () {
+      if (!this.dropdownActive && !this.isActive) {
+        const content = document.getElementById('profile-content')
+        content.style.display = 'block'
       }
     }
   }
@@ -384,6 +429,11 @@ figcaption {
   top: 50%;
 }
 
+.active-dropdown {
+  border-bottom: 2px solid black;
+  transform: scale(1.05);
+}
+
 .logo-click:hover {
     border-bottom: 2px solid black;
     transform: scale(1.05);
@@ -394,8 +444,9 @@ figcaption {
 }
 
 @media (min-width: 1100px) {
-  .dropdown:hover .dropdown-content {
-    display: block;  border-top: 1px
+  #profile-dropdown:hover .dropdown-content {
+    display: block;  
+    border-top: 1px;
   }
 }
 

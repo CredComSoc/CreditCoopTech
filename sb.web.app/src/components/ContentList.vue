@@ -25,17 +25,7 @@ export default {
     // when screen width resizes check how many items is gonna be shown in list
     screenWidth: {
       handler: function (scrWidth) {
-        if (scrWidth > 1212) {
-          this.endIndex = 5
-        } else if (scrWidth <= 1212 && scrWidth > 900) {
-          this.endIndex = 4
-        } else if (scrWidth <= 900 && scrWidth > 650) {
-          this.endIndex = 3
-        } else if (scrWidth < 650 && scrWidth > 350) {
-          this.endIndex = 2
-        } else if (scrWidth <= 350) {
-          this.endIndex = 1
-        }
+        this.setItems(scrWidth)
       }
     }
   },
@@ -46,6 +36,8 @@ export default {
     }
   },
   mounted () {
+    this.setItems(this.screenWidth)
+
     // const list = document.getElementById(this.name)
     // list.classList.add('animate__animated')
     // list.addEventListener('animationend', () => {
@@ -54,6 +46,20 @@ export default {
     // })
   },
   methods: {
+    // Set the number of items in list, depending on screen width
+    setItems (scrWidth) {
+      if (scrWidth > 1212) {
+        this.endIndex = 5
+      } else if (scrWidth <= 1212 && scrWidth > 900) {
+        this.endIndex = 4
+      } else if (scrWidth <= 900 && scrWidth > 650) {
+        this.endIndex = 3
+      } else if (scrWidth < 650 && scrWidth > 350) {
+        this.endIndex = 2
+      } else if (scrWidth <= 350) {
+        this.endIndex = 1
+      }
+    },
     // rotate items in list to left number of endIndex times, the rotated items gets placed last in list
     rotateLeft () {
       // const list = document.getElementById(this.name)

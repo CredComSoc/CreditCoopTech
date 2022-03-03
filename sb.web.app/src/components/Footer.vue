@@ -19,7 +19,6 @@ export default {
 <style scoped>
     footer {
         margin: 0 auto;
-        position: relative;
         width: 60%;
     }
 

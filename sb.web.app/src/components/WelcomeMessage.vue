@@ -8,6 +8,7 @@
 </template>
 
 <script>
+/* Component that contains the welcome message in the banner */
 export default {
   // component that represent the container for the welcome text
 
