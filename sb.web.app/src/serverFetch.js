@@ -2,6 +2,7 @@ import * as JsSHA from 'jssha'
 import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
+const CC_NODE_URL = '155.4.159.231/localhost/cc-node'
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -83,7 +84,7 @@ export async function logout (sessionID) {
 }
 
 export async function myTransactions (ccUser, ccAuth) {
-  const allTransactionPromise = fetchNoCors('155.4.159.231/localhost/cc-node/transaction', {
+  const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction', {
     method: 'GET',
     headers: {
       'cc-user': ccUser,
@@ -106,7 +107,7 @@ export async function myTransactions (ccUser, ccAuth) {
 }
 
 export async function transaction (ccUser, ccAuth, id) {
-  const transactionPromise = fetchNoCors('155.4.159.231/localhost/cc-node/transaction/' + id + '/full', {
+  const transactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/' + id + '/full', {
     method: 'GET',
     headers: {
       'cc-user': ccUser,
@@ -127,3 +128,50 @@ export async function transaction (ccUser, ccAuth, id) {
     })
   return transactionPromise
 }
+
+export async function profile (ccUser, ccAuth) {
+  const profilePromise = fetch('http://localhost:3000/profile', {
+    method: 'GET',
+    headers: {
+      'cc-user': ccUser,
+      'cc-auth': ccAuth,
+      'Content-Type': 'application/json'
+    }
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return profilePromise
+}
+
+/*
+export async function credit (ccUser, ccAuth) {
+  const creditPromise = fetchNoCors(CC_NODE_URL + 'http://localhost:3000/credit', {
+    method: 'GET',
+    headers: {
+      'cc-user': ccUser,
+      'cc-auth': ccAuth,
+      'Content-Type': 'application/json'
+    }
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return creditPromise
+} */

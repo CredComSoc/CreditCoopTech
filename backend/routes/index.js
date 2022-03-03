@@ -17,6 +17,33 @@ router.get("/", (req, res) => {
   res.status(200).send("Hello There ;)")
 })
 
+// Authenticate user before making a request to cc-node
+// cause cc-node doesn't authenticate?
+// also returns a username for the cc-node request
+router.get("/authenticate", (req, res) => {
+  let myquery = { sessionID: req.params.sessionID}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+
+      } 
+      else if (result != null) {
+        res.status(200).send({userID : res.userID, sessionID: res.sessionID})
+  
+      }
+      else {
+        //If we dont find a result
+        res.sendStatus(500)
+        db.close();
+
+      }
+    })
+  })
+}) 
+
 // Om användaren loggar in,
 // params = användarnamn, hashat lösenord
 // kolla om användarnamn finns, om det finns, kolla om hashat lösenord matchar
@@ -97,7 +124,30 @@ router.post("/register", (req, res) => {
         else {
           //skapa användarobjekt
           let id = uuidv4();
-          let newUser = {userID: username, password: pw, email: mail, sessionID: null, min_limit: min, max_limit: max, is_active: active, is_admin: admin, posts: []}
+          let newUser = {
+            userID: username, 
+            password: pw, 
+            email: mail, 
+            sessionID: id, 
+            is_active: active, 
+            min_limit: min,
+            max_limit: max,
+            admin: no, 
+            posts: {},
+            pendingPosts: {},
+            events: {},
+            profile: {
+              website: "",
+              accountname: "",
+              description: "",
+              adress: "",
+              city: "",
+              contact: {mail: "", phone: ""},
+            },
+            messages: {},
+            notifications: {}
+          }
+
           dbo.collection('users').insertOne(newUser, function(err, result) {
             if (err) {throw err}
             else {
@@ -115,46 +165,74 @@ router.post("/register", (req, res) => {
 // ta bort session ID, returna status
 // returnarar status (ok)
 router.patch("/logout", (req, res) => {
-    let id = req.body.sessionID;
-    let myquery = { sessionID: id}
-  
-    MongoClient.connect(url, (err, db) => {
-      let dbo = db.db("tvitter");
-      dbo.collection("users").findOne(myquery, function(err, result) {
-        if (err) {
-          res.sendStatus(500)
-        } 
-        else if (result != null) {
-          let sessionIDvalue = uuidv4();
-          let newSessionID = { $set: {sessionID: sessionIDvalue} };
-          dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
-            if (err) {
-              db.close();
-              res.sendStatus(500)
-            }
-            else {
-              db.close()
-              res.sendStatus(200)
-            }
-          });
-  
-        } 
-        else {
-          //If we dont find a result
-          res.status(500).send("nothing found!")
-          db.close();
-        }
-      })
+  let id = req.body.sessionID;
+  let myquery = { sessionID: id}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+      } 
+      else if (result != null) {
+        let sessionIDvalue = uuidv4();
+        let newSessionID = { $set: {sessionID: sessionIDvalue} };
+        dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
+          if (err) {
+            db.close();
+            res.sendStatus(500)
+          }
+          else {
+            db.close()
+            res.sendStatus(200)
+          }
+        });
+
+      } 
+      else {
+        //If we dont find a result
+        res.status(500).send("nothing found!")
+        db.close();
+      }
     })
   })
+})
   
+router.get("/profile", (req, res) => {
+  let myquery = { userID: req.params.acc_id}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        let userData = {
+          "name"        : result.name,
+          "description" : result.description,
+          "adress"      : result.adress,
+          "city"        : result.city,
+          "contact"     : result.contact
+        }
+        res.status(200).send(userData)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The account doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
 
 
 // Routes required by the Credits Common Node
 // https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
 // /filter/{full} is unused?
 
-  
 router.get("/filter/full", (req, res) => { 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -207,7 +285,7 @@ router.get("/filter", (req, res) => {
 })
 
 router.get("/:acc_id", (req, res) => {
-  let myquery = { userID: req.params.acc_id}
+  let myquery = { userID: req.params.acc_id, sessionID : req.params.x}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");

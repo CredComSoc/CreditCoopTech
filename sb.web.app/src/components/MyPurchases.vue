@@ -16,7 +16,7 @@
         <tr v-for="(item, index) in purchases" :key="item" :index="index">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td><img src="städning.png" alt="Generisk Bild"></td>
+          <td><img src="../assets/städning.png" alt="Generisk Bild"></td>
           <td>{{'1'}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td>{{item.entries[0].quant}}</td>
@@ -24,8 +24,7 @@
           <td  className="red">Ladda ner faktura</td>
         </tr>
       </table>
-    </div>
-        <div>
+
       <h1> Väntande köp </h1>
       <p> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       <table>
@@ -41,7 +40,7 @@
         <tr>
           <td>1.</td>
           <td>Städservice AB</td>
-          <td><img src="städning.png" alt="Städservice AB"></td>
+          <td><img src="../assets/städning.png" alt="Städservice AB"></td>
           <td>1</td>
           <td>750</td>
           <td>750</td>
