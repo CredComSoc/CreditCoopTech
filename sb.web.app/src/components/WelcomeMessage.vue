@@ -2,7 +2,7 @@
     <div class="welcome-container">
         <div class="text-container">
             <h1 id="welcome-text">Välkommen {{ companyName }}</h1>
-            <h1 id="inspired-text">Bli inspererad nedan</h1>
+            <h1 id="inspired-text">Bli inspirerad nedan</h1>
         </div>
     </div>
 </template>

@@ -70,14 +70,14 @@
                 <figure id="bell-logo" :class="[`logo-click`,`notice`]">
                     <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
                     <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                    <figcaption class="l-text"> Notiser </figcaption>
+                    <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
                 </figure>
               </a>
               <div id="bell-dropdown" class="dropdown-content">
                 <div id="new-notice-list">
                   <a href="#">
-                    <div>
-                      <p class="notice-title">Nya</p>
+                    <p class="notice-title">Nya</p>
+                    <div id="new-list-content">
                       <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                       <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
                     </div>
@@ -91,8 +91,8 @@
                 </div>
                 <div id="previous-notice-list">
                   <a href="#">
-                    <div>
-                      <p class="notice-title">Tidigare</p>
+                    <p class="notice-title">Tidigare</p>
+                    <div id="prev-list-content">
                       <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
                     </div>
                   </a>
@@ -329,7 +329,7 @@ a:hover {
   font-family: 'Roboto';
   font-weight: 300;
   font-style: normal;
-  font-size: 10px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -377,12 +377,12 @@ figcaption {
   display: inline-block;
 }
 
-.dropdown-content a {
+.dropdown-content a, #prev-list-content p, #new-list-content p {
   color:black;
   text-decoration: none;
   font-family: Roboto;
   font-weight: 300;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
 }
 
@@ -420,7 +420,7 @@ figcaption {
 
 .notice-title {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
