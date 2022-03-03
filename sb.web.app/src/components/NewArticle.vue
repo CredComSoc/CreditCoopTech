@@ -27,6 +27,7 @@
         </select><br><br>
     </div>
      <a href="#">Nästa<img class="arrow" src="../assets/link_arrow/Right_arrow_link.png"/></a>
+     
 </div>
 </template>
 
@@ -83,7 +84,7 @@ export default {
      height: 35px;
      margin-top:10px;
      border-radius: 4px;
-     border: 2px solid rgb(190, 190, 190);
+     border: 2px solid #5c5c5c;
      font-family: 'Ubuntu';
  }
 
@@ -93,8 +94,9 @@ export default {
  }
 
  select{
-     color:rgb(190, 190, 190);
+     color:#5c5c5c;
      font-size: 13px;
+     background-color: white ;
  }
 
  .input{
@@ -107,7 +109,7 @@ export default {
      resize: none;
      margin-top:10px;
      border-radius: 4px;
-     border: 2px solid rgb(190, 190, 190);
+     border: 2px solid #5c5c5c;
      font-family: 'Ubuntu';
      font-size: 13px;
  }
@@ -116,17 +118,17 @@ export default {
      width: 318px;
      margin-top:10px;
      border-radius: 4px;
-     border: 2px solid rgb(190, 190, 190);
+     border: 2px solid #5c5c5c;
  }
 
  input::placeholder{
      padding-left:3px;
-     color: rgb(190, 190, 190);
+     color: #5c5c5c;
  }
 
  textarea::placeholder{
      padding-left:3px;
-     color: rgb(190, 190, 190);
+     color: #5c5c5c;
  }
 
  input:focus::placeholder {
@@ -136,6 +138,12 @@ export default {
  textarea:focus::placeholder {
   color: transparent;
  }
+
+  @media (max-width: 1600px) {
+      #input-field{
+          width: 800px;
+      }
+  }
 
  @media (max-width: 900px) {
       #input-field{
