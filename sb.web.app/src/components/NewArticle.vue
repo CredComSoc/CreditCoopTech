@@ -1,45 +1,29 @@
 <template>
 <div id="input-field">
-    <div id="header">
-        <a href="#" id="shop"><img class="arrow" src="../assets/link_arrow/left_arrow_link.png"/>Shop</a>
-        <img src="../assets/link_arrow/one_three.png" id="one-three"/>
-    </div>
-    <div id="title-field" class="input">
-        <lable for="title" class="input-title">Rubrik</lable><br>
-        <input type="text" placeholder="Vad ska din artikel heta?" id="title" name="title"><br><br>
-    </div>
-    <div class="input">
-        <lable for="description" class="input-title">Beskriving</lable><br>
-        <textarea placeholder="Beskriv vad som ingår i din artikel" id="description" name="description"/><br><br>
-    </div>
-    <div class="input">
-        <lable for="artical-type" class="input-title">Typ av artikel</lable><br>
-        <select id="artical-type" name="artical-type" @click="colorDropDown">
-            <option value="" disabled selected hidden>Är din artikel en produkt eller tjänst?</option>
-            <option value="product" >Produkt</option>
-            <option value="service">Tjänst</option>
-        </select><br><br>
-    </div>
-    <div class="input">
-        <lable class="input-title" for="category">Kategori</lable><br>
-        <select id="category" name="category" @click="colorDropDown">
-            <option value="" disabled selected hidden>Vilken av Kategorierna nedan tillhör din produkt?</option>
-            <option value="product" >Produkt</option>
-            <option value="service">Tjänst</option>
-        </select><br><br>
-    </div>
-     <a href="#">Nästa<img class="arrow" src="../assets/link_arrow/Right_arrow_link.png"/></a>
-     
+  <CreateHeader />
+  <img src="../assets/link_arrow/one_three.png" id="one-three"/>
+  <UserInput type="regular" name="title" label="Rubrik" placeholder="Vad ska din artikel heta?"/>
+  <UserInput type="textarea" name="description" label="Beskrivning" placeholder="Beskriv vad som ingår i din artikel"/>
+  <UserInput type="combobox" name="articale-type" label="Typ av artikel" placeholder="Är din artikel en produkt eller tjänst?" :options="['Produkt', 'Tjänst']" />
+  <!-- <UserInput type="combobox" name="category" label="Kategori" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" :options="['Produkt', 'Tjänst']" /> -->
+  <a href="#">Nästa<img class="arrow" src="../assets/link_arrow/Right_arrow_link.png"/></a>   
 </div>
 </template>
 
 <script>
+import CreateHeader from './CreateArticle/CreateHeader.vue'
+import UserInput from './CreateArticle/UserInput.vue'
+
 export default {
   methods: {
     colorDropDown (id) {
       const selcetOption = document.getElementById(id.target.id)
       selcetOption.style.color = 'black'
     }
+  },
+  components: {
+    CreateHeader,
+    UserInput
   }
 }
 
@@ -54,12 +38,6 @@ export default {
      font-family: 'Ubuntu';
    }
 
-   .input-title{
-       font-size: 24px;
-       font-family: 'Ubuntu', sans-serif;
-       font-weight: 700;
-   }
-
  a{
      color: black;
      float: right;
@@ -69,73 +47,10 @@ export default {
       color: black;
   }
 
- a#shop{
-     float:left;
- }
-
- div#title-field{
-     padding-top: 50px;
- }
-
- img.arrow{
-     width: 12px;
-     margin-left: 2px;
- }
-
- img#one-three{
-     width: 90px;
-     float:right;
-
- }
-
- select{
-     width: 420px;
-     height: 35px;
-     margin-top:10px;
-     border-radius: 4px;
-     border: 2px solid #5c5c5c;
-     font-family: 'Ubuntu';
- }
-
- #title{
-     height: 30px;
-     font-size: 13px;
-     width: 420px;
- }
-
- select{
-     color:#5c5c5c;
-     font-size: 13px;
-     background-color: white ;
- }
-
- .input{
-     margin-left: 80px;
-     margin-top: 15px;
- }
-
- #description{
-     height: 100px;
-     width: 420px;
-     resize: none;
-     margin-top:10px;
-     border-radius: 4px;
-     border: 2px solid #5c5c5c;
-     font-family: 'Ubuntu';
-     font-size: 13px;
- }
-
- input {
-     width: 318px;
-     margin-top:10px;
-     border-radius: 4px;
-     border: 2px solid #5c5c5c;
- }
-
- input::placeholder{
-     padding-left:3px;
-     color: #5c5c5c;
- }
+  img#one-three {
+    width: 90px;
+    float: right;
+  }
 
  textarea::placeholder{
      padding-left:3px;
