@@ -1,31 +1,23 @@
 <template>
-  <b-container fluid>
-    <b-row>
+  <div className="flexbox-container">
+    <div className="title_container flexbox-item">
       <h1 className="title"> MIN SIDA </h1>
-    </b-row>
-    <b-row>
-      <b-col cols="3">
-      </b-col>
-      <b-col cols="6">
-      <div class='topnav' id='myTopnav'>
-        <a href='#profile' @click="activate('profile'); profile=true" :class="{ active: profile }" id='profile'>Min profil</a>
-        <a href='#purchases' @click="activate('purchases'); purchases=true" :class="{ active: purchases }" id='purchases'>Mina köp</a>
-        <a href='#products' @click="activate('products'); products=true" :class="{ active: products }" id='products'>Mina artiklar</a>
-        <a id='statistik'>Min statistik</a>
-        <a href='#requests' @click="activate('requests'); requests=true" :class="{ active: requests }" id='purchasesrequests'>Mina köpförfrågningar</a>
-        <a id='settings'>Inställningar</a>
-      </div>
-       </b-col>
-       <b-col cols="3">
-         </b-col>
-    </b-row>
-    <div>
+    </div>
+    <div className='topnav flexbox-item' id='myTopnav'>
+      <a href='#profile' @click="activate('profile'); profile=true" :class="{ active: profile }" id='profile'>Min profil</a>
+      <a href='#purchases' @click="activate('purchases'); purchases=true" :class="{ active: purchases }" id='purchases'>Mina köp</a>
+      <a href='#products' @click="activate('products'); products=true" :class="{ active: products }" id='products'>Mina artiklar</a>
+      <a id='statistik'>Min statistik</a>
+      <a href='#requests' @click="activate('requests'); requests=true" :class="{ active: requests }" id='purchasesrequests'>Mina köpförfrågningar</a>
+      <a id='settings'>Inställningar</a>
+    </div>
+    <div className="content flexbox-item">
       <MyPurchases v-if="purchases"/>
       <MyProducts v-else-if="products"/>
       <MyRequests v-else-if="requests"/>
       <MyProfile v-else/>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -73,6 +65,20 @@ export default {
   margin:0;
 }
 
+.flexbox-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 1100px;
+}
+
+.flexbox-item {
+  margin: 10px;
+  max-width: 1100px;
+  width: 1100px;
+}
+
 .title {
   margin-top: 4rem;
   margin-bottom: 4rem;
@@ -83,16 +89,14 @@ export default {
 .topnav {
   overflow: hidden;
   display: flex;
-  justify-content: center;
 }
 
 /* Style the links inside the navigation bar */
 .topnav a {
   text-align: center;
-  padding: 14px 16px;
+  padding: 8px 25px 8px 25px;
   text-decoration: none;
   font-size: 15px;
-  display: inline-block;
   color: steelblue;
   border-style: solid;
   border-color: gainsboro;
@@ -102,12 +106,9 @@ export default {
   margin-left: -1px;
   margin-right: -1px;
   border-width: 2px;
-
-}
-
-.topnav a {
   font-size: 1.24rem;
 }
+
 .topnav a.active {
   color: dimgrey;
   border-bottom: none;

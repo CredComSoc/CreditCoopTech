@@ -1,7 +1,7 @@
 <template>
     <div>
-      <h1> Bekräftade köp </h1>
-      <h2> Dina bekräftade köp. </h2>
+      <h1><b> Bekräftade köp </b></h1>
+      <p> Dina bekräftade köp. </p>
       <table>
         <tr>
           <th></th>
@@ -11,6 +11,7 @@
           <th>Pris</th>
           <th>Summa</th>
           <th>Status</th>
+          <th>Faktura</th>
         </tr>
         <tr v-for="(item, index) in purchases" :key="item" :index="index">
           <td>{{index + 1 + '.'}}</td>
@@ -19,13 +20,14 @@
           <td>{{'1'}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{item.state}}</td>
+          <td className="green">{{item.state}}</td>
+          <td  className="red">Ladda ner faktura</td>
         </tr>
       </table>
     </div>
         <div>
       <h1> Väntande köp </h1>
-      <h2> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </h2>
+      <p> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       <table>
         <tr>
           <th></th>
@@ -43,7 +45,7 @@
           <td>1</td>
           <td>750</td>
           <td>750</td>
-          <td>VÄNTANDE</td>
+          <td style="color: silver;">VÄNTANDE</td>
         </tr>
       </table>
     </div>
@@ -82,6 +84,36 @@ table {
   margin-left: auto;
   margin-right: auto;
   border-spacing:50px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+th {
+  padding: 20px;
+  font-weight: normal;
+}
+
+td {
+  padding: 10px 0px 10px 0px;
+}
+
+h1 {
+  padding: 10px 0px 10px 0px;
+  font-size: 1.6rem;
+}
+
+p {
+  padding: 10px 0px 10px 0px;
+  font-size: 1.2rem;
+}
+
+.green {
+  color:green;
+}
+
+.red {
+  color: red;
 }
 
 </style>
