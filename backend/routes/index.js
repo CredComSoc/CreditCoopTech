@@ -106,7 +106,7 @@ router.post("/register", (req, res) => {
             is_active: active, 
             min_limit: min,
             max_limit: max,
-            admin: admin, 
+            is_admin: admin, 
             posts: {},
             pendingPosts: {},
             events: {},
