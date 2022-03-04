@@ -48,12 +48,11 @@ export default {
 
 .input {
   margin-left: 80px;
-  margin-top: 15px;
+  margin-top: 40px;
 }
 
 input {
   width: 318px;
-  margin-top:10px;
   border-radius: 4px;
   border: 2px solid #5c5c5c;
 }
@@ -126,6 +125,27 @@ select {
  /* Style the links inside the navigation bar  */
 .dropdown-content p:hover {
   background-color: #E5F0FD;
+}
+
+@media (max-width: 700px) {
+  .input {
+    width: 350px;
+  }
+}
+
+@media (max-width: 620px) {
+  .input {
+    width: 250px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .input {
+    width: 250px;
+    font-size: 10px;
+    margin-left: 20px;
+  }
 }
 
 </style>
