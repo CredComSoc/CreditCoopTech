@@ -299,7 +299,7 @@ router.get("/creds/:name/:auth", (req, res) => {
       }
       else {
         // If we dont find a result
-        res.status(404).send("The account doesn't exist.")
+        res.status(400).send("The account doesn't exist.")
         db.close();      
       } 
 
