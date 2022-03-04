@@ -17,32 +17,6 @@ router.get("/", (req, res) => {
   res.status(200).send("Hello There ;)")
 })
 
-// Authenticate user before making a request to cc-node
-// cause cc-node doesn't authenticate?
-// also returns a username for the cc-node request
-router.get("/authenticate", (req, res) => {
-  let myquery = { sessionID: req.params.sessionID}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-
-      } 
-      else if (result != null) {
-        res.status(200).send({userID : res.userID, sessionID: res.sessionID})
-  
-      }
-      else {
-        //If we dont find a result
-        res.sendStatus(500)
-        db.close();
-
-      }
-    })
-  })
-}) 
 
 // Om användaren loggar in,
 // params = användarnamn, hashat lösenord
@@ -78,7 +52,7 @@ router.post("/login", (req, res) => {
           }
           else {
             db.close()
-            res.status(200).send({sessionID: sessionIDvalue})
+            res.status(200).send({userID : res.userID, sessionID: sessionIDvalue})
   
           }
         });
@@ -132,7 +106,7 @@ router.post("/register", (req, res) => {
             is_active: active, 
             min_limit: min,
             max_limit: max,
-            admin: no, 
+            admin: admin, 
             posts: {},
             pendingPosts: {},
             events: {},
