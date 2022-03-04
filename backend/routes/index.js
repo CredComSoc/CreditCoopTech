@@ -25,8 +25,48 @@ router.get("/", (req, res) => {
 // om inte finns returnera status, baserat på status skriv felmeddelane. 
 // returnerna en session ID/Token
 
+const multer = require("multer");
+
+const handleError = (err, res) => {
+  res
+    .status(500)
+    .contentType("text/plain")
+    .end("Oops! Something went wrong!");
+};
+
+const upload = multer({
+  dest: "./images"
+});
 
 
+app.post(
+  "/upload",
+  upload.single("file" /* name attribute of <file> element in your form */),
+  (req, res) => {
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, "./uploads/image.png");
+
+    if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+      fs.rename(tempPath, targetPath, err => {
+        if (err) return handleError(err, res);
+
+        res
+          .status(200)
+          .contentType("text/plain")
+          .end("File uploaded!");
+      });
+    } else {
+      fs.unlink(tempPath, err => {
+        if (err) return handleError(err, res);
+
+        res
+          .status(403)
+          .contentType("text/plain")
+          .end("Only .png files are allowed!");
+      });
+    }
+  }
+);
 router.get("/getListings", (req, res) => { 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("Test");
@@ -52,53 +92,48 @@ router.get("/getListings", (req, res) => {
   })
 }) 
 
-// router.post("/login", (req, res) => {
-//   let username = req.body.username;
-//   let pw = req.body.password;
-//   let myquery = { userID: username, password: pw}
+// MongoClient.connect(url, (err, db) => {
+//   let dbo = db.db("tvitter");
+//   dbo.collection("users").findOne(myquery, function(err, result) {
+//     if (err) {
+//       res.sendStatus(500)
 
-//   MongoClient.connect(url, (err, db) => {
-//     let dbo = db.db("tvitter");
-//     dbo.collection("users").findOne(myquery, function(err, result) {
-//       if (err) {
-//         res.sendStatus(500)
+//     } 
+//     else if (result != null) {
+      
+//       //Skapar sessionID
+//       let sessionIDvalue = uuidv4();
+//       let newSessionID = { $set: {sessionID: sessionIDvalue} };
+      
+//       dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
+//         if (err) {
+//           db.close();
+//           res.sendStatus(500)
 
-//       } 
-//       else if (result != null) {
-        
-//         //Skapar sessionID
-//         let sessionIDvalue = uuidv4();
-//         let newSessionID = { $set: {sessionID: sessionIDvalue} };
-        
-//         dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
-//           if (err) {
-//             db.close();
-//             res.sendStatus(500)
- 
-//           }
-//           else {
-//             db.close()
-//             res.status(200).send({sessionID: sessionIDvalue})
-  
-//           }
-//         });
-//       } 
-//       else {
-//         //If we dont find a result
-//         res.sendStatus(500)
-//         db.close();
+//         }
+//         else {
+//           db.close()
+//           res.status(200).send({sessionID: sessionIDvalue})
 
-//       }
-//     })
+//         }
+//       });
+//     } 
+//     else {
+//       //If we dont find a result
+//       res.sendStatus(500)
+//       db.close();
+
+//     }
 //   })
 // })
-// /** */
-// // Om användaren registerar sig,
-// // params = användarnamn, hashat lösenord
-// // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
-// // användare.
-// // returnear status (ok)
-// // LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
+
+/** */
+// Om användaren registerar sig,
+// params = användarnamn, hashat lösenord
+// kolla om användarnamn finns, om det finns returna fel, annnars lägg till
+// användare.
+// returnear status (ok)
+// LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
 // router.post("/register", (req, res) => {
 
 //     let username = req.body.username;

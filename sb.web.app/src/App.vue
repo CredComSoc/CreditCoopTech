@@ -7,6 +7,7 @@
       </div>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
     <Footer id="footer" />
+    <Form />
   </div>
 </template>
 
@@ -17,6 +18,8 @@ import Footer from '@/components/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
+
+import Form from './components/userstory4/test/form.vue'
  
 // import Home from '@/components/Home.vue'
 //import Parent from '@/components/userstory4/parent.vue'
@@ -24,6 +27,7 @@ import { onMounted, ref } from 'vue'
 export default {
   name: 'Home',
   components: {
+    Form,
     Navbar,
     Footer,
     SaldoCard
