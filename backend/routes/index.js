@@ -52,7 +52,7 @@ router.post("/login", (req, res) => {
           }
           else {
             db.close()
-            res.status(200).send({userID : res.userID, sessionID: sessionIDvalue})
+            res.status(200).send({userID : result.userID, sessionID: sessionIDvalue})
   
           }
         });
