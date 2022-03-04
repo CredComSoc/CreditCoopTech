@@ -5,7 +5,7 @@
   <UserInput type="regular" name="title" label="Rubrik" placeholder="Vad ska din artikel heta?"/>
   <UserInput type="textarea" name="description" label="Beskrivning" placeholder="Beskriv vad som ingår i din artikel"/>
   <UserInput type="combobox" name="articale-type" label="Typ av artikel" placeholder="Är din artikel en produkt eller tjänst?" :options="['Produkt', 'Tjänst']" />
-  <!-- <UserInput type="combobox" name="category" label="Kategori" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" :options="['Produkt', 'Tjänst']" /> -->
+  <UserInput type="combobox" name="category" label="Kategori" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" :options="['Hej', 'san']" />
   <NewArticleFooter ButtonText="Nästa"/>
 </div>
 </template>

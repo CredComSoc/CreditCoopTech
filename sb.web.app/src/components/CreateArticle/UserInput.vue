@@ -8,13 +8,14 @@
     <textarea :placeholder="this.placeholder" id="description" :name="this.name"/>
   </div>
   <div class="input" v-if=" this.type === 'combobox'">
-    <lable :for="this.name" class="input-title"> {{ this.label }}</lable><br>
-    <select :id="this.name" :name="this.name" @click="handleSelect">
-      <option value="" disabled selected hidden> {{ this.placeholder }} </option>
-      <!-- <option v-for="option in this.options" :value="option" :key="option">{{ option }}</option> -->
-    </select>
-    <div class="dropdown">
-      <div :id="this.name+'-dropdown'" class="dropdown-content">
+    <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
+    <div :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)">
+      <p :data-placeholder="this.selectedValue" :id="this.name + '-combo-placeholder'"></p>
+      <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
+      <!-- <option value="" disabled selected hidden> {{ this.placeholder }} </option> -->
+    </div>
+    <div class="dropdown-combo">
+      <div :id="this.name+'-dropdown'" class="dropdown-content-combo">
         <p v-for="i in this.options" :key="i"> {{ i }} </p>
       </div>
     </div>    
@@ -26,15 +27,72 @@ export default {
   name: 'UserInput',
   props: ['type', 'name', 'label', 'placeholder', 'options'],
   methods: {
-    handleSelect () {
+    handleSelect (id) {
       const box = document.getElementById(this.name + '-dropdown')
-      box.style.display = 'block'
+      const outerBox = document.getElementById(id)
+      if (box.style.display === 'block') {
+        box.style.display = 'none'
+        outerBox.classList.remove('combobox-active')
+      } else {
+        box.style.display = 'block'
+        outerBox.classList.add('combobox-active')
+      }
+    }
+  },
+  mounted () {
+    this.selectedValue = this.placeholder
+    if (this.type === 'combobox') {
+      document.querySelectorAll('.dropdown-content-combo').forEach((list) => {
+        for (const item of list.children) {
+          item.addEventListener('click', () => {
+            this.selectedValue = item.innerText
+            item.parentNode.style.display = 'none'
+            document.getElementById(this.name + '-combo-placeholder').style.color = 'black'
+            document.getElementById(this.name).classList.remove('combobox-active')
+          })
+        }
+      })
+    }
+  },
+  data () {
+    return { 
+      selectedValue: ''
     }
   }
 }
 </script>
 
 <style>
+
+.combobox {
+  width: 420px;
+  height: 38px;
+  background: white;
+  border: 2px solid #5c5c5c;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+p:empty:not(:focus)::before {
+  content: attr(data-placeholder);
+  margin-top: 5px;
+  margin-left: 2px;
+  font-family: 'Ubuntu';
+  font-size: 13px;
+  color: #acacac;
+}
+
+#combo-arrow {
+  position: absolute;
+  right: 2%;
+  top: 50%;
+}
+
+.combobox-active {
+  border-color: #719ECE;
+  box-shadow: 0 0 10px #719ECE; 
+}
 
 #title-field {
   padding-top: 50px;
@@ -98,13 +156,13 @@ select {
   background-color: white;
 }
 
-.dropdown {
+.dropdown-combo {
   position: relative;
 }
 
-.dropdown-content p{
+.dropdown-content-combo p{
   color:black;
-  font-family: Roboto;
+  font-family: 'Ubuntu';
   font-weight: 300;
   font-size: 12px;
   font-style: normal;
@@ -113,7 +171,7 @@ select {
   border-bottom: 1px solid #CBCACA;
 }
 
-.dropdown-content {
+.dropdown-content-combo {
   display: none;
   position: absolute;
   background-color: #E5E5E5;
@@ -123,7 +181,7 @@ select {
 }
 
  /* Style the links inside the navigation bar  */
-.dropdown-content p:hover {
+.dropdown-content-combo p:hover {
   background-color: #E5F0FD;
 }
 
