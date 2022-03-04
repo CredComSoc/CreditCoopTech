@@ -134,12 +134,12 @@
                   </figure>
                 </a>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <a :href="'http://' + IP + ':8080/#profile'">Min profil </a>
-                  <a :href="'http://' + IP + ':8080/#purchases'">Mina köp </a>
-                  <a :href="'http://' + IP + ':8080/#products'">Mina artiklar </a>
-                  <a :href="'http://' + IP + ':8080/#statistics'">Min statistik </a>
-                  <a :href="'http://' + IP + ':8080/#requests'">Mina köpförfrågningar </a>
-                  <a :href="'http://' + IP + ':8080/#settings'">Inställningar </a>
+                  <a :href="'http://' + IP + ':8080/profile/#profile'">Min profil </a>
+                  <a :href="'http://' + IP + ':8080/profile/#purchases'">Mina köp </a>
+                  <a :href="'http://' + IP + ':8080/profile/#products'">Mina artiklar </a>
+                  <a :href="'http://' + IP + ':8080/profile/#statistics'">Min statistik </a>
+                  <a :href="'http://' + IP + ':8080/profile/#requests'">Mina köpförfrågningar </a>
+                  <a :href="'http://' + IP + ':8080/profile/#settings'">Inställningar </a>
                 </div>
               </div>
               <a href="#" v-if="this.isActive">
