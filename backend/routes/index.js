@@ -284,8 +284,29 @@ router.get("/filter", (req, res) => {
   })
 })
 
+router.get("/creds/:name/:auth", (req, res) => {
+  let myquery = { userID : req.params.name, sessionID : req.params.auth}
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        res.sendStatus(200)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The account doesn't exist.")
+        db.close();      
+      } 
+
+})
+
 router.get("/:acc_id", (req, res) => {
-  let myquery = { userID: req.params.acc_id, sessionID : req.params.x}
+  let myquery = { userID: req.params.acc_id}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
