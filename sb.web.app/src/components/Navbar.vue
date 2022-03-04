@@ -4,7 +4,7 @@
       <nav>
         <div class="left-logos" v-if="this.desc">
             <div class="navlogo">
-              <a href="http://{{ IP }}:8080/shop">
+              <a :href="'http://' + IP + ':8080/shop'">
                 <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
                   <figcaption class="l-text">Shop</figcaption>
@@ -15,7 +15,7 @@
               </a>
             </div>
           <div class="navlogo">
-            <a href="http://{{ IP }}:8080/events">
+            <a :href="'http://' + IP + ':8080/events">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
                   <figcaption class="l-text"> Events </figcaption>
@@ -34,7 +34,7 @@
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="http://{{ IP }}:8080/add_article">Ny artikel </a>
+                  <a :href="'http://' + IP + ':8080/add_article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>
@@ -43,7 +43,7 @@
             </a>
           </div>
           <div class="navlogo">
-            <a href="http://{{ IP }}:8080/members">
+            <a :href="'http://' + IP + ':8080/members">
               <figure class="logo-click">              
                   <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Medlemmar </figcaption>
@@ -127,19 +127,19 @@
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
-                <a href="http://{{ IP }}:8080/profile">
+                <a :href="'http://' + IP + ':8080/profile">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
                 </a>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <a href="http://{{ IP }}:8080/profile/#profile">Min profil </a>
-                  <a href="http://{{ IP }}:8080/profile/#purchases">Mina köp </a>
-                  <a href="http://{{ IP }}:8080/profile/#products">Mina artiklar </a>
-                  <a href="http://{{ IP }}:8080/profile/#statistics">Min statistik </a>
-                  <a href="http://{{ IP }}:8080/profile/#requests">Mina köpförfrågningar </a>
-                  <a href="http://{{ IP }}:8080/profile/#settings">Inställningar </a>
+                  <a :href="'http://' + IP + ':8080/#profile">Min profil </a>
+                  <a :href="'http://' + IP + ':8080/#purchases">Mina köp </a>
+                  <a :href="'http://' + IP + ':8080/#products">Mina artiklar </a>
+                  <a :href="'http://' + IP + ':8080/#statistics">Min statistik </a>
+                  <a :href="'http://' + IP + ':8080/#requests">Mina köpförfrågningar </a>
+                  <a :href="'http://' + IP + ':8080/#settings">Inställningar </a>
                 </div>
               </div>
               <a href="#" v-if="this.isActive">
@@ -161,15 +161,13 @@
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 
-const IP = "155.4.159.231"
-// const IP = "localhost"
-
 export default {
   data () {
     return {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
-      dropdownActive: false // if a dropdown menu is active
+      dropdownActive: false, // if a dropdown menu is active
+      IP: '155.4.159.231'
     }
   },
   name: 'Navbar',
