@@ -23,7 +23,7 @@
           <p> Email: florist@florist.com<br/><br/>Tel: +46 123 456 789 </p>
         </div>
         <div style="align-self: flex-end;">
-          <a> Redigera <img style="width: 25px;" src="../assets/edit.png" alt="shop knapp"/></a>
+          <a href=""> Redigera <img style="width: 25px;" src="../assets/edit.png" alt="Redigera"/></a>
         </div>
       </div>
     </div>
