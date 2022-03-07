@@ -175,3 +175,29 @@ export async function credit (ccUser, ccAuth) {
     })
   return creditPromise
 } */
+
+export async function upload_file(ccUser, ccAuth, file) {
+  // CHECK IF FILE IS AN IMAGE HERE
+
+  const filePromise = fetch('http://localhost:3000/file', {
+    method: 'GET',
+    headers: {
+      'cc-user': ccUser,
+      'cc-auth': ccAuth,
+      'Content-Type': 'application/json'
+    },
+    body : file
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return filePromise
+}

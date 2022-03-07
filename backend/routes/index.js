@@ -14,7 +14,25 @@ app.use(express.urlencoded({ extended: false }));
 
 // Test Route
 router.get("/", (req, res) => {
-  res.status(200).send("Hello There ;)")
+    MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("images").find({}, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+
+      } 
+      else if (result != null) {
+        db.close()
+        res.status(200).send(result)
+      } 
+      else {
+        //If we dont find a result
+        res.sendStatus(500)
+        db.close();
+
+      }
+    })
+  })
 })
 
 
@@ -191,6 +209,32 @@ router.get("/profile", (req, res) => {
           "contact"     : result.contact
         }
         res.status(200).send(userData)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The account doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
+
+router.get("/file", (req, res) => {
+  let id = req.body.sessionID;
+  let myquery = { sessionID: id}
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        let file = req.body
+        console.log(file)
+
+        res.sendStatus(200)
         db.close();
       }
       else {
