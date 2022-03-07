@@ -224,7 +224,8 @@ router.get("/filter/full", (req, res) => {
           	"status"  : user.is_active,
           	"min"     : user.min_limit,
           	"max"     : user.max_limit,
-          	"admin"   : user.is_admin
+          	"admin"   : user.is_admin,
+            "all"     : user
             }
             userArray.push(userData);
           

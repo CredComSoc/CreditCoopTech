@@ -7,7 +7,7 @@
               <a :href="'http://' + IP + ':8080/shop'">
                 <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
-                  <figcaption class="l-text">Shop</figcaption>
+                  <figcaption class="l-text"> Shop </figcaption>
                 </figure>
               </a>
               <a href="#" v-if="this.isActive">
