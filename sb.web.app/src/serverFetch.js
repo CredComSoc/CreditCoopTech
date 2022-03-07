@@ -180,7 +180,7 @@ export async function uploadFile (ccUser, ccAuth, file) {
   // CHECK IF FILE IS AN IMAGE HERE
 
   const filePromise = fetch('http://localhost:3000/file', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'cc-user': ccUser,
       'cc-auth': ccAuth,

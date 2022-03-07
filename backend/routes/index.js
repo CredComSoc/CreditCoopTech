@@ -220,7 +220,7 @@ router.get("/profile", (req, res) => {
   })
 })
 
-router.get("/file", (req, res) => {
+router.post("/file", (req, res) => {
   let id = req.body.sessionID;
   let myquery = { sessionID: id}
   MongoClient.connect(url, (err, db) => {
