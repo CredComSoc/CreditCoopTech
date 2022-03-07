@@ -5,7 +5,8 @@ const {MongoClient} = require('mongodb');
 const { 
     v1: uuidv1,
     v4: uuidv4,
-  } = require('uuid');  
+  } = require('uuid');
+sha1 = require('js-sha1');  
 
 let url = "mongodb://localhost:27017/"
 app.use(express.json());
@@ -233,6 +234,8 @@ router.post("/file", (req, res) => {
       else if (result != null) {
         let file = req.body
         console.log(file)
+        let hash = sha1(file)
+        console.log(hash)
 
         res.sendStatus(200)
         db.close();
