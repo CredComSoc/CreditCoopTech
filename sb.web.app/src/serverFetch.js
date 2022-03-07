@@ -176,7 +176,7 @@ export async function credit (ccUser, ccAuth) {
   return creditPromise
 } */
 
-export async function upload_file(ccUser, ccAuth, file) {
+export async function uploadFile (ccUser, ccAuth, file) {
   // CHECK IF FILE IS AN IMAGE HERE
 
   const filePromise = fetch('http://localhost:3000/file', {
@@ -186,7 +186,7 @@ export async function upload_file(ccUser, ccAuth, file) {
       'cc-auth': ccAuth,
       'Content-Type': 'application/json'
     },
-    body : file
+    body: file
   }, CORS_ANYWHERE)
     .then((res) => {
       // console.log(res.json())
