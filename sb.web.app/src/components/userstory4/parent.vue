@@ -80,7 +80,7 @@ export default {
             shortDesc: 'goda bullar för virtuella pengar', 
             longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
             destination: 'Söderköping', 
-            price: '50 bKr'
+            price: '30 bKr'
           },
           {
             title: 'Peters bullar', 
