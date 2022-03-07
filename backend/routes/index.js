@@ -221,7 +221,7 @@ router.get("/profile", (req, res) => {
 })
 
 router.post("/file", (req, res) => {
-  let id = req.body.sessionID;
+  let id = req.headers.sessionID;
   let myquery = { sessionID: id}
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
