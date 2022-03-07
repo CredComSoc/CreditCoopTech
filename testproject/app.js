@@ -16,10 +16,10 @@ app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 
 // Mongo URI
-const mongoURI = 'mongodb://localhost:27017/Test2';
+const mongoURI = 'mongodb://localhost:27017/Test';
 
 // Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.createConnection(mongoURI, { useUnifiedTopology: true });
 
 // Init gfs
 let gfs;
