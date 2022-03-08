@@ -1,25 +1,21 @@
 <template>
 <div id="input-field">
   <CreateHeader />
-  <img src="../assets/link_arrow/one_three.png" id="one-three"/>
-  <UserInput type="regular" name="title" label="Rubrik" placeholder="Vad ska din artikel heta?"/>
-  <UserInput type="textarea" name="description" label="Beskrivning" placeholder="Beskriv vad som ingår i din artikel"/>
-  <UserInput type="combobox" name="articale-type" label="Typ av artikel" placeholder="Är din artikel en produkt eller tjänst?" :options="['Produkt', 'Tjänst']" />
-  <UserInput type="combobox" name="category" label="Kategori" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" :options="['Hej', 'san']" />
+  <StepOne />
   <NewArticleFooter ButtonText="Nästa"/>
 </div>
 </template>
 
 <script>
 import CreateHeader from './CreateArticle/CreateHeader.vue'
-import UserInput from './CreateArticle/UserInput.vue'
+import StepOne from './CreateArticle/StepOne.vue'
 import NewArticleFooter from '@/components/NewArticleFooter.vue'
 
 export default {
   name: 'NewArticle',
   components: {
     CreateHeader,
-    UserInput,
+    StepOne,
     NewArticleFooter
   }
 }
@@ -50,8 +46,8 @@ export default {
   }
 
  textarea::placeholder{
-     padding-left:3px;
-     color: #5c5c5c;
+    padding-left:3px;
+    color: #5c5c5c;
  }
 
  input:focus::placeholder {
