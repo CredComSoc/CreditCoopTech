@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Shop from '../components/userstory4/parent.vue'
 import Profile from '../components/profile.vue'
 import NewArticle from '../components/NewArticle.vue'
+import NewArticle2 from '../components/NewArticle2.vue'
+import NewArticle3 from '../components/NewArticle3.vue'
 
 const routes = [
   {
@@ -22,10 +24,20 @@ const routes = [
     component: Profile
   },
   {
-    path: '/add_article',
+    path: '/add_article/1',
     name: 'New_Article',
     component: NewArticle
-  }
+  },
+  {
+    path: '/add_article/2',
+    name: 'New_Article_2',
+    component: NewArticle2
+  },
+  {
+    path: '/add_article/3',
+    name: 'New_Article_3',
+    component: NewArticle3
+  }  
 
 ]
 

@@ -1,40 +1,37 @@
 <template>
+<div>
   <div id="title-field" class="input" v-if="this.type === 'regular'">
     <lable :for="this.name" class="input-title"> {{ this.label }} </lable><br>
-    <input type="text" :placeholder="this.placeholder" id="title" :name="this.name">
+    <input type="text" :placeholder="this.placeholder" id="title" class="textbox" :name="this.name">
   </div>
   <div class="input" v-if="this.type === 'textarea'">
     <lable :for="this.name" class="input-title"> {{ this.label }} </lable><br>
-    <textarea :placeholder="this.placeholder" id="description" :name="this.name"/>
+    <textarea :placeholder="this.placeholder" class="textbox" id="description" :name="this.name"/>
   </div>
+  <!--
   <div class="input" v-if=" this.type === 'combobox'">
     <lable :for="this.name" class="input-title"> {{ this.label }}</lable><br>
     <select :id="this.name" :name="this.name" @click="handleSelect">
       <option value="" disabled selected hidden> {{ this.placeholder }} </option>
-      <!-- <option v-for="option in this.options" :value="option" :key="option">{{ option }}</option> -->
+      <option v-for="option in this.options" :value="option" :key="option">{{ option }}</option>
     </select>
     <div class="dropdown">
       <div :id="this.name+'-dropdown'" class="dropdown-content">
         <p v-for="i in this.options" :key="i"> {{ i }} </p>
       </div>
     </div>    
-  </div>
+  </div>-->
+</div>
 </template>
 
 <script>
 export default {
   name: 'UserInput',
-  props: ['type', 'name', 'label', 'placeholder', 'options'],
-  methods: {
-    handleSelect () {
-      const box = document.getElementById(this.name + '-dropdown')
-      box.style.display = 'block'
-    }
-  }
+  props: ['type', 'name', 'label', 'placeholder', 'options']
 }
 </script>
 
-<style>
+<style scoped>
 
 #title-field {
   padding-top: 50px;
@@ -51,12 +48,6 @@ export default {
   margin-top: 40px;
 }
 
-input {
-  width: 318px;
-  border-radius: 4px;
-  border: 2px solid #5c5c5c;
-}
-
 input:focus, #description:focus, select:focus {
   outline: none;     
   border-color: #719ECE;
@@ -71,19 +62,20 @@ input::placeholder, textarea::placeholder {
 
 #title {
   height: 35px;
-  font-size: 13px;
-  width: 420px;
+}
+
+.textbox{
+    width: 420px;
+    font-size: 13px;
+    font-family: 'Ubuntu';
+    border-radius: 4px;
+    border: 2px solid #5c5c5c;
 }
 
 #description{
   height: 100px;
-  width: 420px;
   resize: none;
   margin-top: 10px;
-  border-radius: 4px;
-  font-family: 'Ubuntu';
-  font-size: 13px;
-  border: 2px solid #5c5c5c;
 }
 
 select {
@@ -128,23 +120,26 @@ select {
 }
 
 @media (max-width: 700px) {
-  .input {
+  .textbox {
     width: 350px;
   }
 }
 
 @media (max-width: 620px) {
-  .input {
+  .textbox {
     width: 250px;
     font-size: 12px;
   }
 }
 
 @media (max-width: 400px) {
-  .input {
-    width: 250px;
-    font-size: 10px;
-    margin-left: 20px;
+  .textbox {
+    width: 200px;
+    font-size: 11px;
+  }
+
+  .input{
+    margin-left: 40px;
   }
 }
 

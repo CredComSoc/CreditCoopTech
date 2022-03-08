@@ -1,4 +1,5 @@
 <template>
+  <div>
     <a href="#">
       <span v-if="elementInfo.theme === `regular`" class="element-container">
           <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
@@ -15,6 +16,7 @@
           <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
         </div>
       </div>
+  </div>
 </template>
 
 <script>

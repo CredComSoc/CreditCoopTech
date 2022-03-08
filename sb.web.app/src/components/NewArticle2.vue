@@ -1,13 +1,12 @@
 <template>
 <div id="input-field">
-  <CreateHeader ButtonText="Shop" link="/shop"/>
-  <img src="../assets/link_arrow/one_three.png" id="one-three"/>
-  <UserInput type="regular" name="title" label="Rubrik" placeholder="Vad ska din artikel heta?"/>
-  <UserInput type="textarea" name="description" label="Beskrivning" placeholder="Beskriv vad som ingår i din artikel"/>
-  <UserInput type="combobox" name="articale-type" label="Typ av artikel" placeholder="Är din artikel en produkt eller tjänst?" :options="['Produkt', 'Tjänst']" />
+  <CreateHeader ButtonText="Tillbaka" link="/add_article/2"/>
+  <img src="../assets/link_arrow/two_three.png" id="one-three"/>
+  <UserInput type="regular" name="title" label="Pris" placeholder="Hur mycket kostar din?"/>
   <!-- <UserInput type="combobox" name="category" label="Kategori" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" :options="['Produkt', 'Tjänst']" /> -->
-  <NewArticleFooter ButtonText="Nästa" link="/add_article/2"/>
+  <NewArticleFooter ButtonText="Nästa" link="/add_article/3"/>
 </div>
+
 </template>
 
 <script>
@@ -16,14 +15,14 @@ import UserInput from './CreateArticle/UserInput.vue'
 import NewArticleFooter from './CreateArticle/NewArticleFooter.vue'
 
 export default {
-  name: 'NewArticle',
+  name: 'NewArticle2',
   components: {
     CreateHeader,
     UserInput,
     NewArticleFooter
-  }
-}
+  }  
 
+}
 </script>
 
 <style scoped>
@@ -34,34 +33,10 @@ export default {
      width:1000px;
      font-family: 'Ubuntu';
    }
-
- a{
-     color: black;
-     float: right;
-  }
-
-  a:hover{
-      color: black;
-  }
-
   img#one-three {
     width: 90px;
     float: right;
   }
-
- textarea::placeholder{
-     padding-left:3px;
-     color: #5c5c5c;
- }
-
- input:focus::placeholder {
-  color: transparent;
- }
-
- textarea:focus::placeholder {
-  color: transparent;
- }
-
   @media (max-width: 1350px) {
       #input-field{
           width: 60%;
@@ -90,5 +65,4 @@ export default {
           width: 100%;
       }
    }
-
 </style>
