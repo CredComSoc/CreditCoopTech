@@ -9,6 +9,8 @@ const multer = require('multer');
 const {GridFsStorage} = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
+const {MongoClient} = require('mongodb');
+let url = "mongodb://localhost:27017/"
 
 // Mongo URI
 const mongoURI = 'mongodb://localhost:27017/Test';
@@ -68,8 +70,6 @@ router.get('/', (req, res) => {
     }
   });
 });
-
-
 
 
 // @route POST /upload
@@ -150,19 +150,34 @@ router.delete('/files/:id', (req, res) => {
 
 router.get('/getAllListings', (req, res) => {
     // fetch all metadata about listing from mongoDB
-    console.log("In backend /getAllListings function!")
     let searchword = req.body.searchword
     // KAN BEHÖVA CHECK IFALL SEARCHWORD ÄR TOMT
 
     MongoClient.connect(url, (err, db) => {
         let dbo = db.db("Test")
-        
+        let allListingsArray = []
 
         dbo.collection("Users").find({}).toArray(function (err, users) {
-            console.log("hej")
+
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            users.forEach(user => {
+              user.listings.forEach(listing => {
+                allListingsArray.push(listing)
+              })
+            })
+            res.send({resultArray: allListingsArray})
+            db.close();
             //for loop som matchar sökordet, placerar rätt resultat i initierad array, (om tomt sökord placera alla listings i array)
+          }
         })
+        
     })
+
+    
     
 })
 

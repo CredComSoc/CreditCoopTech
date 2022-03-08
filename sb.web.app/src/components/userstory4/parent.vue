@@ -41,6 +41,7 @@ import Searchfield from '@/components/userstory4/searchfield.vue'
 import Alllistings from '@/components/userstory4/all_listings.vue'
 import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 import Categories from '@/components/userstory4/Categories.vue'
+import serverFetch from '@/serverFetch.js'
 
 export default {
 
@@ -71,6 +72,18 @@ export default {
     closePopup (listingObj) {
       this.popupActive = false
     },
+    backendFunction () {
+      console.log(serverFetch)
+      serverFetch.getAllListings.then(res => {
+        console.log('running useEffect in getFriendRequests')
+        return res
+      })
+        .then(data => {
+          return data
+        })
+    }
+
+    /*
     backendFunction () {
       return {
         allListings: [
@@ -124,7 +137,7 @@ export default {
           }
         ]
       }
-    }
+    }*/
   }
 }
 </script>
