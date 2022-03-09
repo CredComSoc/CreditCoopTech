@@ -10,18 +10,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-input {
-  width: 318px;
-  border-radius: 4px;
-  border: 2px solid #5c5c5c;
+.input-title {
+  font-size: 24px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-#title {
+input {
+  border-radius: 4px;
+  border: 2px solid #5c5c5c;
   height: 35px;
   font-size: 13px;
   width: 420px;
+  font-family: 'Ubuntu';
 }
 
 input:focus {
@@ -34,6 +38,26 @@ input:focus {
 input::placeholder {
   padding-left:3px;
   color: #5c5c5c;
+}
+
+@media (max-width: 700px) {
+  input {
+    width: 350px;
+  }
+}
+
+@media (max-width: 620px) {
+  input {
+    width: 250px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  input {
+    width: 200px;
+    font-size: 11px;
+  }
 }
 
 </style>

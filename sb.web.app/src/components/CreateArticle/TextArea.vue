@@ -1,6 +1,6 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <textarea :placeholder="this.placeholder" id="description" :name="this.name"/>
+  <textarea :placeholder="this.placeholder" :name="this.name"/>
 </template>
 
 <script>
@@ -10,13 +10,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-#description{
+.input-title {
+  font-size: 24px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+textarea {
   height: 100px;
   width: 420px;
   resize: none;
-  margin-top: 10px;
   border-radius: 4px;
   font-family: 'Ubuntu';
   font-size: 13px;
@@ -28,11 +34,31 @@ textarea::placeholder {
   color: #5c5c5c;
 }
 
-#description:focus {
+textarea:focus {
   outline: none;     
   border-color: #719ECE;
   border-style: solid;     
   box-shadow: 0 0 10px #719ECE; 
+}
+
+@media (max-width: 700px) {
+  textarea {
+    width: 350px;
+  }
+}
+
+@media (max-width: 620px) {
+  textarea {
+    width: 250px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  textarea {
+    width: 200px;
+    font-size: 11px;
+  }
 }
 
 </style>

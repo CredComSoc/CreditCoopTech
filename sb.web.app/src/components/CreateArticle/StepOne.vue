@@ -28,16 +28,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 #title-field {
   padding-top: 50px;
-}
-
-.input-title {
-  font-size: 24px;
-  font-family: 'Ubuntu', sans-serif;
-  font-weight: 700;
 }
 
 .input {
@@ -45,24 +39,9 @@ export default {
   margin-top: 40px;
 }
 
-@media (max-width: 700px) {
-  .input {
-    width: 350px;
-  }
-}
-
-@media (max-width: 620px) {
-  .input {
-    width: 250px;
-    font-size: 12px;
-  }
-}
-
 @media (max-width: 400px) {
   .input {
-    width: 250px;
-    font-size: 10px;
-    margin-left: 20px;
+    margin-left: 40px;
   }
 }
 

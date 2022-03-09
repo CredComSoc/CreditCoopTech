@@ -50,7 +50,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.input-title {
+  font-size: 24px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 .combobox {
   width: 420px;
   height: 38px;
@@ -83,7 +91,7 @@ p:empty:not(:focus)::before {
 #combo-arrow {
   position: absolute;
   right: 2%;
-  top: 50%;
+  top: 45%;
 }
 
 .combobox-active, .combobox:focus {
@@ -119,6 +127,32 @@ p:empty:not(:focus)::before {
  /* Style the links inside the navigation bar  */
 .dropdown-content-combo p:hover {
   background-color: #E5F0FD;
+}
+
+@media (max-width: 700px) {
+  .dropdown-content-combo, .combobox {
+    width: 350px;
+  }
+}
+
+@media (max-width: 620px) {
+  .dropdown-content-combo, .combobox {
+    width: 250px;
+  }
+
+  .dropdown-content-combo p, .combobox p {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .dropdown-content-combo, .combobox {
+    width: 200px;
+  }
+
+  .dropdown-content-combo p, .combobox p {
+    font-size: 10px;
+  }
 }
 
 </style>

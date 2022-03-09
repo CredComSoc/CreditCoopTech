@@ -1,22 +1,42 @@
 <template>
 <div id="input-field">
-  <CreateHeader />
-  <StepOne />
-  <NewArticleFooter ButtonText="Nästa"/>
+  <CreateHeader ButtonText="Shop" link="/Shop" :imgURL="this.imgURL" />
+  <StepOne v-if="this.currentStep === 1" />
+  <StepTwo v-if="this.currentStep === 2" />
+  <NewArticleFooter ButtonText="Nästa" @click=changeStep />
 </div>
 </template>
 
 <script>
-import CreateHeader from './CreateArticle/CreateHeader.vue'
-import StepOne from './CreateArticle/StepOne.vue'
-import NewArticleFooter from '@/components/NewArticleFooter.vue'
+import CreateHeader from './CreateHeader.vue'
+import StepOne from './StepOne.vue'
+import StepTwo from './StepTwo.vue'
+import NewArticleFooter from './NewArticleFooter.vue'
 
 export default {
   name: 'NewArticle',
   components: {
     CreateHeader,
     StepOne,
+    StepTwo,
     NewArticleFooter
+  },
+  data () {
+    return {
+      backLink: '/Shop',
+      currentStep: 1,
+      imgURL: 'one_three.png'
+    }
+  },
+  methods: {
+    changeStep () {
+      if (this.currentStep === 1) {
+        this.currentStep = 2
+        this.imgURL = 'two_three.png'
+      } else if (this.currentStep === 2) {
+        this.currentStep = 3
+      }
+    }
   }
 }
 
@@ -38,11 +58,6 @@ export default {
 
   a:hover{
       color: black;
-  }
-
-  img#one-three {
-    width: 90px;
-    float: right;
   }
 
  textarea::placeholder{
