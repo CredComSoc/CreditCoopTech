@@ -64,7 +64,7 @@ export default {
 
   methods: {
     testMethod (newSearchWord) {
-      this.backendFunction()
+      this.backendFunction(newSearchWord)
     },
     togglePopup (listingObj) {
       this.popupActive = true
@@ -73,8 +73,8 @@ export default {
     closePopup (listingObj) {
       this.popupActive = false
     },
-    backendFunction () {
-      this.getAllListings().then(res => {
+    backendFunction (newSearchWord) {
+      this.getAllListings(newSearchWord).then(res => {
         console.log('running useEffect in getFriendRequests')
         return res
       })

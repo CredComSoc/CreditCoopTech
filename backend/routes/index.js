@@ -150,7 +150,53 @@ router.delete('/files/:id', (req, res) => {
 
 router.get('/getAllListings/:searchword', (req, res) => {
     // fetch all metadata about listing from mongoDB
+    let searchword = req.params.searchword.split(' ')
+    console.log(searchword)
+
+    MongoClient.connect(url, (err, db) => {
+        let dbo = db.db("Test")
+        let allListingsArray = []
+
+        dbo.collection("Users").find({}).toArray(function (err, users) {
+
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            users.forEach(user => {
+              user.posts.forEach(listing => {
+                  console.log(listing.title)
+                  console.log(searchword)
+                  //if sats som kollar regex titel
+
+                  for (let i = 0; i < searchword.length; i++) {
+                    if (listing.title.match(new RegExp(searchword[i], "i"))) {
+                        allListingsArray.push(listing)
+                        break;
+                    } 
+                  }
+                  /** 
+                  searchword.forEach(word => {
+                    if (listing.title.match(new RegExp(word, "i"))) {
+                        allListingsArray.push(listing)
+                    } 
+                  })*/
+              })
+            })
+            res.send({allListings: allListingsArray})
+            db.close();
+            //for loop som matchar sökordet, placerar rätt resultat i initierad array, (om tomt sökord placera alla listings i array)
+          }
+        })
+        
+    })
+})
+
+router.get('/getAllListings/', (req, res) => {
+    // fetch all metadata about listing from mongoDB
     let searchword = req.params.searchword
+    console.log(typeof searchword)
     // KAN BEHÖVA CHECK IFALL SEARCHWORD ÄR TOMT
 
     MongoClient.connect(url, (err, db) => {
@@ -165,7 +211,7 @@ router.get('/getAllListings/:searchword', (req, res) => {
           }
           else {
             users.forEach(user => {
-              user.listings.forEach(listing => {
+              user.posts.forEach(listing => {
                 allListingsArray.push(listing)
               })
             })
