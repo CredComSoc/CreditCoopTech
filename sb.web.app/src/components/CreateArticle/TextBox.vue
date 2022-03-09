@@ -1,12 +1,17 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <input type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name">
+  <input ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name">
 </template>
 
 <script>
 export default {
   name: 'TextBox',
-  props: ['id', 'name', 'label', 'placeholder']
+  props: ['id', 'name', 'label', 'placeholder'],
+  methods: {
+    getInput () {
+      return this.$refs.titleVal.value
+    }
+  }
 }
 </script>
 

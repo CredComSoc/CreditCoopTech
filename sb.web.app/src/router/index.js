@@ -24,21 +24,10 @@ const routes = [
     component: Profile
   },
   {
-    path: '/add_article/1',
+    path: '/add_article',
     name: 'New_Article',
     component: NewArticle
-  },
-  {
-    path: '/add_article/2',
-    name: 'StepTwo',
-    component: StepTwo
-  },
-  {
-    path: '/add_article/3',
-    name: 'New_Article_3',
-    component: NewArticle3
-  }  
-
+  } 
 ]
 
 const router = createRouter({

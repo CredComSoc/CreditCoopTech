@@ -1,12 +1,17 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <textarea :placeholder="this.placeholder" :name="this.name"/>
+  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name"/>
 </template>
 
 <script>
 export default {
   name: 'TextArea',
-  props: ['name', 'label', 'placeholder']
+  props: ['name', 'label', 'placeholder'],
+  methods: {
+    getInput () {
+      return this.$refs.descVal.value
+    }
+  }
 }
 </script>
 

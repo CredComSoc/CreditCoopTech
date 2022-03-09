@@ -27,6 +27,9 @@ export default {
         box.style.display = 'block'
         outerBox.classList.add('combobox-active')
       }
+    },
+    getInput () {
+      return this.selectedValue
     }
   },
   mounted () {
@@ -38,6 +41,7 @@ export default {
         const selectedVal = document.getElementById(this.name + '-combo-placeholder')
         selectedVal.innerText = item.innerText
         selectedVal.style.color = 'black'
+        this.selectedValue = item.innerText
         document.getElementById(this.name).classList.remove('combobox-active')
       })
     }

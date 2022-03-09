@@ -17,6 +17,9 @@ export default {
     margin-top: 10px;
     text-decoration: underline;
     cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 
   a:hover{
