@@ -1,6 +1,8 @@
 <template>
-  <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <input type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name">
+  <div>
+    <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
+    <input type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name">
+  </div>
 </template>
 
 <script>

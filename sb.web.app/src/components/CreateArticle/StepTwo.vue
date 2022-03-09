@@ -1,6 +1,6 @@
 <template>
-<div id="input-field" class="input">
-  <TextBox name="title" label="Pris" placeholder="Hur mycket kostar din?"/>
+<div id="title-field" class="input">
+  <TextBox id="title" name="title" label="Pris" placeholder="Hur mycket kostar din?"/>
 </div>
 
 </template>
@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
- #input-field {
+ #title-field {
   padding-top: 50px;
 }
 
