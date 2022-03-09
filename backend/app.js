@@ -1,25 +1,47 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
-const methodOverride = require('method-override');
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
 
-let indexRouter = require('./routes/index')
+const { 
+    v1: uuidv1,
+    v4: uuidv4,
+  } = require('uuid');
+  
 
-const app = express();
+var indexRouter = require('./routes/index');
 
 
-// Middleware
-app.use(bodyParser.json());
-app.use(methodOverride('_method'));
+var app = express();
+const corsMiddleware = require('./cors');
+app.options('*', corsMiddleware);
+app.use(corsMiddleware);
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use('/', indexRouter)
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-const port = 3000;
+app.use('/', indexRouter);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+
+const {MongoClient} = require('mongodb');
+let url = "mongodb://localhost:27017/";
+
+
+function startServer(port) {
+  let server = app.listen(3000, () => {
+    let host = server.address().address
+    let port = server.address().port
+    console.log(`Listening to http://${host}:${port}`)
+   })
+  return(server)
+}
+
+
+ startServer()
+
+ module.exports = startServer;

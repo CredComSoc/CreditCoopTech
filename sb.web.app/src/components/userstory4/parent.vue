@@ -41,7 +41,7 @@ import Searchfield from '@/components/userstory4/searchfield.vue'
 import Alllistings from '@/components/userstory4/all_listings.vue'
 import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 import Categories from '@/components/userstory4/Categories.vue'
-import serverFetch from '@/serverFetch.js'
+import { getAllListings } from './../../serverFetch.js'
 
 export default {
 
@@ -50,7 +50,8 @@ export default {
       searchData: [],
       singleListingData: [],
       popupActive: false,
-      listingObjPopup: Object
+      listingObjPopup: Object,
+      getAllListings
     }
   },
 
@@ -63,7 +64,7 @@ export default {
 
   methods: {
     testMethod (newSearchWord) {
-      this.searchData = this.backendFunction()
+      this.backendFunction()
     },
     togglePopup (listingObj) {
       this.popupActive = true
@@ -73,13 +74,13 @@ export default {
       this.popupActive = false
     },
     backendFunction () {
-      console.log(serverFetch)
-      serverFetch.getAllListings.then(res => {
+      this.getAllListings().then(res => {
         console.log('running useEffect in getFriendRequests')
         return res
       })
         .then(data => {
-          return data
+          console.log(data)
+          this.searchData = data
         })
     }
 

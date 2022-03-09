@@ -148,9 +148,9 @@ router.delete('/files/:id', (req, res) => {
 });
 
 
-router.get('/getAllListings', (req, res) => {
+router.get('/getAllListings/:searchword', (req, res) => {
     // fetch all metadata about listing from mongoDB
-    let searchword = req.body.searchword
+    let searchword = req.params.searchword
     // KAN BEHÖVA CHECK IFALL SEARCHWORD ÄR TOMT
 
     MongoClient.connect(url, (err, db) => {
@@ -169,16 +169,13 @@ router.get('/getAllListings', (req, res) => {
                 allListingsArray.push(listing)
               })
             })
-            res.send({resultArray: allListingsArray})
+            res.send({allListings: allListingsArray})
             db.close();
             //for loop som matchar sökordet, placerar rätt resultat i initierad array, (om tomt sökord placera alla listings i array)
           }
         })
         
     })
-
-    
-    
 })
 
 

@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "ajax": "0.0.4",
-    "babel-node": "0.0.1-security",
+    "babel-node": "^0.0.1-security",
     "constantinople": "^4.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",

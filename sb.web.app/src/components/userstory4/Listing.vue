@@ -2,7 +2,7 @@
   <div>
     <!-- <ListingPopup v-if="true"/> -->
     <div class="element-container" @click="togglePopup">
-        <img src="http://localhost:3000/image/4dbe2a2b6f85b6169c925295b5134002.png">
+        <img :src='getImgURL()' />
         <!-- <img src="./images/bulles2.png" alt="Coffea"> -->
         <h4 class="element-title"> {{ listingObj.title }} </h4>
         <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
@@ -21,6 +21,9 @@ export default {
   methods: {
     togglePopup () {
       this.$emit('togglePopupEvent', this.listingObj)
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.listingObj.img
     }
   }
 }
