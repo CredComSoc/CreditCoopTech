@@ -63,6 +63,9 @@ export default {
       } else if (this.currentStep === 1) {
         this.backLink = '/Shop'
       }
+    },
+    changeHeader () {
+      
     }
   }
 }
