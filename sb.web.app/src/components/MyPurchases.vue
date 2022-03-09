@@ -1,5 +1,5 @@
-<template>
-    <div>
+<template >
+    <div >
       <h1><b> Bekräftade köp </b></h1>
       <p> Dina bekräftade köp. </p>
       <table>
@@ -51,28 +51,20 @@
 </template>
 
 <script>
-import { myTransactions, transaction } from '../serverFetch'
+import { getTransactions, transaction } from '../serverFetch'
 
 export default {
 
   data () {
-    const purchases = []
-    myTransactions('TestAdmin', '123')
-      .then(res => {
-        Object.keys(res).forEach(function (key) {
-          // console.log(res[key])
-          transaction('TestAdmin', '123', res[key])
-            .then(res => {
-              purchases.push(res)
-            })
-        })
-        console.log(purchases)
-      })
-
     return {
-      purchases: purchases
-      // purchases: [['Städservice AB', 'bild', '1', '500', '500', 'BEKRÄFTAD', 'Ladda ner faktura'], ['Flytt AB', 'bild', '1', '5700', '5700', 'BEKRÄFTAD', 'Ladda ner faktura'], ['Snickeri AB', 'bild', '3', '500', '1500', 'BEKRÄFTAD', 'Ladda ner faktura']]
+      purchases: []
     }
+  },
+  mounted: function () {
+    getTransactions('TestAdmin', '123')
+      .then(res => {
+        this.purchases = res
+      })
   }
 }
 </script>

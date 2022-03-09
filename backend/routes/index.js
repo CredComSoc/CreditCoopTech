@@ -15,25 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Test Route
 router.get("/", (req, res) => {
-    MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("images").find({}, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-
-      } 
-      else if (result != null) {
-        db.close()
-        res.status(200).send(result)
-      } 
-      else {
-        //If we dont find a result
-        res.sendStatus(500)
-        db.close();
-
-      }
-    })
-  })
+   res.status(200).send("Yo")
 })
 
 
@@ -221,38 +203,9 @@ router.get("/profile", (req, res) => {
   })
 })
 
-router.post("/file", (req, res) => {
-  let id = req.headers.auth;
-  let myquery = { sessionID: id}
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        let file = req.body
-        console.log(file)
-        let hash = sha1(file)
-        console.log(hash)
-
-        res.sendStatus(200)
-        db.close();
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The account doesn't exist.")
-        db.close();      
-      } 
-    })
-  })
-})
-
 
 // Routes required by the Credits Common Node
 // https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
-// /filter/{full} is unused?
 
 router.get("/filter/full", (req, res) => { 
   MongoClient.connect(url, (err, db) => {

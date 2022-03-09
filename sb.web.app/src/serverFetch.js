@@ -2,7 +2,24 @@ import * as JsSHA from 'jssha'
 import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
-const CC_NODE_URL = '155.4.159.231/localhost/cc-node'
+const CC_NODE_URL = '155.4.159.231/cc-node'
+
+async function getUserData () {
+  const userPromise = fetch('127.0.0.1:3000/filter/full', {
+    method: 'GET'
+  })
+    .then((res) => {
+      //console.log(res.text())
+      return res
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return userPromise
+}
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -83,13 +100,14 @@ export async function logout (sessionID) {
     })
 }
 
-export async function myTransactions (ccUser, ccAuth) {
-  const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction', {
+export function getTransactions (ccUser, ccAuth) {
+  const userData = getUserData()
+  console.log(userData)
+  const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/full', {
     method: 'GET',
     headers: {
-      'cc-user': ccUser,
-      'cc-auth': ccAuth,
-      'Content-Type': 'application/json'
+      'cc-user': 'TestAdmin',
+      'cc-auth': '413080eb-13b5-45fd-b931-ad54634e2100'
     }
   }, CORS_ANYWHERE)
     .then((res) => {
@@ -175,29 +193,3 @@ export async function credit (ccUser, ccAuth) {
     })
   return creditPromise
 } */
-
-export async function uploadFile (ccUser, ccAuth, file) {
-  // CHECK IF FILE IS AN IMAGE HERE
-
-  const filePromise = fetch('http://localhost:3000/file', {
-    method: 'POST',
-    headers: {
-      'cc-user': ccUser,
-      'cc-auth': ccAuth,
-      'Content-Type': 'application/json'
-    },
-    body: file
-  }, CORS_ANYWHERE)
-    .then((res) => {
-      // console.log(res.json())
-      return res.json()
-    })
-    .then((data) => {
-      // console.log('data ' + data)
-      return (data)
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return filePromise
-}

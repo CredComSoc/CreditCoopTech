@@ -11,6 +11,7 @@ const {
 var indexRouter = require('./routes/index');
 
 var app = express();
+
 const corsMiddleware = require('./cors');
 app.options('*', corsMiddleware);
 app.use(corsMiddleware);
