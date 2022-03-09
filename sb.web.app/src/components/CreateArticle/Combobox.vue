@@ -3,47 +3,58 @@
     <div tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)">
       <p unselectable="on" :data-placeholder="this.selectedValue" :id="this.name + '-combo-placeholder'"></p>
       <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
+      <input ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" @change=setDate>
     </div>
-    <div class="dropdown-combo">
+    <div v-if="!this.isDatePicker" class="dropdown-combo">
       <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
         <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
       </div>
-    </div>  
+    </div>
+    
 </template>
 
 <script>
 export default {
   name: 'Combobox',
-  props: ['name', 'label', 'options', 'placeholder'],
+  props: ['name', 'label', 'options', 'placeholder', 'isDatePicker'],
   methods: {
     handleSelect (id) {
-      const box = document.getElementById(this.name + '-dropdown')
       const outerBox = document.getElementById(id)
-      if (box.style.display === 'block') {
-        box.style.display = 'none'
-        outerBox.classList.remove('combobox-active')
-        outerBox.blur()
-      } else {
-        box.style.display = 'block'
-        outerBox.classList.add('combobox-active')
+      if (!this.isDatePicker) {
+        const box = document.getElementById(this.name + '-dropdown')
+        if (box.style.display === 'block') {
+          box.style.display = 'none'
+          outerBox.classList.remove('combobox-active')
+          outerBox.blur()
+        } else {
+          box.style.display = 'block'
+          outerBox.classList.add('combobox-active')
+        }
       }
     },
     getInput () {
       return this.selectedValue
-    }
+    },
+    setDate () {
+      const selectedVal = document.getElementById(this.name + '-combo-placeholder')
+      selectedVal.innerText = this.$refs.dateVal.value
+      this.selectedValue = this.$refs.dateVal.value
+    } 
   },
   mounted () {
     this.selectedValue = this.placeholder
-    const list = document.getElementById(this.name + '-dropdown')
-    for (const item of list.childNodes) {
-      item.addEventListener('click', () => {
-        item.parentNode.style.display = 'none'
-        const selectedVal = document.getElementById(this.name + '-combo-placeholder')
-        selectedVal.innerText = item.innerText
-        selectedVal.style.color = 'black'
-        this.selectedValue = item.innerText
-        document.getElementById(this.name).classList.remove('combobox-active')
-      })
+    if (!this.isDatePicker) {
+      const list = document.getElementById(this.name + '-dropdown')
+      for (const item of list.childNodes) {
+        item.addEventListener('click', () => {
+          item.parentNode.style.display = 'none'
+          const selectedVal = document.getElementById(this.name + '-combo-placeholder')
+          selectedVal.innerText = item.innerText
+          selectedVal.style.color = 'black'
+          this.selectedValue = item.innerText
+          document.getElementById(this.name).classList.remove('combobox-active')
+        })
+      }
     }
   },
   data () {
@@ -61,6 +72,18 @@ export default {
   font-family: 'Ubuntu', sans-serif;
   font-weight: 700;
   margin-bottom: 10px;
+}
+
+.date-picker {
+  position:absolute;
+  top:0;
+  overflow: hidden;
+  opacity: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color:white;
+  cursor: pointer;
 }
 
 .combobox {

@@ -1,17 +1,21 @@
 <template>
 <div id="title-field" class="input">
+  <DatePicker name="end-date-picker" label="Tid" placeholder="Hur länge ska din produkt finnas tillgänglig?"/>
+</div>
+<div class="input">
   <TextBox id="title" name="title" label="Pris" placeholder="Hur mycket kostar din?"/>
 </div>
-
 </template>
 
 <script>
 import TextBox from './TextBox.vue'
+import DatePicker from './DatePicker.vue'
 
 export default {
   name: 'StepTwo',
   components: {
-    TextBox
+    TextBox,
+    DatePicker
   }  
 }
 </script>
