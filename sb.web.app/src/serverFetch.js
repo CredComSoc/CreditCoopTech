@@ -2,8 +2,6 @@
 // upploadFile kommer skapa och returnera ett promise som tar emot filen och skicka den till backend
 
 export async function getAllListings (searchword) {
-  console.log(typeof searchword)
-
   const getAllListingsPromise = fetch('http://localhost:3000/getAllListings/' + searchword, {
     method: 'GET'
   })

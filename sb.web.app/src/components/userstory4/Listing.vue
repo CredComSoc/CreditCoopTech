@@ -3,7 +3,6 @@
     <!-- <ListingPopup v-if="true"/> -->
     <div class="element-container" @click="togglePopup">
         <img :src='getImgURL()' />
-        <!-- <img src="./images/bulles2.png" alt="Coffea"> -->
         <h4 class="element-title"> {{ listingObj.title }} </h4>
         <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
     </div>

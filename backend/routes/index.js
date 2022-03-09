@@ -176,12 +176,6 @@ router.get('/getAllListings/:searchword', (req, res) => {
                         break;
                     } 
                   }
-                  /** 
-                  searchword.forEach(word => {
-                    if (listing.title.match(new RegExp(word, "i"))) {
-                        allListingsArray.push(listing)
-                    } 
-                  })*/
               })
             })
             res.send({allListings: allListingsArray})

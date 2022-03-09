@@ -1,59 +1,35 @@
 <template>
-  <b-container>
-    <b-row>
-      <div @click="$emit('closePopup')" class="popup"></div>
-      <div class="popup-inner">
-          <b-col cols="8">
-            <img class="p-image" src="./images/bulles1.png" alt="Coffea">
-          </b-col>
-          <b-col cols="4" class="content-right">
-            <b-row>
-              <b-col>
-                <div class="float-end">
-                  <button className="xBtn marginRight" @click="$emit('closePopup')">x</button>
-                </div>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col class="d-flex align-items-center justify-content-center">
-               <h5>{{listingObj.title}}</h5>
-              </b-col>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.longDesc}}</p>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.destination}}</p>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.price}}</p>
-            </b-row>
-            <b-row class="fixed-bottom">
-              <b-col>
-                <div class="float-end amountRow">
-                  <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
-                  <p class="amountText"> {{amount}} </p>
-                  <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
-                </div>
-              </b-col>
-            </b-row>
-            <b-row class="fixed-bottom">
-              <b-col>
-                <div class="float-end">
-                  <b-button class="cartBtn marginRight" variant="primary" @click="emit('placeInCart', amount)">Lägg i varukorg</b-button>
-                </div>
-              </b-col>
-            </b-row>
-          </b-col>
-        </div>
-    </b-row>
-  </b-container>
+<div>
+  <div @click="$emit('closePopup')" class="popup">
+    
+  </div>
+  <div class="popup-inner">
+    <img class="p-image" src="./images/bulles1.png" alt="Coffea">
+    <div class="content-right">
+      <button className="xBtn floatRight" @click="$emit('closePopup')">x</button>
+      <div class="textContent">
+        <h5>{{listingObj.title}}</h5>
+        <p>{{listingObj.longDesc}}</p>
+        <p>{{listingObj.destination}}</p>
+        <p>{{listingObj.price}}</p>
+      </div>
+      <div class="float-end amountRow">
+        <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
+        <p class="amountText"> {{amount}} </p>
+        <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
+      </div>
+      <div class="float-end">
+        <b-button class="cartBtn marginRight" variant="primary" @click="emit('placeInCart', amount)">Lägg i varukorg</b-button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 <script>
 export default {
 
   props: {
-    listingObj: Object
+    listingObj: Object  
   },
 
   data () {
@@ -106,8 +82,10 @@ body {
   margin-right: 0.5rem;
 }
 
-.marginRight {
-  margin-right: 0.5rem;
+.floatRight {
+  display: flex;
+  justify-content: right;
+  flex-basis: 100%;
 }
 
 .amountText {
@@ -150,6 +128,10 @@ body {
 
 h5 {
   font-size: 1.8rem;
+}
+
+.textContent {
+  padding: 1rem;
 }
 
 /* .content-left {

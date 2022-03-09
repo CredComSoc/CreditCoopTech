@@ -1,15 +1,11 @@
 <template>
-  <b-container class="mb-12">
+  <div class="container_all_listings">
     <ul>
-      <b-row cols-xs="1" cols-sm="2" cols-md="3" cols-xl="4" class="row g-0">
-        <li v-for="item in searchData['allListings']" :key="item.title">
-          <b-col>
-            <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
-          </b-col>
-        </li>
-      </b-row>
+      <li v-for="item in searchData['allListings']" :key="item.title">
+        <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
+      </li>
     </ul>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -35,6 +31,15 @@ export default {
 </script>
 
 <style scoped>
+.container_all_listings {
+  display: flex;
+  
+}
+
+.container_all_listings > * {
+  flex-basis: 100%;
+}
+
 li {
   display: inline-block;
 }
