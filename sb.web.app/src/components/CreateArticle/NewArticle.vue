@@ -1,8 +1,8 @@
 <template>
 <div id="input-form">
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
-  <StepOne v-if="this.currentStep === 1" ref='stepOne'/>
-  <StepTwo v-if="this.currentStep === 2" />
+  <StepOne v-if="this.currentStep === 1" ref='stepOne' />
+  <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
 </template>
