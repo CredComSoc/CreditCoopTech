@@ -36,6 +36,9 @@ export default {
       } else if (this.currentStep === 2) {
         this.currentStep = 3
       }
+    },
+    changeHeader () {
+      
     }
   }
 }
