@@ -3,6 +3,7 @@
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
   <StepOne v-if="this.currentStep === 1" ref='stepOne' />
   <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
+  <StepThree v-if="this.currentStep === 3" ref='stepThree'/>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
 </template>
@@ -11,6 +12,7 @@
 import CreateHeader from './CreateHeader.vue'
 import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
+import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 
 export default {
@@ -19,6 +21,7 @@ export default {
     CreateHeader,
     StepOne,
     StepTwo,
+    StepThree,
     NewArticleFooter
   },
   data () {
@@ -37,8 +40,8 @@ export default {
       console.dir(this.newArticle)
     }, 
     goForwardStep () {
-      this.saveFirstStep()
       if (this.currentStep === 1) {
+        this.saveFirstStep()
         this.currentStep = 2
         this.imgURL = 'two_three.png'
         this.buttonText = 'Tillbaka'

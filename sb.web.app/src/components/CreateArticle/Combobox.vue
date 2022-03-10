@@ -77,7 +77,6 @@ export default {
 .date-picker {
   position:absolute;
   top:0;
-  overflow: hidden;
   opacity: 0;
   left: 0;
   width: 100%;
