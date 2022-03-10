@@ -1,5 +1,5 @@
 <template>
-  <Combobox :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDatePicker="true"/>
+  <Combobox ref="datePicker" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDatePicker="true"/>
 </template>
 
 <script>
@@ -10,7 +10,12 @@ export default {
   components: {
     Combobox
   },
-  props: ['name', 'label', 'placeholder']
+  props: ['name', 'label', 'placeholder'],
+  methods: {
+    getInput () {
+      return this.$refs.datePicker.getInput()
+    }
+  }
 }
 </script>
 

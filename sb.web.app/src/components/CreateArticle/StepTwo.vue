@@ -1,14 +1,14 @@
 <template>
 <div id="title-field" class="input">
-  <DatePicker name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`"/><br>
-  <input id="no-end-date" type="checkbox" name="end-date"/>
+  <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`"/><br>
+  <input ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
   <label for="end-date"> På obestämd tid </label>
 </div>
 <div class="input">
-  <Combobox name="city-new-article" label="Plats" :options="[`Linköping`, `Norrköping`, `Söderköping`]" :placeholder="`Var finns din ` + this.chosenType.toLowerCase() + `?`" />
+  <Combobox ref="cityInput" name="city-new-article" label="Plats" :options="[`Linköping`, `Norrköping`, `Söderköping`]" :placeholder="`Var finns din ` + this.chosenType.toLowerCase() + `?`" />
 </div>
 <div class="input" id="new-article-price">
-  <TextBox id="price-new-article" name="price" label="Pris" :placeholder="`Hur mycket kostar din ` + this.chosenType.toLowerCase() + `?`" />
+  <TextBox ref="priceInput" id="price-new-article" name="price" label="Pris" :placeholder="`Hur mycket kostar din ` + this.chosenType.toLowerCase() + `?`" />
   <h3> Bkr </h3>
 </div>
 </template>
@@ -25,7 +25,20 @@ export default {
     DatePicker,
     Combobox
   },
-  props: ['chosenType']  
+  props: ['chosenType'],
+  methods: {
+    getStepTwoInputs () {
+      let endDate = null
+      if (!this.$refs.noEndDate.checked) {
+        endDate = this.$refs.endDateInput.getInput()
+      }
+      return { 
+        endDate: endDate,
+        city: this.$refs.cityInput.getInput(),
+        price: this.$refs.priceInput.getInput()
+      }
+    }
+  }  
 }
 </script>
 
