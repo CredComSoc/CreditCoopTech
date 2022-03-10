@@ -33,6 +33,19 @@ input {
   font-family: 'Ubuntu';
 }
 
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #acacac;
+  opacity: 0.45; /* Firefox */
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #acacac;
+}
+
+input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #acacac;
+}
+
 input:focus {
   outline: none;     
   border-color: #719ECE;
