@@ -36,6 +36,10 @@ export default {
   
 }
 
+ul {
+  padding: 0;
+}
+
 .container_all_listings > * {
   flex-basis: 100%;
 }

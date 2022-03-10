@@ -1,39 +1,32 @@
 <template>
-  <b-container fluid>
+  <div class="wrapper">
 
-    <b-row align-h="center">
-      <b-col cols="4" class="d-flex align-items-center justify-content-center">
-        <h2>SHOP</h2>
-      </b-col>
-    </b-row>
+    <div>
+      <h2 class="center-text">SHOP</h2>
+    </div>
 
-    <b-row align-h="center">
+    <div class="center">
         <Searchfield @searchEvent="testMethod" />
-    </b-row>
+    </div>
 
     <br>
 
-    <b-row>
+    <div class="main">
       <!-- KOLUMN FÖR KATERGORI-->
-      <b-col cols="3">
+      <div class="categories">
         <Categories/>
-      </b-col>
+      </div>
 
       <!-- KOLYMN FÖR PRODUKTER -->
-      <b-col cols="9">
-        <b-row>
-          <b-col>
-            <h3>Produkter</h3>
-          </b-col>
-        </b-row>
-        <b-row>
-          <Alllistings @togglePopupEvent="togglePopup" :key=searchData :search-data=searchData />
-          <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
-        </b-row>
-      </b-col>
-    </b-row>
+      <div class="listings">
+        <h3>Produkter</h3>
+
+        <Alllistings @togglePopupEvent="togglePopup" :key=searchData :search-data=searchData />
+        <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
+      </div>
+    </div>
     
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -83,67 +76,51 @@ export default {
           this.searchData = data
         })
     }
-
-    /*
-    backendFunction () {
-      return {
-        allListings: [
-          {
-            title: 'annas bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '30 bKr'
-          },
-          {
-            title: 'Peters bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Karlssons bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Rågers bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att AOIUGFHJAIOFAOIJFOAJFIAJFIOWJIFOAJOIWJ nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Brorsans bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Kalles bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          }
-        ]
-      }
-    }*/
   }
 }
 </script>
 
 <style scoped>
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  
+}
+
+/* .flex-grid-3 {
+  width: 24%;
+  margin: 0;
+  padding: 0;
+}
+
+.flex-grid-9 {
+  width: 74%;
+  margin: 0;
+  padding: 0; */
+
+.categories {
+  flex-basis: 25%;
+
+}
+
+.listings {
+  width: auto;
+  margin-left: 3rem;
+}
+
+.center-text {
+  text-align: center;
+}
 
 h2 {
   margin-top: 2rem;
@@ -151,6 +128,6 @@ h2 {
 }
 
 h3 {
-  margin-left: 3rem;
+  margin-left: 1rem;
 }
 </style>
