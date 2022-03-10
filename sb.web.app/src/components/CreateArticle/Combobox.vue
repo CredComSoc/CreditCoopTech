@@ -168,27 +168,27 @@ p:empty:not(:focus)::before, input::placeholder {
 }
 
 @media (max-width: 700px) {
-  .dropdown-content-combo, .combobox {
+  .dropdown-content-combo, .combobox, .date-picker {
     width: 350px;
   }
 }
 
 @media (max-width: 620px) {
-  .dropdown-content-combo, .combobox {
+  .dropdown-content-combo, .combobox, .date-picker {
     width: 250px;
   }
 
-  .dropdown-content-combo p, .combobox p {
+  .dropdown-content-combo p, .combobox p, .date-picker {
     font-size: 10px;
   }
 }
 
 @media (max-width: 400px) {
-  .dropdown-content-combo, .combobox {
+  .dropdown-content-combo, .combobox, .date-picker {
     width: 200px;
   }
 
-  .dropdown-content-combo p, .combobox p {
+  .dropdown-content-combo p, .combobox p, .date-picker {
     font-size: 10px;
   }
 }
