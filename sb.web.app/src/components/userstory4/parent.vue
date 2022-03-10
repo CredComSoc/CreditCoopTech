@@ -19,9 +19,14 @@
 
       <!-- KOLYMN FÖR PRODUKTER -->
       <div class="listings">
-        <h3>Produkter</h3>
-
-        <Alllistings @togglePopupEvent="togglePopup" :key=searchData :search-data=searchData />
+        <div>
+          <h3>Produkter</h3>
+          <Alllistings @togglePopupEvent="togglePopup" :key=productsSearchData :search-data=productsSearchData />
+        </div>
+        <div>
+          <h3>Tjänster</h3>
+          <Alllistings @togglePopupEvent="togglePopup" :key=servicesSearchData :search-data=servicesSearchData />
+        </div>
         <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
       </div>
     </div>
@@ -40,7 +45,8 @@ export default {
 
   data () {
     return {
-      searchData: [],
+      productsSearchData: [],
+      servicesSearchData: [],
       singleListingData: [],
       popupActive: false,
       listingObjPopup: Object,
@@ -68,12 +74,11 @@ export default {
     },
     backendFunction (newSearchWord) {
       this.getAllListings(newSearchWord).then(res => {
-        console.log('running useEffect in getFriendRequests')
         return res
       })
         .then(data => {
-          console.log(data)
-          this.searchData = data
+          this.productsSearchData = data.allProducts
+          this.servicesSearchData = data.allServices
         })
     }
   }
@@ -97,23 +102,14 @@ export default {
   
 }
 
-/* .flex-grid-3 {
-  width: 24%;
-  margin: 0;
-  padding: 0;
-}
-
-.flex-grid-9 {
-  width: 74%;
-  margin: 0;
-  padding: 0; */
-
 .categories {
-  flex-basis: 25%;
+  flex-basis: 20%;
+  height: auto;
 
 }
 
 .listings {
+  flex-basis: 80%;
   width: auto;
   margin-left: 3rem;
 }

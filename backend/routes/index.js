@@ -155,7 +155,8 @@ router.get('/getAllListings/:searchword', (req, res) => {
 
     MongoClient.connect(url, (err, db) => {
         let dbo = db.db("Test")
-        let allListingsArray = []
+        let productsAllListingsArray = []
+        let servicesAllListingsArray = []
 
         dbo.collection("Users").find({}).toArray(function (err, users) {
 
@@ -166,19 +167,23 @@ router.get('/getAllListings/:searchword', (req, res) => {
           else {
             users.forEach(user => {
               user.posts.forEach(listing => {
-                  console.log(listing.title)
-                  console.log(searchword)
-                  //if sats som kollar regex titel
-
-                  for (let i = 0; i < searchword.length; i++) {
-                    if (listing.title.match(new RegExp(searchword[i], "i"))) {
-                        allListingsArray.push(listing)
-                        break;
-                    } 
-                  }
+                for (let i = 0; i < searchword.length; i++) {
+                  if (listing.title.match(new RegExp(searchword[i], "i"))) {
+                      if(listing.tag.includes("product")) {
+                        productsAllListingsArray.push(listing)
+                        break
+                      } else if (listing.tag.includes("service")) {
+                        servicesAllListingsArray.push(listing)
+                        break
+                      } else {
+                        res.sendStatus(304).send('No tag for listing')
+                        break
+                      }
+                  } 
+                }
               })
             })
-            res.send({allListings: allListingsArray})
+            res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
             db.close();
             //for loop som matchar sökordet, placerar rätt resultat i initierad array, (om tomt sökord placera alla listings i array)
           }
@@ -195,7 +200,8 @@ router.get('/getAllListings/', (req, res) => {
 
     MongoClient.connect(url, (err, db) => {
         let dbo = db.db("Test")
-        let allListingsArray = []
+        let productsAllListingsArray = []
+        let servicesAllListingsArray = []
 
         dbo.collection("Users").find({}).toArray(function (err, users) {
 
@@ -206,10 +212,16 @@ router.get('/getAllListings/', (req, res) => {
           else {
             users.forEach(user => {
               user.posts.forEach(listing => {
-                allListingsArray.push(listing)
+                if(listing.tag.includes("product")) {
+                  productsAllListingsArray.push(listing)
+                } else if (listing.tag.includes("service")) {
+                  servicesAllListingsArray.push(listing)
+                } else {
+                  res.sendStatus(304).send('No tag for listing')
+                }
               })
             })
-            res.send({allListings: allListingsArray})
+            res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
             db.close();
             //for loop som matchar sökordet, placerar rätt resultat i initierad array, (om tomt sökord placera alla listings i array)
           }

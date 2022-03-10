@@ -1,7 +1,7 @@
 <template>
   <div class="container_all_listings">
     <ul>
-      <li v-for="item in searchData['allListings']" :key="item.title">
+      <li v-for="item in searchData" :key="item.title">
         <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
       </li>
     </ul>
@@ -33,7 +33,7 @@ export default {
 <style scoped>
 .container_all_listings {
   display: flex;
-  
+  flex-wrap: wrap;
 }
 
 ul {
@@ -46,5 +46,16 @@ ul {
 
 li {
   display: inline-block;
+  flex: 1 0 calc(25% - 10px);
+
 }
+
+/* @media only screen and (min-width: 1200) {
+  li {
+    display: inline-block;
+    flex-grow: 1;
+    width: calc(100% * (1/4) - 10px - 1px);
+  }
+} */
+
 </style>
