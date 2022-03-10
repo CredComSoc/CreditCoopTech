@@ -65,12 +65,14 @@ export default {
   margin:0;
 }
 
-.flexbox-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  min-width: 1100px;
+@media screen and (min-width: 860px) {
+  .flexbox-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    min-width: 860px;
+  }
 }
 
 .flexbox-item {

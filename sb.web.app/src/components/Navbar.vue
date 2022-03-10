@@ -167,7 +167,7 @@ export default {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
       dropdownActive: false, // if a dropdown menu is active
-      IP: '155.4.159.231'
+      IP: 'localhost'
     }
   },
   name: 'Navbar',

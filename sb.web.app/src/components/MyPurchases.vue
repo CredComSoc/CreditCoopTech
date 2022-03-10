@@ -2,7 +2,9 @@
     <div >
       <h1><b> Bekräftade köp </b></h1>
       <p> Dina bekräftade köp. </p>
+      <div style="max-height: 50em; overflow: scroll;">
       <table>
+        
         <tr>
           <th></th>
           <th>Säljare</th>
@@ -23,7 +25,9 @@
           <td className="green">{{item.state}}</td>
           <td  className="red">Ladda ner faktura</td>
         </tr>
+        
       </table>
+      </div>
 
       <h1> Väntande köp </h1>
       <p> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
