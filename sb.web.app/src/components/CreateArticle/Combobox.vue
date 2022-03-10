@@ -1,16 +1,16 @@
 <template>
    <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
-    <div tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)">
+    <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
       <p unselectable="on" :data-placeholder="this.selectedValue" :id="this.name + '-combo-placeholder'"></p>
       <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
-      <input ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" @change=setDate>
+    <!-- <input :id="this.name + `-date-picker`" ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="date" @change=setDate> -->
     </div>
     <div v-if="!this.isDatePicker" class="dropdown-combo">
       <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
         <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
       </div>
     </div>
-    
+    <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
 </template>
 
 <script>
@@ -30,14 +30,15 @@ export default {
           box.style.display = 'block'
           outerBox.classList.add('combobox-active')
         }
+      } else {
+        const datePicker = document.getElementById(this.name + '-date-picker')
+        datePicker.click()
       }
     },
     getInput () {
       return this.selectedValue
     },
     setDate () {
-      const selectedVal = document.getElementById(this.name + '-combo-placeholder')
-      selectedVal.innerText = this.$refs.dateVal.value
       this.selectedValue = this.$refs.dateVal.value
     } 
   },
@@ -55,7 +56,7 @@ export default {
           document.getElementById(this.name).classList.remove('combobox-active')
         })
       }
-    }
+    } 
   },
   data () {
     return { 
@@ -74,15 +75,25 @@ export default {
   margin-bottom: 10px;
 }
 
-.date-picker {
+/* .date-picker {
   position:absolute;
   top:0;
-  opacity: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color:white;
   cursor: pointer;
+} */
+
+.date-picker {
+  width: 420px;
+  height: 38px;
+  background: white;
+  border: 2px solid #5c5c5c;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  font-size: 13px;
 }
 
 .combobox {
@@ -102,16 +113,17 @@ export default {
   font-size: 13px;
 }
 
-.combobox p, .dropdown-content-combo p {
+.combobox p, .dropdown-content-combo p, .date-picker {
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
 
-p:empty:not(:focus)::before {
+p:empty:not(:focus)::before, input::placeholder {
   content: attr(data-placeholder);
   color: #acacac;
+  opacity: 1; /* Firefox */
 }
 
 #combo-arrow {
@@ -120,7 +132,7 @@ p:empty:not(:focus)::before {
   top: 45%;
 }
 
-.combobox-active, .combobox:focus {
+.combobox-active, .combobox:focus, .date-picker:focus {
   border-color: #719ECE;
   box-shadow: 0 0 10px #719ECE; 
   outline: none;
