@@ -9,9 +9,6 @@ const {
 sha1 = require('js-sha1');  
 
 let url = "mongodb://localhost:27017/"
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
 
 // Test Route
 router.get("/", (req, res) => {

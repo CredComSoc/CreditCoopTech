@@ -3,14 +3,15 @@ import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = '155.4.159.231/cc-node'
+const EXPRESS_URL = 'http://localhost:3000'
+// const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 async function getUserData () {
-  const userPromise = fetch('127.0.0.1:3000/filter/full', {
+  const userPromise = fetch(EXPRESS_URL + '/filter/full', {
     method: 'GET'
   })
     .then((res) => {
-      //console.log(res.text())
-      return res
+      return res.json()
     })
     .then((data) => {
       return (data)
@@ -31,7 +32,7 @@ function hashMyPassword (password) {
 export async function login (username, password) {
   const hashedPassword = hashMyPassword(password)
 
-  const loginPromise = fetch('http://localhost:3000/login', {
+  const loginPromise = fetch(EXPRESS_URL + '/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -59,7 +60,7 @@ export async function login (username, password) {
 export async function registerFetch (username, password) {
   const hashedPassword = hashMyPassword(password)
 
-  fetch('http://localhost:3000/register', {
+  fetch(EXPRESS_URL + '/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -80,7 +81,7 @@ export async function registerFetch (username, password) {
 }
 
 export async function logout (sessionID) {
-  fetch('http://localhost:3000/logout', {
+  fetch(EXPRESS_URL + '/logout', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -101,29 +102,32 @@ export async function logout (sessionID) {
 }
 
 export function getTransactions (ccUser, ccAuth) {
-  const userData = getUserData()
-  console.log(userData)
-  const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/full', {
-    method: 'GET',
-    headers: {
-      'cc-user': 'TestAdmin',
-      'cc-auth': '413080eb-13b5-45fd-b931-ad54634e2100'
-    }
-  }, CORS_ANYWHERE)
-    .then((res) => {
-      // console.log(res.json())
-      return res.json()
-    })
-    .then((data) => {
-      // console.log('data ' + data)
-      return (data)
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
+  const allTransactionPromise = getUserData().then(userData => {
+    // console.log(userData)
+    const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/full', {
+      method: 'GET',
+      headers: {
+        'cc-user': userData[0].id,
+        'cc-auth': userData[0].all.sessionID
+      }
+    }, CORS_ANYWHERE)
+      .then((res) => {
+        // console.log(res.json())
+        return res.json()
+      })
+      .then((data) => {
+        // console.log('data ' + data)
+        return (data)
+      })
+      .catch(err => {
+        console.error('There has been a problem with your fetch operation:', err)
+      })
+    return allTransactionPromise
+  })
   return allTransactionPromise
 }
 
+// UNUSED
 export async function transaction (ccUser, ccAuth, id) {
   const transactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/' + id + '/full', {
     method: 'GET',
@@ -148,7 +152,7 @@ export async function transaction (ccUser, ccAuth, id) {
 }
 
 export async function profile (ccUser, ccAuth) {
-  const profilePromise = fetch('http://localhost:3000/profile', {
+  const profilePromise = fetch(EXPRESS_URL + '/profile', {
     method: 'GET',
     headers: {
       'cc-user': ccUser,
