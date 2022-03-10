@@ -6,20 +6,22 @@
   <div class="popup-inner">
     <img class="p-image" src="./images/bulles1.png" alt="Coffea">
     <div class="content-right">
-      <button className="xBtn floatRight" @click="$emit('closePopup')">x</button>
+      <div class="flex-center-bottom">
+        <button className="xBtn" @click="$emit('closePopup')">x</button>
+      </div>
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
         <p>{{listingObj.longDesc}}</p>
         <p>{{listingObj.destination}}</p>
         <p>{{listingObj.price}}</p>
       </div>
-      <div class="float-end amountRow">
+      <div class="flex-center-bottom align-to-bottom">
         <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
         <p class="amountText"> {{amount}} </p>
         <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
       </div>
-      <div class="float-end">
-        <b-button class="cartBtn marginRight" variant="primary" @click="emit('placeInCart', amount)">Lägg i varukorg</b-button>
+      <div class="flex-center-bottom bottom-placement">
+        <button class="cartBtn" @click="emit('placeInCart', amount)">Lägg i varukorg</button>
       </div>
     </div>
   </div>
@@ -64,35 +66,16 @@ body {
   display: inline-block;
 }
 
-.amountRow {
-  margin-bottom: 3rem;
-}
-
 .cartBtn {
   display: inline-block;
   margin-bottom: 0.5rem;
-}
-
-.lastRow {
-  margin-top: auto;
-}
-
-.marginLeft {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.floatRight {
-  display: flex;
-  justify-content: right;
-  flex-basis: 100%;
 }
 
 .amountText {
   display: inline-block;
   margin-left: 1rem;
   margin-right: 1rem;
-  
+  margin-top: 1rem;
 }
 
 .popup {
@@ -134,13 +117,11 @@ h5 {
   padding: 1rem;
 }
 
-/* .content-left {
-  width: 100%;
-  height: 100%;
-} */
-
 .content-right {
+  display: flex;
+  flex-direction: column;
   background-color: white;
+
 }
 
 .p-image {
@@ -150,6 +131,23 @@ h5 {
 .xBtn {
   border: none;
   background-color: white;
+}
+
+.flex-center-bottom {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  
+}
+
+.bottom-placement {
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+
+.align-to-bottom {
+  padding-top: 15rem;
 }
 
 </style>
