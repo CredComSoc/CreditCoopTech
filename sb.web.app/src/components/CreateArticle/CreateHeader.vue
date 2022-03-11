@@ -29,7 +29,7 @@ export default {
 }
 
 .step-indicator-img {
-  width: 90px;
+  width: 80px;
   float: right;
 }
 

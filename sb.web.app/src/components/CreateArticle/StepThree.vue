@@ -1,11 +1,12 @@
 <template>
 <div id="title-field">
+  <label :for="this.name" class="input-title"> {{ this.label }} </label>
   <div  class="input">
     <div id="pic">
         <p>Välj fil</p>
     </div>
     <button @click=upload>Bläddra</button>
-    <input type='file' id="getFile" @change=getFile>
+    <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
     <UploadedImage
@@ -26,6 +27,7 @@ export default {
   components: {
     UploadedImage
   },
+  props: ['name', 'label'],
   data () {
     return {
       images: []
@@ -47,7 +49,7 @@ export default {
 <style scoped>
 
  #title-field {
-  padding-top: 50px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -58,6 +60,13 @@ p{
     color:#bebebe;
     font-family: 'Ubuntu';
     font-size: 14px;
+}
+
+.input-title {
+  font-size: 24px;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 #pic{
@@ -89,7 +98,7 @@ button{
 }
 
 .input {
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
   margin-bottom: 20px;
 }

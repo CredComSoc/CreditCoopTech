@@ -40,10 +40,6 @@ export default {
 
 <style scoped>
 
-#title-field {
-  padding-top: 50px;
-}
-
 .input {
   margin-top: 40px;
 }

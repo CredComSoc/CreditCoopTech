@@ -44,9 +44,6 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
- #title-field {
-  padding-top: 50px;
-}
 
 #no-end-date {
   margin-right: 10px;
@@ -66,9 +63,9 @@ h3 {
   padding: 0;
   position: absolute;
   bottom: 0;
-  margin-left: 20px;
   font-family: 'Ubuntu';
   font-size: 23px;
+  margin-left: 15px;
 }
 
 @media (max-width: 400px) {

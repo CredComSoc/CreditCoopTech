@@ -4,7 +4,7 @@
   <div id="center">
     <StepOne v-if="this.currentStep === 1" ref='stepOne' />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
-    <StepThree v-if="this.currentStep === 3" ref='stepThree'/>
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder"/>
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
@@ -91,10 +91,12 @@ export default {
   }
 
   #center{
+    clear: both;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: flex-start;
+    min-height: 450px;
   }
 
   @media (max-width: 1350px) {
