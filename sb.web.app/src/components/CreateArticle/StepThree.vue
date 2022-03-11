@@ -8,7 +8,11 @@
     <input type='file' id="getFile" @change=getFile>
   </div>
   <div id="images"> 
-    <UploadedImage/>
+    <UploadedImage
+    v-for="(img) in this.images"
+          :imageURL="img"
+          :key="img"
+    />
   </div>
 </div> 
 </template>
@@ -22,12 +26,19 @@ export default {
   components: {
     UploadedImage
   },
+  data () {
+    return {
+      images: []
+    }
+  },
   methods: {
     upload () {
       document.getElementById('getFile').click()
     },
     getFile (e) {
-      console.log(URL.createObjectURL(e.target.files[0]))
+      const URLImg = URL.createObjectURL(e.target.files[0])
+      this.images.push(URLImg)
+      console.log(this.images)
     }
   }
 }
@@ -61,7 +72,7 @@ p{
 
 #images{
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     gap: 40px;
 }
 

@@ -1,16 +1,16 @@
 <template>
     <div>
-        <img src="../../../public/städning.png" />
+        <img :src=this.imageURL />
         <br/>
         <input type="checkbox" name="firstPic"/>
-        <lable for="firstPic">Välj som omslagsbild</lable>
+        <label for="firstPic">Välj som omslagsbild</label>
     </div>
     
 </template>
 
 <script>
 export default {
-  props: ['image']
+  props: ['imageURL']
 }
 </script>
 
@@ -20,8 +20,12 @@ export default {
         height:15px;
         margin-top:5px;
     }
-    lable{
+    label{
         font-size:14px;
         margin-left: 4px;
+    }
+
+    img{
+        width:170px;
     }
 </style>

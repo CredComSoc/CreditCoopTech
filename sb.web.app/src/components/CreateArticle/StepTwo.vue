@@ -51,6 +51,8 @@ export default {
 #no-end-date {
   margin-right: 10px;
   margin-top: 20px;
+  width:15px;
+  height:15px;
 }
 
 .input {
