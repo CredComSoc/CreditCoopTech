@@ -33,7 +33,6 @@ export default {
 }
 
 .input {
-  margin-left: 80px;
   margin-top: 40px;
 }
 

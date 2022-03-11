@@ -1,9 +1,11 @@
 <template>
 <div id="input-form">
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
-  <StepOne v-if="this.currentStep === 1" ref='stepOne' />
-  <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
-  <StepThree v-if="this.currentStep === 3" ref='stepThree'/>
+  <div id="center">
+    <StepOne v-if="this.currentStep === 1" ref='stepOne' />
+    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
+    <StepThree v-if="this.currentStep === 3" ref='stepThree'/>
+  </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
 </template>
@@ -77,13 +79,20 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
+
  #input-form {
      margin: 0 auto;
      margin-top: 30px;
      width: 1000px;
      font-family: 'Ubuntu';
-     height: 650px;
      position: relative;
+  }
+
+  #center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   @media (max-width: 1350px) {

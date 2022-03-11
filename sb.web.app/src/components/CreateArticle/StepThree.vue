@@ -1,31 +1,33 @@
 <template>
-<div>
-<div id="title-field" class="input">
+<div id="title-field">
+  <div  class="input">
     <div id="pic">
         <p>Välj fil</p>
     </div>
     <button @click=upload>Bläddra</button>
-    <input type='file' id="getFile" @change=getFile> 
+    <input type='file' id="getFile" @change=getFile>
+  </div>
+  <div id="images"> 
+    <UploadedImage/>
+  </div>
 </div> 
-<div id="images"> 
-</div>
-</div>
 </template>
 
 <script>
+
+import UploadedImage from './UploadedImage.vue'
+
 export default {
   name: 'StepThree',
+  components: {
+    UploadedImage
+  },
   methods: {
     upload () {
       document.getElementById('getFile').click()
     },
-    getFile (e) {  
-      const file = e.target.files[0]
-      const img = document.createElement('img')
-      img.src = URL.createObjectURL(file)
-      img.style.width = '200px'
-      const parent = document.getElementById('images')
-      parent.appendChild(img)
+    getFile (e) {
+      console.log(URL.createObjectURL(e.target.files[0]))
     }
   }
 }
@@ -35,6 +37,9 @@ export default {
 
  #title-field {
   padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 }
 
 p{
@@ -73,10 +78,9 @@ button{
 }
 
 .input {
-  margin-left: 80px;
   margin-top: 40px;
   display: flex;
-  justify-content: center;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 400px) {
