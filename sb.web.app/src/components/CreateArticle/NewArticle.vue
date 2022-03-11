@@ -41,6 +41,10 @@ export default {
       this.newArticle = this.$refs.stepOne.getStepOneInputs()
       console.dir(this.newArticle)
     }, 
+    saveSecondStep () {
+      this.newArticle = { ...this.newArticle, ...this.$refs.stepTwo.getStepTwoInputs() }
+      console.dir(this.newArticle)
+    },
     goForwardStep () {
       if (this.currentStep === 1) {
         this.saveFirstStep()
@@ -49,6 +53,7 @@ export default {
         this.buttonText = 'Tillbaka'
         this.backLink = '#'
       } else if (this.currentStep === 2) {
+        this.saveSecondStep()
         this.currentStep = 3
         this.imgURL = 'three_three.png'
         this.buttonText = 'Tillbaka'
@@ -68,9 +73,6 @@ export default {
       } else if (this.currentStep === 1) {
         this.backLink = '/Shop'
       }
-    },
-    changeHeader () {
-      
     }
   }
 }

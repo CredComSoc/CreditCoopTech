@@ -9,7 +9,7 @@
     <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
   </div>
   <div class="input">
-    <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Hej', 'san']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
+    <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Affärsutveckling & strategi', 'Arbetsyta', 'Fotografering', 'Kök & restaurang', 'Marknadsföring', 'Rengöring & städ', 'Skönhet', 'Sömnad & tyg']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
   </div>
 </template>
 
