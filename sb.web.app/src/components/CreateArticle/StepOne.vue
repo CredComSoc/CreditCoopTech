@@ -25,6 +25,7 @@ export default {
     TextBox,
     TextArea
   },
+  props: ['savedProgress'],
   methods: {
     getStepOneInputs () {
       return { 
@@ -34,6 +35,20 @@ export default {
         category: this.$refs.categoryInput.getInput() 
       }
     }
+  },
+  mounted () {
+    if ('title' in this.savedProgress) {
+      this.$refs.titleInput.setValue(this.savedProgress.title) 
+    } 
+    if ('description' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.description)
+    } 
+    if ('type' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.type)
+    } 
+    if ('category' in this.savedProgress) {
+      this.$refs.categoryInput.setValue(this.savedProgress.category)
+    } 
   }
 }
 </script>

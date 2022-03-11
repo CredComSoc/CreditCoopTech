@@ -27,7 +27,7 @@ export default {
   components: {
     UploadedImage
   },
-  props: ['name', 'label'],
+  props: ['name', 'label', 'savedProgress'],
   data () {
     return {
       images: []

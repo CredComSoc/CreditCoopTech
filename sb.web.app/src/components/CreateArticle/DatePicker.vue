@@ -14,6 +14,9 @@ export default {
   methods: {
     getInput () {
       return this.$refs.datePicker.getInput()
+    },
+    setValue (newValue) {
+      this.$refs.datePicker.setValue(newValue)
     }
   }
 }

@@ -10,6 +10,9 @@ export default {
   methods: {
     getInput () {
       return this.$refs.descVal.value
+    },
+    setValue (newValue) {
+      this.$refs.descVal.value = newValue
     }
   }
 }

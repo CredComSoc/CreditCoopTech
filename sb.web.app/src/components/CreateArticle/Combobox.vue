@@ -1,7 +1,7 @@
 <template>
    <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
     <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
-      <p unselectable="on" :data-placeholder="this.selectedValue" :id="this.name + '-combo-placeholder'"></p>
+      <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
       <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
     <!-- <input :id="this.name + `-date-picker`" ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="date" @change=setDate> -->
     </div>
@@ -40,10 +40,20 @@ export default {
     },
     setDate () {
       this.selectedValue = this.$refs.dateVal.value
+    },
+    setValue (newValue) {
+      if (this.isDatePicker) {
+        this.selectedValue = newValue
+        this.$refs.dateVal.value = newValue
+      } else {
+        const selectedVal = document.getElementById(this.name + '-combo-placeholder')
+        selectedVal.innerText = newValue
+        selectedVal.style.color = 'black'
+        this.selectedValue = newValue
+      }
     } 
   },
   mounted () {
-    this.selectedValue = this.placeholder
     if (!this.isDatePicker) {
       const list = document.getElementById(this.name + '-dropdown')
       for (const item of list.childNodes) {
@@ -60,7 +70,7 @@ export default {
   },
   data () {
     return { 
-      selectedValue: ''
+      selectedValue: null
     }
   }
 }

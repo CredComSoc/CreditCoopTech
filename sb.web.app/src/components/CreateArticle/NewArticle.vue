@@ -2,9 +2,9 @@
 <div id="input-form">
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
   <div id="center">
-    <StepOne v-if="this.currentStep === 1" ref='stepOne' />
-    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" />
-    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder"/>
+    <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
+    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" />
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     saveFirstStep () {
-      this.newArticle = this.$refs.stepOne.getStepOneInputs()
+      this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
       console.dir(this.newArticle)
     }, 
     saveSecondStep () {
@@ -63,6 +63,7 @@ export default {
     },
     goBackStep () {
       if (this.currentStep === 2) {
+        this.saveSecondStep()
         this.currentStep = 1
         this.imgURL = 'one_three.png'
         this.buttonText = 'Shop'

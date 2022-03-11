@@ -25,7 +25,7 @@ export default {
     DatePicker,
     Combobox
   },
-  props: ['chosenType'],
+  props: ['chosenType', 'savedProgress'],
   methods: {
     getStepTwoInputs () {
       let endDate = null
@@ -38,6 +38,22 @@ export default {
         price: this.$refs.priceInput.getInput()
       }
     }
+  },
+  mounted () {
+    console.log(this.savedProgress)
+    if ('endDate' in this.savedProgress) {
+      if (this.savedProgress.endDate === null) {
+        this.$refs.noEndDate.checked = true
+      } else {
+        this.$refs.endDateInput.setValue(this.savedProgress.endDate) 
+      }
+    } 
+    if ('city' in this.savedProgress) {
+      this.$refs.cityInput.setValue(this.savedProgress.city)
+    } 
+    if ('price' in this.savedProgress) {
+      this.$refs.priceInput.setValue(this.savedProgress.price)
+    } 
   }  
 }
 </script>
