@@ -9,10 +9,12 @@
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage
+    <UploadedImage class="img"
     v-for="(img) in this.images"
-          :imageURL="img"
-          :key="img"
+          :imageURL="img[0]"
+          :key="img[0]"
+          :break="img[1]"
+          :id="img[2]"
     />
   </div>
 </div> 
@@ -39,8 +41,11 @@ export default {
     },
     getFile (e) {
       const URLImg = URL.createObjectURL(e.target.files[0])
-      this.images.push(URLImg)
-      console.log(this.images)
+      if (this.images.length % 2 === 0) {
+        this.images.push([URLImg, true, this.images.length])
+      } else {
+        this.images.push([URLImg, false, this.images.length])
+      }
     }
   }
 }
@@ -81,8 +86,11 @@ p{
 
 #images{
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
     gap: 40px;
+    flex-wrap: wrap;
+    max-width: 480px;
 }
 
 input{
@@ -90,11 +98,12 @@ input{
 }
 button{
     display:block;
-    width:120px; 
+    width:80px; 
     height:35px;
     border-radius: 0px 4px 4px 0px;
     background-color: rgb(236, 236, 236) ;
     border: 2px solid #797979; 
+    font-family: 'Ubuntu';
 }
 
 .input {
