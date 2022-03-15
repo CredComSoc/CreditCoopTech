@@ -13,7 +13,7 @@
         <tr>
           <td>1.</td>
           <td>Ingelas sommarcafe</td>
-          <td><img src="../assets/städning.png" alt="Städservice AB"></td>
+          <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
           <td>2</td>
           <td>250</td>
           <td>500</td>
@@ -22,7 +22,7 @@
         <tr>
           <td>2.</td>
           <td>Ingelas sommarcafe</td>
-          <td><img src="../assets/städning.png" alt="Städservice AB"></td>
+          <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
           <td>1</td>
           <td>500</td>
           <td>500</td>

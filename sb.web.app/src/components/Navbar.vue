@@ -4,26 +4,20 @@
       <nav>
         <div class="left-logos" v-if="this.desc">
             <div class="navlogo">
-              <a :href="'http://' + IP + ':8080/shop'">
+              <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Shop </figcaption>
                 </figure>
-              </a>
-              <a href="#" v-if="this.isActive">
-                <span class="mob-cap"> Shop </span>
-              </a>
+              </router-link>
             </div>
           <div class="navlogo">
-            <a :href="'http://' + IP + ':8080/events'">
+            <a href="#">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
                   <figcaption class="l-text"> Events </figcaption>
               </figure>
-            </a>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Events </span>
-            </a>
+            </a >
           </div>
           <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
@@ -34,32 +28,26 @@
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a :href="'http://' + IP + ':8080/add_article'">Ny artikel </a>
+                  <router-link :to="{name:'New_Article'}">Ny artikel </router-link>
                   <a href="#">Nytt event </a>
               </div>
             </div>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Lägg upp </span>
-            </a>
           </div>
           <div class="navlogo">
-            <a :href="'http://' + IP + ':8080/members'">
+             <a href="#">
               <figure class="logo-click">              
                   <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
-            </a>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Medlemmar </span>
             </a>
           </div>
         </div>
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <a href="/">
+              <router-link :to="{name:'Home'}">
                 <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
-              </a>
+              </router-link>
             </figure>
           </div>
         </div>
@@ -99,9 +87,6 @@
                 </div>
               </div>
             </div>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Notiser </span>
-            </a>
           </div>
           <div class="navlogo">
             <a href="#">
@@ -109,9 +94,6 @@
                   <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
-            </a>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Meddelanden </span>
             </a>
           </div>
           <div class="navlogo">
@@ -121,25 +103,22 @@
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
             </a>
-            <a href="#" v-if="this.isActive">
-              <span class="mob-cap"> Varukorg </span>
-            </a>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
-                <a :href="'http://' + IP + ':8080/profile'">
+                <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
-                </a>
+                </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <a :href="'http://' + IP + ':8080/profile/#profile'">Min profil </a>
-                  <a :href="'http://' + IP + ':8080/profile/#purchases'">Mina köp </a>
-                  <a :href="'http://' + IP + ':8080/profile/#products'">Mina artiklar </a>
-                  <a :href="'http://' + IP + ':8080/profile/#statistics'">Min statistik </a>
-                  <a :href="'http://' + IP + ':8080/profile/#requests'">Mina köpförfrågningar </a>
-                  <a :href="'http://' + IP + ':8080/profile/#settings'">Inställningar </a>
+                  <router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'products'}}">Mina artiklar</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: ''}}">Min statistik</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: ''}}">Inställningar</router-link>
                 </div>
               </div>
               <a href="#" v-if="this.isActive">
@@ -160,6 +139,8 @@
 
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
 
 export default {
   data () {
@@ -167,7 +148,7 @@ export default {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
       dropdownActive: false, // if a dropdown menu is active
-      IP: 'localhost'
+      IP: '155.4.159.231'
     }
   },
   name: 'Navbar',

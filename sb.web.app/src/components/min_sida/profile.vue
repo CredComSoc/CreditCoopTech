@@ -4,17 +4,17 @@
       <h1 className="title"> MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav'>
-      <a href='#profile' @click="activate('profile'); profile=true" :class="{ active: profile }" id='profile'>Min profil</a>
-      <a href='#purchases' @click="activate('purchases'); purchases=true" :class="{ active: purchases }" id='purchases'>Mina köp</a>
-      <a href='#products' @click="activate('products'); products=true" :class="{ active: products }" id='products'>Mina artiklar</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab==='profile' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
+      <a href='#' @click="this.tab='products'" :class="{ active: this.tab==='products' }" id='products'>Mina artiklar</a>
       <a id='statistik'>Min statistik</a>
-      <a href='#requests' @click="activate('requests'); requests=true" :class="{ active: requests }" id='purchasesrequests'>Mina köpförfrågningar</a>
+      <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='purchasesrequests'>Mina köpförfrågningar</a>
       <a id='settings'>Inställningar</a>
     </div>
     <div className="content flexbox-item">
-      <MyPurchases v-if="purchases"/>
-      <MyProducts v-else-if="products"/>
-      <MyRequests v-else-if="requests"/>
+      <MyPurchases v-if="this.tab==='purchases'"/>
+      <MyProducts v-else-if="this.tab==='products'"/>
+      <MyRequests v-else-if="this.tab==='requests'"/>
       <MyProfile v-else/>
     </div>
   </div>
@@ -22,18 +22,14 @@
 
 <script>
 // @ is an alias to /src
-import MyProfile from '@/components/MyProfile.vue'
-import MyPurchases from '@/components/MyPurchases.vue'
-import MyProducts from '@/components/MyProducts.vue'
-import MyRequests from '@/components/MyRequests.vue'
+import MyProfile from '@/components/min_sida/MyProfile.vue'
+import MyPurchases from '@/components/min_sida/MyPurchases.vue'
+import MyProducts from '@/components/min_sida/MyProducts.vue'
+import MyRequests from '@/components/min_sida/MyRequests.vue'
 
 export default {
   data () {
     return {
-      profile: !((window.location.href.indexOf('#purchases') > -1) || (window.location.href.indexOf('#products') > -1) || (window.location.href.indexOf('#requests') > -1)),
-      purchases: (window.location.href.indexOf('#purchases') > -1),
-      products: (window.location.href.indexOf('#products') > -1),
-      requests: (window.location.href.indexOf('#requests') > -1)
     }
   },
   components: {
@@ -42,12 +38,9 @@ export default {
     MyProducts,
     MyRequests
   },
-  methods: {
-    activate: function (element) {
-      this.profile = (element === 'profile')
-      this.purchases = (element === 'purchases')
-      this.products = (element === 'products')
-      this.requests = (element === 'requests')
+  beforeUpdate () {
+    if (this.$route.params.tab) {
+      this.tab = this.$route.params.tab
     }
   }
 }

@@ -3,8 +3,8 @@ import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = '155.4.159.231/cc-node'
-const EXPRESS_URL = 'http://localhost:3000'
-// const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
+// const EXPRESS_URL = 'http://localhost:3000'
+const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 async function getUserData () {
   const userPromise = fetch(EXPRESS_URL + '/filter/full', {

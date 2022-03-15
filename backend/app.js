@@ -9,6 +9,7 @@ const {
   
 
 var indexRouter = require('./routes/index');
+var ccRouter = require('./routes/cc_routes')
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 //app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', ccRouter)
 
 
 const {MongoClient} = require('mongodb');

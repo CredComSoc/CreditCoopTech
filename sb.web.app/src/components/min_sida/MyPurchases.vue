@@ -17,7 +17,7 @@
         <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td><img src="../assets/städning.png" alt="Generisk Bild"></td>
+          <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
           <td>{{'1'}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td>{{item.entries[0].quant}}</td>
@@ -43,7 +43,7 @@
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='validated')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
-            <td><img src="../assets/städning.png" alt="Städservice AB"></td>
+            <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
             <td>{{'1'}}</td>
             <td>{{item.entries[0].quant}}</td>
             <td>{{item.entries[0].quant}}</td>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getTransactions, transaction } from '../serverFetch'
+import { getTransactions, transaction } from '../../serverFetch'
 
 export default {
 
@@ -64,7 +64,7 @@ export default {
       purchases: []
     }
   },
-  mounted: function () {
+  mounted () {
     getTransactions('TestAdmin', '123')
       .then(res => {
         this.purchases = res

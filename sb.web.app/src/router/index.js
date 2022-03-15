@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Shop from '../components/userstory4/parent.vue'
-import Profile from '../components/profile.vue'
+import Profile from '../components/min_sida/profile.vue'
 import NewArticle from '../components/NewArticle.vue'
 
 const routes = [
@@ -17,14 +17,25 @@ const routes = [
     component: Shop
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
+    path: '/events',
+    name: 'Events',
+    component: Home // SKA BYTAS UT
   },
   {
     path: '/add_article',
     name: 'New_Article',
     component: NewArticle
+  },
+  {
+    path: '/members',
+    name: 'Members',
+    component: Home // SKA BYTAS UT
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    props: true
   }
 
 ]

@@ -3,7 +3,7 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img src="../assets/list_images/Ellipse_3.png" alt="Städservice AB">
+          <img src="../../assets/list_images/Ellipse_3.png" alt="Städservice AB">
         </div>
         <div className="container-item">
           <h1> Företagsnamn </h1>
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div style="align-self: flex-end;">
-          <button @click="edit = !edit"> Redigera <img style="width: 25px;" src="../assets/edit.png" alt="Redigera"/></button>
+          <button @click="edit = !edit"> Redigera <img style="width: 25px;" src="../../assets/edit.png" alt="Redigera"/></button>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
           <label for="contact">Kontaktuppgifter:</label><br/>
           <input type="text" id="contact" required><br/><br/>
           <input type="submit">
-          <button @click="edit = !edit"> Avbryt <img style="width: 25px;" src="../assets/edit.png" alt="Redigera"></button>
+          <button @click="edit = !edit"> Avbryt <img style="width: 25px;" src="../../assets/edit.png" alt="Redigera"></button>
         </div>
       </form>
     </div>
