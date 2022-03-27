@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getTransactions, transaction } from '../../serverFetch'
+import { getTransactions } from '../serverFetch'
 
 export default {
 
