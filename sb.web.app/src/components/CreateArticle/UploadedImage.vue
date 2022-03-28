@@ -4,7 +4,7 @@
         <div>
           <img :src=this.imageURL />
           <br/>
-          <input type="checkbox" :id="id" @click="checkCheckbox(id)" name="firstPic"/>
+          <input class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
           <label for="firstPic">Välj som omslagsbild</label>
         </div>
     </div>
@@ -15,8 +15,13 @@
 export default {
   props: ['imageURL', 'break', 'id'],
   methods: {
-    checkCheckbox (id) {
-      console.log(id)
+    clickCheckbox (id) {
+      const cbs = document.getElementsByClassName('cb')
+      const checked = document.getElementById(id)
+      for (var i = 0; i < cbs.length; i++) {
+        cbs[i].checked = false
+      }
+      checked.checked = true
     }
   }
 }
@@ -28,6 +33,7 @@ export default {
         height:15px;
         margin-top:5px;
     }
+
     label{
         font-size:14px;
         margin-left: 4px;

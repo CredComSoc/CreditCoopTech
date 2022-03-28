@@ -116,6 +116,16 @@ button{
   .input {
     margin-left: 40px;
   }
+  #pic{
+    width: 200px;
+    color: red;
+  }
+}
+
+@media (max-width: 550px) {
+  #pic {
+    width: 350px;
+  }
 }
 
 </style>
