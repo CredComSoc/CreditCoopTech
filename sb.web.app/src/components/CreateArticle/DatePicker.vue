@@ -1,5 +1,5 @@
 <template>
-  <Combobox ref="datePicker" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDatePicker="true"/>
+  <Combobox ref="datePicker" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDatePicker="true" />
 </template>
 
 <script>
@@ -17,6 +17,9 @@ export default {
     },
     setValue (newValue) {
       this.$refs.datePicker.setValue(newValue)
+    },
+    clearDatePicker () {
+      this.$refs.datePicker.clearDatePicker()
     }
   }
 }

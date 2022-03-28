@@ -1,7 +1,7 @@
 <template>
 <div id="title-field" class="input">
-  <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`"/><br>
-  <input ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
+  <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+  <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
   <label for="end-date"> På obestämd tid </label>
 </div>
 <div class="input">
@@ -37,10 +37,17 @@ export default {
         city: this.$refs.cityInput.getInput(),
         price: this.$refs.priceInput.getInput()
       }
+    },
+    clearDatePicker () {
+      if (this.$refs.noEndDate.checked) {
+        this.$refs.endDateInput.clearDatePicker()
+      }
+    },
+    clearNoEndDateCheckbox () {
+      this.$refs.noEndDate.checked = false
     }
   },
   mounted () {
-    console.log(this.savedProgress)
     if ('endDate' in this.savedProgress) {
       if (this.savedProgress.endDate === null) {
         this.$refs.noEndDate.checked = true

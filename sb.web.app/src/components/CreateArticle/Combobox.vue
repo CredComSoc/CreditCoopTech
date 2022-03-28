@@ -17,6 +17,7 @@
 export default {
   name: 'Combobox',
   props: ['name', 'label', 'options', 'placeholder', 'isDatePicker'],
+  emits: ['clearNoEndDateCheckbox'],
   methods: {
     handleSelect (id) {
       const outerBox = document.getElementById(id)
@@ -40,6 +41,7 @@ export default {
     },
     setDate () {
       this.selectedValue = this.$refs.dateVal.value
+      this.$emit('clearNoEndDateCheckbox')
     },
     setValue (newValue) {
       if (this.isDatePicker) {
@@ -51,6 +53,11 @@ export default {
         selectedVal.style.color = 'black'
         this.selectedValue = newValue
       }
+    },
+    clearDatePicker () {
+      this.$refs.dateVal.type = 'text'
+      this.$refs.dateVal.value = null
+      this.selectedValue = null
     } 
   },
   mounted () {
