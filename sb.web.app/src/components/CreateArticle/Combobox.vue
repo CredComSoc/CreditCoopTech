@@ -83,10 +83,13 @@ export default {
         })
       }
     } else {
-      document.getElementById(this.name + '-date-picker').setAttribute('min', new Date().toISOString().split('T')[0])
+      const minLimitDate = new Date()
+      const datePicker = document.getElementById(this.name + '-date-picker')
+      minLimitDate.setDate(minLimitDate.getDate() + 1)
+      datePicker.setAttribute('min', minLimitDate.toISOString().split('T')[0])
       const maxLimitDate = new Date()
       maxLimitDate.setMonth(maxLimitDate.getMonth() + 1)
-      document.getElementById(this.name + '-date-picker').setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+      datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     } 
   },
   data () {

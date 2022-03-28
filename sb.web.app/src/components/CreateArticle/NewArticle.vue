@@ -2,9 +2,9 @@
 <div id="input-form">
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
   <div id="center">
-    <StepOne v-if="this.currentStep === 3" ref='stepOne' :savedProgress="this.newArticle" />
+    <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" />
-    <StepThree v-if="this.currentStep === 1" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
