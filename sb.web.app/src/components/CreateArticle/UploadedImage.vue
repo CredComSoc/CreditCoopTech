@@ -1,11 +1,10 @@
 <template>
     <div>
-      <div class="break" v-if="this.break"></div>
-        <div>
+        <div id="img-container">
           <img :src=this.imageURL />
           <br/>
-          <input class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
-          <label for="firstPic"> {{ this.textboxLabel }} </label>
+          <input v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" :checked="this.isCoverImg" class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
+          <label v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" for="firstPic"> {{ this.textboxLabel }} </label>
         </div>
     </div>
     
@@ -13,7 +12,7 @@
 
 <script>
 export default {
-  props: ['imageURL', 'break', 'id', 'textboxLabel'],
+  props: ['imageURL', 'break', 'id', 'textboxLabel', 'isCoverImg', 'isPreview'],
   methods: {
     clickCheckbox (id) {
       const cbs = document.getElementsByClassName('cb')

@@ -13,9 +13,9 @@
     <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
     <PreviewItem title='Bilder' :text="null" :images='this.images' />
   </div>
-  <div id="publish-confirmation">
+  <!-- <div id="publish-confirmation">
     <p>HEllo </p> 
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -30,9 +30,9 @@ export default {
     for (const img of this.savedProgress.image) {
       const URLImg = URL.createObjectURL(img)
       if (this.images.length % 2 === 0) {
-        this.images.push([URLImg, true, this.images.length])
+        this.images.push([URLImg, true, this.images.length, img.isCoverImg])
       } else {
-        this.images.push([URLImg, false, this.images.length])
+        this.images.push([URLImg, false, this.images.length, img.isCoverImg])
       }
     }
   },

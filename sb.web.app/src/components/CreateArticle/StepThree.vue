@@ -9,12 +9,13 @@
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage class="img" textboxLabel="Välj som omslagsbild"
+    <UploadedImage class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"
           :break="img[1]"
           :id="img[2]"
+          :isCoverImg="img[3]"
     />
   </div>
 </div> 
@@ -38,6 +39,14 @@ export default {
   },
   methods: {
     getStepThreeInputs () {
+      const cbs = document.getElementsByClassName('cb')
+      for (var i = 0; i < cbs.length; i++) {
+        if (cbs[i].checked) {
+          this.imageObjs[i].isCoverImg = true
+        } else {
+          this.imageObjs[i].isCoverImg = false
+        }
+      }
       return { 
         image: this.imageObjs
       }
@@ -49,9 +58,9 @@ export default {
       const imageObj = e.target.files[0]
       const URLImg = URL.createObjectURL(imageObj)
       if (this.images.length % 2 === 0) {
-        this.images.push([URLImg, true, this.images.length])
+        this.images.push([URLImg, true, this.images.length, false])
       } else {
-        this.images.push([URLImg, false, this.images.length])
+        this.images.push([URLImg, false, this.images.length, false])
       }
       this.imageObjs.push(imageObj)
     }
@@ -61,9 +70,9 @@ export default {
       for (const img of this.savedProgress.image) {
         const URLImg = URL.createObjectURL(img)
         if (this.images.length % 2 === 0) {
-          this.images.push([URLImg, true, this.images.length])
+          this.images.push([URLImg, true, this.images.length, img.isCoverImg])
         } else {
-          this.images.push([URLImg, false, this.images.length])
+          this.images.push([URLImg, false, this.images.length, img.isCoverImg])
         }
         this.imageObjs.push(img)
       }

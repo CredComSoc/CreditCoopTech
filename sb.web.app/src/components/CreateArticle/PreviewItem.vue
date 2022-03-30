@@ -2,12 +2,13 @@
   <h3> {{ this.title }} </h3>
   <p v-if="this.images === null"> {{ this.text }} </p>
   <div v-if="this.images !== null" id="images-container">
-    <UploadedImage class="img" textboxLabel="Vald som omslagsbild"
+    <UploadedImage class="img" textboxLabel="Vald som omslagsbild" :isPreview="true"
       v-for="(img) in this.images"
         :imageURL="img[0]"
         :key="img[0]"
         :break="img[1]"
         :id="img[2]"
+        :isCoverImg="img[3]"
     />
   </div>
 </template>
@@ -46,7 +47,6 @@ p {
 #images-container {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
   gap: 40px;
   flex-wrap: wrap;
   max-width: 480px;
