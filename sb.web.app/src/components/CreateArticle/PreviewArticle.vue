@@ -53,10 +53,25 @@ p {
 
 #center-header {
     text-align: center;
+    margin-top: 20px;
 }
 
 #items-container {
     width: 500px;
+}
+
+@media (max-width: 600px) {
+  #items-container {
+    width: 80%;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 13px;
+  }
 }
 
 </style>
