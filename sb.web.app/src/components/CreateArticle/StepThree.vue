@@ -32,21 +32,42 @@ export default {
   props: ['name', 'label', 'savedProgress'],
   data () {
     return {
-      images: []
+      images: [],
+      imageObjs: [] 
     }
   },
   methods: {
+    getStepThreeInputs () {
+      return { 
+        image: this.imageObjs
+      }
+    },
     upload () {
       document.getElementById('getFile').click()
     },
     getFile (e) {
-      const URLImg = URL.createObjectURL(e.target.files[0])
+      const imageObj = e.target.files[0]
+      const URLImg = URL.createObjectURL(imageObj)
       if (this.images.length % 2 === 0) {
         this.images.push([URLImg, true, this.images.length])
       } else {
         this.images.push([URLImg, false, this.images.length])
       }
+      this.imageObjs.push(imageObj)
     }
+  },
+  mounted () {
+    if ('image' in this.savedProgress) {
+      for (const img of this.savedProgress.image) {
+        const URLImg = URL.createObjectURL(img)
+        if (this.images.length % 2 === 0) {
+          this.images.push([URLImg, true, this.images.length])
+        } else {
+          this.images.push([URLImg, false, this.images.length])
+        }
+        this.imageObjs.push(img)
+      }
+    } 
   }
 }
 </script>
@@ -112,19 +133,24 @@ button{
   margin-bottom: 20px;
 }
 
-@media (max-width: 400px) {
-  .input {
-    margin-left: 40px;
+@media (max-width: 470px) {
+  .input{
+    width: 300px;
   }
-  #pic{
-    width: 200px;
-    color: red;
+  #images{
+    max-width: 300px;
+  }
+  p{
+    color:red;
   }
 }
 
 @media (max-width: 550px) {
   #pic {
     width: 350px;
+  }
+  #images{
+    max-width: 430px;
   }
 }
 

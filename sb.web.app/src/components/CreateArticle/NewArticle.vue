@@ -2,9 +2,9 @@
 <div id="input-form">
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep=goBackStep />
   <div id="center">
-    <StepOne v-if="this.currentStep === 3" ref='stepOne' :savedProgress="this.newArticle" />
+    <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" />
-    <StepThree v-if="this.currentStep === 1" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
@@ -45,6 +45,10 @@ export default {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepTwo.getStepTwoInputs() }
       console.dir(this.newArticle)
     },
+    saveThreeStep () {
+      this.newArticle = { ...this.newArticle, ...this.$refs.stepThree.getStepThreeInputs() }
+      console.dir(this.newArticle)
+    },
     goForwardStep () {
       if (this.currentStep === 1) {
         this.saveFirstStep()
@@ -59,6 +63,8 @@ export default {
         this.buttonText = 'Tillbaka'
         this.backLink = '#'
         this.nextBtnText = 'Förhandsgranska'
+      } else if (this.currentStep === 3) {
+        this.saveThreeStep()
       }
     },
     goBackStep () {
@@ -68,6 +74,7 @@ export default {
         this.imgURL = 'one_three.png'
         this.buttonText = 'Shop'
       } else if (this.currentStep === 3) {
+        this.saveThreeStep()
         this.currentStep = 2
         this.imgURL = 'two_three.png'
         this.nextBtnText = 'Nästa'

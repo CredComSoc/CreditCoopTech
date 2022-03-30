@@ -49,4 +49,10 @@ export default {
         height: 0px; 
         overflow: hidden;
     }
+
+  @media (max-width: 470px) {
+    img{
+      width: 100px;
+    }
+  }
 </style>
