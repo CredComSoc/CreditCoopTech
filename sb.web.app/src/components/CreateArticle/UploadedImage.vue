@@ -4,7 +4,7 @@
         <div>
           <img :src=this.imageURL />
           <br/>
-          <input class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
+          <input :checked="isCoverImg" class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
           <label for="firstPic">Välj som omslagsbild</label>
         </div>
     </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  props: ['imageURL', 'break', 'id'],
+  props: ['imageURL', 'break', 'id', 'isCoverImg'],
   methods: {
     clickCheckbox (id) {
       const cbs = document.getElementsByClassName('cb')
