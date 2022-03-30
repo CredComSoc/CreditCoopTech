@@ -14,16 +14,16 @@
     <div class="main">
       <!-- KOLUMN FÖR KATERGORI-->
       <div class="categories">
-        <Categories/>
+        <Categories @filterEvent="filteringMethod"/>
       </div>
 
       <!-- KOLYMN FÖR PRODUKTER -->
       <div class="listings">
-        <div>
-          <h3>Produkter</h3>
+        <div v-if="this.productsSearchData.length !== 0">
+          <h3 >Produkter</h3>
           <Alllistings @togglePopupEvent="togglePopup" :key=productsSearchData :search-data=productsSearchData />
         </div>
-        <div>
+        <div v-if="this.servicesSearchData.length !== 0">
           <h3>Tjänster</h3>
           <Alllistings @togglePopupEvent="togglePopup" :key=servicesSearchData :search-data=servicesSearchData />
         </div>
@@ -50,7 +50,10 @@ export default {
       singleListingData: [],
       popupActive: false,
       listingObjPopup: Object,
-      getAllListings
+      getAllListings,
+      categoryArray: [],
+      destinationsArray: [],
+      articleArray: []
     }
   },
 
@@ -73,13 +76,36 @@ export default {
       this.popupActive = false
     },
     backendFunction (newSearchWord) {
-      this.getAllListings(newSearchWord).then(res => {
+      this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray).then(res => {
         return res
       })
         .then(data => {
           this.productsSearchData = data.allProducts
           this.servicesSearchData = data.allServices
         })
+    },
+    filteringMethod (checked, type, value) {
+      if (type === 'destination') {
+        if (!checked) {
+          this.destinationsArray.push(value)
+        } else {
+          this.destinationsArray.splice(this.destinationsArray.indexOf(value), 1)
+        }
+        console.log(this.destinationsArray)
+      } else if (type === 'category') {
+        if (!checked) {
+          this.categoryArray.push(value)
+        } else {
+          this.categoryArray.splice(this.categoryArray.indexOf(value), 1)
+        }
+        console.log(this.categoryArray)
+      } else if (type === 'article') {
+        if (!checked) {
+          this.articleArray.push(value)
+        } else {
+          this.articleArray.splice(this.articleArray.indexOf(value), 1)
+        }
+      }
     }
   }
 }
