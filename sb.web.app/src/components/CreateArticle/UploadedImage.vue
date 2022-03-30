@@ -5,7 +5,7 @@
           <img :src=this.imageURL />
           <br/>
           <input class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
-          <label for="firstPic">Välj som omslagsbild</label>
+          <label for="firstPic"> {{ this.textboxLabel }} </label>
         </div>
     </div>
     
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  props: ['imageURL', 'break', 'id'],
+  props: ['imageURL', 'break', 'id', 'textboxLabel'],
   methods: {
     clickCheckbox (id) {
       const cbs = document.getElementsByClassName('cb')

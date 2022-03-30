@@ -9,7 +9,7 @@
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage class="img"
+    <UploadedImage class="img" textboxLabel="Välj som omslagsbild"
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"

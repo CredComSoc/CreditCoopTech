@@ -1,12 +1,26 @@
 <template>
   <h3> {{ this.title }} </h3>
-  <p> {{ this.text }} </p>
+  <p v-if="this.images === null"> {{ this.text }} </p>
+  <div v-if="this.images !== null" id="images-container">
+    <UploadedImage class="img" textboxLabel="Vald som omslagsbild"
+      v-for="(img) in this.images"
+        :imageURL="img[0]"
+        :key="img[0]"
+        :break="img[1]"
+        :id="img[2]"
+    />
+  </div>
 </template>
 
 <script>
+import UploadedImage from './UploadedImage.vue'
+
 export default {
   name: 'PreviewItem',
-  props: ['title', 'text']
+  components: {
+    UploadedImage
+  },
+  props: ['title', 'text', 'images']
 }
 </script>
 
@@ -27,6 +41,15 @@ h3 {
 
 p {
     word-break: break-word;
+}
+
+#images-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 480px;
 }
 
 </style>

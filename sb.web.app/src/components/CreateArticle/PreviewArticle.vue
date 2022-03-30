@@ -4,14 +4,17 @@
     <p> Kontrollera att uppgifterna stämmer </p>
   </div>
   <div id="items-container">
-    <PreviewItem title='Rubrik' :text='this.savedProgress.title' />
-    <PreviewItem title='Beskrivning' :text='this.savedProgress.description' />
-    <PreviewItem title='Typ av artikel' :text='this.savedProgress.type' />
-    <PreviewItem title='Kategori' :text='this.savedProgress.category' />
-    <PreviewItem title='Tid' :text='this.savedProgress.endDate' />
-    <PreviewItem title='Plats' :text='this.savedProgress.city' />
-    <PreviewItem title='Pris' :text='this.savedProgress.price' />
-    <PreviewItem title='Bilder' text='' />
+    <PreviewItem title='Rubrik' :text='this.savedProgress.title' :images="null" />
+    <PreviewItem title='Beskrivning' :text='this.savedProgress.description' :images="null" />
+    <PreviewItem title='Typ av artikel' :text='this.savedProgress.type' :images="null" />
+    <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />
+    <PreviewItem title='Tid' :text='this.savedProgress.endDate' :images="null" />
+    <PreviewItem title='Plats' :text='this.savedProgress.city' :images="null" />
+    <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
+    <PreviewItem title='Bilder' :text="null" :images='this.images' />
+  </div>
+  <div id="publish-confirmation">
+    <p>HEllo </p> 
   </div>
 </template>
 
@@ -23,7 +26,22 @@ export default {
   components: {
     PreviewItem    
   },
-  props: ['savedProgress']
+  mounted () {
+    for (const img of this.savedProgress.image) {
+      const URLImg = URL.createObjectURL(img)
+      if (this.images.length % 2 === 0) {
+        this.images.push([URLImg, true, this.images.length])
+      } else {
+        this.images.push([URLImg, false, this.images.length])
+      }
+    }
+  },
+  props: ['savedProgress'],
+  data () {
+    return {
+      images: []
+    }
+  }
 }
 </script>
 
@@ -58,6 +76,14 @@ p {
 
 #items-container {
     width: 500px;
+}
+
+#publish-confirmation {
+  width: 500px;
+  height: 232px;
+  border: 1px solid #CED4DA;
+  box-sizing: border-box;
+  border-radius: 0px 0px 12px 12px;
 }
 
 @media (max-width: 600px) {
