@@ -1,6 +1,6 @@
 <template>
   <div id="create-header">
-    <img class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
+    <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
     <a :href=this.link @click=goBackStep><img class="arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ this.ButtonText }}</a>
   </div>
 </template>

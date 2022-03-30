@@ -5,6 +5,7 @@
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" />
     <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
+    <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" />
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
@@ -16,6 +17,7 @@ import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
 import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
+import PreviewArticle from './PreviewArticle.vue'
 
 export default {
   name: 'NewArticle',
@@ -24,6 +26,7 @@ export default {
     StepOne,
     StepTwo,
     StepThree,
+    PreviewArticle,
     NewArticleFooter
   },
   data () {
@@ -65,6 +68,11 @@ export default {
         this.nextBtnText = 'Förhandsgranska'
       } else if (this.currentStep === 3) {
         this.saveThreeStep()
+        this.currentStep = 4
+        this.imgURL = null
+        this.buttonText = 'Tillbaka'
+        this.backLink = '#'
+        this.nextBtnText = 'Publicera'
       }
     },
     goBackStep () {
@@ -78,6 +86,10 @@ export default {
         this.currentStep = 2
         this.imgURL = 'two_three.png'
         this.nextBtnText = 'Nästa'
+      } else if (this.currentStep === 4) {
+        this.currentStep = 3
+        this.imgURL = 'three_three.png'
+        this.nextBtnText = 'Förhandsgranska'
       } else if (this.currentStep === 1) {
         this.backLink = '/Shop'
       }

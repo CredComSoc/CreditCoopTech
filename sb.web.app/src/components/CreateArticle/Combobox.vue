@@ -39,14 +39,23 @@ export default {
     getInput () {
       return this.selectedValue
     },
-    setDate () {
+    setDate () { 
+      this.$refs.dateVal.type = 'text'
+      const options = { 
+        month: '2-digit', 
+        day: '2-digit'
+      }
+      this.$refs.dateVal.value = new Date().toLocaleString('se', options).replaceAll('-', '/') + ' - ' + this.$refs.dateVal.value.replaceAll('-', '/').substring(5)
+      this.$refs.dateVal.blur()
       this.selectedValue = this.$refs.dateVal.value
       this.$emit('clearNoEndDateCheckbox')
     },
     setValue (newValue) {
       if (this.isDatePicker) {
-        this.selectedValue = newValue
+        this.$refs.dateVal.type = 'text'
         this.$refs.dateVal.value = newValue
+        this.$refs.dateVal.blur()
+        this.selectedValue = newValue
       } else {
         const selectedVal = document.getElementById(this.name + '-combo-placeholder')
         selectedVal.innerText = newValue
@@ -73,6 +82,14 @@ export default {
           document.getElementById(this.name).classList.remove('combobox-active')
         })
       }
+    } else {
+      const minLimitDate = new Date()
+      const datePicker = document.getElementById(this.name + '-date-picker')
+      minLimitDate.setDate(minLimitDate.getDate() + 1)
+      datePicker.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+      const maxLimitDate = new Date()
+      maxLimitDate.setMonth(maxLimitDate.getMonth() + 1)
+      datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     } 
   },
   data () {
