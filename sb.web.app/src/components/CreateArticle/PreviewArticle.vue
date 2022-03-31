@@ -13,18 +13,18 @@
     <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
     <PreviewItem title='Bilder' :text="null" :images='this.images' />
   </div>
-  <!-- <div id="publish-confirmation">
-    <p>HEllo </p> 
-  </div> -->
+  <PublishConfirm v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel blir nu granskad och du får en notis när artikeln publiceras i shopen.`" btnLink='\' btnText="Ok" />
 </template>
 
 <script>
 import PreviewItem from './PreviewItem.vue'
+import PublishConfirm from './PublishConfirm.vue'
 
 export default {
   name: 'PreviewArticle',
   components: {
-    PreviewItem    
+    PreviewItem,
+    PublishConfirm    
   },
   mounted () {
     for (const img of this.savedProgress.image) {
@@ -36,7 +36,7 @@ export default {
       }
     }
   },
-  props: ['savedProgress'],
+  props: ['savedProgress', 'isPublished'],
   data () {
     return {
       images: []
@@ -76,14 +76,6 @@ p {
 
 #items-container {
     width: 500px;
-}
-
-#publish-confirmation {
-  width: 500px;
-  height: 232px;
-  border: 1px solid #CED4DA;
-  box-sizing: border-box;
-  border-radius: 0px 0px 12px 12px;
 }
 
 @media (max-width: 600px) {

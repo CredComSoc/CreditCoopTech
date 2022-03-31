@@ -5,7 +5,7 @@
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" />
     <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle"/>
-    <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" />
+    <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
   </div>
   <NewArticleFooter :ButtonText="nextBtnText" @click=goForwardStep />
 </div>
@@ -36,7 +36,8 @@ export default {
       imgURL: 'one_three.png',
       buttonText: 'Shop',
       nextBtnText: 'Nästa',
-      newArticle: {}
+      newArticle: {},
+      isPublished: false
     }
   },
   methods: {
@@ -73,6 +74,8 @@ export default {
         this.buttonText = 'Tillbaka'
         this.backLink = '#'
         this.nextBtnText = 'Publicera'
+      } else if (this.currentStep === 4) {
+        this.isPublished = true
       }
     },
     goBackStep () {
