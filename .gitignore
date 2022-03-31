@@ -1,7 +1,7 @@
 .DS_Store
 backend/node_modules
 sb.web.app/node_modules
-/dist
+sb.web.app/dist
 
 
 # local env files

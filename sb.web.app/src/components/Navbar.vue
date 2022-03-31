@@ -34,7 +34,7 @@
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="http://localhost:8080/add_article">Ny artikel </a>
+                  <a href="http://localhost:8080/add/article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>
