@@ -5,7 +5,7 @@
     <div id="pic">
         <p>Välj fil</p>
     </div>
-    <button @click=upload>Bläddra</button>
+    <button ref="addFile" @click=upload>Bläddra</button>
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
@@ -13,9 +13,8 @@
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"
-          :break="img[1]"
-          :id="img[2]"
-          :isCoverImg="img[3]"
+          :id="img[1]"
+          :isCoverImg="img[2]"
     />
   </div>
 </div> 
@@ -34,7 +33,7 @@ export default {
   data () {
     return {
       images: [],
-      imageObjs: [] 
+      imageObjs: []
     }
   },
   methods: {
@@ -57,11 +56,8 @@ export default {
     getFile (e) {
       const imageObj = e.target.files[0]
       const URLImg = URL.createObjectURL(imageObj)
-      if (this.images.length % 2 === 0) {
-        this.images.push([URLImg, true, this.images.length, false])
-      } else {
-        this.images.push([URLImg, false, this.images.length, false])
-      }
+      this.$refs.addFile.innerText = 'Välj fler'
+      this.images.push([URLImg, this.images.length, false])
       this.imageObjs.push(imageObj)
     }
   },
@@ -69,11 +65,7 @@ export default {
     if ('image' in this.savedProgress) {
       for (const img of this.savedProgress.image) {
         const URLImg = URL.createObjectURL(img)
-        if (this.images.length % 2 === 0) {
-          this.images.push([URLImg, true, this.images.length, img.isCoverImg])
-        } else {
-          this.images.push([URLImg, false, this.images.length, img.isCoverImg])
-        }
+        this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)
       }
     } 
@@ -133,6 +125,7 @@ button{
     border-radius: 0px 4px 4px 0px;
     background-color: rgb(236, 236, 236) ;
     border: 2px solid #797979; 
+    font-size: 15px;
     font-family: 'Ubuntu';
 }
 
@@ -147,10 +140,10 @@ button{
     width: 300px;
   }
   #images{
-    max-width: 300px;
+    width: 300px;
   }
-  p{
-    color:red;
+  button{
+    font-size: 12px;
   }
 }
 

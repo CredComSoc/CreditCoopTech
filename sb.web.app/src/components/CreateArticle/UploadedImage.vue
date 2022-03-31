@@ -42,16 +42,9 @@ export default {
         width:170px;
     }
 
-    .break{
-        flex-basis: 100%;
-        width: 0px; 
-        height: 0px; 
-        overflow: hidden;
-    }
-
-  @media (max-width: 470px) {
+/* @media (max-width: 470px) {
     img{
       width: 100px;
     }
-  }
+  } */
 </style>
