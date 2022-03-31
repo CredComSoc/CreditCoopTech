@@ -1,3 +1,11 @@
+<!-- 
+*   Component which display all listings/articles relevant to the search result. 
+*   SearchData is a array of listing-objects, which contain relevant information
+*   for the Listing component. 
+*   A toggle-event is active on each li-element, displaying additional information
+*   when clicked.
+-->
+
 <template>
   <div class="container_all_listings">
     <ul>
@@ -9,7 +17,7 @@
 </template>
 
 <script>
-//  import Searchfield from '@/components/userstory4/searchfield.vue'
+
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -47,7 +55,7 @@ ul {
 li {
   display: inline-block;
   flex: 1 0 calc(25% - 10px);
-
+  vertical-align: top;
 }
 
 /* @media only screen and (min-width: 1200) {

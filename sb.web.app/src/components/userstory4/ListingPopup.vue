@@ -4,7 +4,7 @@
     
   </div>
   <div class="popup-inner">
-    <img class="p-image" src="./images/bulles1.png" alt="Coffea">
+    <img class="p-image" :src='getImgURL()' alt="Coffea">
     <div class="content-right">
       <div class="flex-center-bottom">
         <button className="xBtn" @click="$emit('closePopup')">x</button>
@@ -15,19 +15,22 @@
         <p>{{listingObj.destination}}</p>
         <p>{{listingObj.price}}</p>
       </div>
-      <div class="flex-center-bottom align-to-bottom">
-        <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
-        <p class="amountText"> {{amount}} </p>
-        <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
-      </div>
-      <div class="flex-center-bottom bottom-placement">
-        <button class="cartBtn" @click="emit('placeInCart', amount)">Lägg i varukorg</button>
+      <div class="interactContent" >
+        <div>
+          <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
+          <p class="amountText"> {{amount}} </p>
+          <b-button class="increaseBtn" @click="amount++">+</b-button>
+        </div>
+        <div>
+          <button class="cartBtn" @click="emit('placeInCart', amount)">Lägg i varukorg</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 </template>
 <script>
+
 export default {
 
   props: {
@@ -50,6 +53,9 @@ export default {
       if (this.amount < 99) {
         this.amount++
       }
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.listingObj.img
     }
   }
 }
@@ -98,8 +104,8 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 70rem;
-  height: 50rem;
+  width: 100vh;
+  height: 70%;
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
@@ -141,13 +147,17 @@ h5 {
   
 }
 
-.bottom-placement {
-  align-self: flex-end;
-  justify-content: flex-end;
+.interactContent {
+  
+  position:absolute;
+  text-align: right;
+  bottom: 0;
+  right: 1rem;
+  /* width: 33%; */
 }
 
-.align-to-bottom {
-  padding-top: 15rem;
+.interactContent > * {
+  width: 100%;
 }
 
 </style>

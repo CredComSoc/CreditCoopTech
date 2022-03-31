@@ -6,7 +6,7 @@
     </div>
 
     <div class="center">
-        <Searchfield @searchEvent="testMethod" />
+        <Searchfield @searchEvent="triggerSearch" />
     </div>
 
     <br>
@@ -21,11 +21,11 @@
       <div class="listings">
         <div v-if="this.productsSearchData.length !== 0">
           <h3 >Produkter</h3>
-          <Alllistings @togglePopupEvent="togglePopup" :key=productsSearchData :search-data=productsSearchData />
+          <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=productsSearchData />
         </div>
         <div v-if="this.servicesSearchData.length !== 0">
           <h3>Tjänster</h3>
-          <Alllistings @togglePopupEvent="togglePopup" :key=servicesSearchData :search-data=servicesSearchData />
+          <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=servicesSearchData />
         </div>
         <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
       </div>
@@ -65,17 +65,7 @@ export default {
   },
 
   methods: {
-    testMethod (newSearchWord) {
-      this.backendFunction(newSearchWord)
-    },
-    togglePopup (listingObj) {
-      this.popupActive = true
-      this.listingObjPopup = listingObj
-    },
-    closePopup (listingObj) {
-      this.popupActive = false
-    },
-    backendFunction (newSearchWord) {
+    triggerSearch (newSearchWord) {
       this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray).then(res => {
         return res
       })
@@ -84,29 +74,33 @@ export default {
           this.servicesSearchData = data.allServices
         })
     },
+    openPopUp (listingObj) {
+      this.popupActive = true
+      this.listingObjPopup = listingObj
+    },
+    closePopup (listingObj) {
+      this.popupActive = false
+    },
     filteringMethod (checked, type, value) {
       if (type === 'destination') {
-        if (!checked) {
-          this.destinationsArray.push(value)
-        } else {
-          this.destinationsArray.splice(this.destinationsArray.indexOf(value), 1)
-        }
-        console.log(this.destinationsArray)
+        this.changeFiltering(checked, this.destinationsArray, value)
       } else if (type === 'category') {
-        if (!checked) {
-          this.categoryArray.push(value)
-        } else {
-          this.categoryArray.splice(this.categoryArray.indexOf(value), 1)
-        }
-        console.log(this.categoryArray)
+        this.changeFiltering(checked, this.categoryArray, value)
       } else if (type === 'article') {
-        if (!checked) {
-          this.articleArray.push(value)
-        } else {
-          this.articleArray.splice(this.articleArray.indexOf(value), 1)
-        }
+        this.changeFiltering(checked, this.articleArray, value)
+      }
+    },
+    changeFiltering (checked, specificArray, value) {
+      if (!checked) {
+        specificArray.push(value)
+      } else {
+        specificArray.splice(specificArray.indexOf(value), 1)
       }
     }
+  },
+  
+  created: function () {
+    this.triggerSearch('')
   }
 }
 </script>

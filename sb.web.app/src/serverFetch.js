@@ -14,7 +14,6 @@ export async function getAllListings (searchword, destinationsArray, categoryArr
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
-        console.log('AAAA det funka')
         return response.json()
       }
     })

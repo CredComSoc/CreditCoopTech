@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <ListingPopup v-if="true"/> -->
     <div class="element-container" @click="togglePopup">
         <img :src='getImgURL()' />
         <h4 class="element-title"> {{ listingObj.title }} </h4>
@@ -8,6 +7,7 @@
     </div>
   </div>
 </template>
+
 <script>
 
 // import ListingPopup from '@/components/userstory4/ListingPopup.vue'
