@@ -6,14 +6,15 @@ const {MongoClient} = require('mongodb');
 /**
  * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
  */
-let url = "mongodb://localhost:27017/"
-let dbFolder = "Test"
+//let url = "mongodb://localhost:27017/"
+//let dbFolder = "Test"
+//let userFolder = "Users"
+let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+let dbFolder = "tvitter"
+let userFolder = "users"
 
-// Mongo URI
-const mongoURI = 'mongodb://localhost:27017/' + dbFolder;
-
-// Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const mongoURI = url;
+const conn = mongoose.createConnection(mongoURI).useDb(dbFolder);
 
 // Init gfs
 let gfs;
@@ -23,9 +24,10 @@ conn.once('open', () => {
   gfs.collection('uploads');
 });
 
+// filename: req.params.filename
+
 router.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    // Check if file
+  gfs.files.findOne({}, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
         err: 'No file exists'
@@ -61,7 +63,7 @@ router.post('/getAllListings/', (req, res) => {
           return value !== "";
         })
 
-        dbo.collection("Users").find({}).toArray(function (err, users) {
+        dbo.collection(userFolder).find({}).toArray(function (err, users) {
 
           if (err) {
             res.sendStatus(500)
