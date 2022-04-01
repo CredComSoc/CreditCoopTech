@@ -24,10 +24,8 @@ conn.once('open', () => {
   gfs.collection('uploads');
 });
 
-// filename: req.params.filename
-
 router.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({}, (err, file) => {
+  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
     if (!file || file.length === 0) {
       return res.status(404).json({
         err: 'No file exists'
