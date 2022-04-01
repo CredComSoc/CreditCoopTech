@@ -46,7 +46,7 @@ export default {
         day: '2-digit'
       }
       this.selectedValue = this.$refs.dateVal.value
-      this.$refs.dateVal.value = new Date().toLocaleString('se', options).replaceAll('-', '/') + ' - ' + this.$refs.dateVal.value.replaceAll('-', '/').substring(5)
+      this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + this.$refs.dateVal.value.replaceAll('-', '/').substring(5)
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
@@ -56,8 +56,8 @@ export default {
         day: '2-digit'
       }
       console.log(endDate)
-      const now = new Date().toLocaleString('se', options).replaceAll('-', '/')
-      return now + ' - ' + new Date(endDate).toLocaleString('se', options).replaceAll('-', '/')
+      const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
+      return now + ' - ' + new Date(endDate).toLocaleString('sv-SE', options).replaceAll('-', '/')
     },
     setValue (newValue) {
       if (this.isDatePicker) {

@@ -8,7 +8,7 @@
     <PreviewItem title='Beskrivning' :text='this.savedProgress.description' :images="null" />
     <PreviewItem title='Typ av artikel' :text='this.savedProgress.type' :images="null" />
     <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />
-    <PreviewItem title='Tid' :text='this.savedProgress.endDate' :images="null" />
+    <PreviewItem title='Tid' :text='this.endDate' :images="null" />
     <PreviewItem title='Plats' :text='this.savedProgress.city' :images="null" />
     <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
     <PreviewItem title='Bilder' :text="null" :images='this.images' />
@@ -35,11 +35,21 @@ export default {
         this.images.push([URLImg, false, this.images.length, img.isCoverImg])
       }
     }
+    if (this.savedProgress.endDate !== null) {
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }
+
+      this.endDate = new Date().toLocaleString('sv-SE', options) + ' - ' + this.savedProgress.endDate
+    }
   },
   props: ['savedProgress', 'isPublished'],
   data () {
     return {
-      images: []
+      images: [],
+      endDate: 'På obestämd tid.'
     }
   }
 }
