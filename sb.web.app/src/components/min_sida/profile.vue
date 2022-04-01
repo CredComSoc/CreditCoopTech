@@ -38,6 +38,11 @@ export default {
     MyProducts,
     MyRequests
   },
+  created () {
+    if (this.$route.params.tab) {
+      this.tab = this.$route.params.tab
+    }
+  },
   beforeUpdate () {
     if (this.$route.params.tab) {
       this.tab = this.$route.params.tab

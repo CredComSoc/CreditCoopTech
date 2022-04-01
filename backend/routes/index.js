@@ -1,14 +1,15 @@
-var express = require('express');
+const express = require('express');
+const passport = require('passport')
 const app = express();
-var router = express.Router();
+const router = express.Router();
 const {MongoClient} = require('mongodb');
 const { 
     v1: uuidv1,
     v4: uuidv4,
-  } = require('uuid');
-sha1 = require('js-sha1');  
+  } = require('uuid'); 
 
-let url = "mongodb://localhost:27017/"
+const url = "mongodb://localhost:27017/"
+// const url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 // Test Route
 router.get("/", (req, res) => {
@@ -16,53 +17,17 @@ router.get("/", (req, res) => {
 })
 
 
-// Om användaren loggar in,
-// params = användarnamn, hashat lösenord
-// kolla om användarnamn finns, om det finns, kolla om hashat lösenord matchar
-// om det matchar, returnera ett nytt sessionID, lägg även till nytt sessionID
-// i databasen.
-// om inte finns returnera status, baserat på status skriv felmeddelane. 
-// returnerna en session ID/Token
+router.get('/authenticate', (req, res) => {
+  console.log(req.user)
+  if (req.isAuthenticated()) {
+    res.sendStatus(200)
+  } else {
+    res.sendStatus(500)
+  }
+})
 
-router.post("/login", (req, res) => {
-  let username = req.body.username;
-  let pw = req.body.password;
-  let myquery = { userID: username, password: pw}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-
-      } 
-      else if (result != null) {
-        
-        //Skapar sessionID
-        let sessionIDvalue = uuidv4();
-        let newSessionID = { $set: {sessionID: sessionIDvalue} };
-        
-        dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
-          if (err) {
-            db.close();
-            res.sendStatus(500)
- 
-          }
-          else {
-            db.close()
-            res.status(200).send({userID : result.userID, sessionID: sessionIDvalue})
-  
-          }
-        });
-      } 
-      else {
-        //If we dont find a result
-        res.sendStatus(500)
-        db.close();
-
-      }
-    })
-  })
+router.post("/login", passport.authenticate('local'), (req, res) => {
+  res.sendStatus(200)
 })
 
 // Om användaren registerar sig,
@@ -199,9 +164,5 @@ router.get("/profile", (req, res) => {
     })
   })
 })
-
-
-
-  
 
 module.exports = router;

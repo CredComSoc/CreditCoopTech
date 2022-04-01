@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authenticate } from '../serverFetch'
 import Home from '../views/Home.vue'
+import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
 import Profile from '../components/min_sida/profile.vue'
 import NewArticle from '../components/NewArticle.vue'
@@ -10,6 +12,11 @@ const routes = [
     name: 'Home',
     component: Home,
     props: true
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/shop',
@@ -44,5 +51,16 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach(async (to, from) => {
+  const auth = await authenticate()
+  if (to.name !== 'Login') {
+    if (!auth) {
+      return { name: 'Login' }
+    }
+  } else if (auth) {
+    return { name: 'Home' }
+  }
+}) 
 
 export default router

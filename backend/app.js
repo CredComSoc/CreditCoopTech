@@ -1,38 +1,42 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
+const express = require('express');
+const passport = require('passport')
+const session = require('cookie-session')
+// const path = require('path');
+// const { v1: uuidv1, v4: uuidv4 } = require('uuid');
 
-const { 
-    v1: uuidv1,
-    v4: uuidv4,
-  } = require('uuid');
-  
-
-var indexRouter = require('./routes/index');
-var ccRouter = require('./routes/cc_routes')
-
-var app = express();
+const app = express();
 
 const corsMiddleware = require('./cors');
 app.options('*', corsMiddleware);
 app.use(corsMiddleware);
 
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-
+const logger = require('morgan');
 app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+const cookieParser = require("cookie-parser");
+app.use(cookieParser())
+
+app.use(session({
+  name: 'session',
+  keys: ['asddf'],  // BYT UT
+
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
+
+const initializePassport = require('./passport-config')
+initializePassport(passport)
+app.use(passport.initialize())
+app.use(passport.session())
+
+
+const  indexRouter = require('./routes/index')
+const  ccRouter = require('./routes/cc_routes')
+app.use('/', indexRouter)
 app.use('/', ccRouter)
-
-
-const {MongoClient} = require('mongodb');
-let url = "mongodb://localhost:27017/";
-
 
 function startServer(port) {
   let server = app.listen(3000, () => {
@@ -43,7 +47,6 @@ function startServer(port) {
   return(server)
 }
 
+startServer()
 
- startServer()
-
- module.exports = startServer;
+module.exports = startServer;

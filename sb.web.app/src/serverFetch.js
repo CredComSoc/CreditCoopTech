@@ -1,9 +1,10 @@
-import * as JsSHA from 'jssha'
+import JsSHA from 'jssha'
 import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = '155.4.159.231/cc-node'
-// const EXPRESS_URL = 'http://localhost:3000'
+// const EXPRESS_URL = 'http://localhost:3000'  // USE LOCAL DB
+// const EXPRESS_URL = '155.4.159.231:3000'     // USE HOST DB
 const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 async function getUserData () {
@@ -14,10 +15,10 @@ async function getUserData () {
       return res.json()
     })
     .then((data) => {
-      return (data)
+      return data
     })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
+    .catch(() => {
+      return false
     })
   return userPromise
 }
@@ -26,7 +27,25 @@ function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
   const hash = hashObj.getHash('HEX')
-  return (hash)
+  return hash
+}
+
+export async function authenticate () {
+  const authPromise = fetch(EXPRESS_URL + '/authenticate', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return false
+      }
+      return true
+    })
+
+  return authPromise
 }
 
 export async function login (username, password) {
@@ -37,27 +56,20 @@ export async function login (username, password) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username: username, password: hashedPassword })
+    body: JSON.stringify({ username: username, password: password })
   })
     .then((response) => {
+      console.log(response)
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        return false
       } else {
-        return (response.json())
+        return true
       }
     })
-    .then((data) => {
-      return data.sessionID
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-      return (false)
-    })
-
   return loginPromise
 }
 
-export async function registerFetch (username, password) {
+export async function register (username, password) {
   const hashedPassword = hashMyPassword(password)
 
   fetch(EXPRESS_URL + '/register', {
@@ -72,11 +84,11 @@ export async function registerFetch (username, password) {
         throw new Error('Network response was not ok')
       } else {
         console.log('Registering account')
-        return (true)
+        return true
       }
     })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
+    .catch(() => {
+      return false
     })
 }
 
@@ -93,11 +105,11 @@ export async function logout (sessionID) {
         throw new Error('Network response was not ok')
       } else {
         console.log('Signing out')
-        return (true)
+        return true
       }
     })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
+    .catch(() => {
+      return false
     })
 }
 
@@ -119,8 +131,8 @@ export function getTransactions (ccUser, ccAuth) {
         // console.log('data ' + data)
         return (data)
       })
-      .catch(err => {
-        console.error('There has been a problem with your fetch operation:', err)
+      .catch(() => {
+        return false
       })
     return allTransactionPromise
   })
@@ -128,7 +140,7 @@ export function getTransactions (ccUser, ccAuth) {
 }
 
 // UNUSED
-export async function transaction (ccUser, ccAuth, id) {
+export async function getTransaction (ccUser, ccAuth, id) {
   const transactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/' + id + '/full', {
     method: 'GET',
     headers: {
@@ -145,8 +157,8 @@ export async function transaction (ccUser, ccAuth, id) {
       // console.log('data ' + data)
       return (data)
     })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
+    .catch(() => {
+      return false
     })
   return transactionPromise
 }
@@ -161,39 +173,13 @@ export async function profile (ccUser, ccAuth) {
     }
   }, CORS_ANYWHERE)
     .then((res) => {
-      // console.log(res.json())
       return res.json()
     })
     .then((data) => {
-      // console.log('data ' + data)
       return (data)
     })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
+    .catch(() => {
+      return false
     })
   return profilePromise
 }
-
-/*
-export async function credit (ccUser, ccAuth) {
-  const creditPromise = fetchNoCors(CC_NODE_URL + 'http://localhost:3000/credit', {
-    method: 'GET',
-    headers: {
-      'cc-user': ccUser,
-      'cc-auth': ccAuth,
-      'Content-Type': 'application/json'
-    }
-  }, CORS_ANYWHERE)
-    .then((res) => {
-      // console.log(res.json())
-      return res.json()
-    })
-    .then((data) => {
-      // console.log('data ' + data)
-      return (data)
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return creditPromise
-} */

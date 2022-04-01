@@ -52,7 +52,9 @@
     "rules": {
       "no-unused-vars": "off",
       "spaced-comment": "off",
-      "no-trailing-spaces": "off"
+      "no-trailing-spaces": "off",
+      "func-call-spacing": "off",
+      "no-console": "off"
     }
   },
   "browserslist": [

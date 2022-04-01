@@ -106,7 +106,7 @@
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
-                <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
+                <router-link :to="{name:'Login', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
@@ -147,8 +147,7 @@ export default {
     return {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
-      dropdownActive: false, // if a dropdown menu is active
-      IP: '155.4.159.231'
+      dropdownActive: false // if a dropdown menu is active
     }
   },
   name: 'Navbar',
