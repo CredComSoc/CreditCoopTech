@@ -7,6 +7,7 @@
       </div>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
     <Footer id="footer" />
+    <Form />
   </div>
 </template>
 

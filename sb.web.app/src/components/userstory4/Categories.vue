@@ -1,87 +1,49 @@
+<!--
+*   Contains all category buttons, will event is triggered by CategoryButton a new event will trigger
+-->
+
 <template>
     <div className="categories">
-      <div className="category">
         <h1>Typ av artikel</h1>
-        <div className="label">
-          <input type="checkbox">
-          <p>Tjänster</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Produkter</p>
-        </div>
-      </div>
-      <div className="category">
+        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' title='Produkter'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='service' title='Tjänster'/>
+
         <h1>Plats</h1>
-        <div className="label">
-          <input type="checkbox">
-          <p>Norrköping</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Söderköping</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Linköping</p>
-        </div>
-      </div>
-      <div className="category">
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='norrkoping' title='Norrköping'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='soderkoping' title='Söderköping'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='linkoping' title='Linköping'/>
+      
         <h1>Kategorier</h1>
-        <div className="label">
-          <input type="checkbox">
-          <p>Affärsutveckling & strategi</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Arbetsyta</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Fotografering</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Kök & restaurang</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Marknadsföring</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Rengöring & städ</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Skönhet</p>
-        </div>
-        <div className="label">
-          <input type="checkbox">
-          <p>Sömnad & tyg</p>
-        </div>
-      </div>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='affarsutveckling' title='Affärsutveckling & strategi'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='arbetsyta' title='Arbetsyta'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='fotografering' title='Fotografering'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='restaurang' title='Kök & restaurang'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='marknadsforing' title='Marknadsföring'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='rengoring&stad' title='Rengöring & städ'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='skonhet' title='Skönhet'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='somnad&tyg' title='Sömnad & tyg'/>
+
     </div>
 </template>
 
 <script>
+import CategoryButton from '@/components/userstory4/categorybutton.vue'
+
 export default {
-  data () {
-    return {
-      message: ''
+  methods: {
+    triggerFilterEvent (checked, type, value) {
+      this.$emit('filterEvent', checked, type, value)
     }
+  },
+  components: {
+    CategoryButton
   }
 }
 </script>
+
 <style scoped>
   h1 {
     font-size: 18px;
-  }
-
-  input {
-    margin-right:0.2rem;
-    margin-top: 0.1rem
-    /* margin:rem; */
   }
 
   .categories {
@@ -92,9 +54,4 @@ export default {
     padding: 1rem;
   }
 
-  .label {
-    display:flex;
-    padding:0;
-    line-height: 0.9;
-  }
 </style>

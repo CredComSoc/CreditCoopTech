@@ -1,19 +1,23 @@
+<!-- 
+*   Component which display all listings/articles relevant to the search result. 
+*   SearchData is a array of listing-objects, which contain relevant information
+*   for the Listing component. 
+*   A toggle-event is active on each li-element, displaying additional information
+*   when clicked.
+-->
+
 <template>
-  <b-container class="mb-12">
+  <div class="container_all_listings">
     <ul>
-      <b-row cols-xs="1" cols-sm="2" cols-md="3" cols-xl="4" class="row g-0">
-        <li v-for="item in searchData['allListings']" :key="item.title">
-          <b-col>
-            <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
-          </b-col>
-        </li>
-      </b-row>
+      <li v-for="item in searchData" :key="item.title">
+        <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
+      </li>
     </ul>
-  </b-container>
+  </div>
 </template>
 
 <script>
-//  import Searchfield from '@/components/userstory4/searchfield.vue'
+
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -35,7 +39,31 @@ export default {
 </script>
 
 <style scoped>
+.container_all_listings {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ul {
+  padding: 0;
+}
+
+.container_all_listings > * {
+  flex-basis: 100%;
+}
+
 li {
   display: inline-block;
+  flex: 1 0 calc(25% - 10px);
+  vertical-align: top;
 }
+
+/* @media only screen and (min-width: 1200) {
+  li {
+    display: inline-block;
+    flex-grow: 1;
+    width: calc(100% * (1/4) - 10px - 1px);
+  }
+} */
+
 </style>
