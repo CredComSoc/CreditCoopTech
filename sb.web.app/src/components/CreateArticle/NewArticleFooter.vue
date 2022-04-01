@@ -1,11 +1,11 @@
 <template>
-  <a :href=link><u>{{ ButtonText }}</u><img src="../../assets/link_arrow/Right_arrow_link.png"/></a>
+  <a :href="this.link"><u>{{ this.buttonText }}</u><img src="../../assets/link_arrow/Right_arrow_link.png"/></a>
 </template>
 
 <script>
 export default {
   name: 'NewArticleFooter',
-  props: ['ButtonText', 'link']
+  props: ['buttonText', 'link']
 }
 </script>
 

@@ -45,15 +45,24 @@ export default {
         month: '2-digit', 
         day: '2-digit'
       }
+      this.selectedValue = this.$refs.dateVal.value
       this.$refs.dateVal.value = new Date().toLocaleString('se', options).replaceAll('-', '/') + ' - ' + this.$refs.dateVal.value.replaceAll('-', '/').substring(5)
       this.$refs.dateVal.blur()
-      this.selectedValue = this.$refs.dateVal.value
       this.$emit('clearNoEndDateCheckbox')
+    },
+    formatDate (endDate) {
+      const options = { 
+        month: '2-digit', 
+        day: '2-digit'
+      }
+      console.log(endDate)
+      const now = new Date().toLocaleString('se', options).replaceAll('-', '/')
+      return now + ' - ' + new Date(endDate).toLocaleString('se', options).replaceAll('-', '/')
     },
     setValue (newValue) {
       if (this.isDatePicker) {
         this.$refs.dateVal.type = 'text'
-        this.$refs.dateVal.value = newValue
+        this.$refs.dateVal.value = this.formatDate(newValue)
         this.$refs.dateVal.blur()
         this.selectedValue = newValue
       } else {

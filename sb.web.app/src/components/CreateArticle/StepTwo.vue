@@ -26,6 +26,7 @@ export default {
     Combobox
   },
   props: ['chosenType', 'savedProgress'],
+  emits: ['priceError', 'dateError'],
   methods: {
     getStepTwoInputs () {
       let endDate = null
@@ -45,6 +46,38 @@ export default {
     },
     clearNoEndDateCheckbox () {
       this.$refs.noEndDate.checked = false
+    },
+    validateStepTwo () {
+      const endDate = this.$refs.endDateInput.getInput()
+      const city = this.$refs.cityInput.getInput()
+      const price = this.$refs.priceInput.getInput()
+      if (!this.$refs.noEndDate.checked) {
+        if (endDate === null) {
+          return false
+        } else if (!this.isDateWithinOneMonthFromNow(endDate)) {
+          this.$emit('dateError')  
+          return false
+        }
+      }
+      if (city === null) {
+        return false
+      }
+      if (!this.isNumeric(price)) {
+        this.$emit('priceError')
+        return false
+      }
+      return true
+    },
+    isNumeric (str) {
+      if (typeof str !== 'string') return false // we only process strings!  
+      return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+      !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+    },
+    isDateWithinOneMonthFromNow (date) {
+      const now = new Date()
+      const chosenDate = new Date(date)
+      const oneMonthFromNow = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate() + 1)
+      return now.getTime() <= chosenDate.getTime() && chosenDate.getTime() <= oneMonthFromNow.getTime()
     }
   },
   mounted () {

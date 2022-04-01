@@ -3,14 +3,14 @@
   <div id="popup-container">
     <div id="popup-head">
       <h3>{{ this.title }}</h3>
-      <a id="popup-close-img" href='/'> <img src="../../assets/link_arrow/popup_close.png" /> </a>
+      <a id="popup-close-img" @click="this.closePopup" :href="this.btnLink"> <img src="../../assets/link_arrow/popup_close.png" /> </a>
     </div>
     <div id="popup-middle">
       <p>{{ this.cardText }}</p>
     </div>
     <div id="popup-bottom">
-      <form action="/">
-        <input id="confirm-btn" type="submit" value="Ok" />
+      <form :action="this.btnLink" @click="this.closePopup">
+        <input id="confirm-btn" type="submit" :value="this.btnText"/>
       </form>
     </div>
   </div>
@@ -19,8 +19,15 @@
 
 <script>
 export default {
-  name: 'PublishConfirm',
-  props: ['title', 'cardText', 'btnLink', 'btnText']
+  name: 'PopupCard',
+  props: ['title', 'cardText', 'btnLink', 'btnText'],
+  methods: {
+    closePopup () {
+      if (this.btnLink === null) {
+        this.$emit('closePopup')
+      }
+    }
+  }
 }
 </script>
 

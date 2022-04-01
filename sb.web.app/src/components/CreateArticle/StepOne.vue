@@ -34,6 +34,25 @@ export default {
         type: this.$refs.typeInput.getInput(), 
         category: this.$refs.categoryInput.getInput() 
       }
+    },
+    validateStepOne () {
+      const title = this.$refs.titleInput.getInput()
+      const description = this.$refs.descInput.getInput()
+      const type = this.$refs.typeInput.getInput()
+      const category = this.$refs.categoryInput.getInput()
+      if (title.length === 0) {
+        return false
+      }
+      if (description.length === 0) {
+        return false
+      }
+      if (type === null) {
+        return false
+      }
+      if (category === null) {
+        return false
+      }
+      return true
     }
   },
   mounted () {
@@ -48,7 +67,7 @@ export default {
     } 
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
-    } 
+    }
   }
 }
 </script>
