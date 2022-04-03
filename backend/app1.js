@@ -68,7 +68,7 @@ const upload = multer({ storage });
 
 // @route GET /
 // @desc Loads form
-router.get('/', (req, res) => {
+app.get('/', (req, res) => {
   gfs.files.find().toArray((err, files) => {
     // Check if files
     if (!files || files.length === 0) {
@@ -94,7 +94,7 @@ router.get('/', (req, res) => {
 // @desc  Uploads file to DB
 router.post('/upload', upload.single('file'), (req, res) => {
   // res.json({ file: req.file });
-
+  console.log("in upload");
   res.redirect('/');
 });
 
