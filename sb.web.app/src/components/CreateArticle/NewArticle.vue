@@ -99,6 +99,7 @@ export default {
         }
       } else if (this.currentStep === 4) {
         this.isPublished = true
+        this.uploadArticle()
       }
     },
     goBackStep () {
@@ -119,6 +120,27 @@ export default {
       } else if (this.currentStep === 1) {
         this.backLink = '/Shop'
       }
+    },
+    uploadArticle () {
+      console.log('uploading article')
+      console.log(this.newArticle.image[0])
+      const data = new FormData()
+      data.append('file', this.newArticle.image[0])
+      // for (const file of this.newArticle.image) {
+      //   data.append('files',file,file.name)
+      // }
+      
+      // This will upload the file after having read it
+      fetch('http://localhost:3000/upload', { // Your POST endpoint
+        method: 'POST',
+        body: data // This is your file object
+      }).then(
+        response => response.json() // if the response is a JSON object
+      ).then(
+        success => console.log(success) // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      )
     }
   }
 }
