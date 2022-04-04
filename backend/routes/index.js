@@ -33,6 +33,7 @@ router.get("/", (req, res) => {
 
 router.get('/authenticate', (req, res) => {
   if (req.isAuthenticated()) {
+    // console.log(req)
     res.sendStatus(200)
   } else {
     res.sendStatus(500)

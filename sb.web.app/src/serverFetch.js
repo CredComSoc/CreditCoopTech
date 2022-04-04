@@ -168,15 +168,13 @@ export async function getTransaction (ccUser, ccAuth, id) {
   return transactionPromise
 }
 
-export async function profile (ccUser, ccAuth) {
+export async function profile () {
   const profilePromise = fetch(EXPRESS_URL + '/profile', {
     method: 'GET',
     headers: {
-      'cc-user': ccUser,
-      'cc-auth': ccAuth,
       'Content-Type': 'application/json'
     }
-  }, CORS_ANYWHERE)
+  })
     .then((res) => {
       return res.json()
     })

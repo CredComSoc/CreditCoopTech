@@ -1,19 +1,14 @@
 const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
-const  url = "mongodb://localhost:27017/"
-
-let asdf = 'TestAdmin';
+const  url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 function initialize (passport) {
   passport.use (new LocalStrategy (authenticateUser))
   passport.serializeUser((user, done) => {
-    console.log(user.userID)
-    // asdf = user.userID
-    return done(null, asdf)
+    return done(null, user._id)
   })
   passport.deserializeUser((id, done) => {
-    console.log("sdfsdf")
-    return done(null, asdf)
+    return done(null, getUser(id))
   })
 }
 
@@ -32,6 +27,27 @@ async function authenticateUser (username, password, done) {
       } 
       else {
         return done(null, false, {message: 'User Not Found'})
+        db.close();
+      }
+    })
+  })
+}
+
+async function getUser(id) {
+  const  myquery = { _id: id}
+  MongoClient.connect(url, (err, db) => {
+    const  dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        return false
+      } 
+      else if (result != null) {
+        
+        db.close()
+        return result.userID
+      } 
+      else {
+        return false
         db.close();
       }
     })
