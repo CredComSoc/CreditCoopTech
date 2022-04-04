@@ -7,24 +7,24 @@
         </div>
         <div className="container-item">
           <h1> Företagsnamn </h1>
-          <p> Florist AB </p>
+          <p> {{profileData.accountname}} </p>
 
           <h1> Beskrivning </h1>
-          <p> Hej! Vi är en blockbutik i Söderköping med fem glada florister. Se våra artiklar för aktuella blockbuketter just nu. Men vi erbjuder också specialbeställda buketter. Se även vår senaste artikel "Hudvårdspaket". OBS! Finns endast i butik.<br/><br/>Hos oss får du hemleverans eller hämtning i butik.<br/>Ansvarig konstaktperson: Eva Sundin </p>
+          <p> {{profileData.description}} </p>
   
           <h1> Adress </h1>
-          <p> Hantverksgatan 14 </p>
+          <p> {{profileData.adress}} </p>
 
           <h1> Stad/ort </h1>
-          <p> Söderköping </p>
+          <p> {{profileData.city}} </p>
 
           <h1> Faktureringsuppgifter </h1>
-          <p> Florist AB<br/>Box: 031 456<br/>123 123 Söderköping<br/>Org. nummer: 012345 - 0123 </p>
+          <p> {{profileData.billing_name}}<br/>{{profileData.billing_box}}<br/>{{profileData.billing_adress}}<br/> {{profileData.billing_orgNumber}} </p>
         </div>
         <div className="right container-item">
           <div>
             <h1> Kontaktuppgifter </h1>
-            <p> Email: florist@florist.com<br/><br/>Tel: +46 123 456 789 </p>
+            <p> {{"Email: " + profileData.contact_email}}<br/><br/> {{"Tel: " + profileData.contact_phone}} </p>
           </div>
         </div>
         <div style="align-self: flex-end;">

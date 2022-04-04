@@ -56,12 +56,16 @@ router.get("/profile", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "name"        : result.name,
-          "description" : result.description,
-          "adress"      : result.adress,
-          "city"        : result.city,
-          "billing"     : result.billing,
-          "contact"     : result.contact
+          "name"        : result.profile.accountname,
+          "description" : result.profile.description,
+          "adress"      : result.profile.adress,
+          "city"        : result.profile.city,
+          "billing_name": result.profile.billing.name,
+          "billing_box": result.profile.billing.box,
+          "billing_adress": result.profile.billing.adress,
+          "billing_orgNumber": result.profile.billing.orgNumber,
+          "contact_email"     : result.profile.contact.mail,
+          "contact_phone"     : result.profile.contact.phone
         }
         res.status(200).send(userData)
         db.close();
