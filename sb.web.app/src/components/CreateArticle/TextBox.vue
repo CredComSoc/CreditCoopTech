@@ -21,10 +21,14 @@ export default {
       this.$refs.titleCount.setValue(newValue.length)
     },
     deleteChar () {
-      this.$refs.titleCount.deleteChar()
+      if (!this.disabled) {
+        this.$refs.titleCount.deleteChar()
+      }
     },
     countChars () {
-      this.$refs.titleCount.countChars(document.getElementById(this.id))
+      if (!this.disabled) {
+        this.$refs.titleCount.countChars(document.getElementById(this.id))
+      }
     }
   }
 }
