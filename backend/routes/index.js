@@ -1,32 +1,78 @@
 const express = require('express');
-var router = express.Router();
+const passport = require('passport')
+const router = express.Router();
+const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
-const {MongoClient} = require('mongodb');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
-/**
- * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
- */
-//let url = "mongodb://localhost:27017/"
-//let dbFolder = "Test"
-//let userFolder = "Users"
-/**
- * vvvvv ALICIA OCH KASPER HAR ANVÄNT vvvvv
- */
-// let url = "mongodb://localhost:27017/"
-// let dbFolder = "sb"
-// let userFolder = "user1"
-let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const { 
+    v1: uuidv1,
+    v4: uuidv4,
+  } = require('uuid'); 
+
+// const url = "mongodb://localhost:27017/"
+const url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+
 let dbFolder = "tvitter"
 let userFolder = "users"
-
 const mongoURI = url;
 const conn = mongoose.createConnection(mongoURI).useDb(dbFolder);
+
+
+// Test Route
+router.get("/", (req, res) => {
+   res.status(200).send("Yo")
+})
+
+
+router.get('/authenticate', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.sendStatus(200)
+  } else {
+    res.sendStatus(500)
+  } 
+})
+
+router.post("/login", passport.authenticate('local'), (req, res) => {
+  res.sendStatus(200)
+})
+
+router.get("/profile", (req, res) => {
+  let myquery = { userID: req.params.acc_id}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        let userData = {
+          "name"        : result.name,
+          "description" : result.description,
+          "adress"      : result.adress,
+          "city"        : result.city,
+          "billing"     : result.billing,
+          "contact"     : result.contact
+        }
+        res.status(200).send(userData)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
 
 // Init gfs
 let gfs;
@@ -163,82 +209,6 @@ router.post('/getAllListings/', (req, res) => {
 })
 
 
-// Authenticate user before making a request to cc-node
-// cause cc-node doesn't authenticate?
-// also returns a username for the cc-node request
-router.get("/authenticate", (req, res) => {
-  let myquery = { sessionID: req.params.sessionID}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-
-      } 
-      else if (result != null) {
-        res.status(200).send({userID : res.userID, sessionID: res.sessionID})
-  
-      }
-      else {
-        //If we dont find a result
-        res.sendStatus(500)
-        db.close();
-
-      }
-    })
-  })
-}) 
-
-// Om användaren loggar in,
-// params = användarnamn, hashat lösenord
-// kolla om användarnamn finns, om det finns, kolla om hashat lösenord matchar
-// om det matchar, returnera ett nytt sessionID, lägg även till nytt sessionID
-// i databasen.
-// om inte finns returnera status, baserat på status skriv felmeddelane. 
-// returnerna en session ID/Token
-
-router.post("/login", (req, res) => {
-  let username = req.body.username;
-  let pw = req.body.password;
-  let myquery = { userID: username, password: pw}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-
-      } 
-      else if (result != null) {
-
-        //Skapar sessionID
-        let sessionIDvalue = uuidv4();
-        let newSessionID = { $set: {sessionID: sessionIDvalue} };
-
-        dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
-          if (err) {
-            db.close();
-            res.sendStatus(500)
- 
-          }
-          else {
-            db.close()
-            res.status(200).send({sessionID: sessionIDvalue})
-
-          }
-        });
-      } 
-      else {
-        //If we dont find a result
-        res.sendStatus(500)
-        db.close();
-
-      }
-    })
-  })
-})
-
 // Om användaren registerar sig,
 // params = användarnamn, hashat lösenord
 // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
@@ -278,7 +248,7 @@ router.post("/register", (req, res) => {
             is_active: active, 
             min_limit: min,
             max_limit: max,
-            admin: no, 
+            is_admin: admin, 
             posts: {},
             pendingPosts: {},
             events: {},
@@ -344,120 +314,6 @@ router.patch("/logout", (req, res) => {
   })
 })
   
-router.get("/profile", (req, res) => {
-  let myquery = { userID: req.params.acc_id}
 
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        let userData = {
-          "name"        : result.name,
-          "description" : result.description,
-          "adress"      : result.adress,
-          "city"        : result.city,
-          "contact"     : result.contact
-        }
-        res.status(200).send(userData)
-        db.close();
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The account doesn't exist.")
-        db.close();      
-      } 
-    })
-  })
-})
-
-
-// Routes required by the Credits Common Node
-// https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
-// /filter/{full} is unused?
-
-router.get("/filter/full", (req, res) => { 
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").find({}).toArray(function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else  {
-        let userArray = []
-        if (result != null) {
-          for (user of result) {
-            let userData = {
-          	"id"      : user.userID,
-          	"status"  : user.is_active,
-          	"min"     : user.min_limit,
-          	"max"     : user.max_limit,
-          	"admin"   : user.is_admin ? 1 : 0
-            }
-            userArray.push(userData);
-          
-          } 
-        }
-        res.status(200).send(userArray)
-        db.close();
-      }
-    })
-  })
-}) 
-  
-router.get("/filter", (req, res) => {
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").find({}).toArray(function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else  {
-        let userArray = []
-        if (result != null) {
-          result.forEach(user => userArray.push(user.userID))
-        }
-        res.status(200).send(userArray)
-        db.close();
-      }
-    })
-  })
-})
-
-router.get("/:acc_id", (req, res) => {
-  let myquery = { userID: req.params.acc_id, sessionID : req.params.x}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        let userData = {
-          "id"      : result.userID,
-          "status"  : result.is_active,
-          "min"     : result.min_limit,
-          "max"     : result.max_limit,
-          "admin"   : result.is_admin ? 1 : 0
-        }
-        res.status(200).send(userData)
-        db.close();
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The account doesn't exist.")
-        db.close();      
-      } 
-    })
-  })
-})
 
 module.exports = router;
