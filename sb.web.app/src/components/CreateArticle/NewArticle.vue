@@ -99,7 +99,7 @@ export default {
         }
       } else if (this.currentStep === 4) {
         this.isPublished = true
-        this.uploadArticle()
+        //this.uploadArticle()
       }
     },
     goBackStep () {
