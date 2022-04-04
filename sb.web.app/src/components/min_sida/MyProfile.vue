@@ -61,13 +61,22 @@
 </template>
 
 <script>
+import { profile } from '../../serverFetch'
 
 export default {
   data () {
     return {
-      edit: false
+      edit: false,
+      profileData: []
     }
-  }
+  }/*,
+  mounted () {
+    profile('TestAdmin', '123')
+      .then(res => {
+        this.profileData = res
+        console.log(this.profileData)
+      })
+  }*/
 }
 
 </script>

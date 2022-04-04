@@ -150,6 +150,7 @@ router.get("/profile", (req, res) => {
           "description" : result.description,
           "adress"      : result.adress,
           "city"        : result.city,
+          "billing"     : result.billing,
           "contact"     : result.contact
         }
         res.status(200).send(userData)
@@ -157,7 +158,7 @@ router.get("/profile", (req, res) => {
       }
       else {
         // If we dont find a result
-        res.status(404).send("The account doesn't exist.")
+        res.status(404).send("The profile doesn't exist.")
         db.close();      
       } 
     })
