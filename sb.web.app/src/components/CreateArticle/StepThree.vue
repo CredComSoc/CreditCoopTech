@@ -59,6 +59,18 @@ export default {
       this.$refs.addFile.innerText = 'Välj fler'
       this.images.push([URLImg, this.images.length, false])
       this.imageObjs.push(imageObj)
+    },
+    validateStepThree () {
+      if (this.imageObjs.length === 0) {
+        this.$emit('emptyImageError')
+        return false
+      } else {
+        const hasCoverImg = this.getStepThreeInputs().image.some((img) => img.isCoverImg === true)
+        if (!hasCoverImg) {
+          this.$emit('emptyCoverImage')
+        }
+        return hasCoverImg
+      }
     }
   },
   mounted () {
@@ -118,6 +130,7 @@ p{
 input{
     display:none;
 }
+
 button{
     display:block;
     width:80px; 

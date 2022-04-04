@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node app1.js",
+    "start": "nodemon --exec babel-node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "ajax": "0.0.4",
-    "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
     "constantinople": "^4.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
@@ -26,5 +24,8 @@
     "multer-gridfs-storage": "^5.0.2",
     "nodemon": "^2.0.15",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
   }
 }
