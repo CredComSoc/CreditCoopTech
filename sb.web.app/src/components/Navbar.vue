@@ -34,7 +34,7 @@
                 </figure>
               </a>
               <div id="upload-dropdown" class="dropdown-content">
-                  <a href="http://localhost:8080/add_article">Ny artikel </a>
+                  <a href="http://localhost:8080/add/article">Ny artikel </a>
                   <a href="#">Nytt event </a>
               </div>
             </div>
@@ -142,7 +142,7 @@
                   <a href="http://localhost:8080/profile/#settings">Inställningar </a>
                 </div>
               </div>
-              <a href="#" v-if="this.isActive">
+              <a href="http://localhost:8080/profile" v-if="this.isActive">
                 <span class="mob-cap"> Min sida </span>
               </a>
           </div>
@@ -194,10 +194,12 @@ export default {
     window.addEventListener('resize', this.resizeNav)
     window.addEventListener('click', (e) => {
       const profileDrop = document.getElementById('profile-content')
-      profileDrop.style.display = 'none'
-      const profileLogo = document.getElementById('profile-logo')
-      profileLogo.classList.remove('active-dropdown')
-
+      if (profileDrop != null) {
+        profileDrop.style.display = 'none'
+        const profileLogo = document.getElementById('profile-logo')
+        profileLogo.classList.remove('active-dropdown')
+      }
+      
       if (this.dropdownActive) {
         let dropdown = document.getElementById('upload-dropdown')
         dropdown.style.display = 'none'

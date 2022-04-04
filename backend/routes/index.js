@@ -3,12 +3,24 @@ var router = express.Router();
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const {MongoClient} = require('mongodb');
+const path = require('path');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const crypto = require('crypto');
+const { GridFsStorage } = require('multer-gridfs-storage');
+const methodOverride = require('method-override');
 /**
  * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
  */
 //let url = "mongodb://localhost:27017/"
 //let dbFolder = "Test"
 //let userFolder = "Users"
+/**
+ * vvvvv ALICIA OCH KASPER HAR ANVÄNT vvvvv
+ */
+// let url = "mongodb://localhost:27017/"
+// let dbFolder = "sb"
+// let userFolder = "user1"
 let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 let dbFolder = "tvitter"
 let userFolder = "users"
@@ -23,6 +35,34 @@ conn.once('open', () => {
   gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
 });
+
+// Create storage engine
+const storage = new GridFsStorage({
+  url: mongoURI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+
+const upload = multer({ storage });
+
+// create a db objects in sb folder WIP
+// router.post('/upload', upload.single('file'), (req, res) => {
+//   console.log(req.file);
+//   res.json({ file: req.file });
+// });
 
 router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({filename: req.params.filename}, (err, file) => {

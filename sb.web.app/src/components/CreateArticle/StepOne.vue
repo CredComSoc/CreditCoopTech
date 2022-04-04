@@ -1,0 +1,87 @@
+<template>
+  <div id="title-field" class="input">
+    <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
+  </div>
+  <div class="input" >
+    <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
+  </div>
+  <div class="input">
+    <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
+  </div>
+  <div class="input">
+    <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Affärsutveckling & strategi', 'Arbetsyta', 'Fotografering', 'Kök & restaurang', 'Marknadsföring', 'Rengöring & städ', 'Skönhet', 'Sömnad & tyg']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
+  </div>
+</template>
+
+<script>
+import Combobox from './Combobox.vue'
+import TextBox from './TextBox.vue'
+import TextArea from './TextArea.vue'
+
+export default {
+  name: 'UserInput',
+  components: {
+    Combobox,
+    TextBox,
+    TextArea
+  },
+  props: ['savedProgress'],
+  methods: {
+    getStepOneInputs () {
+      return { 
+        title: this.$refs.titleInput.getInput(),
+        description: this.$refs.descInput.getInput(),
+        type: this.$refs.typeInput.getInput(), 
+        category: this.$refs.categoryInput.getInput() 
+      }
+    },
+    validateStepOne () {
+      const title = this.$refs.titleInput.getInput()
+      const description = this.$refs.descInput.getInput()
+      const type = this.$refs.typeInput.getInput()
+      const category = this.$refs.categoryInput.getInput()
+      if (title.length === 0) {
+        return false
+      }
+      if (description.length === 0) {
+        return false
+      }
+      if (type === null) {
+        return false
+      }
+      if (category === null) {
+        return false
+      }
+      return true
+    }
+  },
+  mounted () {
+    if ('title' in this.savedProgress) {
+      this.$refs.titleInput.setValue(this.savedProgress.title) 
+    } 
+    if ('description' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.description)
+    } 
+    if ('type' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.type)
+    } 
+    if ('category' in this.savedProgress) {
+      this.$refs.categoryInput.setValue(this.savedProgress.category)
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+.input {
+  margin-top: 40px;
+}
+
+@media (max-width: 400px) {
+  .input {
+    margin-left: 40px;
+  }
+}
+
+</style>
