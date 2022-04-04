@@ -45,7 +45,7 @@ router.post("/login", passport.authenticate('local'), (req, res) => {
 })
 
 router.get("/profile", (req, res) => {
-  let myquery = { userID: req.params.acc_id}
+  let myquery = { userID: req.user}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
