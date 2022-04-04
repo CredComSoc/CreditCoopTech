@@ -1,6 +1,6 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <input :maxlength="this.length" ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name"  @keydown.delete="deleteChar()" @keypress="countChars(event)" >
+  <input :maxlength="this.length" ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name" @input="this.countChars" >
   <CharCount v-if='!disabled' ref="titleCount" :id="this.id + '-count'" :maxLength="this.length"/>
 </template>
 
@@ -18,16 +18,14 @@ export default {
     },
     setValue (newValue) {
       this.$refs.titleVal.value = newValue
-      this.$refs.titleCount.setValue(newValue.length)
-    },
-    deleteChar () {
       if (!this.disabled) {
-        this.$refs.titleCount.deleteChar()
+        this.$refs.titleCount.setValue(newValue.length)
       }
     },
     countChars () {
       if (!this.disabled) {
-        this.$refs.titleCount.countChars(document.getElementById(this.id))
+        console.log(this.$refs.titleVal.value.length)
+        this.$refs.titleCount.countChars(this.$refs.titleVal.value.length)
       }
     }
   }

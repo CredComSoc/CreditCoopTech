@@ -1,6 +1,6 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name" :maxlength="this.length"  @keydown.delete="deleteChar()" @keypress="countChars(event)"/>
+  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name" :maxlength="this.length" @input="this.countChars"/>
   <CharCount ref="descriptionCount" :id="this.name + '-count'" :maxLength="this.length"/>
 </template>
 
@@ -20,11 +20,8 @@ export default {
       this.$refs.descVal.value = newValue
       this.$refs.descriptionCount.setValue(newValue.length)
     },
-    deleteChar () {
-      this.$refs.descriptionCount.deleteChar()
-    },
     countChars () {
-      this.$refs.descriptionCount.countChars(document.getElementsByName(this.name)[0])
+      this.$refs.descriptionCount.countChars(this.$refs.descVal.value.length)
     }
   }
 }
