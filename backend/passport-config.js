@@ -1,6 +1,9 @@
 const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
+const mongoose = require('mongoose');
 const  url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+let asdf = 'TestAdmin';
 
 function initialize (passport) {
   passport.use (new LocalStrategy (authenticateUser))
@@ -8,7 +11,10 @@ function initialize (passport) {
     return done(null, user._id)
   })
   passport.deserializeUser((id, done) => {
-    return done(null, getUser(id))
+    getUser(mongoose.Types.ObjectId(id)).then((user) => {
+      return done(null, user.userID)
+    })
+    
   })
 }
 
@@ -21,7 +27,6 @@ async function authenticateUser (username, password, done) {
         return done(err)
       } 
       else if (result != null) {
-        
         db.close()
         return done(null, result)
       } 
@@ -34,24 +39,10 @@ async function authenticateUser (username, password, done) {
 }
 
 async function getUser(id) {
-  const  myquery = { _id: id}
-  MongoClient.connect(url, (err, db) => {
-    const  dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        return false
-      } 
-      else if (result != null) {
-        
-        db.close()
-        return result.userID
-      } 
-      else {
-        return false
-        db.close();
-      }
-    })
-  })
+  const myquery = { _id: id}
+  const db = await MongoClient.connect(url)
+  const dbo = db.db("tvitter");
+  return await dbo.collection("users").findOne(myquery)
 }
 
 module.exports = initialize

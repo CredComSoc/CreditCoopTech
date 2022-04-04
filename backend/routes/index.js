@@ -45,6 +45,7 @@ router.post("/login", passport.authenticate('local'), (req, res) => {
 })
 
 router.get("/profile", (req, res) => {
+  // console.log(req)
   let myquery = { userID: req.user}
 
   MongoClient.connect(url, (err, db) => {
