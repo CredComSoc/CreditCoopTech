@@ -1,18 +1,30 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <input ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name">
+  <input :maxlength="this.length" ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name"  @keydown.delete="deleteChar()" @keypress="countChars(event)" >
+  <CharCount v-if='!disabled' ref="titleCount" :id="this.id + '-count'" :maxLength="this.length"/>
 </template>
 
 <script>
+import CharCount from './CharCount.vue'
 export default {
   name: 'TextBox',
-  props: ['id', 'name', 'label', 'placeholder'],
+  props: ['id', 'name', 'label', 'placeholder', 'length', 'disabled'],
+  components: {
+    CharCount
+  },
   methods: {
     getInput () {
       return this.$refs.titleVal.value
     },
     setValue (newValue) {
       this.$refs.titleVal.value = newValue
+      this.$refs.titleCount.setValue(newValue.length)
+    },
+    deleteChar () {
+      this.$refs.titleCount.deleteChar()
+    },
+    countChars () {
+      this.$refs.titleCount.countChars(document.getElementById(this.id))
     }
   }
 }

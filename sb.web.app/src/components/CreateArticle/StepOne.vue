@@ -1,9 +1,9 @@
 <template>
   <div id="title-field" class="input">
-    <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" label="Rubrik"/>
+    <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
   </div>
   <div class="input" >
-    <TextArea ref="descInput" name="description" label="Beskrivning" placeholder="Beskriv vad som ingår i din artikel"/>
+    <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
   </div>
   <div class="input">
     <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />

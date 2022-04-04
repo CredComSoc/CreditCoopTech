@@ -1,18 +1,30 @@
 <template>
   <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name"/>
+  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name" :maxlength="this.length"  @keydown.delete="deleteChar()" @keypress="countChars(event)"/>
+  <CharCount ref="descriptionCount" :id="this.name + '-count'" :maxLength="this.length"/>
 </template>
 
 <script>
+import CharCount from './CharCount.vue'
 export default {
   name: 'TextArea',
-  props: ['name', 'label', 'placeholder'],
+  props: ['name', 'label', 'placeholder', 'length'],
+  components: {
+    CharCount
+  },
   methods: {
     getInput () {
       return this.$refs.descVal.value
     },
     setValue (newValue) {
       this.$refs.descVal.value = newValue
+      this.$refs.descriptionCount.setValue(newValue.length)
+    },
+    deleteChar () {
+      this.$refs.descriptionCount.deleteChar()
+    },
+    countChars () {
+      this.$refs.descriptionCount.countChars(document.getElementsByName(this.name)[0])
     }
   }
 }
