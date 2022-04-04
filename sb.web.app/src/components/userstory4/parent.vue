@@ -1,39 +1,37 @@
 <template>
-  <b-container fluid>
+  <div class="wrapper">
 
-    <b-row align-h="center">
-      <b-col cols="4" class="d-flex align-items-center justify-content-center">
-        <h2>SHOP</h2>
-      </b-col>
-    </b-row>
+    <div>
+      <h2 class="center-text">SHOP</h2>
+    </div>
 
-    <b-row align-h="center">
-        <Searchfield @searchEvent="testMethod" />
-    </b-row>
+    <div class="center">
+        <Searchfield @searchEvent="triggerSearch" />
+    </div>
 
     <br>
 
-    <b-row>
+    <div class="main">
       <!-- KOLUMN FÖR KATERGORI-->
-      <b-col cols="3">
-        <Categories/>
-      </b-col>
+      <div class="categories">
+        <Categories @filterEvent="filteringMethod"/>
+      </div>
 
       <!-- KOLYMN FÖR PRODUKTER -->
-      <b-col cols="9">
-        <b-row>
-          <b-col>
-            <h3>Produkter</h3>
-          </b-col>
-        </b-row>
-        <b-row>
-          <Alllistings @togglePopupEvent="togglePopup" :key=searchData :search-data=searchData />
-          <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
-        </b-row>
-      </b-col>
-    </b-row>
+      <div class="listings">
+        <div v-if="this.productsSearchData.length !== 0">
+          <h3 >Produkter</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=productsSearchData />
+        </div>
+        <div v-if="this.servicesSearchData.length !== 0">
+          <h3>Tjänster</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=servicesSearchData />
+        </div>
+        <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
+      </div>
+    </div>
     
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -41,15 +39,21 @@ import Searchfield from '@/components/userstory4/searchfield.vue'
 import Alllistings from '@/components/userstory4/all_listings.vue'
 import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 import Categories from '@/components/userstory4/Categories.vue'
+import { getAllListings } from './../../serverFetch.js'
 
 export default {
 
   data () {
     return {
-      searchData: [],
+      productsSearchData: [],
+      servicesSearchData: [],
       singleListingData: [],
       popupActive: false,
-      listingObjPopup: Object
+      listingObjPopup: Object,
+      getAllListings,
+      categoryArray: [],
+      destinationsArray: [],
+      articleArray: []
     }
   },
 
@@ -61,75 +65,78 @@ export default {
   },
 
   methods: {
-    testMethod (newSearchWord) {
-      this.searchData = this.backendFunction()
+    triggerSearch (newSearchWord) {
+      this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray).then(res => {
+        return res
+      })
+        .then(data => {
+          this.productsSearchData = data.allProducts
+          this.servicesSearchData = data.allServices
+        })
     },
-    togglePopup (listingObj) {
+    openPopUp (listingObj) {
       this.popupActive = true
       this.listingObjPopup = listingObj
     },
     closePopup (listingObj) {
       this.popupActive = false
     },
-    backendFunction () {
-      return {
-        allListings: [
-          {
-            title: 'annas bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Peters bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Karlssons bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Rågers bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att AOIUGFHJAIOFAOIJFOAJFIAJFIOWJIFOAJOIWJ nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Brorsans bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          },
-          {
-            title: 'Kalles bullar', 
-            ign: 'random', 
-            shortDesc: 'goda bullar för virtuella pengar', 
-            longDesc: 'Välkommen att handla nybakat bakverk till ditt företag hos Annas Kanelbullar!\nVarje paket innehåller 10 bakverk.\nVängligen ange antal 10-pack.\n*Paket upphämtas på egen hand',
-            destination: 'Söderköping', 
-            price: '50 bKr'
-          }
-        ]
+    filteringMethod (checked, type, value) {
+      if (type === 'destination') {
+        this.changeFiltering(checked, this.destinationsArray, value)
+      } else if (type === 'category') {
+        this.changeFiltering(checked, this.categoryArray, value)
+      } else if (type === 'article') {
+        this.changeFiltering(checked, this.articleArray, value)
+      }
+    },
+    changeFiltering (checked, specificArray, value) {
+      if (!checked) {
+        specificArray.push(value)
+      } else {
+        specificArray.splice(specificArray.indexOf(value), 1)
       }
     }
+  },
+  
+  created: function () {
+    this.triggerSearch('')
   }
 }
 </script>
 
 <style scoped>
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.categories {
+  flex-basis: 20%;
+  height: auto;
+
+}
+
+.listings {
+  flex-basis: 80%;
+  width: auto;
+  margin-left: 3rem;
+}
+
+.center-text {
+  text-align: center;
+}
 
 h2 {
   margin-top: 2rem;
@@ -137,6 +144,6 @@ h2 {
 }
 
 h3 {
-  margin-left: 3rem;
+  margin-left: 1rem;
 }
 </style>

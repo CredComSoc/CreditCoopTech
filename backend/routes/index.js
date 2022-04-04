@@ -2,23 +2,28 @@ const express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
-var path = require('path');
+const {MongoClient} = require('mongodb');
+const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
-const {MongoClient} = require('mongodb');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
-
 /**
  * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
  */
-let url = "mongodb://localhost:27017/"
+//let url = "mongodb://localhost:27017/"
 //let dbFolder = "Test"
 //let userFolder = "Users"
-//let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-let dbFolder = "sb"
-let userFolder = "user1"
+/**
+ * vvvvv ALICIA OCH KASPER HAR ANVÄNT vvvvv
+ */
+// let url = "mongodb://localhost:27017/"
+// let dbFolder = "sb"
+// let userFolder = "user1"
+let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+let dbFolder = "tvitter"
+let userFolder = "users"
 
 const mongoURI = url;
 const conn = mongoose.createConnection(mongoURI).useDb(dbFolder);
@@ -53,11 +58,11 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
-// create a db objects in sb folder
-router.post('/upload', upload.single('file'), (req, res) => {
-  console.log(req.file);
-  res.json({ file: req.file });
-});
+// create a db objects in sb folder WIP
+// router.post('/upload', upload.single('file'), (req, res) => {
+//   console.log(req.file);
+//   res.json({ file: req.file });
+// });
 
 router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({filename: req.params.filename}, (err, file) => {

@@ -1,59 +1,40 @@
 <template>
-  <b-container>
-    <b-row>
-      <div @click="$emit('closePopup')" class="popup"></div>
-      <div class="popup-inner">
-          <b-col cols="8">
-            <img class="p-image" src="./images/bulles1.png" alt="Coffea">
-          </b-col>
-          <b-col cols="4" class="content-right">
-            <b-row>
-              <b-col>
-                <div class="float-end">
-                  <button className="xBtn marginRight" @click="$emit('closePopup')">x</button>
-                </div>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col class="d-flex align-items-center justify-content-center">
-               <h5>{{listingObj.title}}</h5>
-              </b-col>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.longDesc}}</p>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.destination}}</p>
-            </b-row>
-            <b-row class="marginLeft">
-              <p>{{listingObj.price}}</p>
-            </b-row>
-            <b-row class="fixed-bottom">
-              <b-col>
-                <div class="float-end amountRow">
-                  <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
-                  <p class="amountText"> {{amount}} </p>
-                  <b-button class="increaseBtn marginRight" @click="amount++">+</b-button>
-                </div>
-              </b-col>
-            </b-row>
-            <b-row class="fixed-bottom">
-              <b-col>
-                <div class="float-end">
-                  <b-button class="cartBtn marginRight" variant="primary" @click="emit('placeInCart', amount)">Lägg i varukorg</b-button>
-                </div>
-              </b-col>
-            </b-row>
-          </b-col>
+<div>
+  <div @click="$emit('closePopup')" class="popup">
+    
+  </div>
+  <div class="popup-inner">
+    <img class="p-image" :src='getImgURL()' alt="Coffea">
+    <div class="content-right">
+      <div class="flex-center-bottom">
+        <button className="xBtn" @click="$emit('closePopup')">x</button>
+      </div>
+      <div class="textContent">
+        <h5>{{listingObj.title}}</h5>
+        <p>{{listingObj.longDesc}}</p>
+        <p>{{listingObj.destination}}</p>
+        <p>{{listingObj.price}}</p>
+      </div>
+      <div class="interactContent" >
+        <div>
+          <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
+          <p class="amountText"> {{amount}} </p>
+          <b-button class="increaseBtn" @click="amount++">+</b-button>
         </div>
-    </b-row>
-  </b-container>
+        <div>
+          <button class="cartBtn" @click="emit('placeInCart', amount)">Lägg i varukorg</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 <script>
+
 export default {
 
   props: {
-    listingObj: Object
+    listingObj: Object  
   },
 
   data () {
@@ -72,6 +53,9 @@ export default {
       if (this.amount < 99) {
         this.amount++
       }
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.listingObj.img
     }
   }
 }
@@ -88,33 +72,16 @@ body {
   display: inline-block;
 }
 
-.amountRow {
-  margin-bottom: 3rem;
-}
-
 .cartBtn {
   display: inline-block;
   margin-bottom: 0.5rem;
-}
-
-.lastRow {
-  margin-top: auto;
-}
-
-.marginLeft {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.marginRight {
-  margin-right: 0.5rem;
 }
 
 .amountText {
   display: inline-block;
   margin-left: 1rem;
   margin-right: 1rem;
-  
+  margin-top: 1rem;
 }
 
 .popup {
@@ -137,8 +104,8 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 70rem;
-  height: 50rem;
+  width: 100vh;
+  height: 70%;
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
@@ -152,13 +119,15 @@ h5 {
   font-size: 1.8rem;
 }
 
-/* .content-left {
-  width: 100%;
-  height: 100%;
-} */
+.textContent {
+  padding: 1rem;
+}
 
 .content-right {
+  display: flex;
+  flex-direction: column;
   background-color: white;
+
 }
 
 .p-image {
@@ -168,6 +137,27 @@ h5 {
 .xBtn {
   border: none;
   background-color: white;
+}
+
+.flex-center-bottom {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  
+}
+
+.interactContent {
+  
+  position:absolute;
+  text-align: right;
+  bottom: 0;
+  right: 1rem;
+  /* width: 33%; */
+}
+
+.interactContent > * {
+  width: 100%;
 }
 
 </style>

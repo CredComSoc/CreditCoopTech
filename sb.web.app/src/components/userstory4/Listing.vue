@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- <ListingPopup v-if="true"/> -->
     <div class="element-container" @click="togglePopup">
-        <img src="./images/bulles2.png" alt="Coffea">
+        <img :src='getImgURL()' />
         <h4 class="element-title"> {{ listingObj.title }} </h4>
         <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
     </div>
   </div>
 </template>
+
 <script>
 
 // import ListingPopup from '@/components/userstory4/ListingPopup.vue'
@@ -20,6 +20,9 @@ export default {
   methods: {
     togglePopup () {
       this.$emit('togglePopupEvent', this.listingObj)
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.listingObj.img
     }
   }
 }
