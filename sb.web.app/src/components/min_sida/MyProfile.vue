@@ -69,14 +69,14 @@ export default {
       edit: false,
       profileData: []
     }
-  }/*,
+  },
   mounted () {
-    profile('TestAdmin', '123')
+    profile()
       .then(res => {
         this.profileData = res
         console.log(this.profileData)
       })
-  }*/
+  }
 }
 
 </script>
