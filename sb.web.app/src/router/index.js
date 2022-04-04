@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { authenticate } from '../serverFetch'
 import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'

@@ -2,15 +2,17 @@ const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
 const  url = "mongodb://localhost:27017/"
 
-let asdf;
+let asdf = 'TestAdmin';
 
 function initialize (passport) {
-  passport.use (new LocalStrategy ({ usernameField: 'username' }, authenticateUser))
+  passport.use (new LocalStrategy (authenticateUser))
   passport.serializeUser((user, done) => {
-    asdf = user
-    return done(null, user)
+    console.log(user.userID)
+    // asdf = user.userID
+    return done(null, asdf)
   })
   passport.deserializeUser((id, done) => {
+    console.log("sdfsdf")
     return done(null, asdf)
   })
 }
@@ -26,10 +28,9 @@ async function authenticateUser (username, password, done) {
       else if (result != null) {
         
         db.close()
-        return done(null, result.userID)
+        return done(null, result)
       } 
       else {
-        //If we dont find a result
         return done(null, false, {message: 'User Not Found'})
         db.close();
       }

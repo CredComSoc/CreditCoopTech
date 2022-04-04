@@ -29,7 +29,6 @@ export default {
   methods: {
     async handleSubmit () {
       login(this.username, this.password).then((response) => {
-        console.log(response)
         if (response) {     
           this.$router.push({ name: 'Home' })
         }

@@ -2,26 +2,10 @@ import JsSHA from 'jssha'
 import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
-const CC_NODE_URL = '155.4.159.231/cc-node'
-// const EXPRESS_URL = 'http://localhost:3000'  // USE LOCAL DB
-// const EXPRESS_URL = '155.4.159.231:3000'     // USE HOST DB
-const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
-
-async function getUserData () {
-  const userPromise = fetch(EXPRESS_URL + '/filter/full', {
-    method: 'GET'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return data
-    })
-    .catch(() => {
-      return false
-    })
-  return userPromise
-}
+const CC_NODE_URL = 'http://155.4.159.231/cc-node'
+// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+// const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -31,24 +15,26 @@ function hashMyPassword (password) {
 }
 
 export async function authenticate () {
-  const authPromise = fetch(EXPRESS_URL + '/authenticate', {
+  const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return false
-      }
-      return true
-    })
+  }).then((response) => {
+    if (!response.ok) {
+      return false
+    }
+    return true
+  }).catch(() => {
+    return false
+  }) 
 
-  return authPromise
+  return authPromise 
 }
 
 export async function login (username, password) {
+  console.log('asdasdasd')
   const hashedPassword = hashMyPassword(password)
 
   const loginPromise = fetch(EXPRESS_URL + '/login', {
@@ -56,16 +42,17 @@ export async function login (username, password) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username: username, password: password })
+    body: JSON.stringify({ username: username, password: password }),
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) {
+      return false
+    } else {
+      return true
+    }
+  }).catch(() => {
+    return false
   })
-    .then((response) => {
-      console.log(response)
-      if (!response.ok) {
-        return false
-      } else {
-        return true
-      }
-    })
   return loginPromise
 }
 
@@ -114,28 +101,24 @@ export async function logout (sessionID) {
 }
 
 export function getTransactions (ccUser, ccAuth) {
-  const allTransactionPromise = getUserData().then(userData => {
-    // console.log(userData)
-    const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/full', {
-      method: 'GET',
-      headers: {
-        'cc-user': userData[0].id,
-        'cc-auth': userData[0].all.sessionID
-      }
-    }, CORS_ANYWHERE)
-      .then((res) => {
-        // console.log(res.json())
-        return res.json()
-      })
-      .then((data) => {
-        // console.log('data ' + data)
-        return (data)
-      })
-      .catch(() => {
-        return false
-      })
-    return allTransactionPromise
-  })
+  const allTransactionPromise = fetchNoCors(CC_NODE_URL + '/transaction/full', {
+    method: 'GET',
+    headers: {
+      'cc-user': 'TestAdmin',
+      'cc-auth': '123'
+    }
+  }, CORS_ANYWHERE)
+    .then((res) => {
+      // console.log(res.json())
+      return res.json()
+    })
+    .then((data) => {
+      // console.log('data ' + data)
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
   return allTransactionPromise
 }
 

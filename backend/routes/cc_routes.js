@@ -65,9 +65,8 @@ router.get("/filter", (req, res) => {
 })
 
 router.get("/creds/:name/:auth", (req, res) => {
-  console.log(req.isAuthenticated())
-  console.log(req.user)
-  let myquery = { userID : req.params.name, sessionID : req.params.auth}
+  res.sendStatus(200)
+  /* let myquery = { userID : req.params.name, sessionID : req.params.auth}
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
     dbo.collection("users").findOne(myquery, function(err, result) {
@@ -85,7 +84,7 @@ router.get("/creds/:name/:auth", (req, res) => {
         db.close();      
       }
     })
-  })
+  }) */
 })
 
 router.get("/:acc_id", (req, res) => {

@@ -18,12 +18,11 @@ router.get("/", (req, res) => {
 
 
 router.get('/authenticate', (req, res) => {
-  console.log(req.user)
   if (req.isAuthenticated()) {
     res.sendStatus(200)
   } else {
     res.sendStatus(500)
-  }
+  } 
 })
 
 router.post("/login", passport.authenticate('local'), (req, res) => {

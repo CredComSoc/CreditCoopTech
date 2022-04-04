@@ -21,7 +21,8 @@ app.use(cookieParser())
 
 app.use(session({
   name: 'session',
-  keys: ['asddf'],  // BYT UT
+  secret: 'asf',  // BYT UT
+  secure: false,
 
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
@@ -46,6 +47,7 @@ function startServer(port) {
    })
   return(server)
 }
+
 
 startServer()
 
