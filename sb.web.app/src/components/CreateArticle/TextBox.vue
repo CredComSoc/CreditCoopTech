@@ -24,7 +24,6 @@ export default {
     },
     countChars () {
       if (!this.disabled) {
-        console.log(this.$refs.titleVal.value.length)
         this.$refs.titleCount.countChars(this.$refs.titleVal.value.length)
       }
     }
