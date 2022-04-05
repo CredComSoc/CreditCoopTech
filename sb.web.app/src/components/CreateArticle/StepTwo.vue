@@ -34,8 +34,8 @@ export default {
         endDate = this.$refs.endDateInput.getInput()
       }
       return { 
-        endDate: endDate,
-        city: this.$refs.cityInput.getInput(),
+        'end-date': endDate,
+        destination: this.$refs.cityInput.getInput(),
         price: this.$refs.priceInput.getInput()
       }
     },
@@ -81,15 +81,15 @@ export default {
     }
   },
   mounted () {
-    if ('endDate' in this.savedProgress) {
-      if (this.savedProgress.endDate === null) {
+    if ('end-date' in this.savedProgress) {
+      if (this.savedProgress['end-date'] === null) {
         this.$refs.noEndDate.checked = true
       } else {
-        this.$refs.endDateInput.setValue(this.savedProgress.endDate) 
+        this.$refs.endDateInput.setValue(this.savedProgress['end-date']) 
       }
     } 
-    if ('city' in this.savedProgress) {
-      this.$refs.cityInput.setValue(this.savedProgress.city)
+    if ('destination' in this.savedProgress) {
+      this.$refs.cityInput.setValue(this.savedProgress.destination)
     } 
     if ('price' in this.savedProgress) {
       this.$refs.priceInput.setValue(this.savedProgress.price)

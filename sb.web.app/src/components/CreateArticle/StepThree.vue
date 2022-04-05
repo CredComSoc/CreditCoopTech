@@ -47,7 +47,7 @@ export default {
         }
       }
       return { 
-        image: this.imageObjs
+        img: this.imageObjs
       }
     },
     upload () {
@@ -65,7 +65,7 @@ export default {
         this.$emit('emptyImageError')
         return false
       } else {
-        const hasCoverImg = this.getStepThreeInputs().image.some((img) => img.isCoverImg === true)
+        const hasCoverImg = this.getStepThreeInputs().img.some((img) => img.isCoverImg === true)
         if (!hasCoverImg) {
           this.$emit('emptyCoverImage')
         }
@@ -74,8 +74,9 @@ export default {
     }
   },
   mounted () {
-    if ('image' in this.savedProgress) {
-      for (const img of this.savedProgress.image) {
+    if ('img' in this.savedProgress) {
+      this.$refs.addFile.innerText = 'Välj fler'
+      for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)

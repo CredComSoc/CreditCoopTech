@@ -3,7 +3,7 @@
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep="goBackStep" />
   <div id="center">
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
+    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
     <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" />
     <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
   </div>
@@ -99,7 +99,7 @@ export default {
         }
       } else if (this.currentStep === 4) {
         this.isPublished = true
-        //this.uploadArticle()
+        this.uploadArticle()
       }
     },
     goBackStep () {
@@ -131,9 +131,23 @@ export default {
       // }
       
       // This will upload the file after having read it
-      fetch('http://localhost:3000/upload', { // Your POST endpoint
+      fetch('http://localhost:3000/upload/img', { // Your POST endpoint
         method: 'POST',
         body: data // This is your file object
+      }).then(
+        response => response.json() // if the response is a JSON object
+      ).then(
+        success => console.log(success) // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      )
+
+      fetch('http://localhost:3000/upload/article', { // Your POST endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.newArticle)
       }).then(
         response => response.json() // if the response is a JSON object
       ).then(

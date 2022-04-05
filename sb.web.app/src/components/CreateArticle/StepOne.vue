@@ -33,8 +33,8 @@ export default {
     getStepOneInputs () {
       return { 
         title: this.$refs.titleInput.getInput(),
-        description: this.$refs.descInput.getInput(),
-        type: this.$refs.typeInput.getInput(), 
+        longDesc: this.$refs.descInput.getInput(),
+        article: this.$refs.typeInput.getInput(), 
         category: this.$refs.categoryInput.getInput(),
         shortDesc: this.$refs.shortDescInput.getInput()
       }
@@ -67,11 +67,11 @@ export default {
     if ('title' in this.savedProgress) {
       this.$refs.titleInput.setValue(this.savedProgress.title) 
     } 
-    if ('description' in this.savedProgress) {
-      this.$refs.descInput.setValue(this.savedProgress.description)
+    if ('longDesc' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.longDesc)
     } 
-    if ('type' in this.savedProgress) {
-      this.$refs.typeInput.setValue(this.savedProgress.type)
+    if ('article' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.article)
     } 
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
