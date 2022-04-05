@@ -2,6 +2,9 @@
   <div id="title-field" class="input">
     <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
   </div>
+  <div class="input">
+     <TextArea ref="shortDescInput" name="short-description" label="Kort beskrivning" length="50" placeholder="Gör en kort beskriv av vad som ingår i din artikel"/>
+  </div>
   <div class="input" >
     <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
   </div>
@@ -32,7 +35,8 @@ export default {
         title: this.$refs.titleInput.getInput(),
         description: this.$refs.descInput.getInput(),
         type: this.$refs.typeInput.getInput(), 
-        category: this.$refs.categoryInput.getInput() 
+        category: this.$refs.categoryInput.getInput(),
+        shortDesc: this.$refs.shortDescInput.getInput()
       }
     },
     validateStepOne () {
@@ -40,6 +44,7 @@ export default {
       const description = this.$refs.descInput.getInput()
       const type = this.$refs.typeInput.getInput()
       const category = this.$refs.categoryInput.getInput()
+      const shortDesc = this.$refs.shortDescInput.getInput()
       if (title.length === 0) {
         return false
       }
@@ -50,6 +55,9 @@ export default {
         return false
       }
       if (category === null) {
+        return false
+      }
+      if (shortDesc.length === 0) {
         return false
       }
       return true
@@ -67,6 +75,9 @@ export default {
     } 
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
+    }
+    if ('shortDesc' in this.savedProgress) {
+      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
     }
   }
 }
