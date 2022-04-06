@@ -18,12 +18,12 @@ const methodOverride = require('method-override');
 /**
  * vvvvv ALICIA OCH KASPER HAR ANVÄNT vvvvv
  */
-// let url = "mongodb://localhost:27017/"
-// let dbFolder = "sb"
-// let userFolder = "user1"
-let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-let dbFolder = "tvitter"
-let userFolder = "users"
+let url = "mongodb://localhost:27017/"
+let dbFolder = "sb"
+let userFolder = "user1"
+// let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+// let dbFolder = "tvitter"
+// let userFolder = "users"
 
 const mongoURI = url;
 const conn = mongoose.createConnection(mongoURI).useDb(dbFolder);
@@ -58,11 +58,16 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
-// create a db objects in sb folder WIP
-// router.post('/upload', upload.single('file'), (req, res) => {
-//   console.log(req.file);
-//   res.json({ file: req.file });
-// });
+//create a db objects in sb folder WIP
+router.post('/upload/img', upload.single('file'), (req, res) => {
+  console.log(req.file);
+  res.json({ file: req.file });
+});
+
+router.post('/upload/article', (req, res) => {
+  console.log(req.body);
+  res.json({ body: req.body });
+});
 
 router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({filename: req.params.filename}, (err, file) => {
