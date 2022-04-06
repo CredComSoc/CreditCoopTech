@@ -1,6 +1,6 @@
 .DS_Store
 backend/node_modules
-sb.web.app/node_modules
+node_modules/
 sb.web.app/dist
 
 

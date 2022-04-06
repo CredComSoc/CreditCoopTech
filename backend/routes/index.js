@@ -10,6 +10,7 @@ const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
+const uuid = require('uuid');
 /**
  * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
  */
@@ -127,6 +128,7 @@ router.post('/upload/img', upload.single('file'), (req, res) => {
 });
 
 router.post('/upload/article', (req, res) => {
+  req.body.id = uuid.v4();
   console.log(req.body);
   res.json({ body: req.body });
 });

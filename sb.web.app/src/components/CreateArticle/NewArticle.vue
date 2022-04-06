@@ -122,10 +122,10 @@ export default {
       }
     },
     uploadArticle () {
-      console.log('uploading article')
-      console.log(this.newArticle.image[0])
+      // console.log('uploading article')
+      // console.log(this.newArticle.image[0])
       const data = new FormData()
-      data.append('file', this.newArticle.image[0])
+      data.append('file', this.newArticle.img[0])
       // for (const file of this.newArticle.image) {
       //   data.append('files',file,file.name)
       // }
