@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
 const uuid = require('uuid');
+const util = require('util');
 /**
  * vvvvv CHANGE URL AND DB FOLDER NAME HERE vvvvv
  */
@@ -119,19 +120,44 @@ const storage = new GridFsStorage({
   }
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage })
 
-//create a db objects in sb folder WIP
-router.post('/upload/img', upload.single('file'), (req, res) => {
-  console.log(req.file);
-  res.json({ file: req.file });
+// create a article object in mongoDB
+router.post('/upload/article', upload.array('file', 5), (req, res) => {
+  const newArticle = JSON.parse(req.body.article);
+  let images = req.files.map(obj => obj.filename);
+  newArticle.coverImg = images[req.body.coverImgInd];
+  images = images.filter((img) => { return img !== newArticle.coverImg })
+  newArticle.id = uuid.v4().toString();
+  newArticle.img = images;
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db(dbFolder);
+    const myquery = { userID : "TestUser2" };
+    dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        res.sendStatus(200);
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("No posts found.")
+        db.close();      
+      } 
+    })
+  })
 });
 
-router.post('/upload/article', (req, res) => {
-  req.body.id = uuid.v4();
-  console.log(req.body);
-  res.json({ body: req.body });
-});
+
+// router.post('/upload', (req, res) => {
+//   req.body.id = uuid.v4().toString();
+//   console.log(req.body);
+//   res.json({ body: req.body });
+// });
 
 router.get('/image/:filename', (req, res) => {
   gfs.files.findOne({filename: req.params.filename}, (err, file) => {

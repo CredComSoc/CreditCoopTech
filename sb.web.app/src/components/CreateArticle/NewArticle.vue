@@ -122,34 +122,22 @@ export default {
       }
     },
     uploadArticle () {
-      // console.log('uploading article')
-      // console.log(this.newArticle.image[0])
       const data = new FormData()
-      data.append('file', this.newArticle.img[0])
-      // for (const file of this.newArticle.image) {
-      //   data.append('files',file,file.name)
-      // }
-      
+      let index = 0
+      for (const file of this.newArticle.img) {
+        if (file.isCoverImg) {
+          data.append('coverImgInd', index)
+        } 
+        data.append('file', file, file.name)
+        ++index
+      }
+      data.append('article', JSON.stringify(this.newArticle))
       // This will upload the file after having read it
-      fetch('http://localhost:3000/upload/img', { // Your POST endpoint
+      fetch('http://localhost:3000/upload/article', { // Your POST endpoint
         method: 'POST',
         body: data // This is your file object
       }).then(
-        response => response.json() // if the response is a JSON object
-      ).then(
-        success => console.log(success) // Handle the success response object
-      ).catch(
-        error => console.log(error) // Handle the error response object
-      )
-
-      fetch('http://localhost:3000/upload/article', { // Your POST endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.newArticle)
-      }).then(
-        response => response.json() // if the response is a JSON object
+        response => response // if the response is a JSON object
       ).then(
         success => console.log(success) // Handle the success response object
       ).catch(
