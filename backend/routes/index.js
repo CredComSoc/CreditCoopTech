@@ -214,6 +214,48 @@ router.post('/getAllListings/', (req, res) => {
     })
 })
 
+router.post('/getAllMembers/', (req, res) => {
+  // fetch all metadata about listing from mongoDB
+  let searchword = req.body.searchword.split(' ')
+
+  MongoClient.connect(url, (err, db) => {
+      let dbo = db.db(dbFolder)
+      let allMembersArray = []
+
+      searchword = searchword.filter(function(value, index, arr) {
+        return value !== "";
+      })
+
+      dbo.collection(userFolder).find({}).toArray(function (err, users) {
+        
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else {
+          users.forEach(user => {
+            let name = user.profile.accountname
+            foundSearchword = true
+            if( searchword.length !== 0 ) {
+              for (let i = 0; i < searchword.length; i++) {
+                if (!name.match(new RegExp(searchword[i], "i"))) {
+                  foundSearchword = false
+                  break
+                } 
+              }
+              if (!foundSearchword) {
+                return
+              }
+            }
+            allMembersArray.push(user.profile)
+          })
+          res.send({allMembers: allMembersArray})
+          db.close();
+        }
+      })
+  })
+})
+
 
 // Om användaren registerar sig,
 // params = användarnamn, hashat lösenord

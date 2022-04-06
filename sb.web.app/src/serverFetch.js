@@ -3,8 +3,8 @@ import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = 'http://155.4.159.231/cc-node'
-// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+// const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {
@@ -120,6 +120,29 @@ export async function getAllListings (searchword, destinationsArray, categoryArr
     })
 
   return getAllListingsPromise
+}
+
+export async function getAllMembers (searchword) {
+  const getAllMembersPromise = fetch(EXPRESS_URL + '/getAllMembers/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ searchword: searchword })
+
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+
+  return getAllMembersPromise
 }
 
 export function getTransactions (ccUser, ccAuth) {

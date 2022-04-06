@@ -3,6 +3,7 @@ import { authenticate } from '../serverFetch'
 import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
+import Members from '../components/userstory5/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import StepTwo from '../components/CreateArticle/StepTwo.vue'
 import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
@@ -38,7 +39,7 @@ const routes = [
   {
     path: '/members',
     name: 'Members',
-    component: Home // SKA BYTAS UT
+    component: Members // SKA BYTAS UT
   },
   {
     path: '/profile',
