@@ -17,7 +17,6 @@
     "fetch-no-cors": "^1.0.13",
     "jssha": "^3.2.0",
     "uuid4": "^2.0.2",
-    "v-calendar": "^2.4.1",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.0-0"
@@ -53,7 +52,9 @@
     "rules": {
       "no-unused-vars": "off",
       "spaced-comment": "off",
-      "no-trailing-spaces": "off"
+      "no-trailing-spaces": "off",
+      "func-call-spacing": "off",
+      "no-console": "off"
     }
   },
   "browserslist": [

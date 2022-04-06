@@ -3,7 +3,7 @@
   <div id="app">
     <Navbar :screenWidth="screenWidth"/>
       <div className='body'>
-        <router-view></router-view>
+        <router-view/>
       </div>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
     <Footer id="footer" />

@@ -55,7 +55,7 @@ export default {
       }
     },
     getImgURL () {
-      return 'http://localhost:3000/image/' + this.listingObj.img
+      return 'http://155.4.159.231:3000/image/' + this.listingObj.img
     }
   }
 }
