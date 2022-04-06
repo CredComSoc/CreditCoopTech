@@ -1,13 +1,12 @@
 <template>
-    <div>
         <div id="img-container">
           <img :src=this.imageURL />
           <br/>
           <input v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" :checked="this.isCoverImg" class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
           <label v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" for="firstPic"> {{ this.textboxLabel }} </label>
+          <br/>
+          <button @click="removePic()">Ta bort bild</button>
         </div>
-    </div>
-    
 </template>
 
 <script>
@@ -21,6 +20,10 @@ export default {
         cbs[i].checked = false
       }
       checked.checked = true
+    },
+    removePic () {
+      const parent = document.getElementById(this.id).parentNode
+      parent.remove()
     }
   }
 }
