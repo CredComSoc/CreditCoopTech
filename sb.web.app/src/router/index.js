@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import Profile from '../components/min_sida/profile.vue'
+import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'Profile',
     component: Profile,
     props: true
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: ShoppingCart
   }
 ]
 
