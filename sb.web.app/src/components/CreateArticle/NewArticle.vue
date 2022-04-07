@@ -98,7 +98,8 @@ export default {
           this.error = true
         }
       } else if (this.currentStep === 4) {
-        this.isPublished = true
+        this.addUploadDate()
+        this.sanitizeArticle()
         this.uploadArticle()
       }
     },
@@ -132,17 +133,88 @@ export default {
         ++index
       }
       data.append('article', JSON.stringify(this.newArticle))
-      // This will upload the file after having read it
-      fetch('http://localhost:3000/upload/article', { // Your POST endpoint
+      // This will upload the article to the server
+      fetch('http://localhost:3000/upload/article', { // POST endpoint
         method: 'POST',
         body: data // This is your file object
       }).then(
-        response => response // if the response is a JSON object
+        response => response
       ).then(
-        success => console.log(success) // Handle the success response object
+        success => {
+          console.log(success)
+          this.isPublished = true // open popup with success message
+        } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object
       )
+    },
+    addUploadDate () {
+      const options = {
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit'
+      }
+      this.newArticle.uploadDate = new Date().toLocaleString('sv-SE', options)
+    },
+    sanitizeArticle () {
+      // sanitize the article field
+      switch (this.newArticle.article) {
+        case 'Produkt':
+          this.newArticle.article = 'product'
+          break
+        case 'Tjänst':
+          this.newArticle.article = 'service'
+          break
+      }
+  
+      // sanitize the destination field
+      switch (this.newArticle.destination) {
+        case 'Linköping':
+          this.newArticle.destination = 'linkoping'
+          break
+        case 'Norrköping':
+          this.newArticle.destination = 'norrkoping'
+          break
+        case 'Söderköping':
+          this.newArticle.destination = 'soderkoping'
+          break
+      }
+      // sanitize the category field
+      switch (this.newArticle.category) {
+        case 'Affärsutveckling & strategi':
+          this.newArticle.category = 'affarsutveckling'
+          break
+        case 'Arbetsyta':
+          this.newArticle.category = 'arbetsyta'
+          break
+        case 'Fotografering':
+          this.newArticle.category = 'fotografering'
+          break
+        case 'Kök & restaurang':
+          this.newArticle.category = 'restaurang'
+          break
+        case 'Marknadsföring':
+          this.newArticle.category = 'marknadsforing'
+          break
+        case 'Rengöring & städ':
+          this.newArticle.category = 'rengoring&stad'
+          break
+        case 'Skönhet':
+          this.newArticle.category = 'skonhet'
+          break
+        case 'Sömnad & tyg':
+          this.newArticle.category = 'somnad&tyg'
+          break
+      }
+      // sanitize the status field
+      switch (this.newArticle.status) {
+        case 'Köpes':
+          this.newArticle.status = 'buying'
+          break
+        case 'Säljes':
+          this.newArticle.status = 'selling'
+          break
+      } 
     }
   }
 }

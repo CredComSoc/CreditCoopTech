@@ -1,4 +1,7 @@
 <template>
+  <div class="input">
+    <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
+  </div>
   <div id="title-field" class="input">
     <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
   </div>
@@ -36,7 +39,8 @@ export default {
         longDesc: this.$refs.descInput.getInput(),
         article: this.$refs.typeInput.getInput(), 
         category: this.$refs.categoryInput.getInput(),
-        shortDesc: this.$refs.shortDescInput.getInput()
+        shortDesc: this.$refs.shortDescInput.getInput(),
+        status: this.$refs.buyOrSellInput.getInput()
       }
     },
     validateStepOne () {
@@ -45,6 +49,7 @@ export default {
       const type = this.$refs.typeInput.getInput()
       const category = this.$refs.categoryInput.getInput()
       const shortDesc = this.$refs.shortDescInput.getInput()
+      const status = this.$refs.buyOrSellInput.getInput()
       if (title.length === 0) {
         return false
       }
@@ -58,6 +63,9 @@ export default {
         return false
       }
       if (shortDesc.length === 0) {
+        return false
+      }
+      if (status === null) {
         return false
       }
       return true
@@ -78,6 +86,9 @@ export default {
     }
     if ('shortDesc' in this.savedProgress) {
       this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
+    }
+    if ('status' in this.savedProgress) {
+      this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
   }
 }
