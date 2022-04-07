@@ -55,10 +55,14 @@ export default {
     },
     getFile (e) {
       const imageObj = e.target.files[0]
-      const URLImg = URL.createObjectURL(imageObj)
-      this.$refs.addFile.innerText = 'Välj fler'
-      this.images.push([URLImg, this.images.length, false])
-      this.imageObjs.push(imageObj)
+      if (this.validateImageFile(imageObj) && this.validatedFileSize(imageObj.size)) {
+        const URLImg = URL.createObjectURL(imageObj)
+        this.$refs.addFile.innerText = 'Välj fler'
+        this.images.push([URLImg, this.images.length, false])
+        this.imageObjs.push(imageObj)
+      } else {
+        this.$emit('fileSizeError')
+      }
     },
     validateStepThree () {
       if (this.imageObjs.length === 0) {
@@ -83,6 +87,14 @@ export default {
       if (this.images.length === 0) {
         this.$refs.addFile.innerText = 'Bläddra'
       }
+    },
+    // less then 1MB
+    validatedFileSize (byteSize) {
+      return byteSize <= 1000000
+    },
+    validateImageFile (file) {
+      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+      return validImageTypes.includes(file.type)
     }
   },
   mounted () {
