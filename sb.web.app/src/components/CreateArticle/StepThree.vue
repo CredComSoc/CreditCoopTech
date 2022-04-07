@@ -9,7 +9,7 @@
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
+    <UploadedImage @removeImg="this.deleteImg" class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"
@@ -70,6 +70,18 @@ export default {
           this.$emit('emptyCoverImage')
         }
         return hasCoverImg
+      }
+    },
+    deleteImg (imgId) {
+      for (let i = imgId; i < this.images.length; i++) {
+        if (imgId !== i) {
+          this.images[i][1] = i - 1
+        }
+      }
+      this.images.splice(imgId, 1)
+      this.imageObjs.splice(imgId, 1)
+      if (this.images.length === 0) {
+        this.$refs.addFile.innerText = 'Bläddra'
       }
     }
   },
