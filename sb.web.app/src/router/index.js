@@ -4,8 +4,6 @@ import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
-import StepTwo from '../components/CreateArticle/StepTwo.vue'
-import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
 
 const routes = [
