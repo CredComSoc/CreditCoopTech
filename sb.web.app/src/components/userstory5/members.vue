@@ -11,6 +11,8 @@
     <br>
     <div class="main">
       <!-- KOLYMN FÖR PRODUKTER -->
+      <!-- <div><h3>Admin</h3></div> -->
+
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
           <AllMembers :key=SearchData :search-data=SearchData />
@@ -84,9 +86,8 @@ export default {
 }
 
 .listings {
-  flex-basis: 80%;
+  flex-basis: 100%;
   width: auto;
-  margin-left: 3rem;
 }
 
 .center-text {

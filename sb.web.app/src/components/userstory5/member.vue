@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="element-container">
+      <!--<router-link :to="{name:'MemberUserprofile', params:{tab: 'profile'}}">-->
         <img :src='getImgURL()' />
         <h4 class="element-title"> {{ listingObj.accountname }} </h4>
+      <!--</router-link>-->
     </div>
   </div>
 </template>
@@ -30,29 +32,38 @@ export default {
         font-style: normal;
         font-weight: normal;
         letter-spacing: 0.05em;
-        padding: 0;
-        margin:0;
         font-weight: 500;
         font-size: 12px;
     }
 
     .element-container {
-        width: 200px;
-        height:265px;
+        display:flex;
+        width: 100%;
+        height:auto;
         background: #FFFFFF;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        margin: 1rem;
+        outline: 0.1rem solid grey;
+        /* margin: 1rem;*/
     }
-
+    
      .element-container h4 {
-        margin-top: 4px;
+        /* margin-top: 4px;*/
+        width: 100%; 
+        float: right;
+
         font-weight: bold;
      }
 
     .element-title {
         font-size: 20px;
-        text-align: center;
-        vertical-align: middle;
+        text-align: left;
+    }
+    img {
+      height: 3rem;
+      width: 3rem;
+    }
+    h4 {
+      margin-left: 0.5rem;
+      align-self: flex-end;
     }
 
 </style>

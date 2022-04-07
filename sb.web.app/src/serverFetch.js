@@ -15,6 +15,7 @@ function hashMyPassword (password) {
 }
 
 export async function authenticate () {
+  /** 
   const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
     method: 'GET',
     headers: {
@@ -28,7 +29,7 @@ export async function authenticate () {
     return true
   }).catch(() => {
     return false
-  }) 
+  }) */
   return true
   //return authPromise 
 }
@@ -209,4 +210,24 @@ export async function profile () {
       return false
     })
   return profilePromise
+}
+
+export async function getUserProfile (accountname) {
+  const userProfilePromise = fetch(EXPRESS_URL + '/members/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ accountname: accountname })
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return userProfilePromise
 }

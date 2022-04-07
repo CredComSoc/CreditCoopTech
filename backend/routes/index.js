@@ -32,6 +32,7 @@ router.get("/", (req, res) => {
 
 
 router.get('/authenticate', (req, res) => {
+  console.log("jere")
   if (req.isAuthenticated()) {
     // console.log(req)
     res.sendStatus(200)
@@ -74,6 +75,44 @@ router.get("/profile", (req, res) => {
       else {
         // If we dont find a result
         res.status(404).send("The profile doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
+
+router.post("/members/", (req, res) => {
+  let accountname = req.body.accountname
+  console.log(accountname)
+  //let myquery = { accountname: accountname}
+  let myquery = {profile: {accountname: accountname}}
+
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        let userData = {
+          "name"        : result.profile.accountname,
+          "description" : result.profile.description,
+          "adress"      : result.profile.adress,
+          "city"        : result.profile.city,
+          "billing_name": result.profile.billing.name,
+          "billing_box": result.profile.billing.box,
+          "billing_adress": result.profile.billing.adress,
+          "billing_orgNumber": result.profile.billing.orgNumber,
+          "contact_email"     : result.profile.contact.mail,
+          "contact_phone"     : result.profile.contact.phone
+        }
+        res.status(200).send(userData)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(405).send("The profile doesn't exist.")
         db.close();      
       } 
     })
@@ -202,8 +241,6 @@ router.post('/getAllListings/', (req, res) => {
                   productsAllListingsArray.push(listing)
                 } else if (listing.article === "service") {
                   servicesAllListingsArray.push(listing)
-                } else {
-                  res.sendStatus(304).send('No tag for listing')
                 }
               })
             })

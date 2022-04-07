@@ -8,6 +8,7 @@ import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import StepTwo from '../components/CreateArticle/StepTwo.vue'
 import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
+import userProfile from '../components/userstory5/userProfile.vue'
 
 const routes = [
   {
@@ -46,6 +47,11 @@ const routes = [
     name: 'Profile',
     component: Profile,
     props: true
+  },
+  {
+    path: '/members/:userprofile',
+    name: 'MemberUserprofile',
+    component: userProfile
   }
 ]
 

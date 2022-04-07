@@ -22,7 +22,7 @@ export default {
       this.$emit('togglePopupEvent', this.listingObj)
     },
     getImgURL () {
-      return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+      return 'http://155.4.159.231:3000/image/' + this.listingObj.coverImg
     }
   }
 }

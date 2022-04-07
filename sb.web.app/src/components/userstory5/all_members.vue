@@ -27,21 +27,26 @@ export default {
 <style scoped>
 .container_all_listings {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+  width: max(30rem, 50%);
+  margin: auto;
 }
 
 ul {
   padding: 0;
+  margin:auto;
+
 }
 
 .container_all_listings > * {
   flex-basis: 100%;
+  width: 100%;
 }
 
 li {
-  display: inline-block;
-  flex: 1 0 calc(25% - 10px);
-  vertical-align: top;
+  list-style-type: none;
+
 }
 
 /* @media only screen and (min-width: 1200) {
