@@ -85,7 +85,7 @@ router.post("/members/", (req, res) => {
   let accountname = req.body.accountname
   console.log(accountname)
   //let myquery = { accountname: accountname}
-  let myquery = {profile: {accountname: accountname}}
+  let myquery = {"profile.accountname" :  accountname}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -96,7 +96,7 @@ router.post("/members/", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "name"        : result.profile.accountname,
+          "accountname"        : result.profile.accountname,
           "description" : result.profile.description,
           "adress"      : result.profile.adress,
           "city"        : result.profile.city,

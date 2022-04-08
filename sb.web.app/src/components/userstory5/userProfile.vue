@@ -43,6 +43,9 @@ export default {
       getUserProfile
     }
   },
+  props: {
+    accountname: String
+  },
   methods: {
     getProfile (accountname) {
       console.log(accountname + ' is accountname')
@@ -50,17 +53,11 @@ export default {
         this.profileData = res
         console.log(this.profileData)
       })
-      /** 
-      profile()
-      .then(res => {
-        this.profileData = res
-        console.log(this.profileData)
-      })*/
     }
   },
-  // hämta rätt information här
   created: function () {
-    this.getProfile('Florista AB')
+    console.log('params is ' + this.accountname)
+    this.getProfile(this.accountname)
   }
 }
 

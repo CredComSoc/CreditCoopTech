@@ -40,7 +40,7 @@ const routes = [
   {
     path: '/members',
     name: 'Members',
-    component: Members // SKA BYTAS UT
+    component: Members 
   },
   {
     path: '/profile',
@@ -51,7 +51,8 @@ const routes = [
   {
     path: '/members/:userprofile',
     name: 'MemberUserprofile',
-    component: userProfile
+    component: userProfile,
+    props: true
   }
 ]
 

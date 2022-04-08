@@ -1,15 +1,16 @@
 <template>
   <div>
-    <div class="element-container">
-      <!--<router-link :to="{name:'MemberUserprofile', params:{tab: 'profile'}}">-->
-        <img :src='getImgURL()' />
-        <h4 class="element-title"> {{ listingObj.accountname }} </h4>
-      <!--</router-link>-->
+    <router-link :to="{ name: 'Home' } ">
+    <div class="element-container" @click="enterProfile"> 
+      <img :src='getImgURL()' />
+      <h4 class="element-title"> {{ listingObj.accountname }} </h4>
     </div>
+    </router-link>
   </div>
 </template>
 
 <script>
+import userProfileVue from './userProfile.vue'
 
 // import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 
@@ -21,7 +22,12 @@ export default {
   methods: {
     getImgURL () {
       return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+    }/** ,
+    enterProfile () {
+      //route med listingObj.accountname
+      this.$router.push({ path: userProfile, params: { userprofile: this.listingObj.accountname, accountname: this.listingObj.accountname } })
     }
+    */
   }
 }
 </script>
