@@ -97,12 +97,12 @@
             </a>
           </div>
           <div class="navlogo">
-            <a href="#">
+            <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
-            </a>
+            </router-link>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
