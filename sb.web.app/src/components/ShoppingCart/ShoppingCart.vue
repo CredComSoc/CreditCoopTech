@@ -1,31 +1,38 @@
 <template>
-  <h1> Varukorg </h1>
-  <EmptyCart />
+  <div id="cart-container">
+    <h1> Varukorg </h1>
+    <EmptyCart v-if="this.cart.length === 0" />
+    <CartList v-if="this.cart.length > 0" />
+  </div>
 </template>
 
 <script>
 import EmptyCart from './EmptyCart.vue'
+import CartList from './CartList.vue'
+
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
-    EmptyCart
+    EmptyCart,
+    CartList
   },
   mounted () {
-    fetch('http://localhost:3000/cart/' + 'TestUser1')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('HTTP error ' + response.status)
-        }
-        return response.json()
-      })
-      .then(json => {
-        this.cart = json
-        console.log(this.cart)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    fetch('http://localhost:3000/cart/TestUser1', { // Get endpoint
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(
+      response => response.json()
+    ).then(
+      success => {
+        console.log(success)
+        this.cart = success
+      } // Handle the success response object
+    ).catch(
+      error => console.log(error) // Handle the error response object
+    )
   },
   data () {
     return {
@@ -46,4 +53,5 @@ export default {
   p{
     font-style: italic;
   }
+
 </style>

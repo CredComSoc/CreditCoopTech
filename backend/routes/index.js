@@ -24,7 +24,7 @@ const util = require('util');
 // let url = "mongodb://localhost:27017/"
 // let dbFolder = "sb"
 // let userFolder = "user1"
- let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/twitter?retryWrites=true&w=majority"
+ let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/tvitter?retryWrites=true&w=majority"
  let dbFolder = "tvitter"
  let userFolder = "users"
 
@@ -154,16 +154,16 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
 
 router.get('/cart/:userID', (req, res) => {
   const myquery = { userID: req.params.userID }
+  
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
-    dbo.collection("users").findOne({ myquery }, function(err, result) {
+    dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
         db.close();
       }
       else if (result != null) {
         const cart = result.posts;
-        console.log(cart)
         res.status(200).json(cart);
         db.close();
       }
