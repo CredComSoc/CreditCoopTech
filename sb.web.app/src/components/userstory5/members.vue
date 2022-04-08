@@ -6,7 +6,7 @@
     </div>
 
     <div class="center">
-        <Searchfield @searchEvent="triggerSearch" />
+        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vem vill du söka efter idag?'"/>
     </div>
     <br>
     <div class="main">

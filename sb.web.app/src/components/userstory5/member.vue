@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="{ name: 'Home' } ">
+    <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountname }} ">
     <div class="element-container" @click="enterProfile"> 
       <img :src='getImgURL()' />
       <h4 class="element-title"> {{ listingObj.accountname }} </h4>
@@ -12,8 +12,6 @@
 <script>
 import userProfileVue from './userProfile.vue'
 
-// import ListingPopup from '@/components/userstory4/ListingPopup.vue'
-
 export default {
 
   props: {
@@ -22,12 +20,7 @@ export default {
   methods: {
     getImgURL () {
       return 'http://155.4.159.231:3000/image/' + this.listingObj.img
-    }/** ,
-    enterProfile () {
-      //route med listingObj.accountname
-      this.$router.push({ path: userProfile, params: { userprofile: this.listingObj.accountname, accountname: this.listingObj.accountname } })
     }
-    */
   }
 }
 </script>
@@ -71,5 +64,9 @@ export default {
       margin-left: 0.5rem;
       align-self: flex-end;
     }
+
+    a { 
+      color: inherit; 
+    } 
 
 </style>

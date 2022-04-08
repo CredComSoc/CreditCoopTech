@@ -43,21 +43,15 @@ export default {
       getUserProfile
     }
   },
-  props: {
-    accountname: String
-  },
   methods: {
     getProfile (accountname) {
-      console.log(accountname + ' is accountname')
       this.getUserProfile(accountname).then(res => {
         this.profileData = res
-        console.log(this.profileData)
       })
     }
   },
   created: function () {
-    console.log('params is ' + this.accountname)
-    this.getProfile(this.accountname)
+    this.getProfile(this.$route.params.userprofile)
   }
 }
 

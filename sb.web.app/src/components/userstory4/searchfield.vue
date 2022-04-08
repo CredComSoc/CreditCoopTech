@@ -1,6 +1,6 @@
 <template>
   <div class="item-center">
-    <input :type="search" v-model="message" placeholder="Vad vill du söka efter idag?"/>
+    <input :type="search" v-model="message" :placeholder="[[ placeHolderMessage ]]"/>
     <button class="d-inline-block" @click="$emit('searchEvent', message)">
       <!-- Image of magnifying glas -->
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -16,6 +16,9 @@ export default {
     return {
       message: ''
     }
+  },
+  props: {
+    placeHolderMessage: String
   }
 }
 </script>
