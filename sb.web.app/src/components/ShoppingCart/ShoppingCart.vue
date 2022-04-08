@@ -2,9 +2,10 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
-    <CartList v-if="this.cart.length > 0" />
+    <CartList :cart="this.cart" v-if="this.cart.length > 0" />
     <FilledCart/>
   </div>
+  
 </template>
 
 <script>

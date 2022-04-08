@@ -1,22 +1,26 @@
 <template>
   <div id="cart-list-container">
       <div id="cart-list">
-          <VerticalList 
-          v-for="(item) in this.cart"
-          :elementInfo="item"
-          :key="item.id" 
+          <CartTable 
+          :index="cart.length"
+          :image="cart.map((obj) => obj.image)"
+          :numberOf="cart.map((obj) => obj.items)"
+          :price="cart.map((obj) => obj.price)"
+          :sum="cart.map((obj) => obj.price * obj.items)"
+          :title="cart.map((obj) => obj.title)"
           />
       </div>
   </div>
 </template>
 
 <script>
-import VerticalList from './VerticalList.vue'
+import CartTable from './CartTable.vue'
 export default {
   name: 'CartList',
   components: {
-    VerticalList
-  }
+    CartTable
+  },
+  props: ['cart']
 }
 </script>
 
@@ -31,10 +35,12 @@ export default {
 #cart-list-container {
     width: 100%;
     border: 1px solid black;
+    min-height: 400px;
 }
 
 #cart-list {
     width: 95%;
+    min-height: 400px;
 }
 
 </style>
