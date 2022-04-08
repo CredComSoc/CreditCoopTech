@@ -4,7 +4,7 @@
   <div id="center">
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
     <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
-    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" />
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
     <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
   </div>
   <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
@@ -51,6 +51,10 @@ export default {
     },
     changePopupText (text) {
       this.popupCardText = text
+    },
+    fileSizeError () {
+      this.error = true
+      this.changePopupText('Filen måste vara en bild med filändelse .png, .jpeg eller .gif\noch ha mindre storlek än maxgränsen på 1MB.\nVar god försök igen.')
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
