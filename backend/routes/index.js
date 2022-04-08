@@ -21,12 +21,12 @@ const util = require('util');
 /**
  * vvvvv ALICIA OCH KASPER HAR ANVÄNT vvvvv
  */
-let url = "mongodb://localhost:27017/"
-let dbFolder = "sb"
-let userFolder = "user1"
-// let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/twitter?retryWrites=true&w=majority"
-// let dbFolder = "tvitter"
-// let userFolder = "users"
+// let url = "mongodb://localhost:27017/"
+// let dbFolder = "sb"
+// let userFolder = "user1"
+ let url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/twitter?retryWrites=true&w=majority"
+ let dbFolder = "tvitter"
+ let userFolder = "users"
 
 const { 
     v1: uuidv1,
@@ -58,7 +58,7 @@ router.post("/login", passport.authenticate('local'), (req, res) => {
 
 router.get("/profile", (req, res) => {
   // console.log(req)
-  let myquery = { userID: req.user}
+  let myquery = { userID: req.user }
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -146,6 +146,30 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
       else {
         // If we dont find a result
         res.status(404).send("No posts found.")
+        db.close();      
+      } 
+    })
+  })
+});
+
+router.get('/cart/:userID', (req, res) => {
+  const myquery = { userID: req.params.userID }
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne({ myquery }, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        const cart = result.posts;
+        console.log(cart)
+        res.status(200).json(cart);
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(204).json("No cart found.");
         db.close();      
       } 
     })

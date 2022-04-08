@@ -1,12 +1,12 @@
 <template>
   <!-- <MinSida /> -->
-  <div id="app">
-    <Navbar :screenWidth="screenWidth"/>
+  <div id='app'>
+    <Navbar :screenWidth='screenWidth'/>
       <div className='body'>
         <router-view/>
       </div>
-    <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
-    <Footer id="footer" />
+    <SaldoCard :saldo='saldo' :screenWidth='screenWidth'/>
+    <Footer id='footer' />
     <Form />
   </div>
 </template>
@@ -35,7 +35,6 @@ export default {
     
     onMounted(async () => {
       await router.isReady()
-      console.log(route.path)
       onResize()
       window.addEventListener('resize', onResize)
     })
@@ -49,7 +48,7 @@ export default {
           name: 'Home',
           params: { scrWidth }
         })
-      } 
+      }
     }
 
     return {
