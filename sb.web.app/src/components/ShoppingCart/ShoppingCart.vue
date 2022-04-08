@@ -1,15 +1,20 @@
 <template>
-  <h1> Varukorg </h1>
-  <EmptyCart />
+  <div id="Cart-container">
+    <h1> Varukorg </h1>
+    <!--<EmptyCart />-->
+    <FilledCart/>
+  </div>
 </template>
 
 <script>
-import EmptyCart from './EmptyCart.vue'
+//import EmptyCart from './EmptyCart.vue'
+import FilledCart from './FilledCart.vue'
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
-    EmptyCart
+    //EmptyCart,
+    FilledCart
   },
   mounted () {
     fetch('http://localhost:3000/cart/' + 'TestUser1')
@@ -38,12 +43,14 @@ export default {
 <style scoped>
   *{
     font-family: 'Ubuntu' ;
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
+    margin: 0 auto;
+    margin-top: 30px;
   }
 
-  p{
-    font-style: italic;
+  #Cart-container{
+    width: 700px;
+    min-height: 200px;
+    position: relative;
   }
 </style>
