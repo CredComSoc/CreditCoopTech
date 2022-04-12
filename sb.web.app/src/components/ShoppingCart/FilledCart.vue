@@ -14,11 +14,6 @@
       />
     </div>
   </div>
-  <div class="total">
-    <span id="total-text">Totalt: </span>
-    <span >{{total}} bKr</span>
-  </div>
-  <button id="confirm">Slutför köp</button>
 </template>
 
 <script>

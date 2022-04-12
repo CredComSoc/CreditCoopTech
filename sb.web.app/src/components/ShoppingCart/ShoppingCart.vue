@@ -2,21 +2,24 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
-    <FilledCart :total="50" :cart="this.cart" v-if="this.cart.length > 0"/>
+    <FilledCart :cart="this.cart" v-if="this.cart.length > 0"/>
   </div>
-  
+  <div id="bottom">
+  <TableBottom :total="50" v-if="this.cart.length > 0"/>
+  </div>
 </template>
 
 <script>
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
-
+import TableBottom from './TableBottom.vue'
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
     EmptyCart,
-    FilledCart
+    FilledCart,
+    TableBottom
   },
   mounted () {
     fetch('http://localhost:3000/cart/TestUser1', { // Get endpoint
@@ -46,6 +49,7 @@ export default {
 </script>
 
 <style scoped>
+
   *{
     font-family: 'Ubuntu' ;
     box-sizing: border-box;
@@ -56,6 +60,12 @@ export default {
   #cart-container{
     width: 45%;
     min-height: 200px;
+    position: relative;
+  }
+
+  #bottom{
+    width: 45%;
+    height: 100px;
     position: relative;
   }
 
