@@ -3,7 +3,7 @@
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
     <CartList v-if="this.cart.length > 0" />
-    <FilledCart/>
+    <FilledCart :total="50"/>
   </div>
 </template>
 

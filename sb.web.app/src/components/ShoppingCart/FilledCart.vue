@@ -1,6 +1,9 @@
 <template>
-  <p>Totalt: {{total}} bKr</p>
-  <div type="button" id="confirme">Slutför köp</div>
+  <div class="total">
+    <span id="total-text">Totalt: </span>
+    <span >{{total}} bKr</span>
+  </div>
+  <button id="confirm">Slutför köp</button>
 </template>
 
 <script>
@@ -11,17 +14,31 @@ export default {
 </script>
 
 <style scoped>
-    #confirme{
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+    #confirm{
         right: 0;
         bottom:0;
         position:absolute;
         background-color:#4690CD;
         color: white;
-        padding: 5px 10px 5px 10px;
+        padding: 5px 15px 5px 15px;
         border-radius: 4px;
+        border: none;
     }
 
-    #confirme:hover{
+    #confirm:hover{
         background: #457EAD;
+    }
+
+    .total{
+      right: 0;
+      bottom: 25%;
+      position:absolute;
+      font-size: 18px;
+    }
+
+    #total-text{
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: 700;
     }
 </style>
