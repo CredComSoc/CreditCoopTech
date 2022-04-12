@@ -13,25 +13,25 @@
   <div class="cart-col">
     <h3 v-if="ind === 1"> Antal </h3>   
     <div class="item-controller">
-        <div class="sub-item">
+        <div type="button" class="sub-item" @click="minItem">
             <img src="../../assets/cart_images/sub.png">
         </div>
-        <p class="non-b-text"> {{ items }} </p>
-        <div class="add-item">
+        <p class="non-b-text" > {{ this.numberOfItems }} </p>
+        <div type="button" class="add-item" @click="addItem">
             <img src="../../assets/cart_images/add.png">
         </div>
     </div>
   </div>
   <div class="cart-col"> 
     <h3 v-if="ind === 1"> Pris </h3>  
-    <p class="non-b-text"> {{ price }} </p>
+    <p class="non-b-text"> {{ this.priceOfItem }} </p>
   </div>
   <div class="cart-col">
     <h3 v-if="ind === 1"> Summa </h3>   
-    <p class="non-b-text"> {{ sum }} </p>
+    <p class="non-b-text"> {{ this.totalPrice }} </p>
   </div>
   <div class="cart-col">    
-    <div class="g-can">
+    <div type="button" class="g-can" @click="this.removeRow">
       <img src="../../assets/cart_images/garbage.png">
     </div>
   </div> 
@@ -41,7 +41,29 @@
 <script>
 export default {
   name: 'CartTableRow',
-  props: ['ind', 'image', 'title', 'items', 'price', 'sum']
+  props: ['ind', 'image', 'title', 'items', 'price', 'sum'],
+  data () {
+    return {
+      numberOfItems: this.items,
+      priceOfItem: this.price,
+      totalPrice: this.sum
+    }
+  },
+  methods: {
+    addItem () {
+      this.numberOfItems++
+      this.totalPrice = this.numberOfItems * this.priceOfItem
+    },
+    minItem () {
+      if (this.numberOfItems > 1) {
+        this.numberOfItems--
+        this.totalPrice = this.numberOfItems * this.priceOfItem
+      }
+    },
+    removeRow () {
+      this.$emit('remove-row', this.ind)
+    }
+  }
 }
 </script>
 
@@ -62,6 +84,7 @@ h3 {
 
 .cart-col {
     height: 110px;
+    width: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -92,7 +115,18 @@ h3 {
 .g-can {
     width: 32px;
     height: 38px;
-    padding-right: 3px;
+}
+
+.g-can img {
+  margin-right: 3px;
+}
+
+.add-item:hover, .sub-item:hover {
+  transform: scale(1.07);
+}
+
+.g-can:hover {
+  transform: scale(1.03);
 }
 
 .sub-item, .add-item, .g-can {

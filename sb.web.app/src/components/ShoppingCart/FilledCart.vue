@@ -2,7 +2,7 @@
   <div id="cart-table">
     <!-- <CartTableHeader /> -->
     <div id="table-content">
-      <CartTableRow 
+      <CartTableRow
         v-for="(row,index) in this.cart"
         :key="row.id"
         :ind="index + 1"
@@ -10,23 +10,44 @@
         :title="row.title"
         :items="row.items"
         :price="row.price"
-        :sum="row.price * row.items" 
+        :sum="row.price * row.items"
+        @remove-row="this.removeRow" 
       />
     </div>
+  </div>
+  <div id="bottom">
+    <TableBottom :total="this.total" v-if="this.cart.length > 0"/>
   </div>
 </template>
 
 <script>
 //import CartTableHeader from './CartTableHeader.vue'
 import CartTableRow from './CartTableRow.vue'
+import TableBottom from './TableBottom.vue'
 
 export default {
   name: 'FilledCart',
   components: {
     //CartTableHeader,
-    CartTableRow
+    CartTableRow,
+    TableBottom
   },
-  props: ['total', 'cart']
+  props: ['cart'],
+  methods: {
+    removeRow (ind) {
+      this.$emit('remove-row', ind)
+    }
+  },
+  data () {
+    return {
+      total: 0
+    }
+  },
+  mounted () {
+    this.total = this.cart.reduce((acc, cur) => {
+      return acc + cur.price * cur.items
+    }, 0)
+  }
 }
 </script>
 
@@ -74,6 +95,13 @@ export default {
 
   #table-content {
     min-height: 160px;
+  }
+
+  #bottom{
+    width: 100%;
+    height: 100px;
+    position: relative;
+    margin-top: 40px;
   }
 
 </style>

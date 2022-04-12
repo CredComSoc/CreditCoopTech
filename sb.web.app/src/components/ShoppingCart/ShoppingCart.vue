@@ -2,24 +2,19 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
-    <FilledCart :cart="this.cart" v-if="this.cart.length > 0"/>
-  </div>
-  <div id="bottom">
-  <TableBottom :total="50" v-if="this.cart.length > 0"/>
+    <FilledCart :cart="this.cart" v-if="this.cart.length > 0" @remove-row="this.removeRow"/>
   </div>
 </template>
 
 <script>
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
-import TableBottom from './TableBottom.vue'
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
     EmptyCart,
-    FilledCart,
-    TableBottom
+    FilledCart
   },
   mounted () {
     fetch('http://localhost:3000/cart/TestUser1', { // Get endpoint
@@ -44,6 +39,13 @@ export default {
     return {
       cart: []
     }
+  },
+  methods: {
+    removeRow (ind) {
+      console.log('hello')
+      this.cart.splice(ind - 1, 1)
+      //this.total = this.cart.reduce((acc, cur) => acc + cur.price * cur.items, 0)
+    }
   }
 }
 </script>
@@ -60,12 +62,6 @@ export default {
   #cart-container{
     width: 45%;
     min-height: 200px;
-    position: relative;
-  }
-
-  #bottom{
-    width: 45%;
-    height: 100px;
     position: relative;
   }
 
