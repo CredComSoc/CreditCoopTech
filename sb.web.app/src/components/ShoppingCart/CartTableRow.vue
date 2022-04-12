@@ -3,14 +3,14 @@
   <div class="cart-col">  
     <p class="b-text"> {{ ind }} </p>
   </div>
-  <div class="header-col">
+  <div class="cart-col">
     <h3 v-if="ind === 1"> Produkt </h3>  
     <img class="content-img" src="../../assets/list_images/Event_6.png" />
   </div>
   <div class="cart-col">  
     <p class="non-b-text"> {{ title }} </p>
   </div>
-  <div class="header-col">
+  <div class="cart-col">
     <h3 v-if="ind === 1"> Antal </h3>   
     <div class="item-controller">
         <div class="sub-item">
@@ -56,22 +56,16 @@ export default {
 h3 {
   font-weight: 400;
   font-size: 22px;
+  position: absolute;
+  top: 3%;
 }
 
-.header-col, .cart-col {
+.cart-col {
     height: 110px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    flex: 1;
-}
-
-.g-can, .cart-col p, .item-controller, .content-img {
-    margin-top: auto;
-}
-
-.content-img {
-    margin-top: 30px;
 }
 
 .table-row {

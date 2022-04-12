@@ -136,17 +136,17 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
     const myquery = { userID : "TestUser2" };
     dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
       if (err) {
-        res.sendStatus(500)
         db.close();
+        res.sendStatus(500)
       }
       else if (result != null) {
-        res.sendStatus(200);
         db.close();
+        res.sendStatus(200);
       }
       else {
         // If we dont find a result
-        res.status(404).send("No posts found.")
         db.close();      
+        res.status(404).send("No posts found.")
       } 
     })
   })
@@ -159,18 +159,18 @@ router.get('/cart/:userID', (req, res) => {
     let dbo = db.db("tvitter");
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
-        res.sendStatus(500)
         db.close();
+        res.sendStatus(500)
       }
       else if (result != null) {
         const cart = result.posts;
-        res.status(200).json(cart);
         db.close();
+        res.status(200).json(cart);
       }
       else {
         // If we dont find a result
-        res.status(204).json("No cart found.");
         db.close();      
+        res.status(204).json("No cart found.");
       } 
     })
   })

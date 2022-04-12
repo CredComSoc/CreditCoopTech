@@ -69,10 +69,11 @@ export default {
   #cart-table {
     margin-top: 30px;
     border: solid 1px black;
+    position: relative;
   }
 
   #table-content {
-    min-height: 200px;
+    min-height: 160px;
   }
 
 </style>
