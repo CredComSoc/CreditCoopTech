@@ -2,14 +2,13 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
-    <CartList v-if="this.cart.length > 0" />
-    <FilledCart :total="50"/>
+    <FilledCart :total="50" :cart="this.cart" v-if="this.cart.length > 0"/>
   </div>
+  
 </template>
 
 <script>
 import EmptyCart from './EmptyCart.vue'
-import CartList from './CartList.vue'
 import FilledCart from './FilledCart.vue'
 
 export default {
@@ -17,7 +16,6 @@ export default {
   props: [],
   components: {
     EmptyCart,
-    CartList,
     FilledCart
   },
   mounted () {
@@ -32,6 +30,7 @@ export default {
       success => {
         this.cart = success
         this.cart[0].items = 2
+        this.cart = Array(3).fill(this.cart[0])
         console.log(success)
       } // Handle the success response object
     ).catch(
