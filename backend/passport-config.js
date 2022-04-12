@@ -24,6 +24,7 @@ async function authenticateUser (username, password, done) {
     const  dbo = db.db("tvitter");
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
+        db.close()
         return done(err)
       } 
       else if (result != null) {
@@ -31,8 +32,8 @@ async function authenticateUser (username, password, done) {
         return done(null, result)
       } 
       else {
-        return done(null, false, {message: 'User Not Found'})
         db.close();
+        return done(null, false, {message: 'User Not Found'})
       }
     })
   })
@@ -42,7 +43,9 @@ async function getUser(id) {
   const myquery = { _id: id}
   const db = await MongoClient.connect(url)
   const dbo = db.db("tvitter");
-  return await dbo.collection("users").findOne(myquery)
+  const user = await dbo.collection("users").findOne(myquery)
+  db.close();
+  return user;
 }
 
 module.exports = initialize
