@@ -174,6 +174,8 @@ router.get('/image/:filename', (req, res) => {
       });
     }
   });
+
+  gfs.close();
 });
 
 router.post('/getAllListings/', (req, res) => {
@@ -191,6 +193,7 @@ router.post('/getAllListings/', (req, res) => {
         searchword = searchword.filter(function(value, index, arr) {
           return value !== "";
         })
+        
 
         dbo.collection(userFolder).find({}).toArray(function (err, users) {
           
@@ -293,6 +296,53 @@ router.post('/getAllMembers/', (req, res) => {
   })
 })
 
+router.post('/getAllMembers2/', (req, res) => {
+  // fetch all metadata about listing from mongoDB
+  let searchword = req.body.searchword.split(' ')
+
+  MongoClient.connect(url, (err, db) => {
+      let dbo = db.db(dbFolder)
+      let allMembersArray = {}
+
+      searchword = searchword.filter(function(value, index, arr) {
+        return value !== "";
+      })
+
+      dbo.collection(userFolder).find({}).toArray(function (err, users) {
+        
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else {
+          users.forEach(user => {
+            let name = user.profile.accountname
+            foundSearchword = true
+            if( searchword.length !== 0 ) {
+              for (let i = 0; i < searchword.length; i++) {
+                if (!name.match(new RegExp(searchword[i], "i"))) {
+                  foundSearchword = false
+                  break
+                } 
+              }
+              if (!foundSearchword) {
+                return
+              }
+            }
+
+            // { Stockholm: [user.profile, user.profile, ...] Göteborg: ...}
+            if(!(user.profile.city in allMembersArray)){allMembersArray[user.profile.city] = []}
+            allMembersArray[user.profile.city].push(user.profile)
+          })
+
+          // allMembersArray.sort((a, b) => a.city - b.city)
+          console.log(allMembersArray)
+          res.send({allMembers: allMembersArray})
+          db.close();
+        }
+      })
+  })
+})
 
 // Om användaren registerar sig,
 // params = användarnamn, hashat lösenord

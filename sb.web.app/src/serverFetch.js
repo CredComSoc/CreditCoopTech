@@ -124,7 +124,7 @@ export async function getAllListings (searchword, destinationsArray, categoryArr
 }
 
 export async function getAllMembers (searchword) {
-  const getAllMembersPromise = fetch(EXPRESS_URL + '/getAllMembers/', {
+  const getAllMembersPromise = fetch(EXPRESS_URL + '/getAllMembers2/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

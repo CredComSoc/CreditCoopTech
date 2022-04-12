@@ -1,5 +1,6 @@
 
 <template>
+  <!--
   <div class="container_all_listings">
     <ul>
       <li v-for="item in searchData" :key="item.title">
@@ -7,6 +8,19 @@
       </li>
     </ul>
   </div>
+  -->
+  
+  <div class="container_all_listings">
+    <ul>
+      <div v-for="[key, value] of Object.entries(searchData)" :key="key">
+        <h3>{{key}}</h3>
+        <li v-for="member in value" :key="member.title">
+          <Member :listingObj="member"/>
+        </li>
+      </div>
+    </ul>
+  </div>
+
 </template>
 
 <script>

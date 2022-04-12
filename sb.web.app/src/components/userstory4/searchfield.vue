@@ -14,7 +14,8 @@
 export default {
   data () {
     return {
-      message: ''
+      message: '',
+      search: String
     }
   },
   props: {

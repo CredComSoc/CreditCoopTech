@@ -51,6 +51,7 @@ export default {
         return res
       })
         .then(data => {
+          console.log(data.allMembers)
           this.SearchData = data.allMembers
         })
     }
