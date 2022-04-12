@@ -2,7 +2,7 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.cart.length === 0" />
-    <FilledCart :cart="this.cart" v-if="this.cart.length > 0" @remove-row="this.removeRow"/>
+    <FilledCart :total="this.total" :cart="this.cart" v-if="this.cart.length > 0" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem"/>
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
         this.cart = success
         this.cart[0].items = 2
         this.cart = Array(3).fill(this.cart[0])
+        this.calcTotal()
         console.log(success)
       } // Handle the success response object
     ).catch(
@@ -37,14 +38,32 @@ export default {
   },
   data () {
     return {
-      cart: []
+      cart: [],
+      total: 0
     }
   },
   methods: {
     removeRow (ind) {
-      console.log('hello')
       this.cart.splice(ind - 1, 1)
-      //this.total = this.cart.reduce((acc, cur) => acc + cur.price * cur.items, 0)
+      this.calcTotal()
+    },
+    addItem (ind) {
+      this.cart[ind - 1].items++
+      //this.calcTotal()
+    },
+    minItem (ind) {
+      if (this.cart[ind - 1].items > 1) {
+        this.cart[ind - 1].items--
+        // this.calcTotal()
+      }
+    },
+    calcTotal () {
+      let total = 0
+      for (let i = 0; i < this.cart.length; i++) {
+        total += this.cart[i].price * this.cart[i].items
+        console.log(this.cart[i])
+      }
+      this.total = total
     }
   }
 }

@@ -2,7 +2,7 @@
   <div id="cart-table">
     <!-- <CartTableHeader /> -->
     <div id="table-content">
-      <CartTableRow
+      <CartTableRow 
         v-for="(row,index) in this.cart"
         :key="row.id"
         :ind="index + 1"
@@ -12,6 +12,8 @@
         :price="row.price"
         :sum="row.price * row.items"
         @remove-row="this.removeRow" 
+        @add-item="this.addItem"
+        @min-item="this.minItem"
       />
     </div>
   </div>
@@ -32,21 +34,18 @@ export default {
     CartTableRow,
     TableBottom
   },
-  props: ['cart'],
+  props: ['cart', 'total'],
+  emits: ['remove-row', 'add-item', 'min-item'],
   methods: {
     removeRow (ind) {
       this.$emit('remove-row', ind)
+    },
+    addItem (ind) {
+      this.$emit('add-item', ind)
+    },
+    minItem (ind) {
+      this.$emit('min-item', ind)
     }
-  },
-  data () {
-    return {
-      total: 0
-    }
-  },
-  mounted () {
-    this.total = this.cart.reduce((acc, cur) => {
-      return acc + cur.price * cur.items
-    }, 0)
   }
 }
 </script>

@@ -53,11 +53,13 @@ export default {
     addItem () {
       this.numberOfItems++
       this.totalPrice = this.numberOfItems * this.priceOfItem
+      this.$emit('add-item', this.ind)
     },
     minItem () {
       if (this.numberOfItems > 1) {
         this.numberOfItems--
         this.totalPrice = this.numberOfItems * this.priceOfItem
+        this.$emit('min-item', this.ind)
       }
     },
     removeRow () {
