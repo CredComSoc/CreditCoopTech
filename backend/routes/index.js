@@ -45,7 +45,6 @@ router.get("/", (req, res) => {
 
 router.get('/authenticate', (req, res) => {
   if (req.isAuthenticated()) {
-    // console.log(req)
     res.sendStatus(200)
   } else {
     res.sendStatus(500)
@@ -130,16 +129,18 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   images = images.filter((img) => { return img !== newArticle.coverImg })
   newArticle.id = uuid.v4().toString();
   newArticle.img = images;
+  console.log(req.user);
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db(dbFolder);
-    const myquery = { userID : "TestUser2" };
+    const myquery = { userID : req.user };
     dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
       if (err) {
         db.close();
         res.sendStatus(500)
       }
-      else if (result != null) {
+      else if (result != null || result.matchedCount != 0) {
+        console.log(result)
         db.close();
         res.sendStatus(200);
       }
