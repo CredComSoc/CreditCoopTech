@@ -1,6 +1,11 @@
 <template>
-  <!-- <MinSida /> -->
-  <div id="app">
+  <!-- < Admin page /> -->
+  <div v-if="auth && admin">
+    <AdminNavbar :screenWidth="screenWidth"/>
+    <router-view/>
+  </div>
+  <!-- < User page /> -->
+  <div id="app" v-else-if="auth">
     <Navbar :screenWidth="screenWidth"/>
       <div className='body'>
         <router-view/>
@@ -9,6 +14,10 @@
     <Footer id="footer" />
     <Form />
   </div>
+  <!-- < Login page /> -->
+  <div v-else>
+     <router-view/>
+  </div>
 </template>
 
 <script>
@@ -16,8 +25,11 @@
 import Navbar from './components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
+import Login from './components/Login.vue'
+import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
+import { authenticate, checkAdminStatus, getSaldo } from './serverFetch'
  
 // import Home from '@/components/Home.vue'
 //import Parent from '@/components/userstory4/parent.vue'
@@ -27,12 +39,13 @@ export default {
   components: {
     Navbar,
     Footer,
-    SaldoCard
+    SaldoCard,
+    AdminNavbar
   },
   setup () {
     const route = useRoute()
     const router = useRouter()
-    
+
     onMounted(async () => {
       await router.isReady()
       console.log(route.path)
@@ -48,7 +61,7 @@ export default {
         router.push({
           name: 'Home',
           params: { scrWidth }
-        })
+        }) 
       } 
     }
 
@@ -58,8 +71,29 @@ export default {
   },
   data () {
     return {
-      saldo: 2000
+      saldo: null,
+      auth: false,
+      admin: false
     }
+  },
+  mounted () {
+    const router = useRouter()
+    authenticate().then((res) => {
+      if (res) {
+        checkAdminStatus().then((res2) => {
+          this.auth = res
+          this.admin = res2
+          if (res2) {
+            router.push({ name: 'AdminHome' })
+          }
+        })
+      } else {
+        this.auth = res
+      }
+    })
+    getSaldo().then((res) => {
+      this.saldo = res
+    })
   }
 }
 </script>

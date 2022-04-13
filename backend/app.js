@@ -33,11 +33,12 @@ initializePassport(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
-
-const  indexRouter = require('./routes/index')
-const  ccRouter = require('./routes/cc_routes')
+const indexRouter = require('./routes/index')
+const ccRequests = require('./routes/ccRequests')
+const ccUserStore = require('./routes/ccUserStore')
 app.use('/', indexRouter)
-app.use('/', ccRouter)
+app.use('/', ccRequests)
+app.use('/', ccUserStore)
 
 function startServer(port) {
   let server = app.listen(3000, () => {

@@ -1,9 +1,8 @@
 const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
-const  url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-let asdf = 'TestAdmin';
+const url = require('./mongoDB-config')
 
 function initialize (passport) {
   passport.use (new LocalStrategy (authenticateUser))
@@ -31,8 +30,8 @@ async function authenticateUser (username, password, done) {
         return done(null, result)
       } 
       else {
-        return done(null, false, {message: 'User Not Found'})
         db.close();
+        return done(null, false, {message: 'User Not Found'})
       }
     })
   })
@@ -42,7 +41,9 @@ async function getUser(id) {
   const myquery = { _id: id}
   const db = await MongoClient.connect(url)
   const dbo = db.db("tvitter");
-  return await dbo.collection("users").findOne(myquery)
+  user = await dbo.collection("users").findOne(myquery)
+  db.close()
+  return user
 }
 
 module.exports = initialize

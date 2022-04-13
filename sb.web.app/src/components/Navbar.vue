@@ -108,7 +108,7 @@
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
-                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                    <img src="../assets/navbar_logos/profile.png" alt="profil knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
                 </router-link>
@@ -121,11 +121,17 @@
                   <router-link :to="{name:'Profile', params:{tab: ''}}">Inställningar</router-link>
                 </div>
               </div>
-              <a href="http://localhost:8080/profile" v-if="this.isActive">
-                <span class="mob-cap"> Min sida </span>
-              </a>
+          </div>
+          <div class="navlogo">
+            <router-link :to="{name:''}" @click="logOut">
+              <figure class="logo-click">
+                  <img src="../assets/link_arrow/popup_close.png" alt="logut knapp"/>
+                  <figcaption class="l-text"> Logout </figcaption>
+              </figure>
+            </router-link>
           </div>
         </div>
+
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
@@ -140,6 +146,7 @@
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter, useRoute } from 'vue-router'
+import { logout } from '../serverFetch.js'
 const router = useRouter()
 
 export default {
@@ -250,6 +257,11 @@ export default {
         const content = document.getElementById('profile-content')
         content.style.display = 'block'
       }
+    },
+    logOut () {
+      logout().then(() => {
+        window.location.reload()
+      })
     }
   }
 }

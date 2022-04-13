@@ -65,10 +65,9 @@ export default {
     }
   },
   mounted () {
-    getTransactions('TestAdmin', '123')
+    getTransactions()
       .then(res => {
         this.purchases = res
-        console.log(this.purchases)
       })
   }
 }

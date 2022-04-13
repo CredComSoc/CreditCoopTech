@@ -1,0 +1,25 @@
+openapi: 3.0.2
+info:
+  title: Media Range API
+  version: 0.0.1
+paths:
+  /post-media-range:
+    post:
+      summary: Post media-range body
+      operationId: post-media-range
+      requestBody:
+          description: media image
+          content:
+            'text/plain':
+              schema:
+                type: string
+            'text/*':
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: integer
+      responses:
+        200:
+          description: OK
+
