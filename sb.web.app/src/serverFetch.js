@@ -3,8 +3,8 @@ import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = 'http://155.4.159.231/cc-node'
-// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+//const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {
@@ -15,22 +15,22 @@ function hashMyPassword (password) {
 }
 
 export async function authenticate () {
-  // const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   credentials: 'include'
-  // }).then((response) => {
-  //   if (!response.ok) {
-  //     return false
-  //   }
-  //   return true
-  // }).catch(() => {
-  //   return false
-  // }) 
+  const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) {
+      return false
+    }
+    return true
+  }).catch(() => {
+    return false
+  }) 
 
-  return true 
+  return authPromise 
 }
 
 export async function login (username, password) {

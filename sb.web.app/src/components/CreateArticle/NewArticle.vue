@@ -140,6 +140,7 @@ export default {
       // This will upload the article to the server
       fetch('http://localhost:3000/upload/article', { // POST endpoint
         method: 'POST',
+        credentials: 'include',
         body: data // This is your file object
       }).then(
         response => response
