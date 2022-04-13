@@ -1,25 +1,29 @@
 <template>
 <div class="table-row">
-  <div class="potrait">
+  <div class="floating-left">
     <img class="content-img" src="../../assets/list_images/Event_6.png" />
     <p class="non-b-text"> {{ title }} </p>
-    <p class="non-b-text"> {{ this.priceOfItem }} </p>
+    <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} bKr </p>
   </div>
   <!--<h3 v-if="ind === 1"> Antal </h3>-->  
-  <div class="item-controller">
-    <div type="button" class="sub-item" @click="minItem">
-      <img src="../../assets/cart_images/sub.png">
-    </div>
-    <p class="non-b-text" > {{ this.numberOfItems }} </p>
-    <div type="button" class="add-item" @click="addItem">
-      <img src="../../assets/cart_images/add.png">
-    </div>
-  </div>
   <!--<h3 v-if="ind === 1"> Pris </h3>-->
   <!--<h3 v-if="ind === 1"> Summa </h3>-->   
-  <p class="non-b-text"> {{ this.totalPrice }} </p>   
-  <div type="button" class="g-can" @click="this.removeRow">
-    <img src="../../assets/cart_images/garbage.png">
+  <div class="right-part">
+    <div type="button" class="g-can" @click="this.removeRow">
+      <img src="../../assets/cart_images/garbage.png">
+    </div>
+    <div class="floating-right">
+      <div class="item-controller">
+        <div type="button" class="sub-item" @click="minItem">
+          <img src="../../assets/cart_images/sub.png">
+        </div>
+        <p class="non-b-text" > {{ this.numberOfItems }} </p>
+        <div type="button" class="add-item" @click="addItem">
+          <img src="../../assets/cart_images/add.png">
+        </div>
+      </div>
+      <p :class="[`non-b-text`, `sum-text`]"> Summa: {{ this.totalPrice }} </p>   
+    </div>
   </div>
 </div>
   
@@ -72,15 +76,24 @@ h3 {
 }
 
 .table-row {
+  width: 100%;
+  height: 130px;
+  position: relative;
+  margin-bottom: 15px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  margin-top: 50px;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 1px solid #e6e6e6;
 }
 
-.potrait{
-   width:100% 
+.floating-left {
+  flex: 1;
+}
+
+.floating-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .item-controller {
@@ -99,6 +112,9 @@ h3 {
 .g-can {
     width: 32px;
     height: 38px;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .g-can img {
@@ -126,6 +142,10 @@ h3 {
     font-size: 18px;
 }
 
+.sum-text {
+  font-weight: 700;
+}
+
 .b-text {
     font-weight: 500;
     font-size: 18px;
@@ -136,5 +156,8 @@ h3 {
     width: 102px;
     height: 80px;
     float: left;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 </style>
