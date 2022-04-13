@@ -343,7 +343,15 @@ router.post('/getAllMembers2/', (req, res) => {
               }
           })
           
-          let sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0])))
+          //Sort alphabetically by swedish.
+          console.log("hej")
+          //console.log(allMembersArray.values())
+
+          for (const value of allMembersArray.values()) {
+            value.sort((a, b) => a.accountname.localeCompare(b.accountname));
+          }
+          console.log(allMembersArray)
+          let sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
           let finishMap = new Map([...adminMembersArray, ...sortedMap])
 
           res.send({allMembers: finishMap})
