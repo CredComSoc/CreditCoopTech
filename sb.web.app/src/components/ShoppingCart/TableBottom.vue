@@ -1,15 +1,20 @@
 <template>
   <div class="total">
     <span id="total-text">Totalt: </span>
-    <span >{{total}} bKr</span>
+    <span >{{ total }} bKr</span>
   </div>
-  <button id="confirm">Slutför köp</button>
+  <button @click="completePurchase" id="confirm">Slutför köp</button>
 </template>
 
 <script>
 export default {
-  props: ['total']
-
+  props: ['total'],
+  emits: ['complete-purchase'],
+  methods: {
+    completePurchase () {
+      this.$emit('complete-purchase')
+    }
+  }
 }
 </script>
 

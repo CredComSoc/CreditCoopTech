@@ -1,23 +1,26 @@
 <template>
   <div id="cart-container">
     <h1> Varukorg </h1>
-    <EmptyCart v-if="this.cart.length === 0" />
-    <FilledCart :total="this.total" :cart="this.cart" v-if="this.cart.length > 0" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem"/>
+    <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
+    <FilledCart :total="this.total" :cart="this.cart" v-if="this.gotCartRes && this.cart.length > 0" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
+    <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
   </div>
 </template>
 
 <script>
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
+import PopupCard from '../CreateArticle/PopupCard.vue'
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
     EmptyCart,
-    FilledCart
+    FilledCart,
+    PopupCard
   },
   mounted () {
-    fetch('http://localhost:3000/cart/TestUser1', { // Get endpoint
+    fetch('http://localhost:3000/cart/TestUser', { // Get endpoint
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -28,18 +31,31 @@ export default {
       success => {
         this.cart = success
         this.cart[0].items = 2
-        this.cart = Array(3).fill(this.cart[0])
+        let first = {}
+        let sec = {}
+        let third = {}
+        first = Object.assign(first, this.cart[0])
+        sec = Object.assign(sec, this.cart[0])
+        third = Object.assign(third, this.cart[0])
+        const ma = [first, sec, third]
+        this.cart = ma
         this.calcTotal()
         console.log(success)
+        this.gotCartRes = true
       } // Handle the success response object
     ).catch(
-      error => console.log(error) // Handle the error response object
+      error => {
+        console.log(error)
+        this.gotCartRes = true
+      } // Handle the error response object
     )
   },
   data () {
     return {
       cart: [],
-      total: 0
+      total: 0,
+      gotCartRes: false,
+      confirmPress: false
     }
   },
   methods: {
@@ -49,21 +65,24 @@ export default {
     },
     addItem (ind) {
       this.cart[ind - 1].items++
-      //this.calcTotal()
+      console.log('CART:', this.cart)
+      this.calcTotal()
     },
     minItem (ind) {
       if (this.cart[ind - 1].items > 1) {
         this.cart[ind - 1].items--
-        // this.calcTotal()
+        this.calcTotal()
       }
     },
     calcTotal () {
       let total = 0
       for (let i = 0; i < this.cart.length; i++) {
         total += this.cart[i].price * this.cart[i].items
-        console.log(this.cart[i])
       }
       this.total = total
+    },
+    completePurchase () {
+      this.confirmPress = true
     }
   }
 }
@@ -75,11 +94,11 @@ export default {
     font-family: 'Ubuntu' ;
     box-sizing: border-box;
     margin: 0 auto;
-    margin-top: 30px;
   }
 
   #cart-container{
-    width: 45%;
+    margin-top: 75px;
+    width: 60%;
     min-height: 200px;
     position: relative;
   }
