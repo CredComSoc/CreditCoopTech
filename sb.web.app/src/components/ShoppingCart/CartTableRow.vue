@@ -70,6 +70,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 *{
   font-family: 'Ubuntu' ;
   margin: 0;
@@ -145,7 +146,7 @@ h3 {
 }
 
 .b-text {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 18px;
 } 
 
