@@ -103,4 +103,28 @@ export default {
     position: relative;
   }
 
+  @media (max-width: 1450px) {
+      #cart-container{
+          width: 70%;
+      }
+ }
+
+ @media (max-width: 1300px) {
+      #cart-container{
+          width: 80%;
+      }
+ }
+
+ @media (max-width: 1200px) {
+      #cart-container{
+          width: 90%;
+      }
+ }
+
+ @media (max-width: 1000px) {
+      #cart-container{
+          width: 100%;
+      }
+ }
+
 </style>
