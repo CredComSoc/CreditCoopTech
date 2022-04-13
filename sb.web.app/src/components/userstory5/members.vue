@@ -52,6 +52,7 @@ export default {
       })
         .then(data => {
           console.log(data.allMembers)
+          console.log(typeof (data.allMembers))
           this.SearchData = data.allMembers
         })
     }

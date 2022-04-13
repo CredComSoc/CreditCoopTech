@@ -12,9 +12,11 @@
   
   <div class="container_all_listings">
     <ul>
-      <div v-for="[key, value] of Object.entries(searchData)" :key="key">
-        <h3>{{key}}</h3>
-        <li v-for="member in value" :key="member.title">
+      <div v-for="city in searchData" :key="city">
+        <!-- city[0] == Name -->
+        <h3>{{city[0]}}</h3>
+        <!-- city[1] = array of members in city -->
+        <li v-for="member in city[1]" :key="member.title">
           <Member :listingObj="member"/>
         </li>
       </div>

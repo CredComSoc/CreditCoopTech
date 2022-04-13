@@ -302,7 +302,7 @@ router.post('/getAllMembers2/', (req, res) => {
 
   MongoClient.connect(url, (err, db) => {
       let dbo = db.db(dbFolder)
-      let allMembersArray = {}
+      let allMembersArray = new Map()
 
       searchword = searchword.filter(function(value, index, arr) {
         return value !== "";
@@ -330,14 +330,39 @@ router.post('/getAllMembers2/', (req, res) => {
               }
             }
 
-            // { Stockholm: [user.profile, user.profile, ...] Göteborg: ...}
-            if(!(user.profile.city in allMembersArray)){allMembersArray[user.profile.city] = []}
-            allMembersArray[user.profile.city].push(user.profile)
-          })
+            // [{City: Stockholm, Users: [user.profile, user.profile, ...]}, {City: Götebo...}.]
 
+            // if city not in allmembers, push {City: "stad", Users: []};
+            //    else, Users.push "stad" in object with City: "stad"
+
+            // let inMembers = false;
+            // allMembersArray.forEach((cityObj, idx) => {
+            //   if(cityObj["City"] == user.profile.city){
+            //     allMembersArray[idx]["Users"].push(user.profile)
+            //     inMembers = true
+            //   }
+            // })
+            // if(!inMembers){
+            //   allMembersArray.push({"City": user.profile.city, "Users": []})
+            // }
+            
+            /** 
+            if(!(user.profile.city in allMembersArray)) {
+              allMembersArray[user.profile.city] = []
+            }
+            allMembersArray[user.profile.city].push(user.profile)
+            */
+            if (!allMembersArray.has(user.profile.city)) {
+              allMembersArray.set(user.profile.city, [])
+            }
+            allMembersArray.get(user.profile.city).push(user.profile)
+          })
+          
+          let testMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0])))
+          console.log(testMap)
           // allMembersArray.sort((a, b) => a.city - b.city)
-          console.log(allMembersArray)
-          res.send({allMembers: allMembersArray})
+          //console.log(allMembersArray)
+          res.send({allMembers: testMap})
           db.close();
         }
       })
