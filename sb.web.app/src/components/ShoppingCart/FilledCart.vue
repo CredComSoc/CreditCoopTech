@@ -18,24 +18,22 @@
     </div>
   </div>
   <div id="bottom">
-    <TableBottom :total="this.total" v-if="this.cart.length > 0"/>
+    <TableBottom @complete-purchase="this.completePurchase" :total="this.total" v-if="this.cart.length > 0"/>
   </div>
 </template>
 
 <script>
-//import CartTableHeader from './CartTableHeader.vue'
 import CartTableRow from './CartTableRow.vue'
 import TableBottom from './TableBottom.vue'
 
 export default {
   name: 'FilledCart',
   components: {
-    //CartTableHeader,
     CartTableRow,
     TableBottom
   },
   props: ['cart', 'total'],
-  emits: ['remove-row', 'add-item', 'min-item'],
+  emits: ['remove-row', 'add-item', 'min-item', 'complete-purchase'],
   methods: {
     removeRow (ind) {
       this.$emit('remove-row', ind)
@@ -45,6 +43,9 @@ export default {
     },
     minItem (ind) {
       this.$emit('min-item', ind)
+    },
+    completePurchase () {
+      this.$emit('complete-purchase')
     }
   }
 }
