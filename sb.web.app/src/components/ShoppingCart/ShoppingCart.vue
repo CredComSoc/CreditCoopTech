@@ -17,7 +17,7 @@ export default {
     FilledCart
   },
   mounted () {
-    fetch('http://localhost:3000/cart/TestUser1', { // Get endpoint
+    fetch('http://localhost:3000/cart/TestUser', { // Get endpoint
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
