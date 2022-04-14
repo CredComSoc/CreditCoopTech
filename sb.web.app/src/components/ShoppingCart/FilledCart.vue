@@ -2,7 +2,7 @@
   <div id="cart-table">
     <!-- <CartTableHeader /> -->
     <div id="table-content">
-      <!--
+      
       <CartTableRow 
         v-for="(row,index) in this.cart"
         :key="row.id"
@@ -16,8 +16,8 @@
         @add-item="this.addItem"
         @min-item="this.minItem"
       />
-      -->
-      <MobileCartTableRow 
+     
+      <!-- <MobileCartTableRow 
         v-for="(row,index) in this.cart"
         :key="row.id"
         :ind="index + 1"
@@ -29,7 +29,7 @@
         @remove-row="this.removeRow" 
         @add-item="this.addItem"
         @min-item="this.minItem"
-      />
+      /> -->
 
     </div>
   </div>
@@ -39,16 +39,16 @@
 </template>
 
 <script>
-//import CartTableRow from './CartTableRow.vue'
+import CartTableRow from './CartTableRow.vue'
 import TableBottom from './TableBottom.vue'
-import MobileCartTableRow from './MobileCartTableRow.vue'
+//import MobileCartTableRow from './MobileCartTableRow.vue'
 
 export default {
   name: 'FilledCart',
   components: {
-    //CartTableRow,
-    TableBottom,
-    MobileCartTableRow
+    CartTableRow,
+    TableBottom
+    //MobileCartTableRow
   },
   props: ['cart', 'total'],
   emits: ['remove-row', 'add-item', 'min-item', 'complete-purchase'],
