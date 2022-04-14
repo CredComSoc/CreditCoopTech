@@ -3,8 +3,8 @@ import fetchNoCors from 'fetch-no-cors'
 
 const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
 const CC_NODE_URL = 'http://155.4.159.231/cc-node'
-// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+//const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {
@@ -186,4 +186,41 @@ export async function profile () {
       return false
     })
   return profilePromise
+}
+
+export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone) {
+  console.log('updating profile')
+  const updateProfilePromise = fetch(EXPRESS_URL + '/updateProfile', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({ 
+      accountName: accountName,
+      description: description,
+      adress: adress,
+      city: city,
+      billingName: billingName,
+      billingBox: billingBox,
+      billingAdress: billingAdress,
+      orgNumber: orgNumber, 
+      email: email,
+      phone: phone
+    })
+
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        console.log('Update ok')
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+
+  return updateProfilePromise
 }

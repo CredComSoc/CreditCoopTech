@@ -22,7 +22,7 @@
           <td>{{item.entries[0].quant}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td className="green">{{item.state}}</td>
-          <td><a href="" className="red">Ladda ner faktura</a></td>
+          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
       </table>
       </div>
@@ -70,6 +70,23 @@ export default {
         this.purchases = res
         console.log(this.purchases)
       })
+  },
+  methods: {
+    invoice (filename, item) {
+      console.log(item.entries[0])
+      var pom = document.createElement('a')
+      const text = 'hello'
+      pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+      pom.setAttribute('download', filename)
+
+      if (document.createEvent) {
+        var event = document.createEvent('MouseEvents')
+        event.initEvent('click', true, true)
+        pom.dispatchEvent(event)
+      } else {
+        pom.click()
+      }
+    }
   }
 }
 </script>

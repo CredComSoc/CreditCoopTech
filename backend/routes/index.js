@@ -57,16 +57,16 @@ router.get("/profile", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "name"        : result.profile.accountname,
+          "name"        : result.profile.accountName,
           "description" : result.profile.description,
           "adress"      : result.profile.adress,
           "city"        : result.profile.city,
-          "billing_name": result.profile.billing.name,
-          "billing_box": result.profile.billing.box,
-          "billing_adress": result.profile.billing.adress,
-          "billing_orgNumber": result.profile.billing.orgNumber,
-          "contact_email"     : result.profile.contact.mail,
-          "contact_phone"     : result.profile.contact.phone
+          "billingName": result.profile.billing.name,
+          "billingBox": result.profile.billing.box,
+          "billingAdress": result.profile.billing.adress,
+          "orgNumber": result.profile.billing.orgNumber,
+          "email"     : result.profile.contact.email,
+          "phone"     : result.profile.contact.phone
         }
         res.status(200).send(userData)
         db.close();
@@ -320,6 +320,56 @@ router.patch("/logout", (req, res) => {
   })
 })
   
+router.post("/updateProfile", (req, res) => { 
+  let myquery = { userID: req.user}
+  console.log("User: " + req.user)
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+      } 
+      else if (result != null) {
+        //Det finns en användare med namnet
+        //Uppdatera profil
+        let newProfile = {
+          $set: {
+            profile: {
+              website: "",
+              accountName: req.body.accountName,
+              description: req.body.description,
+              adress: req.body.adress,
+              city: req.body.city,
+              billing: {
+                  name: req.body.billingName,
+                  box: req.body.billingBox,
+                  adress: req.body.billingAdress,
+                  orgNumber: req.body.orgNumber
+              },
+              contact: {
+                  email: req.body.email,
+                  phone: req.body.phone
+              }
+            }
+          }
+        }
+        
+        dbo.collection("users").updateOne(myquery, newProfile, function(err, result) {
+          if (err) {throw err}
+          else {
+            db.close();
+            res.sendStatus(200)
+          }
+        });
+      }
+      else {
+        console.log("No result?" + result)
+        db.close();
+        res.sendStatus(500)
+      }
+    })
+  })
+})
 
 
 module.exports = router;
