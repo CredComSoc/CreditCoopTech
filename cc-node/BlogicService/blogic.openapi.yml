@@ -1,0 +1,52 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "Credit commons: Business logic service"
+  description: Internal API called by Credit Commons reference implementation
+  contact:
+    name: Matthew Slater
+    url: http://matslats.net/contact
+  license:
+    name: GNU GPL
+paths:
+  /{type}:
+    post:
+      summary: Retrieve any dependent transactions according to business logic
+      operationId: appendEntries
+      parameters:
+        - name: type
+          in: path
+          description: The transaction type (workflow id)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Transaction'
+        description: the originating entry
+        required: true
+      responses:
+        "200":
+          description: Entries to be appended.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://gitlab.com/credit-commons-software-stack/cc-php-lib/-/raw/master/docs/credit-commons-openapi-3.0.yml#/components/schemas/Entry'
+components:
+  requestBodies:
+    Transaction:
+      type: object
+      description: A not-yet built transaction object.
+      required:
+        - type
+        - entries
+      properties:
+        type:
+          description: The id of the transaction workflow. Blogic often depends on this.
+          type: string
+          example: 3rdparty
+        entries:
+          type: array
+          items:
+            $ref: "https://gitlab.com/credit-commons-software-stack/cc-php-lib/-/raw/master/docs/credit-commons-openapi-3.0.yml#/components/schemas/Entry'"

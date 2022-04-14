@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import { authenticate } from '../serverFetch'
+import { authenticate, checkAdminStatus } from '../serverFetch'
 import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
@@ -7,8 +7,13 @@ import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import StepTwo from '../components/CreateArticle/StepTwo.vue'
 import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
+import AdminHome from '../components/AdminSection/AdminHome.vue'
+
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members']
+const adminRoutes = ['AdminHome']
 
 const routes = [
+  // USER ROUTES
   {
     path: '/',
     name: 'Home',
@@ -45,6 +50,12 @@ const routes = [
     name: 'Profile',
     component: Profile,
     props: true
+  },
+  // ADMIN ROUTES
+  {
+    path: '/admin',
+    name: 'AdminHome',
+    component: AdminHome
   }
 ]
 
@@ -58,9 +69,25 @@ router.beforeEach(async (to, from) => {
   if (to.name !== 'Login') {
     if (!auth) {
       return { name: 'Login' }
+    } else {
+      const admin = await checkAdminStatus()
+      if (admin) {
+        if (userRoutes.includes(to.name)) {
+          return { name: 'AdminHome' }
+        }
+      } else {
+        if (adminRoutes.includes(to.name)) {
+          return { name: 'Home' }
+        }
+      }
     }
   } else if (auth) {
-    return { name: 'Home' }
+    const admin = await checkAdminStatus()
+    if (admin) {
+      return { name: 'AdminHome' }
+    } else {
+      return { name: 'Home' }
+    }  
   }
 }) 
 

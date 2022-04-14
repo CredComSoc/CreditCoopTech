@@ -10,20 +10,13 @@ const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
-const { 
-    v1: uuidv1,
-    v4: uuidv4,
-  } = require('uuid'); 
 
-// const url = "mongodb://localhost:27017/"
-const url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const url = require('../mongoDB-config')
 
 
 let dbFolder = "tvitter"
 let userFolder = "users"
 const mongoURI = url;
-const conn = mongoose.createConnection(mongoURI).useDb(dbFolder);
-
 
 // Test Route
 router.get("/", (req, res) => {
@@ -33,16 +26,41 @@ router.get("/", (req, res) => {
 
 router.get('/authenticate', (req, res) => {
   if (req.isAuthenticated()) {
-    // console.log(req)
     res.sendStatus(200)
   } else {
     res.sendStatus(500)
   } 
 })
 
+router.get("/admin", (req, res) => {
+  let myquery = { userID: req.user}
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null && result.is_admin) {
+        res.sendStatus(200)
+        db.close();
+      }
+      else {
+        res.sendStatus(500)
+        db.close();      
+      } 
+    })
+  })
+})
+
 router.post("/login", passport.authenticate('local'), (req, res) => {
   res.sendStatus(200)
 })
+
+router.post('/logout', function(req, res){
+  req.logout()
+  res.sendStatus(200)
+});
 
 router.get("/profile", (req, res) => {
   // console.log(req)
@@ -80,13 +98,18 @@ router.get("/profile", (req, res) => {
   })
 })
 
+
 // Init gfs
 let gfs;
+const conn = mongoose.createConnection(url, 
+  { useNewUrlParser: true, useUnifiedTopology: true }
+).useDb(dbFolder);
 conn.once('open', () => {
   // Init stream
   gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
 });
+//conn.close()
 
 // Create storage engine
 const storage = new GridFsStorage({
@@ -154,7 +177,6 @@ router.post('/getAllListings/', (req, res) => {
         })
 
         dbo.collection(userFolder).find({}).toArray(function (err, users) {
-          
           if (err) {
             res.sendStatus(500)
             db.close();
@@ -203,15 +225,120 @@ router.post('/getAllListings/', (req, res) => {
                 } else if (listing.article === "service") {
                   servicesAllListingsArray.push(listing)
                 } else {
-                  res.sendStatus(304).send('No tag for listing')
+                  //res.sendStatus(304).send('No tag for listing')
                 }
               })
             })
             res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
             db.close();
-          }
+          } 
         })
     })
+})
+
+
+router.get("/notification", (req, res) => {
+  const myquery = { userID: req.user}
+
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        res.status(200).send(result.notifications)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
+
+router.post("/notification", (req, res) => {
+  console.log(req.body)
+  let notification = req.body
+  notification.date = new Date()
+  notification.fromUser = req.user
+
+  const myquery = { userID: notification.toUser}
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        // update notification list
+        let notification_list = result.notifications
+        if (notification_list.length >= 3) {
+          notification_list = [notification, notification_list[0], notification_list[1]]
+        } else {
+          notification_list.push(notification)
+        }
+
+
+        // add updated notification list to db
+        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            res.sendStatus(200)
+            db.close();
+          }
+        })
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();        
+      } 
+    })
+  })
+})
+
+router.patch("/notification", (req, res) => {
+  const myquery = { userID: req.user}
+
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        // update notification list
+        let notification_list = result.notifications
+        notification_list.forEach(notification => notification.seen = true)
+
+        // add updated notification list to db
+        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            res.sendStatus(200)
+            db.close();
+          }
+        })
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();        
+      } 
+    })
+  })
 })
 
 
@@ -245,12 +372,10 @@ router.post("/register", (req, res) => {
         } 
         else {
           //skapa användarobjekt
-          let id = uuidv4();
           let newUser = {
             userID: username, 
             password: pw, 
             email: mail, 
-            sessionID: id, 
             is_active: active, 
             min_limit: min,
             max_limit: max,
@@ -267,7 +392,7 @@ router.post("/register", (req, res) => {
               contact: {mail: "", phone: ""},
             },
             messages: {},
-            notifications: {}
+            notifications: []
           }
 
           dbo.collection('users').insertOne(newUser, function(err, result) {
@@ -282,43 +407,6 @@ router.post("/register", (req, res) => {
     })
   })
 
-  // Om användare loggar ut
-// params = session ID
-// ta bort session ID, returna status
-// returnarar status (ok)
-router.patch("/logout", (req, res) => {
-  let id = req.body.sessionID;
-  let myquery = { sessionID: id}
-
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-      } 
-      else if (result != null) {
-        let sessionIDvalue = uuidv4();
-        let newSessionID = { $set: {sessionID: sessionIDvalue} };
-        dbo.collection("users").updateOne(myquery, newSessionID, function(err, result2) {
-          if (err) {
-            db.close();
-            res.sendStatus(500)
-          }
-          else {
-            db.close()
-            res.sendStatus(200)
-          }
-        });
-
-      } 
-      else {
-        //If we dont find a result
-        res.status(500).send("nothing found!")
-        db.close();
-      }
-    })
-  })
-})
   
 router.post("/updateProfile", (req, res) => { 
   let myquery = { userID: req.user}

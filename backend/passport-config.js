@@ -1,9 +1,8 @@
 const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
-const  url = "mongodb+srv://sb:sb-password@cluster0.i2vzq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-let asdf = 'TestAdmin';
+const url = require('./mongoDB-config')
 
 function initialize (passport) {
   passport.use (new LocalStrategy (authenticateUser))
