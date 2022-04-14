@@ -2,7 +2,7 @@
 <div class="table-row">
   <div class="floating-left">
     <img class="content-img" src="../../assets/list_images/Event_6.png" />
-    <p class="non-b-text"> {{ title }} </p>
+    <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
     <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} bKr </p>
   </div>
   <!--<h3 v-if="ind === 1"> Antal </h3>-->  
@@ -142,6 +142,10 @@ h3 {
     font-size: 18px;
 }
 
+.title-text{
+  word-break: break-word;
+}
+
 .sum-text {
   font-weight: 700;
 }
@@ -160,4 +164,16 @@ h3 {
     margin-top: 5px;
     margin-left: 5px;
 }
+
+@media (max-width: 860px) {
+  .title-text{
+    width: 80%;
+  }
+ }
+
+@media (max-width: 500px) {
+  .title-text, .price-text{
+    font-size: 14px;
+  }
+ }
 </style>

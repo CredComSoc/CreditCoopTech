@@ -8,7 +8,7 @@
     <img class="content-img" src="../../assets/list_images/Event_6.png" />
   </div>
   <div class="cart-col">  
-    <p class="non-b-text"> {{ title }} </p>
+    <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
   </div>
   <div class="cart-col">
     <h3 v-if="ind === 1"> Antal </h3>   
@@ -154,5 +154,9 @@ h3 {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     width: 102px;
     height: 80px;
+}
+
+.title-text{
+  word-break: break-word;
 }
 </style>

@@ -128,6 +128,8 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   newArticle.coverImg = images[req.body.coverImgInd];
   images = images.filter((img) => { return img !== newArticle.coverImg })
   newArticle.id = uuid.v4().toString();
+  newArticle.userUploader = req.user;
+  console.log(newArticle)
   newArticle.img = images;
   console.log(req.user);
 

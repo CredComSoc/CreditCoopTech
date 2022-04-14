@@ -121,9 +121,21 @@ export default {
       }
  }
 
- @media (max-width: 1000px) {
+  @media (max-width: 860px) {
       #cart-container{
-          width: 100%;
+          width: 70%;
+      }
+ }
+
+  @media (max-width: 500px) {
+      #cart-container{
+          width: 80%;
+      }
+ }
+
+ @media (max-width: 370px) {
+      #cart-container{
+          width: 95%;
       }
  }
 
