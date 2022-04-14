@@ -31,7 +31,6 @@ router.get("/saldo", async (req, res) => {
      'cc-user': req.user,
      'cc-auth': '1'
     }})
-    console.log(response.data)
     res.status(200).send(response.data)
   } catch (error) {
     console.log(error)

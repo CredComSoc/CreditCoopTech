@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 
 router.get('/authenticate', (req, res) => {
   if (req.isAuthenticated()) {
-    res.status(200).send(req.user)
+    res.sendStatus(200)
   } else {
     res.sendStatus(500)
   } 
@@ -237,6 +237,111 @@ router.post('/getAllListings/', (req, res) => {
 })
 
 
+router.get("/notification", (req, res) => {
+  const myquery = { userID: req.user}
+
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        res.status(200).send(result.notifications)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();      
+      } 
+    })
+  })
+})
+
+router.post("/notification", (req, res) => {
+  console.log(req.body)
+  let notification = req.body
+  notification.date = new Date()
+  notification.fromUser = req.user
+
+  const myquery = { userID: notification.toUser}
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        // update notification list
+        let notification_list = result.notifications
+        if (notification_list.length >= 3) {
+          notification_list = [notification, notification_list[0], notification_list[1]]
+        } else {
+          notification_list.push(notification)
+        }
+
+
+        // add updated notification list to db
+        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            res.sendStatus(200)
+            db.close();
+          }
+        })
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();        
+      } 
+    })
+  })
+})
+
+router.patch("/notification", (req, res) => {
+  const myquery = { userID: req.user}
+
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        // update notification list
+        let notification_list = result.notifications
+        notification_list.forEach(notification => notification.seen = true)
+
+        // add updated notification list to db
+        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            res.sendStatus(200)
+            db.close();
+          }
+        })
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();        
+      } 
+    })
+  })
+})
+
+
 // Om användaren registerar sig,
 // params = användarnamn, hashat lösenord
 // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
@@ -287,7 +392,7 @@ router.post("/register", (req, res) => {
               contact: {mail: "", phone: ""},
             },
             messages: {},
-            notifications: {}
+            notifications: []
           }
 
           dbo.collection('users').insertOne(newUser, function(err, result) {

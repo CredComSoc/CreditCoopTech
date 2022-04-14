@@ -55,35 +55,59 @@
           <div class="navlogo" v-if="!this.isActive">
             <div id="click-dropdown" class="dropdown">
               <a href="#">
-                <figure id="bell-logo" :class="[`logo-click`,`notice`]">
-                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
+                <figure id="bell-logo" :class="[`logo-click`,`notice`]" @click="setNotificationsToSeen">
+                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png" v-if="newNotifications.length > 0"/>
                     <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
                     <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
                 </figure>
               </a>
               <div id="bell-dropdown" class="dropdown-content">
-                <div id="new-notice-list">
-                  <a href="#">
+                <div id="new-notice-list" v-if="newNotifications.length > 0">
                     <p class="notice-title">Nya</p>
-                    <div id="new-list-content">
-                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                      <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                    <div v-for="item in newNotifications" :key="item">
+                      <div v-if="item.type == 'saleRequest'">
+                        <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
+                          <div id="new-list-content">
+                            <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                            <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
+                      <div v-if="item.type == 'saleAccepted'">
+                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                          <div id="new-list-content">
+                            <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                            <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
                     </div>
-                  </a>
-                  <!-- <a href="#">
-                    <div>
-                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                      <p class="notice-desc">Notiser</p>
-                    </div>
-                  </a> -->
                 </div>
-                <div id="previous-notice-list">
-                  <a href="#">
-                    <p class="notice-title">Tidigare</p>
-                    <div id="prev-list-content">
-                      <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
+                <div id="previous-notice-list" v-if="oldNotifications.length > 0">
+                  <p class="notice-title">Tidigare</p>
+                    <div v-for="item in oldNotifications" :key="item">
+                      <div v-if="item.type == 'saleRequest'">
+                        <router-link :to="{name:'Profile', params:{tab: 'requests'}}">
+                          <div id="new-list-content">
+                            <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
+                      <div v-if="item.type == 'saleAccepted'">
+                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">
+                          <div id="new-list-content">
+                            <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
                     </div>
-                  </a>
+                </div>
+                <div id="previous-notice-list" v-if="oldNotifications.length === 0 && newNotifications.length === 0">
+                  <p class="notice-title">Inga notiser</p>
                 </div>
               </div>
             </div>
@@ -146,7 +170,7 @@
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter, useRoute } from 'vue-router'
-import { logout } from '../serverFetch.js'
+import { logout, getNotifications, postNotification, setNotificationsToSeen } from '../serverFetch.js'
 const router = useRouter()
 
 export default {
@@ -154,7 +178,9 @@ export default {
     return {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
-      dropdownActive: false // if a dropdown menu is active
+      dropdownActive: false, // if a dropdown menu is active
+      newNotifications: [],
+      oldNotifications: []
     }
   },
   name: 'Navbar',
@@ -214,6 +240,17 @@ export default {
         }
       }
     })
+
+    getNotifications().then((res) => {
+      //postNotification('saleAccepted', 'TestUser')
+      res.forEach(notification => {
+        if (notification.seen) {
+          this.oldNotifications.push(notification)
+        } else {
+          this.newNotifications.push(notification)
+        }
+      })
+    })
   },
   methods: {
     // open mobile version of navbar
@@ -262,7 +299,12 @@ export default {
       logout().then(() => {
         window.location.reload()
       })
-    }
+    },
+    moveNotification (notification) {
+      this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
+      this.oldNotifications.unshift(notification)
+    },
+    setNotificationsToSeen
   }
 }
 </script>
@@ -413,10 +455,17 @@ figcaption {
   font-size: 10px;
 }
 
+.notice-date {
+  font-size: 7px;
+
+  color: blue;
+}
+
 .notice-title {
   font-weight: 500;
   font-size: 16px;
   margin-bottom: 5px;
+  text-align: center;
 }
 
 .notice-img {

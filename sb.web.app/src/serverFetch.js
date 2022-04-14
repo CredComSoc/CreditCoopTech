@@ -4,10 +4,6 @@ import JsSHA from 'jssha'
 const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
-const fetchNoCors = require('fetch-no-cors')
-const CORS_ANYWHERE = 'https://sheltered-cliffs-58344.herokuapp.com/'
-const CC_NODE_URL = 'http://155.4.159.231/cc-node'
-
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
@@ -148,16 +144,82 @@ export async function profile () {
     },
     credentials: 'include'
   })
-    .then((res) => {
-      return res.json()
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
     })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
     })
   return profilePromise
+}
+
+export async function getNotifications () {
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
+}
+
+export async function postNotification (type, user) {
+  const data = { 
+    date: '',
+    type: type,
+    toUser: user,
+    fromUser: '',
+    seen: false
+  }
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
+}
+
+export async function setNotificationsToSeen () {
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'PATCH',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
 }
 
 /* Routes using cc-node */
