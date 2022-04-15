@@ -40,7 +40,7 @@
             <th>Summa</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='validated')" :key="item">
+          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
             <td><img src="../../assets/städning.png" alt="Städservice AB"></td>

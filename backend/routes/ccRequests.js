@@ -13,7 +13,6 @@ const CC_NODE_URL = 'http://155.4.159.231/cc-node'
 // PAYER MUST ALSO BE AUTHOR OF TRANSACTION
 router.get("/purchases", async (req, res) => { 
   try {
-    console.log('AAAAAAAAAAAAAAAAAAaa')
     const response = await axios.get(CC_NODE_URL + '/transaction/full', { 
     headers: {
      'cc-user': req.user,
@@ -48,7 +47,7 @@ router.get("/requests", async (req, res) => {
 router.post("/cancelrequest", async (req, res) => {
   const transactionId = req.body
   try {
-    const response = await axios.patch(CC_NODE_URL + '/transaction/' + transactionId.uuid + '/pending', {}, { 
+    const response = await axios.patch(CC_NODE_URL + '/transaction/' + transactionId.uuid + '/erased', {}, { 
     headers: {
      'cc-user': req.user,
      'cc-auth': '1'

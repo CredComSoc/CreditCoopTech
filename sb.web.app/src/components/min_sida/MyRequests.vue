@@ -10,7 +10,7 @@
         <th>Summa</th>
         <th>Status</th>
       </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='validated')" :key="item" ref="reqRefs">
+      <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
         <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>

@@ -77,6 +77,7 @@
                       <div v-if="item.type == 'saleRequestAccepted'">
                         <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
                           <div id="new-list-content">
+                            <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                             <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
                             <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                           </div>
@@ -85,6 +86,7 @@
                       <div v-if="item.type == 'saleRequestDenied'">
                         <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
                           <div id="new-list-content">
+                            <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                             <p class="notice-desc">{{ item.fromUser }} har nekat din köpförfrågan.</p>
                             <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                           </div>
@@ -270,16 +272,19 @@ export default {
 
     setInterval(() => getNotifications().then((res) => {
       //postNotification('saleAccepted', 'TestUser')
-      res.forEach(notification => {
+      if (res) {
+        console.log(res)
         this.oldNotifications = []
         this.newNotifications = []
-        if (notification.seen) {
-          this.oldNotifications.push(notification)
-        } else {
-          this.newNotifications.push(notification)
-        }
-      })
-    }), 15000)
+        res.forEach(notification => {
+          if (notification.seen) {
+            this.oldNotifications.push(notification)
+          } else {
+            this.newNotifications.push(notification)
+          }
+        })
+      }
+    }), 5000)
   },
   methods: {
     // open mobile version of navbar
