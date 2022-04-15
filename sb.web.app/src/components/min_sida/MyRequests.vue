@@ -12,7 +12,7 @@
       </tr>
       <tr v-for="(item, index) in requests.filter(request => request.state==='validated')" :key="item" ref="reqRefs">
         <td>{{index + 1 + '.'}}</td>
-        <td>{{item.entries[0].payer50}}</td>
+        <td>{{item.entries[0].payer}}</td>
         <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
         <td>{{item.entries[0].quant}}</td>
         <td>{{'1'}}</td>
@@ -53,24 +53,38 @@ export default {
   },
   methods: {
     cancel (id, payer, index) {
-      //console.log(this.$refs['reqRefs'])
-      const element = this.$refs.reqRefs[index]
-      element.parentNode.removeChild(element)
-      //console.log(this.$refs['reqRefs'][index].lastElementChild)
-
+      //const element = this.$refs.reqRefs[index]
+      //element.parentNode.removeChild(element)
+      this.statusSwap(index, 'cancel')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
+
     accept (id, payer, index) {
+      this.statusSwap(index, 'accept')
+      acceptRequest(id)
+      postNotification('saleRequestAccepted', payer)
+    },
+
+    statusSwap (index, answer) {
       var tag = document.createElement('p')
-      var text = document.createTextNode('GODKÄND')
-      tag.style.color = 'green'
+      var text
+      if (answer === 'cancel') {
+        text = document.createTextNode('NEKAD')
+        tag.style.color = 'red'
+      } else {
+        text = document.createTextNode('GODKÄND')
+        tag.style.color = 'green'
+      }
       tag.appendChild(text)
       const element = this.$refs.reqRefs[index]
       const child = element.lastElementChild
+      var grandChild = child.lastElementChild
+      while (grandChild) {
+        child.removeChild(grandChild)
+        grandChild = child.lastElementChild
+      }
       child.appendChild(tag)
-      acceptRequest(id)
-      postNotification('saleRequestAccepted', payer)
     }
   }
 }
