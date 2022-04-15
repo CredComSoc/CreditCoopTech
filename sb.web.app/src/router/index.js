@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { authenticate, checkAdminStatus } from '../serverFetch'
 import Home from '../views/Home.vue'
+import Navbar from '../components/Navbar.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
@@ -65,6 +66,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+  //Navbar.forceRerender()
   const auth = await authenticate()
   if (to.name !== 'Login') {
     if (!auth) {

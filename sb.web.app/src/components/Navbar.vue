@@ -74,11 +74,18 @@
                           </div>
                         </router-link> 
                       </div>
-                      <div v-if="item.type == 'saleAccepted'">
+                      <div v-if="item.type == 'saleRequestAccepted'">
                         <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
                           <div id="new-list-content">
-                            <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
                             <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
+                      <div v-if="item.type == 'saleRequestDenied'">
+                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                          <div id="new-list-content">
+                            <p class="notice-desc">{{ item.fromUser }} har nekat din köpförfrågan.</p>
                             <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                           </div>
                         </router-link> 
@@ -89,17 +96,25 @@
                   <p class="notice-title">Tidigare</p>
                     <div v-for="item in oldNotifications" :key="item">
                       <div v-if="item.type == 'saleRequest'">
-                        <router-link :to="{name:'Profile', params:{tab: 'requests'}}">
+                        <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
                           <div id="new-list-content">
                             <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
                             <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                           </div>
                         </router-link> 
                       </div>
-                      <div v-if="item.type == 'saleAccepted'">
-                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">
+                      <div v-if="item.type == 'saleRequestAccepted'">
+                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
                           <div id="new-list-content">
                             <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
+                            <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          </div>
+                        </router-link> 
+                      </div>
+                      <div v-if="item.type == 'saleRequestDenied'">
+                        <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                          <div id="new-list-content">
+                            <p class="notice-desc">{{ item.fromUser }} har nekat din köpförfrågan.</p>
                             <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                           </div>
                         </router-link> 
@@ -180,7 +195,8 @@ export default {
       isActive: false, // if mobile version has its button pressed
       dropdownActive: false, // if a dropdown menu is active
       newNotifications: [],
-      oldNotifications: []
+      oldNotifications: [],
+      componentKey: 0
     }
   },
   name: 'Navbar',
@@ -251,6 +267,19 @@ export default {
         }
       })
     })
+
+    setInterval(() => getNotifications().then((res) => {
+      //postNotification('saleAccepted', 'TestUser')
+      res.forEach(notification => {
+        this.oldNotifications = []
+        this.newNotifications = []
+        if (notification.seen) {
+          this.oldNotifications.push(notification)
+        } else {
+          this.newNotifications.push(notification)
+        }
+      })
+    }), 15000)
   },
   methods: {
     // open mobile version of navbar
@@ -303,6 +332,9 @@ export default {
     moveNotification (notification) {
       this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
       this.oldNotifications.unshift(notification)
+    },
+    forceRerender () {
+      this.componentKey += 1
     },
     setNotificationsToSeen
   }

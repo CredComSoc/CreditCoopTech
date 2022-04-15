@@ -18,9 +18,9 @@
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
           <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+          <td>{{item.entries[0].quant}}</td>
           <td>{{'1'}}</td>
-          <td>{{item.entries[0].quant}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{'1'}}</td>
           <td className="green">{{item.state}}</td>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getTransactions } from '../../serverFetch'
+import { getPurchases } from '../../serverFetch'
 
 export default {
 
@@ -65,7 +65,7 @@ export default {
     }
   },
   mounted () {
-    getTransactions()
+    getPurchases()
       .then(res => {
         this.purchases = res
       })

@@ -29,7 +29,7 @@ router.get("/filter/full", (req, res) => {
           	"status"  : user.is_active,
           	"min"     : user.min_limit,
           	"max"     : user.max_limit,
-          	"admin"   : user.is_admin
+          	"admin"   : true // WORKAROUND -> user.is_admin
             }
             userArray.push(userData);
           
@@ -102,7 +102,7 @@ router.get("/:acc_id", (req, res) => {
           "status"  : result.is_active,
           "min"     : result.min_limit,
           "max"     : result.max_limit,
-          "admin"   : result.is_admin
+          "admin"   : true // WORKAROUND -> result.is_admin
         }
         res.status(200).send(userData)
         db.close();

@@ -4,11 +4,11 @@
       <h1 className="title"> MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav'>
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab==='profile' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='products' && this.tab!='requests' }" id='profile'>Min profil</a>
       <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
       <a href='#' @click="this.tab='products'" :class="{ active: this.tab==='products' }" id='products'>Mina artiklar</a>
       <a id='statistik'>Min statistik</a>
-      <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='purchasesrequests'>Mina köpförfrågningar</a>
+      <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
       <a id='settings'>Inställningar</a>
     </div>
     <div className="content flexbox-item">

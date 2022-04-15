@@ -222,11 +222,89 @@ export async function setNotificationsToSeen () {
   return promise
 }
 
+export function getArticles () {
+  const promise = fetch(EXPRESS_URL + '/articles', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
 /* Routes using cc-node */
 
-export function getTransactions () {
-  const promise = fetch(EXPRESS_URL + '/transactions', {
+export function getPurchases () {
+  const promise = fetch(EXPRESS_URL + '/purchases', {
     method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function getRequests () {
+  const promise = fetch(EXPRESS_URL + '/requests', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function cancelRequest (id) {
+  const data = { uuid: id }
+  const promise = fetch(EXPRESS_URL + '/cancelrequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function acceptRequest (id) {
+  const data = { uuid: id }
+  const promise = fetch(EXPRESS_URL + '/acceptrequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
     credentials: 'include'
   })
     .then((res) => {

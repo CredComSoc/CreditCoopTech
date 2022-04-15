@@ -364,6 +364,7 @@ router.post("/register", (req, res) => {
       dbo.collection("users").findOne(myquery, function(err, result) {
         if (err) {
           res.sendStatus(500)
+          db.close();
         } 
         else if (result != null) {
           //Det finns redan en användare med namnet
@@ -385,7 +386,7 @@ router.post("/register", (req, res) => {
             events: {},
             profile: {
               website: "",
-              accountname: "",
+              accountName: "",
               description: "",
               adress: "",
               city: "",
@@ -455,6 +456,29 @@ router.post("/updateProfile", (req, res) => {
         db.close();
         res.sendStatus(500)
       }
+    })
+  })
+})
+
+router.get("/articles", (req, res) => {
+  const myquery = { userID: req.user}
+
+  MongoClient.connect(url, (err, db) => {
+    const dbo = db.db("tvitter");
+    dbo.collection("users").findOne(myquery, function(err, result) {
+      if (err) {
+        res.sendStatus(500)
+        db.close();
+      }
+      else if (result != null) {
+        res.status(200).send(result.posts)
+        db.close();
+      }
+      else {
+        // If we dont find a result
+        res.status(404).send("The profile doesn't exist.")
+        db.close();      
+      } 
     })
   })
 })

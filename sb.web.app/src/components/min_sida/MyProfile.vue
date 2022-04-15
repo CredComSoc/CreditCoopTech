@@ -34,7 +34,7 @@
     </div>
 
     <div v-if="edit">
-      <form className="flexbox-container2" @submit.capture="submit">
+      <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
@@ -64,8 +64,8 @@
           <label for="phone">Telefon:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
 
-          <input type="submit" value="Spara">
-          <button @click="edit = !edit"> Avbryt <img style="width: 25px;" src="../../assets/edit.png" alt="Redigera"></button>
+          <button @click="submit()"> Spara </button>
+          <button @click="edit = !edit"> Avbryt </button>
         </div>
       </form>
     </div>
@@ -104,6 +104,7 @@ export default {
         this.profileData.email, 
         this.profileData.phone
       )
+      this.edit = !this.edit
     }
   }
 }
