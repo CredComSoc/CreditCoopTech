@@ -1,7 +1,7 @@
 <template>
 <div class="table-row">
   <div class="floating-left">
-    <img class="content-img" src="../../assets/list_images/Event_6.png" />
+    <img class="content-img" :src="this.getImgURL()" />
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
     <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} bKr </p>
   </div>
@@ -32,7 +32,7 @@
 <script>
 export default {
   name: 'MobileCartTableRow',
-  props: ['ind', 'image', 'title', 'items', 'price', 'sum'],
+  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg'],
   data () {
     return {
       numberOfItems: this.items,
@@ -55,6 +55,9 @@ export default {
     },
     removeRow () {
       this.$emit('remove-row', this.ind)
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.coverImg
     }
   }
 }

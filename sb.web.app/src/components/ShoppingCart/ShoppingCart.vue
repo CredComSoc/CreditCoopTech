@@ -2,7 +2,7 @@
   <div id="cart-container">
     <h1> Varukorg </h1>
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
-    <FilledCart :total="this.total" :cart="this.cart" v-if="this.gotCartRes && this.cart.length > 0" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
+    <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
   </div>
 </template>
@@ -20,25 +20,29 @@ export default {
     PopupCard
   },
   mounted () {
-    fetch('http://localhost:3000/cart/TestUser', { // Get endpoint
+    fetch('http://localhost:3000/cart', { // Get endpoint
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      credentials: 'include'
     }).then(
       response => response.json()
     ).then(
       success => {
         this.cart = success
-        this.cart[0].items = 2
-        let first = {}
-        let sec = {}
-        let third = {}
-        first = Object.assign(first, this.cart[0])
-        sec = Object.assign(sec, this.cart[0])
-        third = Object.assign(third, this.cart[0])
-        const ma = [first, sec, third]
-        this.cart = ma
+        // this.cart[0].quantity = 2
+        // let first = {}
+        // let sec = {}
+        // let third = {}
+        // first = Object.assign(first, this.cart[0])
+        // first.title = 'Test1'
+        // sec = Object.assign(sec, this.cart[0])
+        // sec.title = 'Test2'
+        // third = Object.assign(third, this.cart[0])
+        // third.title = 'Test3'
+        // const ma = [first, sec, third]
+        // this.cart = ma
         this.calcTotal()
         console.log(success)
         this.gotCartRes = true
@@ -60,24 +64,34 @@ export default {
   },
   methods: {
     removeRow (ind) {
-      this.cart.splice(ind - 1, 1)
-      this.calcTotal()
+      console.log(this.cart)
+      fetch('http://localhost:3000/cart/remove/' + this.cart[ind - 1].id, {
+        method: 'POST',
+        credentials: 'include'
+      }).then(
+        success => {
+          console.log(success)
+          this.cart.splice(ind - 1, 1)
+          this.calcTotal()
+        }
+      ).catch(
+        error => console.log(error)
+      )
     },
     addItem (ind) {
-      this.cart[ind - 1].items++
-      console.log('CART:', this.cart)
+      this.cart[ind - 1].quantity++
       this.calcTotal()
     },
     minItem (ind) {
-      if (this.cart[ind - 1].items > 1) {
-        this.cart[ind - 1].items--
+      if (this.cart[ind - 1].quantity > 1) {
+        this.cart[ind - 1].quantity--
         this.calcTotal()
       }
     },
     calcTotal () {
       let total = 0
       for (let i = 0; i < this.cart.length; i++) {
-        total += this.cart[i].price * this.cart[i].items
+        total += this.cart[i].price * this.cart[i].quantity
       }
       this.total = total
     },

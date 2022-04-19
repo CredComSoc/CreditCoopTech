@@ -4,8 +4,8 @@
     <p class="b-text"> {{ ind }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Produkt </h3>  
-    <img class="content-img" src="../../assets/list_images/Event_6.png" />
+    <h3 v-if="ind === 1"> Produkt </h3> 
+    <img class="content-img" :src='this.getImgURL()' />
   </div>
   <div class="cart-col">  
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
@@ -41,7 +41,7 @@
 <script>
 export default {
   name: 'CartTableRow',
-  props: ['ind', 'image', 'title', 'items', 'price', 'sum'],
+  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg'],
   data () {
     return {
       numberOfItems: this.items,
@@ -64,6 +64,9 @@ export default {
     },
     removeRow () {
       this.$emit('remove-row', this.ind)
+    },
+    getImgURL () {
+      return 'http://localhost:3000/image/' + this.coverImg
     }
   }
 }

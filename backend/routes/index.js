@@ -129,9 +129,7 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   images = images.filter((img) => { return img !== newArticle.coverImg })
   newArticle.id = uuid.v4().toString();
   newArticle.userUploader = req.user;
-  console.log(newArticle)
   newArticle.img = images;
-  console.log(req.user);
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db(dbFolder);
@@ -155,8 +153,34 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   })
 });
 
-router.get('/cart/:userID', (req, res) => {
-  const myquery = { userID: req.params.userID }
+router.post('/cart', (req, res) =>  {
+  const cartItem = req.body;
+  
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db(dbFolder);
+    const myquery = { userID : req.user };
+    dbo.collection("users").updateOne(myquery, {$push: {cart : cartItem}}, (err, result) => {
+      if (err) {
+        db.close();
+        res.sendStatus(500)
+      }
+      else if (result != null || result.matchedCount != 0) {
+        console.log(result)
+        db.close();
+        res.sendStatus(200);
+      }
+      else {
+        // If we dont find a result
+        db.close();      
+        res.status(404).send("No posts found.")
+      } 
+    })
+  })
+});
+
+router.get('/cart', (req, res) => {
+  const myquery = { userID: req.user };
+  console.log(req.user)
   
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -166,14 +190,38 @@ router.get('/cart/:userID', (req, res) => {
         res.sendStatus(500)
       }
       else if (result != null) {
-        const cart = result.posts;
+        const cart = result.cart;
         db.close();
         res.status(200).json(cart);
       }
       else {
         // If we dont find a result
         db.close();      
-        res.status(204).json("No cart found.");
+        res.status(204).json(null);
+      } 
+    })
+  })
+});
+
+router.post('/cart/remove/:id', (req, res) => {
+  const user = { userID: req.user };
+  const id = req.params.id;
+  console.log(id)
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").updateOne(user, {$pull: { cart: { id: id } } }, function(err, result) {
+      if (err) {
+        db.close();
+        res.sendStatus(500);
+      }
+      else if (result != null) {
+        db.close();
+        res.status(200).send("Removed from cart");
+      }
+      else {
+        // If we dont find a result
+        db.close();      
+        res.status(204).send("No item found");
       } 
     })
   })
