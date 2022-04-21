@@ -64,8 +64,7 @@ export default {
   },
   methods: {
     removeRow (ind) {
-      console.log(this.cart)
-      fetch('http://localhost:3000/cart/remove/' + this.cart[ind - 1].id, {
+      fetch('http://localhost:3000/cart/remove/item' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
       }).then(
@@ -97,6 +96,19 @@ export default {
     },
     completePurchase () {
       this.confirmPress = true
+      this.cart = []
+      
+      // remove all items from cart
+      fetch('http://localhost:3000/cart/remove', {
+        method: 'POST',
+        credentials: 'include'
+      }).then(
+        success => {
+          console.log(success)
+        }
+      ).catch(
+        error => console.log(error)
+      )
     }
   }
 }

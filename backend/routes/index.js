@@ -203,7 +203,30 @@ router.get('/cart', (req, res) => {
   })
 });
 
-router.post('/cart/remove/:id', (req, res) => {
+router.post('/cart/remove', (req, res) => {
+  const user = { userID: req.user };
+  MongoClient.connect(url, (err, db) => {
+    let dbo = db.db("tvitter");
+    dbo.collection("users").updateOne(user, {$set: { cart: [] } }, function(err, result) {
+      if (err) {
+        db.close();
+        res.sendStatus(500);
+      }
+      else if (result != null) {
+        db.close();
+        res.status(200).send("Removed cart");
+      }
+      else {
+        // If we dont find a result
+        db.close();      
+        res.status(204).send("No cart found");
+      } 
+    })
+  })
+});
+
+
+router.post('/cart/remove/item/:id', (req, res) => {
   const user = { userID: req.user };
   const id = req.params.id;
   console.log(id)
