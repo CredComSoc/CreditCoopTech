@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+//const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {
@@ -340,34 +340,33 @@ export async function getSaldo () {
   }
 }
 
-export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone) {
+export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
   console.log('updating profile')
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email,
+    phone: phone
+  }))
+  data.append('file', logo)
   const updateProfilePromise = fetch(EXPRESS_URL + '/updateProfile', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     credentials: 'include',
-    body: JSON.stringify({ 
-      accountName: accountName,
-      description: description,
-      adress: adress,
-      city: city,
-      billingName: billingName,
-      billingBox: billingBox,
-      billingAdress: billingAdress,
-      orgNumber: orgNumber, 
-      email: email,
-      phone: phone
-    })
-
+    body: data 
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
         console.log('Update ok')
-        return response.json()
+        return response
       }
     })
     .catch(err => {
