@@ -137,7 +137,6 @@ export default {
         ++index
       }
       data.append('article', JSON.stringify(this.newArticle))
-      this.addItemToCart(data)
       // This will upload the article to the server
       fetch('http://localhost:3000/upload/article', { // POST endpoint
         method: 'POST',
@@ -149,38 +148,6 @@ export default {
         success => {
           console.log(success)
           this.isPublished = true // open popup with success message
-        } // Handle the success response object
-      ).catch(
-        error => console.log(error) // Handle the error response object
-      )
-    },
-    addItemToCart (data) {
-      const JSONdata = new FormData()
-      const cartItem = {
-        title: this.newArticle.title,
-        coverImg: '07e0d535913d2f83524f0cff255b2185.png',
-        price: this.newArticle.price,
-        quantity: 1, // number of items
-        article: this.newArticle.article, // produkt eller tjänst
-        id: '655c731f-3f43-4c86-a9be-2f42fd2f7a8d', // Id for the article
-        status: this.newArticle.status // köpes eller säljes
-        //userUploader: this.data.userUploader, // user who uploaded the article, use to see if article is still for sale
-      }
-      console.log(cartItem)
-      JSONdata.append('cartItem', JSON.stringify(cartItem))
-
-      fetch('http://localhost:3000/cart', { // POST endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify(cartItem) // This is your file object
-      }).then(
-        response => response
-      ).then(
-        success => {
-          console.log(success)
         } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object

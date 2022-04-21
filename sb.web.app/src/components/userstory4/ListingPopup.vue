@@ -22,7 +22,7 @@
           <b-button class="increaseBtn" @click="amount++">+</b-button>
         </div>
         <div>
-          <button class="cartBtn" @click="emit('placeInCart', amount)">Lägg i varukorg</button>
+          <button class="cartBtn" @click="placeInCart">Lägg i varukorg</button>
         </div>
       </div>
     </div>
@@ -56,6 +56,9 @@ export default {
     },
     getImgURL () {
       return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+    },
+    placeInCart () {
+      this.$emit('placeInCart', this.amount, this.listingObj)
     }
   }
 }
