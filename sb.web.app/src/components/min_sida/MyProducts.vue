@@ -12,7 +12,7 @@
           <th>Pris</th>
         </tr>
         <tr v-for="(item) in articles" :key="item">
-          <td>{{item.title}}</td>
+          <td><articleComp :article="item.name" /></td>
           <td>{{item.category}}</td>
           <td>{{item.price}}</td>
         </tr>
@@ -25,6 +25,7 @@
 
 <script>
 import { getArticles } from '../../serverFetch'
+import articleComp from './article.vue'
 
 export default {
   data () {
@@ -37,6 +38,9 @@ export default {
       .then(res => {
         this.articles = res.reverse()
       })
+  },
+  components: {
+    articleComp: articleComp
   }
 }
 
