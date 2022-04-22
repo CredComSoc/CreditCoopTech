@@ -27,7 +27,7 @@
             <p> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
           </div>
         </div>
-        <div style="align-self: flex-end;">
+        <div className="edit">
           <button @click="edit = !edit"> Redigera <img style="width: 25px;" src="../../assets/edit.png" alt="Redigera"/></button>
         </div>
       </div>
@@ -118,6 +118,16 @@ export default {
     display: flex;
     margin-right: 100px;
     margin-top: 50px;
+  }
+
+  .edit {
+    align-self: flex-end;
+  }
+}
+@media screen and (max-width: 859px) {
+  .edit {
+    display: flex;
+    justify-content: center;
   }
 }
 
