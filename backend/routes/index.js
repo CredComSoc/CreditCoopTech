@@ -131,6 +131,11 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   newArticle.userUploader = req.user;
   newArticle.img = images;
 
+  // for ttl index in posts
+  if ('end-date' in newArticle) {
+    newArticle['end-date'] = new Date(newArticle['end-date']);
+  }
+
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db(dbFolder);
     const myquery = { userID : req.user };
@@ -152,6 +157,7 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
       } 
     })
     */
+  
    dbo.collection("posts").insertOne(newArticle, (err, result)=>{
     if (err) {
       db.close();
