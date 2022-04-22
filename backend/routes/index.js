@@ -1,41 +1,65 @@
 const express = require('express');
 const passport = require('passport')
-const router = express.Router();
-const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const path = require('path');
-const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
-const methodOverride = require('method-override');
-
-const url = require('../mongoDB-config')
+const {MongoClient} = require('mongodb');
 
 
-let dbFolder = "tvitter"
-let userFolder = "users"
-const mongoURI = url;
+module.exports = function(dbUrl, dbFolder) {
+  const router = express.Router();
 
-// Test Route
-router.get("/", (req, res) => {
-   res.status(200).send("Yo")
-})
+  let gfs;
+  const conn = mongoose.createConnection(dbUrl, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+  }).useDb(dbFolder);
+  conn.once('open', () => {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+  });
+  
+  const storage = new GridFsStorage({
+      url: dbUrl,
+      file: (req, file) => {
+          return new Promise((resolve, reject) => {
+              crypto.randomBytes(16, (err, buf) => {
+                  if (err) {
+                      return reject(err);
+                  }
+                  const filename = buf.toString('hex') + path.extname(file.originalname);
+                  const fileInfo = {
+                      filename: filename,
+                      bucketName: 'uploads'
+                  };
+                  resolve(fileInfo);
+              });
+          });
+      }
+  }); 
+  const upload = multer({ storage });
 
+  // Test Route
+  router.get("/", (req, res) => {
+    res.status(200).send("Yo")
+  })
 
-router.get('/authenticate', (req, res) => {
+  router.get('/authenticate', (req, res) => {
+  console.log(req.user)
   if (req.isAuthenticated()) {
     res.sendStatus(200)
   } else {
     res.sendStatus(500)
   } 
-})
+  })
 
-router.get("/admin", (req, res) => {
+  router.get("/admin", (req, res) => {
   let myquery = { userID: req.user}
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    let dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -51,23 +75,22 @@ router.get("/admin", (req, res) => {
       } 
     })
   })
-})
+  })
 
-router.post("/login", passport.authenticate('local'), (req, res) => {
+  router.post("/login", passport.authenticate('local'), (req, res) => {
   res.sendStatus(200)
-})
+  })
 
-router.post('/logout', function(req, res){
+  router.post('/logout', function(req, res){
   req.logout()
   res.sendStatus(200)
-});
+  });
 
-router.get("/profile", (req, res) => {
-  // console.log(req)
+  router.get("/profile", (req, res) => {
   let myquery = { userID: req.user}
 
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    let dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -96,79 +119,17 @@ router.get("/profile", (req, res) => {
       } 
     })
   })
-})
+  })
 
-
-// Init gfs
-let gfs;
-const conn = mongoose.createConnection(url, 
-  { useNewUrlParser: true, useUnifiedTopology: true }
-).useDb(dbFolder);
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
-});
-//conn.close()
-
-// Create storage engine
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-        const filename = buf.toString('hex') + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'uploads'
-        };
-        resolve(fileInfo);
-      });
-    });
-  }
-});
-
-const upload = multer({ storage });
-
-// create a db objects in sb folder WIP
-// router.post('/upload', upload.single('file'), (req, res) => {
-//   console.log(req.file);
-//   res.json({ file: req.file });
-// });
-
-router.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No file exists'
-      });
-    }
-
-    // Check if image
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-      // Read output to browser
-      const readstream = gfs.createReadStream(file.filename);
-      readstream.pipe(res);
-    } else {
-      res.status(404).json({
-        err: 'Not an image'
-      });
-    }
-  });
-});
-
-router.post('/getAllListings/', (req, res) => {
+  router.post('/getAllListings', (req, res) => {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;
     let categories = req.body.categories;
     let articles = req.body.articles;
 
-    MongoClient.connect(url, (err, db) => {
-        let dbo = db.db(dbFolder)
+    MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db('tvitter')
         let productsAllListingsArray = []
         let servicesAllListingsArray = []
 
@@ -176,7 +137,7 @@ router.post('/getAllListings/', (req, res) => {
           return value !== "";
         })
 
-        dbo.collection(userFolder).find({}).toArray(function (err, users) {
+        dbo.collection('users').find({}).toArray(function (err, users) {
           if (err) {
             res.sendStatus(500)
             db.close();
@@ -184,28 +145,24 @@ router.post('/getAllListings/', (req, res) => {
           else {
             users.forEach(user => {
               user.posts.forEach(listing => {
-                
                 //Om ARTIKEL
                 if (articles.length !== 0) {
                   if (!articles.includes(listing.article)) {
                     return
                   }
                 }
-
                 //OM DESTINATION
                 if (destinations.length !== 0) {
                   if (!destinations.includes(listing.destination)) {
                     return
                   }
                 } 
-
                 //OM CATEGORY
                 if (categories.length !== 0) {
                   if (!categories.includes(listing.category)) {
                     return
                   }
                 } 
-
                 foundSearchword = true
                 if( searchword.length !== 0 ) {
                   for (let i = 0; i < searchword.length; i++) {
@@ -218,14 +175,11 @@ router.post('/getAllListings/', (req, res) => {
                     return
                   }
                 }
-                
                 //TILLDELA TJÄNST ELLER PRODUKT
                 if(listing.article === "product") {
                   productsAllListingsArray.push(listing)
                 } else if (listing.article === "service") {
                   servicesAllListingsArray.push(listing)
-                } else {
-                  //res.sendStatus(304).send('No tag for listing')
                 }
               })
             })
@@ -234,14 +188,29 @@ router.post('/getAllListings/', (req, res) => {
           } 
         })
     })
-})
+  })
 
+  router.get('/image/:filename', (req, res) => {
+  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+    if (!file || file.length === 0) {
+      res.status(500).send('No file exists');
+    }
+    // Check if image
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+      // Read output to browser
+      const stream =  gfs.createReadStream(file.filename);
+      stream.pipe(res);
+    } else {
+      res.status(500).send('Not an image');
+    }
+  });
+  });
 
-router.get("/notification", (req, res) => {
+  router.get("/notification", (req, res) => {
   const myquery = { userID: req.user}
 
-  MongoClient.connect(url, (err, db) => {
-    const dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    const dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -258,17 +227,17 @@ router.get("/notification", (req, res) => {
       } 
     })
   })
-})
+  })
 
-router.post("/notification", (req, res) => {
+  router.post("/notification", (req, res) => {
   console.log(req.body)
   let notification = req.body
   notification.date = new Date()
   notification.fromUser = req.user
 
   const myquery = { userID: notification.toUser}
-  MongoClient.connect(url, (err, db) => {
-    const dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    const dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -303,13 +272,13 @@ router.post("/notification", (req, res) => {
       } 
     })
   })
-})
+  })
 
-router.patch("/notification", (req, res) => {
+  router.patch("/notification", (req, res) => {
   const myquery = { userID: req.user}
 
-  MongoClient.connect(url, (err, db) => {
-    const dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    const dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -339,16 +308,16 @@ router.patch("/notification", (req, res) => {
       } 
     })
   })
-})
+  })
 
 
-// Om användaren registerar sig,
-// params = användarnamn, hashat lösenord
-// kolla om användarnamn finns, om det finns returna fel, annnars lägg till
-// användare.
-// returnear status (ok)
-// LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
-router.post("/register", (req, res) => {
+  // Om användaren registerar sig,
+  // params = användarnamn, hashat lösenord
+  // kolla om användarnamn finns, om det finns returna fel, annnars lägg till
+  // användare.
+  // returnear status (ok)
+  // LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
+  router.post("/register", (req, res) => {
 
     let username = req.body.username;
     let pw = req.body.password;
@@ -359,8 +328,8 @@ router.post("/register", (req, res) => {
     let admin = req.body.is_admin
     
     let myquery = { userID: username}
-    MongoClient.connect(url, (err, db) => {
-      let dbo = db.db("tvitter");
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
         if (err) {
           res.sendStatus(500)
@@ -408,12 +377,12 @@ router.post("/register", (req, res) => {
     })
   })
 
-  
-router.post("/updateProfile", (req, res) => { 
+ 
+  router.post("/updateProfile", (req, res) => { 
   let myquery = { userID: req.user}
   console.log("User: " + req.user)
-  MongoClient.connect(url, (err, db) => {
-    let dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    let dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -458,13 +427,13 @@ router.post("/updateProfile", (req, res) => {
       }
     })
   })
-})
+  })
 
-router.get("/articles", (req, res) => {
+  router.get("/articles", (req, res) => {
   const myquery = { userID: req.user}
 
-  MongoClient.connect(url, (err, db) => {
-    const dbo = db.db("tvitter");
+  MongoClient.connect(dbUrl, (err, db) => {
+    const dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
@@ -481,7 +450,11 @@ router.get("/articles", (req, res) => {
       } 
     })
   })
-})
+  })
+
+  return router
+}
 
 
-module.exports = router;
+
+
