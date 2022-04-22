@@ -85,7 +85,7 @@ router.post("/members/", (req, res) => {
   let accountname = req.body.accountname
   console.log(accountname)
   //let myquery = { accountname: accountname}
-  let myquery = {"profile.accountname" :  accountname}
+  let myquery = {"profile.accountName" :  accountname}
 
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db("tvitter");
@@ -96,7 +96,7 @@ router.post("/members/", (req, res) => {
       }
       else if (result != null) {
         let userData = {
-          "accountname"        : result.profile.accountname,
+          "accountname"        : result.profile.accountName,
           "description" : result.profile.description,
           "adress"      : result.profile.adress,
           "city"        : result.profile.city,
@@ -175,7 +175,7 @@ router.get('/image/:filename', (req, res) => {
     }
   });
 
-  gfs.close();
+  // gfs.close();
 });
 
 router.post('/getAllListings/', (req, res) => {
@@ -348,7 +348,7 @@ router.post('/getAllMembers2/', (req, res) => {
           //console.log(allMembersArray.values())
 
           for (const value of allMembersArray.values()) {
-            value.sort((a, b) => a.accountname.localeCompare(b.accountname));
+            value.sort((a, b) => a.accountName.localeCompare(b.accountName));
           }
           console.log(allMembersArray)
           let sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))

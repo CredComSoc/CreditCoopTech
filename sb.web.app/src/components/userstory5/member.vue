@@ -1,9 +1,13 @@
+<!--
+This page may cause weird errors in the console if the variable-names from listingObj 
+do not match the equivalent of the database. 
+-->
 <template>
   <div>
-    <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountname }} ">
+    <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
     <div class="element-container" @click="enterProfile"> 
       <img :src='getImgURL()' />
-      <h4 class="element-title"> {{ listingObj.accountname }} </h4>
+      <h4 class="element-title"> {{ listingObj.accountName }} </h4>
     </div>
     </router-link>
   </div>
@@ -19,7 +23,8 @@ export default {
   },
   methods: {
     getImgURL () {
-      return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+      /** http://155.4.159.231:3000/image/' + this.listingObj.logo */
+      return 'http://localhost:3000/image/' + this.listingObj.logo
     }
   }
 }
