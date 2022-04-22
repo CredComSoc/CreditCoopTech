@@ -220,6 +220,15 @@ export default {
           this.newArticle.status = 'selling'
           break
       } 
+
+      switch (this.newArticle['end-date']) {
+        case null:
+          delete this.newArticle['end-date']
+          break
+        default:
+          this.newArticle['end-date'] += ' 24:00:00'
+          break 
+      }
     }
   }
 }

@@ -134,6 +134,7 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
   MongoClient.connect(url, (err, db) => {
     let dbo = db.db(dbFolder);
     const myquery = { userID : req.user };
+    /*
     dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
       if (err) {
         db.close();
@@ -150,6 +151,23 @@ router.post('/upload/article', upload.array('file', 5), (req, res) => {
         res.status(404).send("No posts found.")
       } 
     })
+    */
+   dbo.collection("posts").insertOne(newArticle, (err, result)=>{
+    if (err) {
+      db.close();
+      res.sendStatus(500)
+    }
+    else if (result != null) {
+      console.log(result)
+      db.close();
+      res.sendStatus(200);
+    }
+    else {
+      // If we dont find a result
+      db.close();      
+      res.status(404).send("No posts found.")
+    } 
+   })
   })
 });
 
