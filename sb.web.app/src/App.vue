@@ -12,7 +12,6 @@
       </div>
     <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
     <Footer id="footer" />
-    <Form />
   </div>
   <!-- < Login page /> -->
   <div v-else>

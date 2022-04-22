@@ -4,14 +4,19 @@ import Home from '../views/Home.vue'
 import Navbar from '../components/Navbar.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
+import Members from '../components/userstory5/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import StepTwo from '../components/CreateArticle/StepTwo.vue'
 import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
+<<<<<<< HEAD
 import AdminHome from '../components/AdminSection/AdminHome.vue'
 
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members']
 const adminRoutes = ['AdminHome']
+=======
+import userProfile from '../components/userstory5/userProfile.vue'
+>>>>>>> origin/robin-linus-3
 
 const routes = [
   // USER ROUTES
@@ -44,7 +49,7 @@ const routes = [
   {
     path: '/members',
     name: 'Members',
-    component: Home // SKA BYTAS UT
+    component: Members 
   },
   {
     path: '/profile',
@@ -52,11 +57,19 @@ const routes = [
     component: Profile,
     props: true
   },
+<<<<<<< HEAD
   // ADMIN ROUTES
   {
     path: '/admin',
     name: 'AdminHome',
     component: AdminHome
+=======
+  {
+    path: '/members/:userprofile',
+    name: 'MemberUserprofile',
+    component: userProfile,
+    props: true
+>>>>>>> origin/robin-linus-3
   }
 ]
 

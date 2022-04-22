@@ -12,6 +12,7 @@ function hashMyPassword (password) {
 }
 
 export async function authenticate () {
+  /** 
   const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
     method: 'GET',
     headers: {
@@ -25,9 +26,9 @@ export async function authenticate () {
     return true
   }).catch(() => {
     return false
-  }) 
-
-  return authPromise 
+  }) */
+  return true
+  //return authPromise 
 }
 
 export async function checkAdminStatus () {
@@ -239,6 +240,85 @@ export function getArticles () {
   return promise
 }
 
+export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  console.log('updating profile')
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email,
+    phone: phone
+  }))
+  data.append('file', logo)
+  const updateProfilePromise = fetch(EXPRESS_URL + '/updateProfile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        console.log('Update ok')
+        return response
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+
+  return updateProfilePromise
+}
+
+export async function getUserProfile (accountname) {
+  const userProfilePromise = fetch(EXPRESS_URL + '/members/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ accountname: accountname })
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return userProfilePromise
+}
+
+export async function getAllMembers (searchword) {
+  const getAllMembersPromise = fetch(EXPRESS_URL + '/getAllMembers2/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ searchword: searchword })
+
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+
+  return getAllMembersPromise
+}
+
 /* Routes using cc-node */
 
 export function getPurchases () {
@@ -340,38 +420,3 @@ export async function getSaldo () {
   }
 }
 
-export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
-  console.log('updating profile')
-  const data = new FormData()
-  data.append('accountInfo', JSON.stringify({ 
-    accountName: accountName,
-    description: description,
-    adress: adress,
-    city: city,
-    billingName: billingName,
-    billingBox: billingBox,
-    billingAdress: billingAdress,
-    orgNumber: orgNumber, 
-    email: email,
-    phone: phone
-  }))
-  data.append('file', logo)
-  const updateProfilePromise = fetch(EXPRESS_URL + '/updateProfile', {
-    method: 'POST',
-    credentials: 'include',
-    body: data 
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        console.log('Update ok')
-        return response
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-
-  return updateProfilePromise
-}

@@ -47,78 +47,117 @@ module.exports = function(dbUrl, dbFolder) {
     res.status(200).send("Yo")
   })
 
+
   router.get('/authenticate', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.sendStatus(200)
-  } else {
-    res.sendStatus(500)
-  } 
+    if (req.isAuthenticated()) {
+      res.sendStatus(200)
+    } else {
+      res.sendStatus(500)
+    } 
   })
 
   router.get("/admin", (req, res) => {
-  let myquery = { userID: req.user}
-  MongoClient.connect(dbUrl, (err, db) => {
-    let dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null && result.is_admin) {
-        res.sendStatus(200)
-        db.close();
-      }
-      else {
-        res.sendStatus(500)
-        db.close();      
-      } 
+    let myquery = { userID: req.user}
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else if (result != null && result.is_admin) {
+          res.sendStatus(200)
+          db.close();
+        }
+        else {
+          res.sendStatus(500)
+          db.close();      
+        } 
+      })
     })
-  })
   })
 
   router.post("/login", passport.authenticate('local'), (req, res) => {
-  res.sendStatus(200)
+    res.sendStatus(200)
   })
 
   router.post('/logout', function(req, res){
-  req.logout()
-  res.sendStatus(200)
+    req.logout()
+    res.sendStatus(200)
   });
 
   router.get("/profile", (req, res) => {
-  let myquery = { userID: req.user}
+    let myquery = { userID: req.user}
 
-  MongoClient.connect(dbUrl, (err, db) => {
-    let dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        let userData = {
-          "name"        : result.profile.accountName,
-          "description" : result.profile.description,
-          "adress"      : result.profile.adress,
-          "city"        : result.profile.city,
-          "billingName": result.profile.billing.name,
-          "billingBox": result.profile.billing.box,
-          "billingAdress": result.profile.billing.adress,
-          "orgNumber": result.profile.billing.orgNumber,
-          "email"     : result.profile.contact.email,
-          "phone"     : result.profile.contact.phone,
-          "logo"      : result.profile.logo
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
         }
-        res.status(200).send(userData)
-        db.close();
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The profile doesn't exist.")
-        db.close();      
-      } 
+        else if (result != null) {
+          let userData = {
+            "name"        : result.profile.accountName,
+            "description" : result.profile.description,
+            "adress"      : result.profile.adress,
+            "city"        : result.profile.city,
+            "billingName": result.profile.billing.name,
+            "billingBox": result.profile.billing.box,
+            "billingAdress": result.profile.billing.adress,
+            "orgNumber": result.profile.billing.orgNumber,
+            "email"     : result.profile.contact.email,
+            "phone"     : result.profile.contact.phone,
+            "logo"      : result.profile.logo
+          }
+          res.status(200).send(userData)
+          db.close();
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send("The profile doesn't exist.")
+          db.close();      
+        } 
+      })
     })
   })
+
+  router.post("/members/", (req, res) => {
+    let accountname = req.body.accountname
+    console.log(accountname)
+    //let myquery = { accountname: accountname}
+    let myquery = {"profile.accountName" :  accountname}
+
+    MongoClient.connect(url, (err, db) => {
+      let dbo = db.db("tvitter");
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else if (result != null) {
+          let userData = {
+            "accountname"        : result.profile.accountName,
+            "description" : result.profile.description,
+            "adress"      : result.profile.adress,
+            "city"        : result.profile.city,
+            "billing_name": result.profile.billing.name,
+            "billing_box": result.profile.billing.box,
+            "billing_adress": result.profile.billing.adress,
+            "billing_orgNumber": result.profile.billing.orgNumber,
+            "contact_email"     : result.profile.contact.mail,
+            "contact_phone"     : result.profile.contact.phone
+          }
+          res.status(200).send(userData)
+          db.close();
+        }
+        else {
+          // If we dont find a result
+          res.status(405).send("The profile doesn't exist.")
+          db.close();      
+        } 
+      })
+    })
   })
 
   router.post('/getAllListings', (req, res) => {
@@ -136,6 +175,7 @@ module.exports = function(dbUrl, dbFolder) {
         searchword = searchword.filter(function(value, index, arr) {
           return value !== "";
         })
+        
 
         dbo.collection('users').find({}).toArray(function (err, users) {
           if (err) {
@@ -190,6 +230,12 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
+  // create a db objects in sb folder WIP
+  // router.post('/upload', upload.single('file'), (req, res) => {
+  //   console.log(req.file);
+  //   res.json({ file: req.file });
+  // });
+
   router.get('/image/:filename', (req, res) => {
     gfs.files.findOne({filename: req.params.filename}, (err, file) => {
       if (file == null || file.length === 0) {
@@ -231,86 +277,191 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.post("/notification", (req, res) => {
-  console.log(req.body)
-  let notification = req.body
-  notification.date = new Date()
-  notification.fromUser = req.user
+    let notification = req.body
+    notification.date = new Date()
+    notification.fromUser = req.user
 
-  const myquery = { userID: notification.toUser}
-  MongoClient.connect(dbUrl, (err, db) => {
-    const dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        // update notification list
-        let notification_list = result.notifications
-        if (notification_list.length >= 3) {
-          notification_list = [notification, notification_list[0], notification_list[1]]
-        } else {
-          notification_list.push(notification)
+    const myquery = { userID: notification.toUser}
+    MongoClient.connect(dbUrl, (err, db) => {
+      const dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
         }
+        else if (result != null) {
+          // update notification list
+          let notification_list = result.notifications
+          if (notification_list.length >= 3) {
+            notification_list = [notification, notification_list[0], notification_list[1]]
+          } else {
+            notification_list.push(notification)
+          }
 
 
-        // add updated notification list to db
-        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
-          if (err) {
-            res.sendStatus(500)
-            db.close();
-          }
-          else {
-            res.sendStatus(200)
-            db.close();
-          }
-        })
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The profile doesn't exist.")
-        db.close();        
-      } 
+          // add updated notification list to db
+          dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+            if (err) {
+              res.sendStatus(500)
+              db.close();
+            }
+            else {
+              res.sendStatus(200)
+              db.close();
+            }
+          })
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send("The profile doesn't exist.")
+          db.close();        
+        } 
+      })
     })
-  })
   })
 
   router.patch("/notification", (req, res) => {
-  const myquery = { userID: req.user}
+    const myquery = { userID: req.user}
 
-  MongoClient.connect(dbUrl, (err, db) => {
-    const dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        // update notification list
-        let notification_list = result.notifications
-        notification_list.forEach(notification => notification.seen = true)
+    MongoClient.connect(dbUrl, (err, db) => {
+      const dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else if (result != null) {
+          // update notification list
+          let notification_list = result.notifications
+          notification_list.forEach(notification => notification.seen = true)
 
-        // add updated notification list to db
-        dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+          // add updated notification list to db
+          dbo.collection("users").updateOne(myquery, {$set: {notifications: notification_list}}, function(err, result) {
+            if (err) {
+              res.sendStatus(500)
+              db.close();
+            }
+            else {
+              res.sendStatus(200)
+              db.close();
+            }
+          })
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send("The profile doesn't exist.")
+          db.close();        
+        } 
+      })
+    })
+  })
+
+  router.post('/getAllMembers/', (req, res) => {
+    // fetch all metadata about listing from mongoDB
+    let searchword = req.body.searchword.split(' ')
+
+    MongoClient.connect(url, (err, db) => {
+        let dbo = db.db(dbFolder)
+        let allMembersArray = []
+
+        searchword = searchword.filter(function(value, index, arr) {
+          return value !== "";
+        })
+
+        dbo.collection(userFolder).find({}).toArray(function (err, users) {
+          
           if (err) {
             res.sendStatus(500)
             db.close();
           }
           else {
-            res.sendStatus(200)
+            users.forEach(user => {
+              let name = user.profile.accountname
+              foundSearchword = true
+              if( searchword.length !== 0 ) {
+                for (let i = 0; i < searchword.length; i++) {
+                  if (!name.match(new RegExp(searchword[i], "i"))) {
+                    foundSearchword = false
+                    break
+                  } 
+                }
+                if (!foundSearchword) {
+                  return
+                }
+              }
+              allMembersArray.push(user.profile)
+            })
+            res.send({allMembers: allMembersArray})
             db.close();
           }
         })
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The profile doesn't exist.")
-        db.close();        
-      } 
     })
   })
-  })
 
+  router.post('/getAllMembers2/', (req, res) => {
+    // fetch all metadata about listing from mongoDB
+    let searchword = req.body.searchword.split(' ')
+
+    MongoClient.connect(url, (err, db) => {
+        let dbo = db.db(dbFolder)
+        let allMembersArray = new Map()
+        let adminMembersArray = new Map()
+
+        searchword = searchword.filter(function(value, index, arr) {
+          return value !== "";
+        })
+
+        dbo.collection(userFolder).find({}).toArray(function (err, users) {
+          
+          if (err) {
+            res.sendStatus(500)
+            db.close();
+          }
+          else {
+            users.forEach(user => {
+              let name = user.profile.accountname
+              foundSearchword = true
+              if( searchword.length !== 0 ) {
+                for (let i = 0; i < searchword.length; i++) {
+                  if (!name.match(new RegExp(searchword[i], "i"))) {
+                    foundSearchword = false
+                    break
+                  } 
+                }
+                if (!foundSearchword) {
+                  return
+                }
+              }
+              if(user.is_admin) {
+                if (!adminMembersArray.has("Admin")) {
+                  adminMembersArray.set("Admin", [])
+                }
+                adminMembersArray.get("Admin").push(user.profile)
+              } else {
+                if (!allMembersArray.has(user.profile.city)) {
+                  allMembersArray.set(user.profile.city, [])
+                }
+                allMembersArray.get(user.profile.city).push(user.profile)
+                }
+            })
+            
+            //Sort alphabetically by swedish.
+            console.log("hej")
+            //console.log(allMembersArray.values())
+
+            for (const value of allMembersArray.values()) {
+              value.sort((a, b) => a.accountName.localeCompare(b.accountName));
+            }
+            console.log(allMembersArray)
+            let sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+            let finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+            res.send({allMembers: finishMap})
+            db.close();
+          }
+        })
+    })
+  })
 
   // Om användaren registerar sig,
   // params = användarnamn, hashat lösenord

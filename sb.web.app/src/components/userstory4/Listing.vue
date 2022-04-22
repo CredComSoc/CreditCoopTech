@@ -23,7 +23,7 @@ export default {
       this.$emit('togglePopupEvent', this.listingObj)
     },
     getImgURL () {
-      return EXPRESS_URL + '/image/' + this.listingObj.img
+      return EXPRESS_URL + '/image/' + this.listingObj.coverImg
     }
   }
 }

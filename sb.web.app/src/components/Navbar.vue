@@ -34,12 +34,12 @@
             </div>
           </div>
           <div class="navlogo">
-             <a href="#">
+             <router-link :to="{name:'Members'}">
               <figure class="logo-click">              
                   <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
-            </a>
+            </router-link>
           </div>
         </div>
         <div class="middle-logo">
