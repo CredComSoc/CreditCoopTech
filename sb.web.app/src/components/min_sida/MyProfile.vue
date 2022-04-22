@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { profile, updateProfile } from '../../serverFetch'
+import { EXPRESS_URL, profile, updateProfile } from '../../serverFetch'
 
 export default {
   data () {
@@ -96,7 +96,9 @@ export default {
   methods: {
     addLogo (e) {
       this.profileData.logo = e.target.files[0]
+      console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
+      console.log(this.localURL)
     },
     submit () {
       this.updateProfile(
@@ -116,7 +118,7 @@ export default {
       this.logoURL = this.localURL
     },
     getImgURL () {
-      this.logoURL = 'http://localhost:3000/image/' + this.profileData.logo
+      this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
     }
   }
 }

@@ -22,7 +22,6 @@ function initApp(app, dbUrl = require('./mongoDB-config'), dbFolder="tvitter") {
     name: 'session',
     secret: 'asf',  // BYT UT
     secure: false,
-    sameSite: 'none',
     // Cookie Options
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }))

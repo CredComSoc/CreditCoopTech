@@ -191,19 +191,20 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get('/image/:filename', (req, res) => {
-  gfs.files.findOne({filename: req.params.filename}, (err, file) => {
-    if (!file || file.length === 0) {
-      res.status(500).send('No file exists');
-    }
-    // Check if image
-    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-      // Read output to browser
-      const stream =  gfs.createReadStream(file.filename);
-      stream.pipe(res);
-    } else {
-      res.status(500).send('Not an image');
-    }
-  });
+    gfs.files.findOne({filename: req.params.filename}, (err, file) => {
+      if (file == null || file.length === 0) {
+        res.status(500).send('No file exists');
+      } else {
+        // Check if image
+        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+          // Read output to browser
+          const stream =  gfs.createReadStream(file.filename);
+          stream.pipe(res);
+        } else {
+          res.status(500).send('Not an image');
+        }
+      }
+    });
   });
 
   router.get("/notification", (req, res) => {
@@ -380,92 +381,93 @@ module.exports = function(dbUrl, dbFolder) {
   })
  
   router.post("/updateProfile", upload.single('file'), (req, res) => { 
-  let myquery = { userID: req.user}
-  const newPro = JSON.parse(req.body.accountInfo)
-  MongoClient.connect(dbUrl, (err, db) => {
-    let dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-      } 
-      else if (result != null) {
-        //Det finns en användare med namnet
-        //Uppdatera profil
-        let newProfile = {
-          $set: {
-            profile: {
-              website: "",
-              accountName: newPro.accountName,
-              description: newPro.description,
-              adress: newPro.adress,
-              city: newPro.city,
-              billing: {
-                  name: newPro.billingName,
-                  box: newPro.billingBox,
-                  adress: newPro.billingAdress,
-                  orgNumber: newPro.orgNumber
-              },
-              contact: {
-                  email: newPro.email,
-                  phone: newPro.phone
-              },
-              logo: req.file.filename,
-              logo_id: req.file.id
+    let myquery = { userID: req.user}
+    const newPro = JSON.parse(req.body.accountInfo)
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+        } 
+        else if (result != null) {
+          
+          //Det finns en användare med namnet
+          //Uppdatera profil
+          let newProfile = {
+            $set: {
+              profile: {
+                website: "",
+                accountName: newPro.accountName,
+                description: newPro.description,
+                adress: newPro.adress,
+                city: newPro.city,
+                billing: {
+                    name: newPro.billingName,
+                    box: newPro.billingBox,
+                    adress: newPro.billingAdress,
+                    orgNumber: newPro.orgNumber
+                },
+                contact: {
+                    email: newPro.email,
+                    phone: newPro.phone
+                },
+                logo: req.file.filename,
+                logo_id: req.file.id
+              }
             }
           }
+      
+          dbo.collection("users").updateOne(myquery, newProfile, function(err, r) {
+            if (err) {throw err}
+            else {
+              // delete old logo if exists
+              gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "uploads",
+              });
+              gridfsBucket.delete(result.profile.logo_id, function(err, r2) {
+                if (err) {
+                  console.log(err)
+                }
+                else {
+                  console.log("deleted")
+                  console.log("image:", result.profile.logo_id, "filename:", result.profile.logo)
+                }
+              });
+              db.close();
+              res.sendStatus(200)
+            }
+          });
         }
-    
-        dbo.collection("users").updateOne(myquery, newProfile, function(err, result) {
-          if (err) {throw err}
-          else {
-            // delete old logo if exists
-            gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-              bucketName: "uploads",
-            });
-            gridfsBucket.delete(result.profile.logo_id, function(err, r2) {
-              if (err) {
-                console.log(err)
-              }
-              else {
-                console.log("deleted")
-                console.log("image:", result.profile.logo_id, "filename:", result.profile.logo)
-              }
-            });
-            db.close();
-            res.sendStatus(200)
-          }
-        });
-      }
-      else {
-        console.log("No result?" + result)
-        db.close();
-        res.sendStatus(500)
-      }
+        else {
+          console.log("No result?" + result)
+          db.close();
+          res.sendStatus(500)
+        }
+      })
     })
-  })
   })
 
   router.get("/articles", (req, res) => {
-  const myquery = { userID: req.user}
+    const myquery = { userID: req.user}
 
-  MongoClient.connect(dbUrl, (err, db) => {
-    const dbo = db.db(dbFolder);
-    dbo.collection("users").findOne(myquery, function(err, result) {
-      if (err) {
-        res.sendStatus(500)
-        db.close();
-      }
-      else if (result != null) {
-        res.status(200).send(result.posts)
-        db.close();
-      }
-      else {
-        // If we dont find a result
-        res.status(404).send("The profile doesn't exist.")
-        db.close();      
-      } 
+    MongoClient.connect(dbUrl, (err, db) => {
+      const dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else if (result != null) {
+          res.status(200).send(result.posts)
+          db.close();
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send("The profile doesn't exist.")
+          db.close();      
+        } 
+      })
     })
-  })
   })
 
   return router
