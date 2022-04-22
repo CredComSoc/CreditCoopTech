@@ -48,7 +48,6 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get('/authenticate', (req, res) => {
-  console.log(req.user)
   if (req.isAuthenticated()) {
     res.sendStatus(200)
   } else {
@@ -389,7 +388,7 @@ module.exports = function(dbUrl, dbFolder) {
       if (err) {
         res.sendStatus(500)
       } 
-      else if (r != null) {
+      else if (result != null) {
         //Det finns en användare med namnet
         //Uppdatera profil
         let newProfile = {
@@ -423,13 +422,13 @@ module.exports = function(dbUrl, dbFolder) {
             gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
               bucketName: "uploads",
             });
-            gridfsBucket.delete(r.profile.logo_id, function(err, r2) {
+            gridfsBucket.delete(result.profile.logo_id, function(err, r2) {
               if (err) {
                 console.log(err)
               }
               else {
                 console.log("deleted")
-                console.log("image:", r.profile.logo_id, "filename:", r.profile.logo)
+                console.log("image:", result.profile.logo_id, "filename:", result.profile.logo)
               }
             });
             db.close();

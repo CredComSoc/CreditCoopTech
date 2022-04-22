@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-//const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
+// const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
+const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
 // const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
 
 function hashMyPassword (password) {

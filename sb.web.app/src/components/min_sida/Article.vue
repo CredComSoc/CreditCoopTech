@@ -9,14 +9,14 @@
 <script>
 
 export default {
-  name: 'articleComp',
-  props: ['article'],
+  name: 'Article',
+  props: { article: String },
   created () {
     console.log(this.article)
   },
   data () {
     return {
-     
+      
     }
   }
 }
