@@ -1,5 +1,5 @@
 const express = require('express');
-const passport = require('passport')
+const passport = require('passport');
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const path = require('path');
@@ -8,9 +8,9 @@ const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const {MongoClient} = require('mongodb');
 
-
 module.exports = function(dbUrl, dbFolder) {
   const router = express.Router();
+
 
   let gfs;
   const conn = mongoose.createConnection(dbUrl, { 
@@ -107,7 +107,8 @@ module.exports = function(dbUrl, dbFolder) {
           "billingAdress": result.profile.billing.adress,
           "orgNumber": result.profile.billing.orgNumber,
           "email"     : result.profile.contact.email,
-          "phone"     : result.profile.contact.phone
+          "phone"     : result.profile.contact.phone,
+          "logo"      : result.profile.logo
         }
         res.status(200).send(userData)
         db.close();
@@ -360,6 +361,8 @@ module.exports = function(dbUrl, dbFolder) {
               adress: "",
               city: "",
               contact: {mail: "", phone: ""},
+              logo: "",
+              logo_id: ""
             },
             messages: {},
             notifications: []
@@ -376,45 +379,59 @@ module.exports = function(dbUrl, dbFolder) {
       })
     })
   })
-
  
-  router.post("/updateProfile", (req, res) => { 
+  router.post("/updateProfile", upload.single('file'), (req, res) => { 
   let myquery = { userID: req.user}
-  console.log("User: " + req.user)
+  const newPro = JSON.parse(req.body.accountInfo)
   MongoClient.connect(dbUrl, (err, db) => {
     let dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         res.sendStatus(500)
       } 
-      else if (result != null) {
+      else if (r != null) {
         //Det finns en användare med namnet
         //Uppdatera profil
         let newProfile = {
           $set: {
             profile: {
               website: "",
-              accountName: req.body.accountName,
-              description: req.body.description,
-              adress: req.body.adress,
-              city: req.body.city,
+              accountName: newPro.accountName,
+              description: newPro.description,
+              adress: newPro.adress,
+              city: newPro.city,
               billing: {
-                  name: req.body.billingName,
-                  box: req.body.billingBox,
-                  adress: req.body.billingAdress,
-                  orgNumber: req.body.orgNumber
+                  name: newPro.billingName,
+                  box: newPro.billingBox,
+                  adress: newPro.billingAdress,
+                  orgNumber: newPro.orgNumber
               },
               contact: {
-                  email: req.body.email,
-                  phone: req.body.phone
-              }
+                  email: newPro.email,
+                  phone: newPro.phone
+              },
+              logo: req.file.filename,
+              logo_id: req.file.id
             }
           }
         }
-        
+    
         dbo.collection("users").updateOne(myquery, newProfile, function(err, result) {
           if (err) {throw err}
           else {
+            // delete old logo if exists
+            gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+              bucketName: "uploads",
+            });
+            gridfsBucket.delete(r.profile.logo_id, function(err, r2) {
+              if (err) {
+                console.log(err)
+              }
+              else {
+                console.log("deleted")
+                console.log("image:", r.profile.logo_id, "filename:", r.profile.logo)
+              }
+            });
             db.close();
             res.sendStatus(200)
           }

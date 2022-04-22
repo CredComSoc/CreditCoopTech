@@ -3,7 +3,7 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img src="../../assets/list_images/Ellipse_3.png" alt="Städservice AB">
+          <img :src="this.logoURL" alt="Profile Logo">
         </div>
         <div className="container-item">
           <h1> Företagsnamn </h1>
@@ -38,7 +38,7 @@
         <div className="container-item">
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
-          <input type="file" name="logo"><br/>
+          <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">Företagsnamn:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
           <label for="description">Beskrivning:</label><br/>
@@ -64,7 +64,7 @@
           <label for="phone">Telefon:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
 
-          <button @click="submit()"> Spara </button>
+          <button @click="submit"> Spara </button>
           <button @click="edit = !edit"> Avbryt </button>
         </div>
       </form>
@@ -80,7 +80,9 @@ export default {
     return {
       edit: false,
       profileData: [],
-      updateProfile
+      updateProfile,
+      logoURL: '',
+      localURL: ''
     }
   },
   mounted () {
@@ -88,9 +90,14 @@ export default {
       .then(res => {
         this.profileData = res
         console.log(this.profileData)
+        this.getImgURL()
       })
   },
   methods: {
+    addLogo (e) {
+      this.profileData.logo = e.target.files[0]
+      this.localURL = URL.createObjectURL(this.profileData.logo)
+    },
     submit () {
       this.updateProfile(
         this.profileData.name, 
@@ -102,9 +109,14 @@ export default {
         this.profileData.billingAdress, 
         this.profileData.orgNumber, 
         this.profileData.email, 
-        this.profileData.phone
+        this.profileData.phone,
+        this.profileData.logo
       )
       this.edit = !this.edit
+      this.logoURL = this.localURL
+    },
+    getImgURL () {
+      this.logoURL = 'http://localhost:3000/image/' + this.profileData.logo
     }
   }
 }
