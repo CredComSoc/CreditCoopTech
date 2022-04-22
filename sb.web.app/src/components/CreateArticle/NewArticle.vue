@@ -226,7 +226,9 @@ export default {
           delete this.newArticle['end-date']
           break
         default:
+          // this.newArticle['end-date'] = '2022-04-22'
           this.newArticle['end-date'] += ' 24:00:00'
+          //this.newArticle['end-date'] = new Date(this.newArticle['end-date'])
           break 
       }
     }
