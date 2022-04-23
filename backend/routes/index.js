@@ -317,7 +317,7 @@ router.post('/getAllMembers2/', (req, res) => {
         }
         else {
           users.forEach(user => {
-            let name = user.profile.accountname
+            let name = user.profile.accountName
             foundSearchword = true
             if( searchword.length !== 0 ) {
               for (let i = 0; i < searchword.length; i++) {
