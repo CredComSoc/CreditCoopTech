@@ -9,7 +9,7 @@
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
+    <UploadedImage @removeImg="this.deleteImg" class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"
@@ -47,7 +47,7 @@ export default {
         }
       }
       return { 
-        image: this.imageObjs
+        img: this.imageObjs
       }
     },
     upload () {
@@ -55,27 +55,52 @@ export default {
     },
     getFile (e) {
       const imageObj = e.target.files[0]
-      const URLImg = URL.createObjectURL(imageObj)
-      this.$refs.addFile.innerText = 'Välj fler'
-      this.images.push([URLImg, this.images.length, false])
-      this.imageObjs.push(imageObj)
+      if (this.validateImageFile(imageObj) && this.validatedFileSize(imageObj.size)) {
+        const URLImg = URL.createObjectURL(imageObj)
+        this.$refs.addFile.innerText = 'Välj fler'
+        this.images.push([URLImg, this.images.length, false])
+        this.imageObjs.push(imageObj)
+      } else {
+        this.$emit('fileSizeError')
+      }
     },
     validateStepThree () {
       if (this.imageObjs.length === 0) {
         this.$emit('emptyImageError')
         return false
       } else {
-        const hasCoverImg = this.getStepThreeInputs().image.some((img) => img.isCoverImg === true)
+        const hasCoverImg = this.getStepThreeInputs().img.some((img) => img.isCoverImg === true)
         if (!hasCoverImg) {
           this.$emit('emptyCoverImage')
         }
         return hasCoverImg
       }
+    },
+    deleteImg (imgId) {
+      for (let i = imgId; i < this.images.length; i++) {
+        if (imgId !== i) {
+          this.images[i][1] = i - 1
+        }
+      }
+      this.images.splice(imgId, 1)
+      this.imageObjs.splice(imgId, 1)
+      if (this.images.length === 0) {
+        this.$refs.addFile.innerText = 'Bläddra'
+      }
+    },
+    // less then 1MB
+    validatedFileSize (byteSize) {
+      return byteSize <= 1000000
+    },
+    validateImageFile (file) {
+      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+      return validImageTypes.includes(file.type)
     }
   },
   mounted () {
-    if ('image' in this.savedProgress) {
-      for (const img of this.savedProgress.image) {
+    if ('img' in this.savedProgress) {
+      this.$refs.addFile.innerText = 'Välj fler'
+      for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)

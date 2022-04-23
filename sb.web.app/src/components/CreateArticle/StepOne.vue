@@ -1,6 +1,12 @@
 <template>
+  <div class="input">
+    <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
+  </div>
   <div id="title-field" class="input">
     <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
+  </div>
+  <div class="input">
+     <TextArea ref="shortDescInput" name="short-description" label="Kort beskrivning" length="50" placeholder="Gör en kort beskriv av vad som ingår i din artikel"/>
   </div>
   <div class="input" >
     <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
@@ -30,9 +36,11 @@ export default {
     getStepOneInputs () {
       return { 
         title: this.$refs.titleInput.getInput(),
-        description: this.$refs.descInput.getInput(),
-        type: this.$refs.typeInput.getInput(), 
-        category: this.$refs.categoryInput.getInput() 
+        longDesc: this.$refs.descInput.getInput(),
+        article: this.$refs.typeInput.getInput(), 
+        category: this.$refs.categoryInput.getInput(),
+        shortDesc: this.$refs.shortDescInput.getInput(),
+        status: this.$refs.buyOrSellInput.getInput()
       }
     },
     validateStepOne () {
@@ -40,6 +48,8 @@ export default {
       const description = this.$refs.descInput.getInput()
       const type = this.$refs.typeInput.getInput()
       const category = this.$refs.categoryInput.getInput()
+      const shortDesc = this.$refs.shortDescInput.getInput()
+      const status = this.$refs.buyOrSellInput.getInput()
       if (title.length === 0) {
         return false
       }
@@ -52,6 +62,12 @@ export default {
       if (category === null) {
         return false
       }
+      if (shortDesc.length === 0) {
+        return false
+      }
+      if (status === null) {
+        return false
+      }
       return true
     }
   },
@@ -59,14 +75,20 @@ export default {
     if ('title' in this.savedProgress) {
       this.$refs.titleInput.setValue(this.savedProgress.title) 
     } 
-    if ('description' in this.savedProgress) {
-      this.$refs.descInput.setValue(this.savedProgress.description)
+    if ('longDesc' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.longDesc)
     } 
-    if ('type' in this.savedProgress) {
-      this.$refs.typeInput.setValue(this.savedProgress.type)
+    if ('article' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.article)
     } 
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
+    }
+    if ('shortDesc' in this.savedProgress) {
+      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
+    }
+    if ('status' in this.savedProgress) {
+      this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
   }
 }

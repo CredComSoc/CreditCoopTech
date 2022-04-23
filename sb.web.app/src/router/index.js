@@ -6,13 +6,12 @@ import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
 import Members from '../components/userstory5/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
-import StepTwo from '../components/CreateArticle/StepTwo.vue'
-import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
 import AdminHome from '../components/AdminSection/AdminHome.vue'
 import userProfile from '../components/userstory5/userProfile.vue'
+import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 
-const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile']
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart']
 const adminRoutes = ['AdminHome']
 
 const routes = [
@@ -60,13 +59,18 @@ const routes = [
     component: Profile,
     props: true
   },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: ShoppingCart,
+    props: true
+  },
   // ADMIN ROUTES
   {
     path: '/admin',
     name: 'AdminHome',
     component: AdminHome
   }
-
 ]
 
 const router = createRouter({

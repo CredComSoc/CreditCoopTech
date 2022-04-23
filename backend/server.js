@@ -26,7 +26,7 @@ function initApp(app, dbUrl = require('./mongoDB-config'), dbFolder="tvitter") {
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }))
   
-  const initializePassport = require('./passport-config')
+  const initializePassport = require('./passport-config') // (dbUrl, dbFolder)
   initializePassport(passport)
   app.use(passport.initialize())
   app.use(passport.session())

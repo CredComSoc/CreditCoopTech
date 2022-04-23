@@ -3,7 +3,7 @@ const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
 
 const url = require('./mongoDB-config')
-const dbFolder = "tvitter"
+const dbFolder="tvitter"
 
 function initialize (passport) {
   passport.use (new LocalStrategy ({usernameField: 'email'}, authenticateUser))
@@ -13,8 +13,9 @@ function initialize (passport) {
   passport.deserializeUser((id, done) => {
     getUser(mongoose.Types.ObjectId(id)).then((user) => {
       return done(null, user.profile.accountName)
+    }).catch((err) => {
+      return done(err)
     })
-    
   })
 }
 

@@ -10,6 +10,10 @@
                   <figcaption class="l-text"> Shop </figcaption>
                 </figure>
               </router-link>
+              <!-- Ta inte bort dessa, de är för mobil nav. -->
+              <a href="#" v-if="this.isActive">
+                <span class="mob-cap"> Shop </span>
+              </a>
             </div>
           <div class="navlogo">
             <a href="#">
@@ -18,6 +22,9 @@
                   <figcaption class="l-text"> Events </figcaption>
               </figure>
             </a >
+            <a href="#" v-if="this.isActive">
+                <span class="mob-cap"> Events </span>
+            </a>
           </div>
           <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
@@ -40,6 +47,9 @@
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
             </router-link>
+              <a href="#" v-if="this.isActive">
+                <span class="mob-cap"> Medlemmar </span>
+              </a>
           </div>
         </div>
         <div class="middle-logo">
@@ -62,13 +72,19 @@
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </a>
+            <a href="#" v-if="this.isActive">
+              <span class="mob-cap"> Meddelanden </span>
+            </a>
           </div>
           <div class="navlogo">
-            <a href="#">
+            <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
+            </router-link>
+            <a href="http://localhost:8080/cart" v-if="this.isActive">
+                <span class="mob-cap"> Varukorg </span>
             </a>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">

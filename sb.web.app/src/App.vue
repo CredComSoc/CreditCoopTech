@@ -47,7 +47,6 @@ export default {
 
     onMounted(async () => {
       await router.isReady()
-      console.log(route.path)
       onResize()
       window.addEventListener('resize', onResize)
     })

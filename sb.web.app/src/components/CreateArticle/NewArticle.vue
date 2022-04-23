@@ -3,8 +3,8 @@
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep="goBackStep" />
   <div id="center">
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.type" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
-    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" />
+    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
+    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
     <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
   </div>
   <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
@@ -20,6 +20,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from './PopupCard.vue'
+import { uploadArticle } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -51,6 +52,10 @@ export default {
     },
     changePopupText (text) {
       this.popupCardText = text
+    },
+    fileSizeError () {
+      this.error = true
+      this.changePopupText('Filen måste vara en bild med filändelse .png, .jpeg eller .gif\noch ha mindre storlek än maxgränsen på 1MB.\nVar god försök igen.')
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
@@ -98,8 +103,9 @@ export default {
           this.error = true
         }
       } else if (this.currentStep === 4) {
-        this.isPublished = true
-        //this.uploadArticle()
+        this.addUploadDate()
+        this.sanitizeArticle()
+        this.uploadArticle()
       }
     },
     goBackStep () {
@@ -122,25 +128,101 @@ export default {
       }
     },
     uploadArticle () {
-      console.log('uploading article')
-      console.log(this.newArticle.image[0])
       const data = new FormData()
-      data.append('file', this.newArticle.image[0])
-      // for (const file of this.newArticle.image) {
-      //   data.append('files',file,file.name)
-      // }
-      
-      // This will upload the file after having read it
-      fetch('http://localhost:3000/upload', { // Your POST endpoint
-        method: 'POST',
-        body: data // This is your file object
-      }).then(
-        response => response.json() // if the response is a JSON object
-      ).then(
-        success => console.log(success) // Handle the success response object
-      ).catch(
-        error => console.log(error) // Handle the error response object
-      )
+      let index = 0
+      for (const file of this.newArticle.img) {
+        if (file.isCoverImg) {
+          data.append('coverImgInd', index)
+        } 
+        data.append('file', file, file.name)
+        ++index
+      }
+      data.append('article', JSON.stringify(this.newArticle))
+      // This will upload the article to the server
+      uploadArticle(data).then((res) => {
+        if (res.ok) {
+          this.isPublished = true // open popup with success message
+        }
+      })
+    },
+    addUploadDate () {
+      const options = {
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit'
+      }
+      this.newArticle.uploadDate = new Date().toLocaleString('sv-SE', options)
+    },
+    sanitizeArticle () {
+      // sanitize the article field
+      switch (this.newArticle.article) {
+        case 'Produkt':
+          this.newArticle.article = 'product'
+          break
+        case 'Tjänst':
+          this.newArticle.article = 'service'
+          break
+      }
+  
+      // sanitize the destination field
+      switch (this.newArticle.destination) {
+        case 'Linköping':
+          this.newArticle.destination = 'linkoping'
+          break
+        case 'Norrköping':
+          this.newArticle.destination = 'norrkoping'
+          break
+        case 'Söderköping':
+          this.newArticle.destination = 'soderkoping'
+          break
+      }
+      // sanitize the category field
+      switch (this.newArticle.category) {
+        case 'Affärsutveckling & strategi':
+          this.newArticle.category = 'affarsutveckling'
+          break
+        case 'Arbetsyta':
+          this.newArticle.category = 'arbetsyta'
+          break
+        case 'Fotografering':
+          this.newArticle.category = 'fotografering'
+          break
+        case 'Kök & restaurang':
+          this.newArticle.category = 'restaurang'
+          break
+        case 'Marknadsföring':
+          this.newArticle.category = 'marknadsforing'
+          break
+        case 'Rengöring & städ':
+          this.newArticle.category = 'rengoring&stad'
+          break
+        case 'Skönhet':
+          this.newArticle.category = 'skonhet'
+          break
+        case 'Sömnad & tyg':
+          this.newArticle.category = 'somnad&tyg'
+          break
+      }
+      // sanitize the status field
+      switch (this.newArticle.status) {
+        case 'Köpes':
+          this.newArticle.status = 'buying'
+          break
+        case 'Säljes':
+          this.newArticle.status = 'selling'
+          break
+      } 
+
+      switch (this.newArticle['end-date']) {
+        case null:
+          delete this.newArticle['end-date']
+          break
+        default:
+          // this.newArticle['end-date'] = '2022-04-22'
+          this.newArticle['end-date'] += ' 24:00:00'
+          //this.newArticle['end-date'] = new Date(this.newArticle['end-date'])
+          break 
+      }
     }
   }
 }

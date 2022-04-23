@@ -40,7 +40,6 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })

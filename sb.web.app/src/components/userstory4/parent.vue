@@ -27,7 +27,7 @@
           <h3>Tjänster</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=servicesSearchData />
         </div>
-        <ListingPopup @closePopup="closePopup" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
+        <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
       </div>
     </div>
     
@@ -96,6 +96,38 @@ export default {
       } else {
         specificArray.splice(specificArray.indexOf(value), 1)
       }
+    },
+    placeInCart (amount, listingObj) {
+      const JSONdata = new FormData()
+      const cartItem = {
+        title: listingObj.title,
+        coverImg: listingObj.coverImg,
+        price: listingObj.price,
+        quantity: amount, // number of items
+        article: listingObj.article, // produkt eller tjänst
+        id: listingObj.id, // Id for the article
+        status: listingObj.status, // köpes eller säljes
+        userUploader: listingObj.userUploader // user who uploaded the article, use to see if article is still for sale
+      }
+      console.log(cartItem)
+      JSONdata.append('cartItem', JSON.stringify(cartItem))
+
+      fetch('http://localhost:3000/cart', { // POST endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(cartItem) // This is your file object
+      }).then(
+        response => response
+      ).then(
+        success => {
+          console.log(success)
+        } // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      )
     }
   },
   

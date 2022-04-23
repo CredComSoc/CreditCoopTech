@@ -21,7 +21,7 @@ module.exports = function(dbUrl, dbFolder) {
           if (result != null) {
             for (user of result) {
               let userData = {
-              "id"      : user.userID,
+              "id"      : user.profile.accountName,
               "status"  : user.is_active,
               "min"     : user.min_limit,
               "max"     : user.max_limit,
@@ -41,8 +41,8 @@ module.exports = function(dbUrl, dbFolder) {
   router.get("/filter", (req, res) => {
   
     MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db("tvitter");
-      dbo.collection(dbFolder).find({}).toArray(function(err, result) {
+      let dbo = db.db(dbFolder);
+      dbo.collection('users').find({}).toArray(function(err, result) {
         if (err) {
           res.sendStatus(500)
           db.close();
@@ -50,7 +50,7 @@ module.exports = function(dbUrl, dbFolder) {
         else  {
           let userArray = []
           if (result != null) {
-            result.forEach(user => userArray.push(user.userID))
+            result.forEach(user => userArray.push(user.profile.accountName))
           }
           res.status(200).send(userArray)
           db.close();
@@ -83,7 +83,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
   
   router.get("/:acc_id", (req, res) => {
-    let myquery = { userID: req.params.acc_id}
+    let myquery = { 'profile.accountName': req.params.acc_id}
   
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
@@ -94,7 +94,7 @@ module.exports = function(dbUrl, dbFolder) {
         }
         else if (result != null) {
           let userData = {
-            "id"      : result.userID,
+            "id"      : result.profile.accountName,
             "status"  : result.is_active,
             "min"     : result.min_limit,
             "max"     : result.max_limit,

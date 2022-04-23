@@ -46,7 +46,7 @@ export default {
         day: '2-digit'
       }
       this.selectedValue = this.$refs.dateVal.value
-      this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + this.$refs.dateVal.value.replaceAll('-', '/').substring(5)
+      this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },

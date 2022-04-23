@@ -48,7 +48,7 @@ export async function checkAdminStatus () {
 }
 
 export async function login (email, password) {
-  const hashedPassword = hashMyPassword(password)
+  //const hashedPassword = hashMyPassword(password)
 
   const loginPromise = fetch(EXPRESS_URL + '/login', {
     method: 'POST',
@@ -415,4 +415,20 @@ export async function getSaldo () {
   } else {
     return null
   }
+}
+
+export async function uploadArticle (data) {
+  const promise = await fetch(EXPRESS_URL + '/upload/article', { 
+    method: 'POST',
+    credentials: 'include',
+    body: data // This is your file object
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+  
+  return promise
 }

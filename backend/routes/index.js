@@ -6,6 +6,9 @@ const path = require('path');
 const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
+const methodOverride = require('method-override');
+const uuid = require('uuid');
+const util = require('util');
 const {MongoClient} = require('mongodb');
 
 module.exports = function(dbUrl, dbFolder) {
@@ -47,7 +50,6 @@ module.exports = function(dbUrl, dbFolder) {
     res.status(200).send("Yo")
   })
 
-
   router.get('/authenticate', (req, res) => {
     if (req.isAuthenticated()) {
       res.sendStatus(200)
@@ -86,6 +88,7 @@ module.exports = function(dbUrl, dbFolder) {
     res.sendStatus(200)
   });
 
+
   router.get("/profile", (req, res) => {
     let myquery = { "profile.accountName": req.user}
 
@@ -106,8 +109,8 @@ module.exports = function(dbUrl, dbFolder) {
             "billingBox"    : result.profile.billing.box,
             "billingAdress" : result.profile.billing.adress,
             "orgNumber"     : result.profile.billing.orgNumber,
-            "email"         : result.profile.contact.email,
-            "phone"         : result.profile.contact.phone,
+            "email"         : result.email,
+            "phone"         : result.profile.ssphone,
             "logo"          : result.profile.logo
           }
           res.status(200).send(userData)
@@ -145,8 +148,8 @@ module.exports = function(dbUrl, dbFolder) {
             "billing_box"       : result.profile.billing.box,
             "billing_adress"    : result.profile.billing.adress,
             "billing_orgNumber" : result.profile.billing.orgNumber,
-            "contact_email"     : result.profile.contact.mail,
-            "contact_phone"     : result.profile.contact.phone
+            "contact_email"     : result.mail,
+            "contact_phone"     : result.profile.phone
           }
           res.status(200).send(userData)
           db.close();
@@ -159,6 +162,160 @@ module.exports = function(dbUrl, dbFolder) {
       })
     })
   })
+
+  // create a article object in mongoDB
+  router.post('/upload/article', upload.array('file', 5), (req, res) => {
+    const newArticle = JSON.parse(req.body.article);
+    let images = req.files.map(obj => obj.filename);
+    newArticle.coverImg = images[req.body.coverImgInd];
+    images = images.filter((img) => { return img !== newArticle.coverImg })
+    newArticle.id = uuid.v4().toString();
+    newArticle.userUploader = req.user;
+    newArticle.img = images;
+
+    // for ttl index in posts
+    if ('end-date' in newArticle) {
+      newArticle['end-date'] = new Date(newArticle['end-date']);
+    }
+
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      const myquery = { 'profile.accountName': req.user };;
+      /*
+      dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result != null || result.matchedCount != 0) {
+          console.log(result)
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(404).send("No posts found.")
+        } 
+      })
+      */
+    
+    dbo.collection("posts").insertOne(newArticle, (err, result)=>{
+      if (err) {
+        db.close();
+        res.sendStatus(500)
+      }
+      else if (result != null) {
+        console.log(result)
+        db.close();
+        res.sendStatus(200);
+      }
+      else {
+        // If we dont find a result
+        db.close();      
+        res.status(404).send("No posts found.")
+      } 
+    })
+    })
+  });
+
+  router.post('/cart', (req, res) =>  {
+    const cartItem = req.body;
+    
+    MongoClient.connect(url, (err, db) => {
+      let dbo = db.db(dbFolder);
+      const myquery = { 'profile.accountName': req.user };
+      dbo.collection("users").updateOne(myquery, {$push: {cart : cartItem}}, (err, result) => {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result != null || result.matchedCount != 0) {
+          console.log(result)
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(404).send("No posts found.")
+        } 
+      })
+    })
+  });
+
+  router.get('/cart', (req, res) => {
+    const myquery = { 'profile.accountName': req.user };
+    console.log(req.user)
+    
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result != null) {
+          const cart = result.cart;
+          db.close();
+          res.status(200).json(cart);
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).json(null);
+        } 
+      })
+    })
+  });
+
+  router.post('/cart/remove', (req, res) => {
+    const user = { 'profile.accountName': req.user };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").updateOne(user, {$set: { cart: [] } }, function(err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).send("No cart found");
+        } 
+      })
+    })
+  });
+
+
+  router.post('/cart/remove/item/:id', (req, res) => {
+    const user = { 'profile.accountName': req.user };
+    const id = req.params.id;
+    console.log(id)
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").updateOne(user, {$pull: { cart: { id: id } } }, function(err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed from cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).send("No item found");
+        } 
+      })
+    })
+  });
+
 
   router.post('/getAllListings', (req, res) => {
     // fetch all metadata about listing from mongoDB
@@ -177,51 +334,49 @@ module.exports = function(dbUrl, dbFolder) {
         })
         
 
-        dbo.collection('users').find({}).toArray(function (err, users) {
+        dbo.collection('posts').find({}).toArray(function (err, posts) {
           if (err) {
             res.sendStatus(500)
             db.close();
           }
           else {
-            users.forEach(user => {
-              user.posts.forEach(listing => {
-                //Om ARTIKEL
-                if (articles.length !== 0) {
-                  if (!articles.includes(listing.article)) {
-                    return
-                  }
+            posts.forEach(listing => {
+              //Om ARTIKEL
+              if (articles.length !== 0) {
+                if (!articles.includes(listing.article)) {
+                  return
                 }
-                //OM DESTINATION
-                if (destinations.length !== 0) {
-                  if (!destinations.includes(listing.destination)) {
-                    return
-                  }
-                } 
-                //OM CATEGORY
-                if (categories.length !== 0) {
-                  if (!categories.includes(listing.category)) {
-                    return
-                  }
-                } 
-                foundSearchword = true
-                if( searchword.length !== 0 ) {
-                  for (let i = 0; i < searchword.length; i++) {
-                    if (!listing.title.match(new RegExp(searchword[i], "i"))) {
-                      foundSearchword = false
-                      break
-                    } 
-                  }
-                  if (!foundSearchword) {
-                    return
-                  }
+              }
+              //OM DESTINATION
+              if (destinations.length !== 0) {
+                if (!destinations.includes(listing.destination)) {
+                  return
                 }
-                //TILLDELA TJÄNST ELLER PRODUKT
-                if(listing.article === "product") {
-                  productsAllListingsArray.push(listing)
-                } else if (listing.article === "service") {
-                  servicesAllListingsArray.push(listing)
+              } 
+              //OM CATEGORY
+              if (categories.length !== 0) {
+                if (!categories.includes(listing.category)) {
+                  return
                 }
-              })
+              } 
+              foundSearchword = true
+              if( searchword.length !== 0 ) {
+                for (let i = 0; i < searchword.length; i++) {
+                  if (!listing.title.match(new RegExp(searchword[i], "i"))) {
+                    foundSearchword = false
+                    break
+                  } 
+                }
+                if (!foundSearchword) {
+                  return
+                }
+              }
+              //TILLDELA TJÄNST ELLER PRODUKT
+              if(listing.article === "product") {
+                productsAllListingsArray.push(listing)
+              } else if (listing.article === "service") {
+                servicesAllListingsArray.push(listing)
+              }
             })
             res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
             db.close();
@@ -360,7 +515,7 @@ module.exports = function(dbUrl, dbFolder) {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
 
-    MongoClient.connect(url, (err, db) => {
+    MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder)
         let allMembersArray = []
 
@@ -471,7 +626,6 @@ module.exports = function(dbUrl, dbFolder) {
   // LÄGG TILL CHECK ATT INDATA ÄR OK (inte tom etc)
   router.post("/register", (req, res) => {
 
-    let username = req.body.username;
     let pw = req.body.password;
     let mail = req.body.email;
     let min = req.body.min_limit;
@@ -479,7 +633,7 @@ module.exports = function(dbUrl, dbFolder) {
     let active = req.body.is_active;
     let admin = req.body.is_admin
     
-    let myquery = { userID: username}
+    let myquery = { email: mail}
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
@@ -495,28 +649,33 @@ module.exports = function(dbUrl, dbFolder) {
         else {
           //skapa användarobjekt
           let newUser = {
-            userID: username, 
-            password: pw, 
             email: mail, 
+            password: pw, 
             is_active: active, 
             min_limit: min,
             max_limit: max,
             is_admin: admin, 
-            posts: {},
             pendingPosts: {},
             events: {},
             profile: {
               website: "",
-              accountName: "",
+              accountName: mail,
               description: "",
               adress: "",
               city: "",
-              contact: {mail: "", phone: ""},
+              phone: "",
+              billing: {
+                name: "",
+                box: "",
+                adress: "",
+                orgNumber: ""
+              },
               logo: "",
               logo_id: ""
             },
             messages: {},
-            notifications: []
+            notifications: [],
+            cart: []
           }
 
           dbo.collection('users').insertOne(newUser, function(err, result) {
@@ -546,6 +705,7 @@ module.exports = function(dbUrl, dbFolder) {
           //Uppdatera profil
           let newProfile = {
             $set: {
+              email: newPro.email,
               profile: {
                 website: "",
                 accountName: newPro.accountName,
@@ -558,10 +718,7 @@ module.exports = function(dbUrl, dbFolder) {
                     adress: newPro.billingAdress,
                     orgNumber: newPro.orgNumber
                 },
-                contact: {
-                    email: newPro.email,
-                    phone: newPro.phone
-                },
+                phone: newPro.phone,
                 logo: req.file.filename,
                 logo_id: req.file.id
               }
