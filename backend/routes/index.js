@@ -57,7 +57,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get("/admin", (req, res) => {
-    let myquery = { userID: req.user}
+    let myquery = { "profile.accountName": req.user}
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
@@ -87,7 +87,7 @@ module.exports = function(dbUrl, dbFolder) {
   });
 
   router.get("/profile", (req, res) => {
-    let myquery = { userID: req.user}
+    let myquery = { "profile.accountName": req.user}
 
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
@@ -98,17 +98,17 @@ module.exports = function(dbUrl, dbFolder) {
         }
         else if (result != null) {
           let userData = {
-            "name"        : result.profile.accountName,
-            "description" : result.profile.description,
-            "adress"      : result.profile.adress,
-            "city"        : result.profile.city,
-            "billingName": result.profile.billing.name,
-            "billingBox": result.profile.billing.box,
-            "billingAdress": result.profile.billing.adress,
-            "orgNumber": result.profile.billing.orgNumber,
-            "email"     : result.profile.contact.email,
-            "phone"     : result.profile.contact.phone,
-            "logo"      : result.profile.logo
+            "name"          : result.profile.accountName,
+            "description"   : result.profile.description,
+            "adress"        : result.profile.adress,
+            "city"          : result.profile.city,
+            "billingName"   : result.profile.billing.name,
+            "billingBox"    : result.profile.billing.box,
+            "billingAdress" : result.profile.billing.adress,
+            "orgNumber"     : result.profile.billing.orgNumber,
+            "email"         : result.profile.contact.email,
+            "phone"         : result.profile.contact.phone,
+            "logo"          : result.profile.logo
           }
           res.status(200).send(userData)
           db.close();
@@ -129,7 +129,7 @@ module.exports = function(dbUrl, dbFolder) {
     let myquery = {"profile.accountName" :  accountname}
 
     MongoClient.connect(url, (err, db) => {
-      let dbo = db.db("tvitter");
+      let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
         if (err) {
           res.sendStatus(500)
@@ -137,14 +137,14 @@ module.exports = function(dbUrl, dbFolder) {
         }
         else if (result != null) {
           let userData = {
-            "accountname"        : result.profile.accountName,
-            "description" : result.profile.description,
-            "adress"      : result.profile.adress,
-            "city"        : result.profile.city,
-            "billing_name": result.profile.billing.name,
-            "billing_box": result.profile.billing.box,
-            "billing_adress": result.profile.billing.adress,
-            "billing_orgNumber": result.profile.billing.orgNumber,
+            "accountname"       : result.profile.accountName,
+            "description"       : result.profile.description,
+            "adress"            : result.profile.adress,
+            "city"              : result.profile.city,
+            "billing_name"      : result.profile.billing.name,
+            "billing_box"       : result.profile.billing.box,
+            "billing_adress"    : result.profile.billing.adress,
+            "billing_orgNumber" : result.profile.billing.orgNumber,
             "contact_email"     : result.profile.contact.mail,
             "contact_phone"     : result.profile.contact.phone
           }
@@ -168,7 +168,7 @@ module.exports = function(dbUrl, dbFolder) {
     let articles = req.body.articles;
 
     MongoClient.connect(dbUrl, (err, db) => {
-        let dbo = db.db('tvitter')
+        let dbo = db.db(dbFolder)
         let productsAllListingsArray = []
         let servicesAllListingsArray = []
 
@@ -254,7 +254,7 @@ module.exports = function(dbUrl, dbFolder) {
   });
 
   router.get("/notification", (req, res) => {
-  const myquery = { userID: req.user}
+  const myquery = { "profile.accountName": req.user}
 
   MongoClient.connect(dbUrl, (err, db) => {
     const dbo = db.db(dbFolder);
@@ -281,7 +281,7 @@ module.exports = function(dbUrl, dbFolder) {
     notification.date = new Date()
     notification.fromUser = req.user
 
-    const myquery = { userID: notification.toUser}
+    const myquery = { 'profile.accountName': notification.toUser}
     MongoClient.connect(dbUrl, (err, db) => {
       const dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
@@ -321,7 +321,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.patch("/notification", (req, res) => {
-    const myquery = { userID: req.user}
+    const myquery = { "profile.accountName": req.user}
 
     MongoClient.connect(dbUrl, (err, db) => {
       const dbo = db.db(dbFolder);
@@ -368,7 +368,7 @@ module.exports = function(dbUrl, dbFolder) {
           return value !== "";
         })
 
-        dbo.collection(userFolder).find({}).toArray(function (err, users) {
+        dbo.collection('users').find({}).toArray(function (err, users) {
           
           if (err) {
             res.sendStatus(500)
@@ -402,7 +402,7 @@ module.exports = function(dbUrl, dbFolder) {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
 
-    MongoClient.connect(url, (err, db) => {
+    MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder)
         let allMembersArray = new Map()
         let adminMembersArray = new Map()
@@ -411,7 +411,7 @@ module.exports = function(dbUrl, dbFolder) {
           return value !== "";
         })
 
-        dbo.collection(userFolder).find({}).toArray(function (err, users) {
+        dbo.collection('users').find({}).toArray(function (err, users) {
           
           if (err) {
             res.sendStatus(500)
@@ -419,7 +419,7 @@ module.exports = function(dbUrl, dbFolder) {
           }
           else {
             users.forEach(user => {
-              let name = user.profile.accountname
+              let name = user.profile.accountName
               foundSearchword = true
               if( searchword.length !== 0 ) {
                 for (let i = 0; i < searchword.length; i++) {
@@ -532,7 +532,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
  
   router.post("/updateProfile", upload.single('file'), (req, res) => { 
-    let myquery = { userID: req.user}
+    let myquery = { "profile.accountName": req.user}
     const newPro = JSON.parse(req.body.accountInfo)
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
@@ -599,7 +599,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get("/articles", (req, res) => {
-    const myquery = { userID: req.user}
+    const myquery = { "profile.accountName": req.user}
 
     MongoClient.connect(dbUrl, (err, db) => {
       const dbo = db.db(dbFolder);

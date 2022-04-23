@@ -1,5 +1,6 @@
 <template>
-    <div id="header-box" class="header-container">
+<div>
+  <div id="header-box" class="header-container">
     <header>
       <nav>
         <div class="middle-logo">
@@ -25,6 +26,7 @@
         <label class="box-label">Lösenord</label>
         <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" required>
       </div>
+      <button>Logga in</button>
     </form>
     <div class="box-error" v-if="error">
       Fel epost eller lösenord ({{ loginCount }})
@@ -35,6 +37,8 @@
     </div> 
     --> 
   </div>
+</div>
+
 </template>
 
 <script>
@@ -95,6 +99,14 @@ export default {
     margin-top: 15%;
     position: relative;
     background: rgba(246, 202, 115, 0.27);
+}
+
+button {
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 2px 12px 2px 12px;
+  background-color: #F3F3F3;
 }
 
 .box-text {

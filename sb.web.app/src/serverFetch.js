@@ -12,8 +12,7 @@ function hashMyPassword (password) {
 }
 
 export async function authenticate () {
-  /** 
-  const authPromise = fetch(EXPRESS_URL + '/authenticate', { 
+  return fetch(EXPRESS_URL + '/authenticate', { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -26,9 +25,7 @@ export async function authenticate () {
     return true
   }).catch(() => {
     return false
-  }) */
-  return true
-  //return authPromise 
+  }) 
 }
 
 export async function checkAdminStatus () {
@@ -50,7 +47,7 @@ export async function checkAdminStatus () {
   return authPromise 
 }
 
-export async function login (username, password) {
+export async function login (email, password) {
   const hashedPassword = hashMyPassword(password)
 
   const loginPromise = fetch(EXPRESS_URL + '/login', {
@@ -58,7 +55,7 @@ export async function login (username, password) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username: username, password: password }),
+    body: JSON.stringify({ email: email, password: password }),
     credentials: 'include'
   }).then((response) => {
     if (!response.ok) {
@@ -419,4 +416,3 @@ export async function getSaldo () {
     return null
   }
 }
-

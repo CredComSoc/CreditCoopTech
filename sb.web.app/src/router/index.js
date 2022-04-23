@@ -9,14 +9,11 @@ import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import StepTwo from '../components/CreateArticle/StepTwo.vue'
 import NewArticle3 from '../components/CreateArticle/NewArticle3.vue'
 import Profile from '../components/min_sida/profile.vue'
-<<<<<<< HEAD
 import AdminHome from '../components/AdminSection/AdminHome.vue'
-
-const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members']
-const adminRoutes = ['AdminHome']
-=======
 import userProfile from '../components/userstory5/userProfile.vue'
->>>>>>> origin/robin-linus-3
+
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile']
+const adminRoutes = ['AdminHome']
 
 const routes = [
   // USER ROUTES
@@ -52,25 +49,24 @@ const routes = [
     component: Members 
   },
   {
+    path: '/members/:userprofile',
+    name: 'MemberUserprofile',
+    component: userProfile,
+    props: true
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: Profile,
     props: true
   },
-<<<<<<< HEAD
   // ADMIN ROUTES
   {
     path: '/admin',
     name: 'AdminHome',
     component: AdminHome
-=======
-  {
-    path: '/members/:userprofile',
-    name: 'MemberUserprofile',
-    component: userProfile,
-    props: true
->>>>>>> origin/robin-linus-3
   }
+
 ]
 
 const router = createRouter({

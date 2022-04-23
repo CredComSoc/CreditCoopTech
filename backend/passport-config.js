@@ -3,24 +3,25 @@ const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
 
 const url = require('./mongoDB-config')
+const dbFolder = "tvitter"
 
 function initialize (passport) {
-  passport.use (new LocalStrategy (authenticateUser))
+  passport.use (new LocalStrategy ({usernameField: 'email'}, authenticateUser))
   passport.serializeUser((user, done) => {
     return done(null, user._id)
   })
   passport.deserializeUser((id, done) => {
     getUser(mongoose.Types.ObjectId(id)).then((user) => {
-      return done(null, user.userID)
+      return done(null, user.profile.accountName)
     })
     
   })
 }
 
-async function authenticateUser (username, password, done) {
-  const  myquery = { userID: username, password: password}
+async function authenticateUser (email, password, done) {
+  const  myquery = { email: email, password: password}
   MongoClient.connect(url, (err, db) => {
-    const  dbo = db.db("tvitter");
+    const  dbo = db.db(dbFolder);
     dbo.collection("users").findOne(myquery, function(err, result) {
       if (err) {
         db.close()
@@ -41,7 +42,7 @@ async function authenticateUser (username, password, done) {
 async function getUser(id) {
   const myquery = { _id: id}
   const db = await MongoClient.connect(url)
-  const dbo = db.db("tvitter");
+  const dbo = db.db(dbFolder);
   const user = await dbo.collection("users").findOne(myquery)
   db.close();
   return user
