@@ -12,9 +12,14 @@
     <br>
 
     <div class="main">
+
+    <div class="filterButton">
+      <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
+    </div>
+
       <!-- KOLUMN FÖR KATERGORI-->
-      <div class="categories">
-        <Categories @filterEvent="filteringMethod"/>
+      <div id="categories" class="categories">
+        <Categories v-if="filterActive" @filterEvent="filteringMethod"/>
       </div>
 
       <!-- KOLYMN FÖR PRODUKTER -->
@@ -39,6 +44,7 @@ import Searchfield from '@/components/userstory4/searchfield.vue'
 import Alllistings from '@/components/userstory4/all_listings.vue'
 import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 import Categories from '@/components/userstory4/Categories.vue'
+import FilterButton from '@/components/userstory4/filterButton.vue'
 import { getAllListings } from './../../serverFetch.js'
 
 export default {
@@ -49,6 +55,8 @@ export default {
       servicesSearchData: [],
       singleListingData: [],
       popupActive: false,
+      filterActive: false,
+      filterButtonActive: false,
       listingObjPopup: Object,
       getAllListings,
       categoryArray: [],
@@ -61,7 +69,8 @@ export default {
     Searchfield,
     Alllistings,
     ListingPopup,
-    Categories
+    Categories,
+    FilterButton
   },
 
   methods: {
@@ -96,11 +105,28 @@ export default {
       } else {
         specificArray.splice(specificArray.indexOf(value), 1)
       }
+    },
+    triggerFilter () {
+      this.filterActive = !this.filterActive
+    },
+    onResize () {
+      if (window.innerWidth <= 860) {
+        this.filterButtonActive = true
+        this.filterActive = false
+      } else {
+        this.filterButtonActive = false
+        this.filterActive = true
+      }
     }
   },
   
   created: function () {
     this.triggerSearch('')
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
+  },
+  unmounted () {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
@@ -145,5 +171,17 @@ h2 {
 
 h3 {
   margin-left: 1rem;
+}
+
+@media screen and (max-width: 860px) {
+  .main {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .categories {
+    flex-basis: 100%;
+  }
 }
 </style>
