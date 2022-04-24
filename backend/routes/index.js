@@ -21,8 +21,10 @@ module.exports = function(dbUrl, dbFolder) {
     useUnifiedTopology: true 
   }).useDb(dbFolder);
   conn.once('open', () => {
+    /*
     gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
+    gfs.collection('uploads'); */
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads"})
   });
   
   const storage = new GridFsStorage({
@@ -392,6 +394,17 @@ module.exports = function(dbUrl, dbFolder) {
   // });
 
   router.get('/image/:filename', (req, res) => {
+    gfs.find({filename: req.params.filename}).toArray((err, files) => {
+        if(!files[0] || files.length === 0) {
+          res.status(500).send('No file exists');
+        } else {
+          if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png') {
+            gfs.openDownloadStreamByName(files[0].filename).pipe(res)
+          }
+        }
+    })
+    /*
+    console.log(gfs)
     gfs.files.findOne({filename: req.params.filename}, (err, file) => {
       if (file == null || file.length === 0) {
         res.status(500).send('No file exists');
@@ -406,6 +419,7 @@ module.exports = function(dbUrl, dbFolder) {
         }
       }
     });
+    */
   });
 
   router.get("/notification", (req, res) => {

@@ -1,10 +1,11 @@
 const express = require('express');
 const passport = require('passport')
 const session = require('cookie-session')
+const dbConfig = require('./mongoDB-config')
 // const path = require('path');
 // const { v1: uuidv1, v4: uuidv4 } = require('uuid');
 
-function initApp(app, dbUrl = require('./mongoDB-config'), dbFolder="tvitter") {
+function initApp(app, dbUrl = dbConfig.mongoURL, dbFolder=dbConfig.dbFolder) {
   const corsMiddleware = require('./cors');
   app.options('*', corsMiddleware);
   app.use(corsMiddleware);

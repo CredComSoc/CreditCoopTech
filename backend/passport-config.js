@@ -1,9 +1,10 @@
 const LocalStrategy = require('passport-local')
 const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
+const dbConfig = require('./mongoDB-config')
 
-const url = require('./mongoDB-config')
-const dbFolder="tvitter"
+const url = dbConfig.mongoURL
+const dbFolder = dbConfig.dbFolder
 
 function initialize (passport) {
   passport.use (new LocalStrategy ({usernameField: 'email'}, authenticateUser))
