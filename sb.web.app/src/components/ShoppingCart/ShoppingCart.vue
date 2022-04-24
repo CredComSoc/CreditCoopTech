@@ -11,6 +11,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '../CreateArticle/PopupCard.vue'
+import { EXPRESS_URL, getCart } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -20,17 +21,9 @@ export default {
     PopupCard
   },
   mounted () {
-    fetch('http://localhost:3000/cart', { // Get endpoint
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    }).then(
-      response => response.json()
-    ).then(
-      success => {
-        this.cart = success
+    getCart().then((res) => { 
+      if (res) {
+        this.cart = res
         // this.cart[0].quantity = 2
         // let first = {}
         // let sec = {}
@@ -44,15 +37,9 @@ export default {
         // const ma = [first, sec, third]
         // this.cart = ma
         this.calcTotal()
-        console.log(success)
-        this.gotCartRes = true
-      } // Handle the success response object
-    ).catch(
-      error => {
-        console.log(error)
-        this.gotCartRes = true
-      } // Handle the error response object
-    )
+      }
+      this.gotCartRes = true
+    })
   },
   data () {
     return {
@@ -64,13 +51,14 @@ export default {
   },
   methods: {
     removeRow (ind) {
-      fetch('http://localhost:3000/cart/remove/item' + this.cart[ind - 1].id, {
+      fetch(EXPRESS_URL + '/cart/remove/item' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
       }).then(
         success => {
           console.log(success)
           this.cart.splice(ind - 1, 1)
+
           this.calcTotal()
         }
       ).catch(
@@ -99,7 +87,7 @@ export default {
       this.cart = []
       
       // remove all items from cart
-      fetch('http://localhost:3000/cart/remove', {
+      fetch(EXPRESS_URL + '/cart/remove', {
         method: 'POST',
         credentials: 'include'
       }).then(

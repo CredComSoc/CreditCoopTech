@@ -1,25 +1,27 @@
 <template>
-  <div id="header-box" class="header-container">
-    <header>
-      <nav>
-        <div class="navlogo">
-          <router-link :to="{name:''}" @click="logOut">
-            <figure class="logo-click">
-                <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                <figcaption class="l-text"> Logout </figcaption>
-            </figure>
-          </router-link>
-        </div>
-      </nav>
-    </header>
-  </div>
-  <div id="space">
+  <div>
+    <div id="header-box" class="header-container">
+      <header>
+        <nav>
+          <div class="navlogo">
+            <router-link :to="{name:''}" @click="logOut">
+              <figure class="logo-click">
+                  <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
+                  <figcaption class="l-text"> Logout </figcaption>
+              </figure>
+            </router-link>
+          </div>
+        </nav>
+      </header>
+    </div>
+    <div id="space">
+    </div>
   </div>
 </template>
 
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { logout } from '../../serverFetch.js'
 const router = useRouter()
 

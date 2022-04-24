@@ -432,3 +432,20 @@ export async function uploadArticle (data) {
   
   return promise
 }
+
+export async function getCart () {
+  const promise = await fetch(EXPRESS_URL + '/cart', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((success) => {
+    return success
+  }).catch((error) => {
+    return error
+  })
+  return promise
+}

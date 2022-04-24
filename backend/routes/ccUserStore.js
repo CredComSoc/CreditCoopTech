@@ -83,6 +83,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
   
   router.get("/:acc_id", (req, res) => {
+    console.log(req.params.acc_id)
     let myquery = { 'profile.accountName': req.params.acc_id}
   
     MongoClient.connect(dbUrl, (err, db) => {

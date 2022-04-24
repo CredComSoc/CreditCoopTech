@@ -3,7 +3,7 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img :src="this.logoURL" alt="Profile Logo">
+          <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
           <h1> Företagsnamn </h1>

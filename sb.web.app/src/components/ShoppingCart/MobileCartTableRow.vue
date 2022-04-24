@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { EXPRESS_URL } from '../../serverFetch'
 export default {
   name: 'MobileCartTableRow',
   props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg'],
@@ -57,7 +58,7 @@ export default {
       this.$emit('remove-row', this.ind)
     },
     getImgURL () {
-      return 'http://localhost:3000/image/' + this.coverImg
+      return EXPRESS_URL + '/image/' + this.coverImg
     }
   }
 }

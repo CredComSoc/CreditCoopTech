@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo" v-if="!this.isActive">
+          <div class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
               <Notifications></Notifications>
           </div> 
           <div class="navlogo">
@@ -127,7 +127,7 @@
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter, useRoute } from 'vue-router'
-import { logout, getNotifications, postNotification, setNotificationsToSeen } from '../serverFetch.js'
+import { logout, setNotificationsToSeen } from '../serverFetch.js'
 import Notifications from './Notifications.vue'
 const router = useRouter()
 
@@ -202,33 +202,6 @@ export default {
         }
       }
     })
-
-    getNotifications().then((res) => {
-      //postNotification('saleAccepted', 'TestUser')
-      res.forEach(notification => {
-        if (notification.seen) {
-          this.oldNotifications.push(notification)
-        } else {
-          this.newNotifications.push(notification)
-        }
-      })
-    })
-
-    setInterval(() => getNotifications().then((res) => {
-      //postNotification('saleAccepted', 'TestUser')
-      if (res) {
-        console.log(res)
-        this.oldNotifications = []
-        this.newNotifications = []
-        res.forEach(notification => {
-          if (notification.seen) {
-            this.oldNotifications.push(notification)
-          } else {
-            this.newNotifications.push(notification)
-          }
-        })
-      }
-    }), 5000)
   },
   methods: {
     // open mobile version of navbar

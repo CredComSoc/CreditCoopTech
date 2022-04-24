@@ -15,6 +15,7 @@ do not match the equivalent of the database.
 
 <script>
 import userProfileVue from './userProfile.vue'
+import { EXPRESS_URL } from '../../serverFetch'
 
 export default {
 
@@ -24,7 +25,7 @@ export default {
   methods: {
     getImgURL () {
       /** http://155.4.159.231:3000/image/' + this.listingObj.logo */
-      return 'http://localhost:3000/image/' + this.listingObj.logo
+      return EXPRESS_URL + '/image/' + this.listingObj.logo
     }
   }
 }

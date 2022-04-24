@@ -1,44 +1,46 @@
 <template>
-  <div id="cart-table">
-    <!-- <CartTableHeader /> -->
-    <div id="table-content">
+  <div>
+    <div id="cart-table">
+      <!-- <CartTableHeader /> -->
+      <div id="table-content">
+        
+        <CartTableRow 
+          class = "desktop-cart"
+          v-for="(row,index) in this.cart"
+          :key="row.id"
+          :ind="index + 1"
+          :image="row.image"
+          :title="row.title"
+          :items="row.quantity"
+          :price="row.price"
+          :sum="row.price * row.quantity"
+          :coverImg="row.coverImg"
+          @remove-row="this.removeRow" 
+          @add-item="this.addItem"
+          @min-item="this.minItem"
+        />
       
-      <CartTableRow 
-        class = "desktop-cart"
-        v-for="(row,index) in this.cart"
-        :key="row.id"
-        :ind="index + 1"
-        :image="row.image"
-        :title="row.title"
-        :items="row.quantity"
-        :price="row.price"
-        :sum="row.price * row.quantity"
-        :coverImg="row.coverImg"
-        @remove-row="this.removeRow" 
-        @add-item="this.addItem"
-        @min-item="this.minItem"
-      />
-     
-      <MobileCartTableRow 
-        class="mobile-cart"
-        v-for="(row,index) in this.cart"
-        :key="row.id"
-        :ind="index + 1"
-        :image="row.image"
-        :title="row.title"
-        :items="row.quantity"
-        :price="row.price"
-        :sum="row.price * row.quantity"
-        :coverImg="row.coverImg"
-        @remove-row="this.removeRow" 
-        @add-item="this.addItem"
-        @min-item="this.minItem"
-      /> 
+        <MobileCartTableRow 
+          class="mobile-cart"
+          v-for="(row,index) in this.cart"
+          :key="row.id"
+          :ind="index + 1"
+          :image="row.image"
+          :title="row.title"
+          :items="row.quantity"
+          :price="row.price"
+          :sum="row.price * row.quantity"
+          :coverImg="row.coverImg"
+          @remove-row="this.removeRow" 
+          @add-item="this.addItem"
+          @min-item="this.minItem"
+        /> 
 
+      </div>
     </div>
-  </div>
-  <div id="bottom">
-    <TableBottom @complete-purchase="this.completePurchase" :total="this.total" v-if="this.cart.length > 0"/>
+    <div id="bottom">
+      <TableBottom @complete-purchase="this.completePurchase" :total="this.total" v-if="this.cart.length > 0"/>
+    </div>
   </div>
 </template>
 

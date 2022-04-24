@@ -1,11 +1,11 @@
 <template>
-        <div class="img-container">
-          <div id="delete" type="button" v-if="!this.isPreview" @click="this.removePic"> <img id="delete-img" src="../../assets/link_arrow/remove_img.png" /></div>
-          <img id="uploaded-img" :src=this.imageURL />
-          <br/>
-          <input v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" :checked="this.isCoverImg" class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
-          <label v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" for="firstPic"> {{ this.textboxLabel }} </label>
-        </div>
+  <div class="img-container">
+    <div id="delete" type="button" v-if="!this.isPreview" @click="this.removePic"> <img id="delete-img" src="../../assets/link_arrow/remove_img.png" /></div>
+    <img id="uploaded-img" :src=this.imageURL />
+    <br/>
+    <input v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" :checked="this.isCoverImg" class="cb" type="checkbox" :id="id" @click="clickCheckbox(id)" name="firstPic"/>
+    <label v-if="!this.isPreview || (this.isCoverImg && this.isPreview)" for="firstPic"> {{ this.textboxLabel }} </label>
+  </div>
 </template>
 
 <script>

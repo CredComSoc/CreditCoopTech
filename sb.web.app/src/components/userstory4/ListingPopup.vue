@@ -30,7 +30,7 @@
 </div>
 </template>
 <script>
-
+import { EXPRESS_URL } from '../../serverFetch'
 export default {
 
   props: {
@@ -55,7 +55,8 @@ export default {
       }
     },
     getImgURL () {
-      return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+      console.log(EXPRESS_URL + '/image/' + this.listingObj.img)
+      return EXPRESS_URL + '/image/' + this.listingObj.img
     },
     placeInCart () {
       this.$emit('placeInCart', this.amount, this.listingObj)

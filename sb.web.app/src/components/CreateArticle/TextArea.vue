@@ -1,7 +1,9 @@
 <template>
-  <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name" :maxlength="this.length" @input="this.countChars"/>
-  <CharCount ref="descriptionCount" :id="this.name + '-count'" :maxLength="this.length"/>
+  <div>
+    <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
+    <textarea ref="descVal" :placeholder="this.placeholder" :name="this.name" :maxlength="this.length" @input="this.countChars"/>
+    <CharCount ref="descriptionCount" :id="this.name + '-count'" :maxLength="this.length"/>
+  </div>
 </template>
 
 <script>
