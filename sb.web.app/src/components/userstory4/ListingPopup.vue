@@ -145,6 +145,9 @@ h5 {
 .xBtn {
   border: none;
   background-color: white;
+      position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .flex-center-bottom {
@@ -175,12 +178,6 @@ h5 {
   }
   .content-right {
     width: 100%;
-  }
-
-  .xBtn{
-    position: absolute;
-    top: 0;
-    right: 0;
   }
 
   .p-image {
