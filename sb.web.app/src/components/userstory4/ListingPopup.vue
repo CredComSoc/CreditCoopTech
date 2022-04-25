@@ -168,4 +168,26 @@ h5 {
   width: 100%;
 }
 
+@media screen and (max-width: 860px) {
+  .popup-inner {
+    width: 80%;
+    flex-wrap: wrap;
+  }
+  .content-right {
+    width: 100%;
+  }
+
+  .xBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .p-image {
+    width: 100%;
+    height: 45%;
+  }
+
+}
+
 </style>
