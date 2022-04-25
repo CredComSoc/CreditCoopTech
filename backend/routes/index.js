@@ -770,23 +770,23 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get("/articles", (req, res) => {
-    const myquery = { "profile.accountName": req.user}
-
     MongoClient.connect(dbUrl, (err, db) => {
       const dbo = db.db(dbFolder);
-      dbo.collection("users").findOne(myquery, function(err, result) {
+      let products = [];
+      
+      dbo.collection('posts').find({}).toArray(function (err, posts) {
         if (err) {
           res.sendStatus(500)
           db.close();
         }
-        else if (result != null) {
-          res.status(200).send(result.posts)
-          db.close();
-        }
         else {
-          // If we dont find a result
-          res.status(404).send("The profile doesn't exist.")
-          db.close();      
+          posts.forEach(listing => {
+            if(listing.userUploader === req.user) {
+              products.push(listing)
+            }
+          })
+          res.status(200).send({products})
+          db.close();
         } 
       })
     })

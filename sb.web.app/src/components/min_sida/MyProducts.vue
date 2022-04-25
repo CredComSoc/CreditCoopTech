@@ -7,12 +7,14 @@
     <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll;">
       <table>
         <tr>
+          <th></th>
           <th>Artikel</th>
           <th>Kategori</th>
           <th>Pris</th>
         </tr>
-        <tr v-for="(item) in articles" :key="item">
-          <td><Article :article="item" /></td> 
+        <tr v-for="(item, index) in articles" :key="item">
+          <td>{{index + 1 + '.'}} </td>
+          <td><Listing className='article' :listingObj="item"/></td>
           <td>{{item.category}}</td>
           <td>{{item.price}}</td>
         </tr>
@@ -25,7 +27,8 @@
 
 <script>
 import { getArticles } from '../../serverFetch'
-import Article from './Article'
+//import Article from './Article'
+import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
   data () {
@@ -36,11 +39,11 @@ export default {
   mounted () {
     getArticles()
       .then(res => {
-        this.articles = res.reverse()
+        this.articles = res.products
       })
   },
   components: {
-    Article
+    Listing
   }
 }
 
@@ -74,6 +77,12 @@ th {
 
 td {
   padding: 10px 0px 10px 0px;
+}
+
+.article {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 </style>
