@@ -112,7 +112,7 @@ module.exports = function(dbUrl, dbFolder) {
             "billingAdress" : result.profile.billing.adress,
             "orgNumber"     : result.profile.billing.orgNumber,
             "email"         : result.email,
-            "phone"         : result.profile.ssphone,
+            "phone"         : result.profile.phone,
             "logo"          : result.profile.logo
           }
           res.status(200).send(userData)
@@ -133,7 +133,7 @@ module.exports = function(dbUrl, dbFolder) {
     //let myquery = { accountname: accountname}
     let myquery = {"profile.accountName" :  accountname}
 
-    MongoClient.connect(url, (err, db) => {
+    MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
         if (err) {
@@ -224,7 +224,7 @@ module.exports = function(dbUrl, dbFolder) {
   router.post('/cart', (req, res) =>  {
     const cartItem = req.body;
     
-    MongoClient.connect(url, (err, db) => {
+    MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       const myquery = { 'profile.accountName': req.user };
       dbo.collection("users").updateOne(myquery, {$push: {cart : cartItem}}, (err, result) => {
@@ -545,7 +545,7 @@ module.exports = function(dbUrl, dbFolder) {
           }
           else {
             users.forEach(user => {
-              let name = user.profile.accountname
+              let name = user.profile.accountName
               foundSearchword = true
               if( searchword.length !== 0 ) {
                 for (let i = 0; i < searchword.length; i++) {

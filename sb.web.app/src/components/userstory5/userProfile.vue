@@ -55,14 +55,6 @@ export default {
 
 <style scoped>
 
-@media screen and (min-width: 860px) {
-  .flexbox-container2 {
-    padding-top: 50px;
-    display: flex;
-    align-content: center;
-  }
-}
-
 .container-item {
   flex: 2;
   padding-left: 30px;
@@ -73,7 +65,7 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 100%;
 }
 
 .right {
@@ -85,11 +77,28 @@ img {
 .flexbox-item {
   margin: 10px;
   max-width: 1100px;
-  width: 1100px;
+  width: 100%;
 }
 
 h1 {
   font-size: 2rem;
+}
+
+.image {
+  /**margin-left: auto;
+  margin-right: auto;*/
+  width: 50%;
+}
+
+@media screen and (min-width: 860px) {
+  .flexbox-container2 {
+    padding-top: 50px;
+    display: flex;
+    align-content: center;
+  }
+  .image {
+    width: 50%;
+  }
 }
 
 </style>

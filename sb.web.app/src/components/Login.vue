@@ -62,12 +62,12 @@ export default {
         if (response) {
           this.error = false  
           this.loginCount = 0   
-          // this.$router.push({ name: 'Home' })
+          //this.$router.push({ name: 'Home' })
           window.location.reload()
         } else {
           this.error = true
           this.loginCount += 1
-        }
+        } 
       })
     }
   }

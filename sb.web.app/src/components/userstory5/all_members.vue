@@ -45,7 +45,7 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: max(30rem, 50%);
+  width: max(20rem, 50%);
   margin: auto;
 }
 
