@@ -55,8 +55,8 @@ export default {
       }
     },
     getImgURL () {
-      console.log(EXPRESS_URL + '/image/' + this.listingObj.img)
-      return EXPRESS_URL + '/image/' + this.listingObj.img
+      console.log(EXPRESS_URL + '/image/' + this.listingObj.coverImg)
+      return EXPRESS_URL + '/image/' + this.listingObj.coverImg
     },
     placeInCart () {
       this.$emit('placeInCart', this.amount, this.listingObj)
@@ -108,8 +108,8 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 100vh;
-  height: 70%;
+  width: max(70%, 30rem);
+  height: max(80%, 20rem);
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
@@ -128,6 +128,7 @@ h5 {
 }
 
 .content-right {
+  width:100%;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -135,7 +136,10 @@ h5 {
 }
 
 .p-image {
-  height: 100%
+  object-fit: cover;
+  width: 70%;
+  height: 70%;
+  /*max-height: 70vh;*/
 }
 
 .xBtn {
