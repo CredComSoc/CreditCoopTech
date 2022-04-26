@@ -14,9 +14,9 @@
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
         <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td>{{item.entries[0].metadata.quantity}}</td>
+        <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
-        <td>{{'1'}}</td>
-        <td>{{'1'}}</td>
         <td id="buttons">
           <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
           <button @click="accept(item.uuid, item.entries[0].payer, index)" style="background-color: green;"> Godkänn </button>
@@ -26,9 +26,9 @@
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
         <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td>{{item.entries[0].metadata.quantity}}</td>
+        <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
-        <td>{{'1'}}</td>
-        <td>{{'1'}}</td>
         <td><p style="color: green;">GODKÄND</p></td>
       </tr>
     </table>

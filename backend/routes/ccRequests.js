@@ -44,6 +44,49 @@ module.exports = function(dbUrl) {
     }
   })
 
+  router.post("/createrequest", async (req, res) => {
+    const article = req.body
+    console.log(article)
+    if (req.user == article.userUploader) {
+      res.sendStatus(500)
+      return
+    }
+    let response
+    try {
+      response = await axios.post(CC_NODE_URL + '/transaction', 
+      {
+        "payee"       : article.userUploader, 
+        "payer"       : req.user,
+        "quant"       : article.quantity * parseInt(article.price),
+        "description" : article.article,
+        "type"        : "credit",
+        "metadata"    : {"id" : article.id, "quantity": article.quantity}
+      }, 
+      {
+        headers: 
+        {
+          'cc-user': req.user,
+          'cc-auth': '123'
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      res.sendStatus(500)
+    }
+    console.log(response.data)
+    try {
+      await axios.patch(CC_NODE_URL + '/transaction/' + response.data.uuid + '/pending', {}, { 
+      headers: {
+       'cc-user': req.user,
+       'cc-auth': '1'
+      }})
+      res.sendStatus(200)
+    } catch (error) {
+      console.log(error)
+      res.sendStatus(500)
+    } 
+  })
+
   router.post("/cancelrequest", async (req, res) => {
     const transactionId = req.body
     try {

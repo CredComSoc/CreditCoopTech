@@ -1,8 +1,7 @@
 import JsSHA from 'jssha'
 
-export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL DB
-//export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST DB
-// const EXPRESS_URL = 'http://192.168.0.100:3000' // FOR VIRTUALBOX HOST
+//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
+export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -193,7 +192,7 @@ export async function postNotification (type, user) {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
-        return response.json()
+        return response
       }
     })
     .catch(err => {
@@ -211,7 +210,7 @@ export async function setNotificationsToSeen () {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
-        return response.json()
+        return response
       }
     })
     .catch(err => {
@@ -293,27 +292,68 @@ export async function getUserProfile (accountname) {
   return userProfilePromise
 }
 
-export async function getAllMembers (searchword) {
-  const getAllMembersPromise = fetch(EXPRESS_URL + '/getAllMembers2/', {
-    method: 'POST',
+export async function getAllMembers (searchWord) {
+  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ searchword: searchword })
-
+    }
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
+  console.log(promise)
 
-  return getAllMembersPromise
+  let searchword = searchWord.split(' ')
+  searchword = searchword.filter(function (value, index, arr) {
+    return value !== ''
+  })
+
+  const allMembersArray = new Map()
+  const adminMembersArray = new Map()
+
+  promise.forEach(user => {
+    const name = user.profile.accountName
+    let foundSearchword = true
+    if (searchword.length !== 0) {
+      for (let i = 0; i < searchword.length; i++) {
+        if (!name.match(new RegExp(searchword[i], 'i'))) {
+          foundSearchword = false
+          break
+        } 
+      }
+      if (!foundSearchword) {
+        return
+      }
+    }
+    if (user.is_admin) {
+      if (!adminMembersArray.has('Admin')) {
+        adminMembersArray.set('Admin', [])
+      }
+      adminMembersArray.get('Admin').push(user.profile)
+    } else {
+      if (!allMembersArray.has(user.profile.city)) {
+        allMembersArray.set(user.profile.city, [])
+      }
+      allMembersArray.get(user.profile.city).push(user.profile)
+    }
+  })
+  
+  //Sort alphabetically by swedish.
+
+  for (const value of allMembersArray.values()) {
+    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
+  }
+  console.log(allMembersArray)
+  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+  const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+  return { allMembers: finishMap }
 }
 
 /* Routes using cc-node */
@@ -410,6 +450,7 @@ export async function getSaldo () {
     .catch(() => {
       return null
     })
+  console.log(promise)
   if (promise) {
     return promise.completed.balance
   } else {
@@ -448,4 +489,17 @@ export async function getCart () {
     return error
   })
   return promise
+}
+
+export async function createTransactions (cart) {
+  cart.forEach(element => {
+    fetch(EXPRESS_URL + '/createrequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(element),
+      credentials: 'include'
+    })  
+  })
 }

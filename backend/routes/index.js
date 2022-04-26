@@ -567,68 +567,20 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
-  router.post('/getAllMembers2/', (req, res) => {
+  router.get('/getAllMembers2/', (req, res) => {
     // fetch all metadata about listing from mongoDB
-    let searchword = req.body.searchword.split(' ')
-
     MongoClient.connect(dbUrl, (err, db) => {
-        let dbo = db.db(dbFolder)
-        let allMembersArray = new Map()
-        let adminMembersArray = new Map()
-
-        searchword = searchword.filter(function(value, index, arr) {
-          return value !== "";
-        })
-
-        dbo.collection('users').find({}).toArray(function (err, users) {
-          
-          if (err) {
-            res.sendStatus(500)
-            db.close();
-          }
-          else {
-            users.forEach(user => {
-              let name = user.profile.accountName
-              foundSearchword = true
-              if( searchword.length !== 0 ) {
-                for (let i = 0; i < searchword.length; i++) {
-                  if (!name.match(new RegExp(searchword[i], "i"))) {
-                    foundSearchword = false
-                    break
-                  } 
-                }
-                if (!foundSearchword) {
-                  return
-                }
-              }
-              if(user.is_admin) {
-                if (!adminMembersArray.has("Admin")) {
-                  adminMembersArray.set("Admin", [])
-                }
-                adminMembersArray.get("Admin").push(user.profile)
-              } else {
-                if (!allMembersArray.has(user.profile.city)) {
-                  allMembersArray.set(user.profile.city, [])
-                }
-                allMembersArray.get(user.profile.city).push(user.profile)
-                }
-            })
-            
-            //Sort alphabetically by swedish.
-            console.log("hej")
-            //console.log(allMembersArray.values())
-
-            for (const value of allMembersArray.values()) {
-              value.sort((a, b) => a.accountName.localeCompare(b.accountName));
-            }
-            console.log(allMembersArray)
-            let sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
-            let finishMap = new Map([...adminMembersArray, ...sortedMap])
-
-            res.send({allMembers: finishMap})
-            db.close();
-          }
-        })
+      let dbo = db.db(dbFolder)
+      dbo.collection('users').find({}).toArray(function (err, users) { 
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else {
+          res.send(users)
+          db.close()
+        }
+      })
     })
   })
 

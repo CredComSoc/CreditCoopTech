@@ -18,9 +18,9 @@
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
           <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{'1'}}</td>
-          <td>{{'1'}}</td>
           <td className="green">{{item.state}}</td>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
@@ -44,8 +44,8 @@
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
             <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
-            <td>{{'1'}}</td>
-            <td>{{item.entries[0].quant}}</td>
+            <td>{{item.entries[0].metadata.quantity}}</td>
+            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
             <td style="color: silver;">{{item.state}}</td>
           </tr>

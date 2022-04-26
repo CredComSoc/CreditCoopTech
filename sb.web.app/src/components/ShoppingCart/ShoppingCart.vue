@@ -11,7 +11,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '../CreateArticle/PopupCard.vue'
-import { EXPRESS_URL, getCart } from '../../serverFetch'
+import { EXPRESS_URL, getCart, createTransactions } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -84,6 +84,7 @@ export default {
     },
     completePurchase () {
       this.confirmPress = true
+      createTransactions(this.cart)
       this.cart = []
       
       // remove all items from cart
