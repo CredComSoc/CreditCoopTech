@@ -12,12 +12,12 @@
     <br>
 
     <div class="main">
+
+    <div class="filterButton">
+      <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
+    </div>
+
       <!-- KOLUMN FÖR KATERGORI-->
-
-      <div class="filterButton">
-        <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
-      </div>
-
       <div id="categories" class="categories">
         <Categories v-if="filterActive" @filterEvent="filteringMethod"/>
       </div>
@@ -216,5 +216,4 @@ h3 {
     flex-basis: 100%;
   }
 }
-
 </style>
