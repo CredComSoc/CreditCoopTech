@@ -120,7 +120,7 @@ export default {
   }
 
   #cart-container{
-    margin-top: 175px;
+    margin-top: 75px;
     width: 60%;
     min-height: 200px;
     position: relative;
