@@ -3,6 +3,17 @@
     <header>
       <nav>
         <div class="left-logos" v-if="this.desc">
+          <div class="navlogo">
+            <router-link :to="{name:''}" @click="logOut">
+              <figure class="logo-click">
+                  <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
+                  <figcaption class="l-text"> </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+              <span class="mob-cap"> Logga Ut</span>
+            </router-link>
+          </div>
             <div class="navlogo">
               <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
@@ -11,9 +22,9 @@
                 </figure>
               </router-link>
               <!-- Ta inte bort dessa, de är för mobil nav. -->
-              <a href="#" v-if="this.isActive">
+              <router-link :to="{name:'Shop'}" v-if="this.isActive" @click="openNav">
                 <span class="mob-cap"> Shop </span>
-              </a>
+              </router-link>
             </div>
           <div class="navlogo">
             <a href="#">
@@ -22,9 +33,9 @@
                   <figcaption class="l-text"> Events </figcaption>
               </figure>
             </a >
-            <a href="#" v-if="this.isActive">
-                <span class="mob-cap"> Events </span>
-            </a>
+            <router-link :to="{}" v-if="this.isActive" > 
+              <span class="mob-cap"> Events </span>
+            </router-link>
           </div>
           <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
@@ -47,15 +58,15 @@
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
             </router-link>
-              <a href="#" v-if="this.isActive">
-                <span class="mob-cap"> Medlemmar </span>
-              </a>
+            <router-link :to="{name:'Members'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Medlemmar </span>
+            </router-link>
           </div>
         </div>
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <router-link :to="{name:'Home'}">
+              <router-link :to="{name:'Home'}" >
                 <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
               </router-link>
             </figure>
@@ -72,9 +83,9 @@
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </a>
-            <a href="#" v-if="this.isActive">
+            <router-link :to="{}" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
-            </a>
+            </router-link>
           </div>
           <div class="navlogo">
             <router-link :to="{name:'Cart'}">
@@ -83,9 +94,9 @@
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
             </router-link>
-            <a href="http://localhost:8080/cart" v-if="this.isActive">
-                <span class="mob-cap"> Varukorg </span>
-            </a>
+            <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Varukorg </span>
+            </router-link>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
@@ -104,17 +115,22 @@
                   <router-link :to="{name:'Profile', params:{tab: ''}}">Inställningar</router-link>
                 </div>
               </div>
+              <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">
+                <span class="mob-cap"> Min Sida </span>
+              </router-link>
           </div>
           <div class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
                   <img src="../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                  <figcaption class="l-text"> Logout </figcaption>
+                  <figcaption class="l-text"> Logga Ut </figcaption>
               </figure>
+            </router-link>
+            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+              <span class="mob-cap"> Logga Ut</span>
             </router-link>
           </div>
         </div>
-
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
@@ -255,9 +271,6 @@ export default {
       this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
       this.oldNotifications.unshift(notification)
     },
-    forceRerender () {
-      this.componentKey += 1
-    },
     setNotificationsToSeen
   }
 }
@@ -272,10 +285,6 @@ export default {
 
 html {
   scroll-behavior: smooth;
-}
-
-#space {
-  height:75px;
 }
 
 .header-container {
@@ -331,13 +340,13 @@ a:hover {
 .left-logos, .right-logos {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 
 .middle-logo {
   flex-shrink: 0;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 40px;
+  margin-right: 20px;
   margin-bottom: 3px;
   margin-top: 3px;
   height: 100%;
@@ -400,33 +409,6 @@ figcaption {
   background-color: #E5F0FD;
 }
 
-.notice-desc, .notice-title {
-  font-family: Ubuntu;
-}
-
-.notice-desc {
-  font-weight: 300;
-  font-size: 10px;
-}
-
-.notice-date {
-  font-size: 7px;
-
-  color: blue;
-}
-
-.notice-title {
-  font-weight: 500;
-  font-size: 16px;
-  margin-bottom: 5px;
-  text-align: center;
-}
-
-.notice-img {
-  float: right;
-  top: 50%;
-}
-
 .active-dropdown {
   border-bottom: 2px solid black;
   transform: scale(1.05);
@@ -455,10 +437,6 @@ figcaption {
     scrollbar-width: none;  /* Firefox */
  }
 
- #space {
-   height: 69px;
- }
-
  /* Hide scrollbar for Chrome, Safari and Opera */
  .header-container::-webkit-scrollbar {
     display: none;
@@ -473,7 +451,7 @@ figcaption {
     background-color: #fff;
     margin: 0;
     flex-direction: column-reverse;
-}
+  }
 
   nav .middle-logo {
     left: 0;

@@ -13,8 +13,6 @@
       </nav>
     </header>
   </div>
-  <div id="space">
-  </div>
   <div class="login-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
       <div class="box-text">Logga in på Svensk Barter</div>
