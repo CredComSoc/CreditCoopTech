@@ -105,9 +105,8 @@ export default {
 
 #no-end-date {
   margin-right: 10px;
-  margin-top: 20px;
-  width:15px;
-  height:15px;
+  width: 15px;
+  height: 15px;
 }
 
 .input {
@@ -115,20 +114,41 @@ export default {
   position: relative;
 }
 
+#new-article-price {
+  width: 110%;
+} 
+
 h3 {
   display: inline;
   margin: 0;
   padding: 0;
   position: absolute;
   bottom: 0;
+  right: 0;
   font-family: 'Ubuntu';
   font-size: 23px;
   margin-left: 15px;
 }
 
+@media (max-width: 700px) {
+  #new-article-price {
+    width: 390px;
+  }
+}
+
+@media (max-width: 620px) {
+  #new-article-price {
+    width: 290px;
+  }
+}
+
 @media (max-width: 400px) {
   .input {
     margin-left: 40px;
+  }
+
+  #new-article-price {
+    width: 239px;
   }
 }
 

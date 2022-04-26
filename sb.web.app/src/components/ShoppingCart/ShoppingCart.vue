@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     removeRow (ind) {
-      fetch(EXPRESS_URL + '/cart/remove/item' + this.cart[ind - 1].id, {
+      fetch(EXPRESS_URL + '/cart/remove/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
       }).then(
@@ -112,7 +112,7 @@ export default {
   }
 
   #cart-container{
-    margin-top: 75px;
+    margin-top: 175px;
     width: 60%;
     min-height: 200px;
     position: relative;
