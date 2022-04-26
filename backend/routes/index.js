@@ -297,6 +297,7 @@ module.exports = function(dbUrl, dbFolder) {
   router.post('/cart/remove/item/:id', (req, res) => {
     const user = { 'profile.accountName': req.user };
     const id = req.params.id;
+    console.log("HERE")
     console.log(id)
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);

@@ -234,7 +234,7 @@ export default {
 
  #input-form {
      margin: 0 auto;
-     margin-top: 30px;
+     margin-top: 100px;
      width: 1000px;
      font-family: 'Ubuntu';
      position: relative;
