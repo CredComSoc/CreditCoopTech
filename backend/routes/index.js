@@ -745,6 +745,30 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
+  router.get("/minlimit", (req, res) => { 
+    const myquery = { "profile.accountName": req.user}
+
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else if (result != null) {
+          const data = {"min_limit": result.min_limit}
+          res.status(200).send(data)
+          db.close();
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send("The profile doesn't exist.")
+          db.close();      
+        } 
+      })
+    })
+  }) 
+
   return router
 }
 

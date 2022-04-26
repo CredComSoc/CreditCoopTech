@@ -503,3 +503,27 @@ export async function createTransactions (cart) {
     })  
   })
 }
+
+export async function getAvailableBalance () {
+  const saldo = await getSaldo()
+  const promise = await fetch(EXPRESS_URL + '/minlimit', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  
+  console.log(saldo - promise.min_limit)
+  return saldo - promise.min_limit
+}
