@@ -1,15 +1,17 @@
 <template>
-  <h3> {{ this.title }} </h3>
-  <p v-if="this.images === null"> {{ this.text }} </p>
-  <div v-if="this.images !== null" id="images-container">
-    <UploadedImage class="img" textboxLabel="Vald som omslagsbild" :isPreview="true"
-      v-for="(img) in this.images"
-        :imageURL="img[0]"
-        :key="img[0]"
-        :break="img[1]"
-        :id="img[2]"
-        :isCoverImg="img[3]"
-    />
+  <div>
+    <h3> {{ this.title }} </h3>
+    <p v-if="this.images === null"> {{ this.text }} </p>
+    <div v-if="this.images !== null" id="images-container">
+      <UploadedImage class="img" textboxLabel="Vald som omslagsbild" :isPreview="true"
+        v-for="(img) in this.images"
+          :imageURL="img[0]"
+          :key="img[0]"
+          :break="img[1]"
+          :id="img[2]"
+          :isCoverImg="img[3]"
+      />
+    </div>
   </div>
 </template>
 

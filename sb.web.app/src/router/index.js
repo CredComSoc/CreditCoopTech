@@ -1,13 +1,21 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import { authenticate } from '../serverFetch'
+import { authenticate, checkAdminStatus } from '../serverFetch'
 import Home from '../views/Home.vue'
+import Navbar from '../components/Navbar.vue'
 import Login from '../components/Login.vue'
 import Shop from '../components/userstory4/parent.vue'
+import Members from '../components/userstory5/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import Profile from '../components/min_sida/profile.vue'
+import AdminHome from '../components/AdminSection/AdminHome.vue'
+import userProfile from '../components/userstory5/userProfile.vue'
 import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart']
+const adminRoutes = ['AdminHome']
+
 const routes = [
+  // USER ROUTES
   {
     path: '/',
     name: 'Home',
@@ -37,7 +45,13 @@ const routes = [
   {
     path: '/members',
     name: 'Members',
-    component: Home // SKA BYTAS UT
+    component: Members 
+  },
+  {
+    path: '/members/:userprofile',
+    name: 'MemberUserprofile',
+    component: userProfile,
+    props: true
   },
   {
     path: '/profile',
@@ -50,6 +64,12 @@ const routes = [
     name: 'Cart',
     component: ShoppingCart,
     props: true
+  },
+  // ADMIN ROUTES
+  {
+    path: '/admin',
+    name: 'AdminHome',
+    component: AdminHome
   }
 ]
 
@@ -59,13 +79,30 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+  //Navbar.forceRerender()
   const auth = await authenticate()
   if (to.name !== 'Login') {
     if (!auth) {
       return { name: 'Login' }
+    } else {
+      const admin = await checkAdminStatus()
+      if (admin) {
+        if (userRoutes.includes(to.name)) {
+          return { name: 'AdminHome' }
+        }
+      } else {
+        if (adminRoutes.includes(to.name)) {
+          return { name: 'Home' }
+        }
+      }
     }
   } else if (auth) {
-    return { name: 'Home' }
+    const admin = await checkAdminStatus()
+    if (admin) {
+      return { name: 'AdminHome' }
+    } else {
+      return { name: 'Home' }
+    }  
   }
 }) 
 

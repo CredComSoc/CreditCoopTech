@@ -1,21 +1,23 @@
 <template>
-  <div class="input">
-    <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
-  </div>
-  <div id="title-field" class="input">
-    <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
-  </div>
-  <div class="input">
-     <TextArea ref="shortDescInput" name="short-description" label="Kort beskrivning" length="50" placeholder="Gör en kort beskriv av vad som ingår i din artikel"/>
-  </div>
-  <div class="input" >
-    <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
-  </div>
-  <div class="input">
-    <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
-  </div>
-  <div class="input">
-    <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Affärsutveckling & strategi', 'Arbetsyta', 'Fotografering', 'Kök & restaurang', 'Marknadsföring', 'Rengöring & städ', 'Skönhet', 'Sömnad & tyg']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
+  <div>
+    <div class="input">
+      <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
+    </div>
+    <div id="title-field" class="input">
+      <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
+    </div>
+    <div class="input">
+      <TextArea ref="shortDescInput" name="short-description" label="Kort beskrivning" length="50" placeholder="Gör en kort beskriv av vad som ingår i din artikel"/>
+    </div>
+    <div class="input" >
+      <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
+    </div>
+    <div class="input">
+      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
+    </div>
+    <div class="input">
+      <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Affärsutveckling & strategi', 'Arbetsyta', 'Fotografering', 'Kök & restaurang', 'Marknadsföring', 'Rengöring & städ', 'Skönhet', 'Sömnad & tyg']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
+    </div>
   </div>
 </template>
 

@@ -1,4 +1,5 @@
 <template>
+  <div>
    <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
     <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
       <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
@@ -11,6 +12,7 @@
       </div>
     </div>
     <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
+  </div>
 </template>
 
 <script>

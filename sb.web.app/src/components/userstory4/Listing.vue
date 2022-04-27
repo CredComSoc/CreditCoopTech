@@ -11,6 +11,7 @@
 <script>
 
 // import ListingPopup from '@/components/userstory4/ListingPopup.vue'
+import { EXPRESS_URL } from '../../serverFetch'
 
 export default {
 
@@ -22,7 +23,7 @@ export default {
       this.$emit('togglePopupEvent', this.listingObj)
     },
     getImgURL () {
-      return 'http://155.4.159.231:3000/image/' + this.listingObj.img
+      return EXPRESS_URL + '/image/' + this.listingObj.coverImg
     }
   }
 }
@@ -62,6 +63,12 @@ export default {
         color: grey;
         margin-left: 9px;
         margin-right: 30px;
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 60%;
     }
 
 </style>

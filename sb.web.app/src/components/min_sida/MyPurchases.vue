@@ -18,11 +18,11 @@
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
           <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
-          <td>{{'1'}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td className="green">{{item.state}}</td>
-          <td><a href="" className="red">Ladda ner faktura</a></td>
+          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
       </table>
       </div>
@@ -40,12 +40,12 @@
             <th>Summa</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='validated')" :key="item">
+          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
             <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
-            <td>{{'1'}}</td>
-            <td>{{item.entries[0].quant}}</td>
+            <td>{{item.entries[0].metadata.quantity}}</td>
+            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
             <td style="color: silver;">{{item.state}}</td>
           </tr>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getTransactions } from '../../serverFetch'
+import { getPurchases } from '../../serverFetch'
 
 export default {
 
@@ -65,11 +65,27 @@ export default {
     }
   },
   mounted () {
-    getTransactions('TestAdmin', '123')
+    getPurchases()
       .then(res => {
         this.purchases = res
-        console.log(this.purchases)
       })
+  },
+  methods: {
+    invoice (filename, item) {
+      console.log(item.entries[0])
+      var pom = document.createElement('a')
+      const text = 'hello'
+      pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+      pom.setAttribute('download', filename)
+
+      if (document.createEvent) {
+        var event = document.createEvent('MouseEvents')
+        event.initEvent('click', true, true)
+        pom.dispatchEvent(event)
+      } else {
+        pom.click()
+      }
+    }
   }
 }
 </script>

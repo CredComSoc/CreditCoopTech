@@ -20,6 +20,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from './PopupCard.vue'
+import { uploadArticle } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -138,20 +139,11 @@ export default {
       }
       data.append('article', JSON.stringify(this.newArticle))
       // This will upload the article to the server
-      fetch('http://localhost:3000/upload/article', { // POST endpoint
-        method: 'POST',
-        credentials: 'include',
-        body: data // This is your file object
-      }).then(
-        response => response
-      ).then(
-        success => {
-          console.log(success)
+      uploadArticle(data).then((res) => {
+        if (res.ok) {
           this.isPublished = true // open popup with success message
-        } // Handle the success response object
-      ).catch(
-        error => console.log(error) // Handle the error response object
-      )
+        }
+      })
     },
     addUploadDate () {
       const options = {

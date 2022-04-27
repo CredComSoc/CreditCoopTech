@@ -1,20 +1,22 @@
 <template>
-  <div id="center-header">
-    <h2> FÖRHANDSGRANSKNING </h2>
-    <p> Kontrollera att uppgifterna stämmer </p>
+    <div>
+    <div id="center-header">
+      <h2> FÖRHANDSGRANSKNING </h2>
+      <p> Kontrollera att uppgifterna stämmer </p>
+    </div>
+    <div id="items-container">
+      <PreviewItem title='Rubrik' :text='this.savedProgress.title' :images="null" />
+      <PreviewItem title='Kort beskrivning' :text='this.savedProgress.shortDesc' :images="null" />
+      <PreviewItem title='Beskrivning' :text='this.savedProgress.longDesc' :images="null" />
+      <PreviewItem title='Typ av artikel' :text='this.savedProgress.article' :images="null" />
+      <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />
+      <PreviewItem title='Tid' :text='this.endDate' :images="null" />
+      <PreviewItem title='Plats' :text='this.savedProgress.destination' :images="null" />
+      <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
+      <PreviewItem title='Bilder' :text="null" :images='this.images' />
+    </div>
+    <PopupCard v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel blir nu granskad och du får en notis när artikeln publiceras i shopen.`" btnLink='\' btnText="Ok" />
   </div>
-  <div id="items-container">
-    <PreviewItem title='Rubrik' :text='this.savedProgress.title' :images="null" />
-    <PreviewItem title='Kort beskrivning' :text='this.savedProgress.shortDesc' :images="null" />
-    <PreviewItem title='Beskrivning' :text='this.savedProgress.longDesc' :images="null" />
-    <PreviewItem title='Typ av artikel' :text='this.savedProgress.article' :images="null" />
-    <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />
-    <PreviewItem title='Tid' :text='this.endDate' :images="null" />
-    <PreviewItem title='Plats' :text='this.savedProgress.destination' :images="null" />
-    <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
-    <PreviewItem title='Bilder' :text="null" :images='this.images' />
-  </div>
-  <PopupCard v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel blir nu granskad och du får en notis när artikeln publiceras i shopen.`" btnLink='\' btnText="Ok" />
 </template>
 
 <script>

@@ -1,7 +1,9 @@
 <template>
-  <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
-  <input :maxlength="this.length" ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name" @input="this.countChars" >
-  <CharCount v-if='!disabled' ref="titleCount" :id="this.id + '-count'" :maxLength="this.length"/>
+  <div>
+    <label :for="this.name" class="input-title"> {{ this.label }} </label><br>
+    <input :maxlength="this.length" ref="titleVal" type="text" :placeholder="this.placeholder" :id="this.id" :name="this.name" @input="this.countChars" >
+    <CharCount v-if='!disabled' ref="titleCount" :id="this.id + '-count'" :maxLength="this.length"/>
+  </div>
 </template>
 
 <script>

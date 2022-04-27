@@ -1,0 +1,108 @@
+CreditCommons\Exceptions\CCViolation Object
+(
+    [message:protected] => This transaction has not yet been confirmed by its creator
+    [string:Error:private] => 
+    [code:protected] => 400
+    [file:protected] => /var/www/cc-node/src/TransactionStorageTrait.php
+    [line:protected] => 37
+    [trace:Error:private] => Array
+        (
+            [0] => Array
+                (
+                    [file] => /var/www/cc-node/slimapp.php
+                    [line] => 198
+                    [function] => loadByUuid
+                    [class] => CCNode\Transaction
+                    [type] => ::
+                )
+
+            [1] => Array
+                (
+                    [function] => CCNode\{closure}
+                    [class] => Closure
+                    [type] => ->
+                )
+
+            [2] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/Handlers/Strategies/RequestResponse.php
+                    [line] => 40
+                    [function] => call_user_func
+                )
+
+            [3] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/Route.php
+                    [line] => 281
+                    [function] => __invoke
+                    [class] => Slim\Handlers\Strategies\RequestResponse
+                    [type] => ->
+                )
+
+            [4] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/MiddlewareAwareTrait.php
+                    [line] => 117
+                    [function] => __invoke
+                    [class] => Slim\Route
+                    [type] => ->
+                )
+
+            [5] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/Route.php
+                    [line] => 268
+                    [function] => callMiddlewareStack
+                    [class] => Slim\Route
+                    [type] => ->
+                )
+
+            [6] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/App.php
+                    [line] => 503
+                    [function] => run
+                    [class] => Slim\Route
+                    [type] => ->
+                )
+
+            [7] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/MiddlewareAwareTrait.php
+                    [line] => 117
+                    [function] => __invoke
+                    [class] => Slim\App
+                    [type] => ->
+                )
+
+            [8] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/App.php
+                    [line] => 392
+                    [function] => callMiddlewareStack
+                    [class] => Slim\App
+                    [type] => ->
+                )
+
+            [9] => Array
+                (
+                    [file] => /var/www/cc-node/vendor/slim/slim/Slim/App.php
+                    [line] => 297
+                    [function] => process
+                    [class] => Slim\App
+                    [type] => ->
+                )
+
+            [10] => Array
+                (
+                    [file] => /var/www/cc-node/index.php
+                    [line] => 19
+                    [function] => run
+                    [class] => Slim\App
+                    [type] => ->
+                )
+
+        )
+
+    [previous:Error:private] => 
+)

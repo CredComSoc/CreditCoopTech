@@ -1,15 +1,17 @@
-<template>
-<div id="title-field" class="input">
-  <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
-  <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
-  <label for="end-date"> På obestämd tid </label>
-</div>
-<div class="input">
-  <Combobox ref="cityInput" name="city-new-article" label="Plats" :options="[`Linköping`, `Norrköping`, `Söderköping`]" :placeholder="`Var finns din ` + this.chosenType.toLowerCase() + `?`" />
-</div>
-<div class="input" id="new-article-price">
-  <TextBox ref="priceInput" id="price-new-article" name="price" label="Pris" :placeholder="`Hur mycket kostar din ` + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
-  <h3> Bkr </h3>
+<template> 
+<div>
+  <div id="title-field" class="input">
+    <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+    <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
+    <label for="end-date"> På obestämd tid </label>
+  </div>
+  <div class="input">
+    <Combobox ref="cityInput" name="city-new-article" label="Plats" :options="[`Linköping`, `Norrköping`, `Söderköping`]" :placeholder="`Var finns din ` + this.chosenType.toLowerCase() + `?`" />
+  </div>
+  <div class="input" id="new-article-price">
+    <TextBox ref="priceInput" id="price-new-article" name="price" label="Pris" :placeholder="`Hur mycket kostar din ` + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
+    <h3> Bkr </h3>
+  </div>
 </div>
 </template>
 
@@ -103,9 +105,8 @@ export default {
 
 #no-end-date {
   margin-right: 10px;
-  margin-top: 20px;
-  width:15px;
-  height:15px;
+  width: 15px;
+  height: 15px;
 }
 
 .input {
@@ -113,20 +114,41 @@ export default {
   position: relative;
 }
 
+#new-article-price {
+  width: 110%;
+} 
+
 h3 {
   display: inline;
   margin: 0;
   padding: 0;
   position: absolute;
   bottom: 0;
+  right: 0;
   font-family: 'Ubuntu';
   font-size: 23px;
   margin-left: 15px;
 }
 
+@media (max-width: 700px) {
+  #new-article-price {
+    width: 390px;
+  }
+}
+
+@media (max-width: 620px) {
+  #new-article-price {
+    width: 290px;
+  }
+}
+
 @media (max-width: 400px) {
   .input {
     margin-left: 40px;
+  }
+
+  #new-article-price {
+    width: 239px;
   }
 }
 

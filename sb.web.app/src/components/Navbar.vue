@@ -3,6 +3,17 @@
     <header>
       <nav>
         <div class="left-logos" v-if="this.desc">
+          <div class="navlogo">
+            <router-link :to="{name:''}" @click="logOut">
+              <figure class="logo-click">
+                  <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
+                  <figcaption class="l-text"> </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+              <span class="mob-cap"> Logga Ut</span>
+            </router-link>
+          </div>
             <div class="navlogo">
               <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
@@ -11,9 +22,9 @@
                 </figure>
               </router-link>
               <!-- Ta inte bort dessa, de är för mobil nav. -->
-              <a href="#" v-if="this.isActive">
+              <router-link :to="{name:'Shop'}" v-if="this.isActive" @click="openNav">
                 <span class="mob-cap"> Shop </span>
-              </a>
+              </router-link>
             </div>
           <div class="navlogo">
             <a href="#">
@@ -22,9 +33,9 @@
                   <figcaption class="l-text"> Events </figcaption>
               </figure>
             </a >
-            <a href="#" v-if="this.isActive">
-                <span class="mob-cap"> Events </span>
-            </a>
+            <router-link :to="{}" v-if="this.isActive" > 
+              <span class="mob-cap"> Events </span>
+            </router-link>
           </div>
           <div class="navlogo" v-if="!this.isActive">
             <div class="dropdown">
@@ -41,63 +52,30 @@
             </div>
           </div>
           <div class="navlogo">
-             <a href="#">
+             <router-link :to="{name:'Members'}">
               <figure class="logo-click">              
                   <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
-              <a href="#" v-if="this.isActive">
-                <span class="mob-cap"> Medlemmar </span>
-              </a>
-            </a>
+            </router-link>
+            <router-link :to="{name:'Members'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Medlemmar </span>
+            </router-link>
           </div>
         </div>
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <router-link :to="{name:'Home'}">
+              <router-link :to="{name:'Home'}" >
                 <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
               </router-link>
             </figure>
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo" v-if="!this.isActive">
-            <div id="click-dropdown" class="dropdown">
-              <a href="#">
-                <figure id="bell-logo" :class="[`logo-click`,`notice`]">
-                    <img id="notice" class="notice" src="../assets/navbar_logos/notice.png"/>
-                    <img id="bell" class="notice" src="../assets/navbar_logos/bell.png" alt="shop knapp"/>
-                    <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
-                </figure>
-              </a>
-              <div id="bell-dropdown" class="dropdown-content">
-                <div id="new-notice-list">
-                  <a href="#">
-                    <p class="notice-title">Nya</p>
-                    <div id="new-list-content">
-                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                      <p class="notice-desc">Du har fått en ny köpförfrågan. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
-                    </div>
-                  </a>
-                  <!-- <a href="#">
-                    <div>
-                      <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                      <p class="notice-desc">Notiser</p>
-                    </div>
-                  </a> -->
-                </div>
-                <div id="previous-notice-list">
-                  <a href="#">
-                    <p class="notice-title">Tidigare</p>
-                    <div id="prev-list-content">
-                      <p class="notice-desc"><u>Språkcaféet</u> har taggat dig i ett nytt <u>event</u>.</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
+              <Notifications></Notifications>
+          </div> 
           <div class="navlogo">
             <a href="#">
               <figure class="logo-click">
@@ -105,9 +83,9 @@
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </a>
-            <a href="#" v-if="this.isActive">
+            <router-link :to="{}" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
-            </a>
+            </router-link>
           </div>
           <div class="navlogo">
             <router-link :to="{name:'Cart'}">
@@ -116,15 +94,15 @@
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
             </router-link>
-            <a href="http://localhost:8080/cart" v-if="this.isActive">
-                <span class="mob-cap"> Varukorg </span>
-            </a>
+            <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Varukorg </span>
+            </router-link>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
-                    <img src="../assets/navbar_logos/profile.png" alt="shop knapp"/>
+                    <img src="../assets/navbar_logos/profile.png" alt="profil knapp"/>
                     <figcaption class="l-text"> Min sida </figcaption>
                   </figure>
                 </router-link>
@@ -137,9 +115,20 @@
                   <router-link :to="{name:'Profile', params:{tab: ''}}">Inställningar</router-link>
                 </div>
               </div>
-              <a href="http://localhost:8080/profile" v-if="this.isActive">
-                <span class="mob-cap"> Min sida </span>
-              </a>
+              <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">
+                <span class="mob-cap"> Min Sida </span>
+              </router-link>
+          </div>
+          <div class="navlogo">
+            <router-link :to="{name:''}" @click="logOut">
+              <figure class="logo-click">
+                  <img src="../assets/link_arrow/popup_close.png" alt="logut knapp"/>
+                  <figcaption class="l-text"> Logga Ut </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+              <span class="mob-cap"> Logga Ut</span>
+            </router-link>
           </div>
         </div>
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
@@ -149,21 +138,27 @@
       </nav>
     </header>
   </div>
-  <div id="space">
-  </div>
 </template>
 
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter, useRoute } from 'vue-router'
+import { logout, setNotificationsToSeen } from '../serverFetch.js'
+import Notifications from './Notifications.vue'
 const router = useRouter()
 
 export default {
+  components: {
+    Notifications
+  },
   data () {
     return {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
-      dropdownActive: false // if a dropdown menu is active
+      dropdownActive: false, // if a dropdown menu is active
+      newNotifications: [],
+      oldNotifications: [],
+      componentKey: 0
     }
   },
   name: 'Navbar',
@@ -266,7 +261,17 @@ export default {
         const content = document.getElementById('profile-content')
         content.style.display = 'block'
       }
-    }
+    },
+    logOut () {
+      logout().then(() => {
+        window.location.reload()
+      })
+    },
+    moveNotification (notification) {
+      this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
+      this.oldNotifications.unshift(notification)
+    },
+    setNotificationsToSeen
   }
 }
 </script>
@@ -280,10 +285,6 @@ export default {
 
 html {
   scroll-behavior: smooth;
-}
-
-#space {
-  height:75px;
 }
 
 .header-container {
@@ -339,13 +340,13 @@ a:hover {
 .left-logos, .right-logos {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 
 .middle-logo {
   flex-shrink: 0;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 40px;
+  margin-right: 20px;
   margin-bottom: 3px;
   margin-top: 3px;
   height: 100%;
@@ -408,26 +409,6 @@ figcaption {
   background-color: #E5F0FD;
 }
 
-.notice-desc, .notice-title {
-  font-family: Ubuntu;
-}
-
-.notice-desc {
-  font-weight: 300;
-  font-size: 10px;
-}
-
-.notice-title {
-  font-weight: 500;
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.notice-img {
-  float: right;
-  top: 50%;
-}
-
 .active-dropdown {
   border-bottom: 2px solid black;
   transform: scale(1.05);
@@ -456,10 +437,6 @@ figcaption {
     scrollbar-width: none;  /* Firefox */
  }
 
- #space {
-   height: 69px;
- }
-
  /* Hide scrollbar for Chrome, Safari and Opera */
  .header-container::-webkit-scrollbar {
     display: none;
@@ -474,7 +451,7 @@ figcaption {
     background-color: #fff;
     margin: 0;
     flex-direction: column-reverse;
-}
+  }
 
   nav .middle-logo {
     left: 0;

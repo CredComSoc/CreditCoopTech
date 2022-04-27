@@ -11,6 +11,12 @@
 
 <script>
 export default {
+
+  data () {
+    return {
+      checked: Boolean
+    }
+  },
   props: {
     type: String,
     value: String,
