@@ -223,27 +223,35 @@ module.exports = function(dbUrl, dbFolder) {
 
   router.post('/cart', (req, res) =>  {
     const cartItem = req.body;
-    
+    console.log(cartItem);
+    cartItem.cartOwner = req.user;
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      const myquery = { 'profile.accountName': req.user };
-      dbo.collection("users").updateOne(myquery, {$push: {cart : cartItem}}, (err, result) => {
+      dbo.collection("carts").updateOne({id: cartItem.id, cartOwner: req.user}, {$inc: {quantity : cartItem.quantity}}, (err, result) => {
         if (err) {
           db.close();
           res.sendStatus(500)
         }
-        else if (result != null || result.matchedCount != 0) {
-          console.log(result)
-          db.close();
-          res.sendStatus(200);
+        else if (result.matchedCount == 0) {
+          dbo.collection("carts").insertOne(cartItem, (err, result) => {
+            if (err) {
+              db.close();
+              res.sendStatus(500)
+            }
+            else if (result != null) {
+              console.log(result)
+              db.close();
+              res.sendStatus(200)
+            }
+            else {
+              // If we dont find a result
+              db.close();      
+              res.sendStatus(404)
+            } 
+          })
         }
-        else {
-          // If we dont find a result
-          db.close();      
-          res.status(404).send("No posts found.")
-        } 
-      })
-    })
+      });
+    });
   });
 
   router.get('/cart', (req, res) => {
