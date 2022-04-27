@@ -176,7 +176,7 @@ module.exports = function(dbUrl, dbFolder) {
 
   router.get("/profile", (req, res) => {
     getUser({"profile.accountName": req.user}).then((user) => {
-      if (user) {
+      if (user != null) {
         const userData = {
           "name"          : user.profile.accountName,
           "description"   : user.profile.description,
@@ -367,14 +367,12 @@ module.exports = function(dbUrl, dbFolder) {
 
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      const myquery = { 'profile.accountName': req.user };;
       dbo.collection("posts").insertOne(newArticle, (err, result)=>{
         if (err) {
           db.close();
           res.sendStatus(500)
         }
         else if (result != null) {
-          console.log(result)
           db.close();
           res.sendStatus(200);
         }
@@ -479,7 +477,7 @@ module.exports = function(dbUrl, dbFolder) {
 
   router.get('/cart', (req, res) => {
     getUser({"profile.accountName": req.user}).then((user) => {
-      if (user) {
+      if (user != null) {
         res.status(200).json(user.cart)
       } else {
         res.status(204).json(null);

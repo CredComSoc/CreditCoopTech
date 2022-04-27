@@ -497,7 +497,6 @@ export async function getSaldo () {
     .catch(() => {
       return null
     })
-  console.log(promise)
   if (promise) {
     return promise.completed.balance
   } else {
