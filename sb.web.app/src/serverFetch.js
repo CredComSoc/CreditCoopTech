@@ -293,7 +293,7 @@ export async function getAllListings (searchword, destinationsArray, categoryArr
  *****************************************************************************/
 
 export async function uploadArticle (data) {
-  const promise = await fetch(EXPRESS_URL + '/upload/article', { 
+  return await fetch(EXPRESS_URL + '/upload/article', { 
     method: 'POST',
     credentials: 'include',
     body: data // This is your file object
@@ -304,8 +304,6 @@ export async function uploadArticle (data) {
   }).catch(error => {
     return error
   }) 
-  
-  return promise
 }
 
 /*****************************************************************************
@@ -313,6 +311,25 @@ export async function uploadArticle (data) {
  *                                Members
  *                 
  *****************************************************************************/
+
+export async function getMember (member) {
+  return await fetch(EXPRESS_URL + '/member', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'profile.accountName': member }),
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
 
 export async function getAllMembers (searchWord) {
   const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {

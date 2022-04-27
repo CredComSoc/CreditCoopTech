@@ -391,6 +391,29 @@ module.exports = function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
+  router.post('/member', (req, res) => {
+    getUser(req.body).then((user) => {
+      if (user != null) {
+        const userData = {
+          "name"          : user.profile.accountName,
+          "description"   : user.profile.description,
+          "adress"        : user.profile.adress,
+          "city"          : user.profile.city,
+          "billingName"   : user.profile.billing.name,
+          "billingBox"    : user.profile.billing.box,
+          "billingAdress" : user.profile.billing.adress,
+          "orgNumber"     : user.profile.billing.orgNumber,
+          "email"         : user.email,
+          "phone"         : user.profile.phone,
+          "logo"          : user.profile.logo
+        }
+        res.status(200).send(userData)
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    }) 
+  })
+
    router.get('/getAllMembers2/', (req, res) => {
     // fetch all metadata about listing from mongoDB
     MongoClient.connect(dbUrl, (err, db) => {

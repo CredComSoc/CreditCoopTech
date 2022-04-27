@@ -2,7 +2,7 @@
   <div className="flexbox-container2 flexbox-item">
     
     <div className="image container-item">
-      <img src="../../assets/list_images/Ellipse_3.png" alt="Städservice AB">
+      <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
     </div>
     <div className="right container-item">
       <h1> Företagsnamn </h1>
@@ -30,25 +30,31 @@
 </template>
 
 <script>
-import { profile } from './../../serverFetch'
+import { EXPRESS_URL, getMember } from './../../serverFetch'
 
 export default {
   data () {
     return {
+      logoURL: '',
       profileData: [],
-      profile
+      getMember
     }
   },
   methods: {
-    getProfile () {
-      this.profile().then(res => {
+    getProfile (member) {
+      console.log(member)
+      this.getMember(member).then(res => {
         console.log(res)
         this.profileData = res
+        this.getImgURL()
       })
+    },
+    getImgURL () {
+      this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
     }
   },
   created: function () {
-    this.getProfile()
+    this.getProfile(this.$route.params.userprofile)
   }
 }
 
