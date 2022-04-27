@@ -165,119 +165,6 @@ export async function updateProfile (accountName, description, adress, city, bil
   })
 }
 
-/*****************************************************************************
- * 
- *                                Shop
- *                 
- *****************************************************************************/
-
-export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
-  return await fetch(EXPRESS_URL + '/getAllListings/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
-  })
-}
-
-/*****************************************************************************
- * 
- *                                Create Article
- *                 
- *****************************************************************************/
-
-/*****************************************************************************
- * 
- *                                Members
- *                 
- *****************************************************************************/
-
-/*****************************************************************************
- * 
- *                                Notifications
- *                 
- *****************************************************************************/
-
-/*****************************************************************************
- * 
- *                                Cart
- *                 
- *****************************************************************************/
-
-export async function getNotifications () {
-  const promise = await fetch(EXPRESS_URL + '/notification', {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return promise
-}
-
-export async function postNotification (type, user) {
-  const data = { 
-    date: '',
-    type: type,
-    toUser: user,
-    fromUser: '',
-    seen: false
-  }
-  const promise = await fetch(EXPRESS_URL + '/notification', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
-    credentials: 'include'
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return promise
-}
-
-export async function setNotificationsToSeen () {
-  const promise = await fetch(EXPRESS_URL + '/notification', {
-    method: 'PATCH',
-    credentials: 'include'
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return promise
-}
-
 export function getArticles () {
   const promise = fetch(EXPRESS_URL + '/articles', {
     method: 'GET',
@@ -293,70 +180,6 @@ export function getArticles () {
       return false
     })
   return promise
-}
-
-export async function getAllMembers (searchWord) {
-  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
-  })
-  console.log(promise)
-
-  let searchword = searchWord.split(' ')
-  searchword = searchword.filter(function (value, index, arr) {
-    return value !== ''
-  })
-
-  const allMembersArray = new Map()
-  const adminMembersArray = new Map()
-
-  promise.forEach(user => {
-    const name = user.profile.accountName
-    let foundSearchword = true
-    if (searchword.length !== 0) {
-      for (let i = 0; i < searchword.length; i++) {
-        if (!name.match(new RegExp(searchword[i], 'i'))) {
-          foundSearchword = false
-          break
-        } 
-      }
-      if (!foundSearchword) {
-        return
-      }
-    }
-    if (user.is_admin) {
-      if (!adminMembersArray.has('Admin')) {
-        adminMembersArray.set('Admin', [])
-      }
-      adminMembersArray.get('Admin').push(user.profile)
-    } else {
-      if (!allMembersArray.has(user.profile.city)) {
-        allMembersArray.set(user.profile.city, [])
-      }
-      allMembersArray.get(user.profile.city).push(user.profile)
-    }
-  })
-  
-  //Sort alphabetically by swedish.
-
-  for (const value of allMembersArray.values()) {
-    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
-  }
-  console.log(allMembersArray)
-  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
-  const finishMap = new Map([...adminMembersArray, ...sortedMap])
-
-  return { allMembers: finishMap }
 }
 
 /* Routes using cc-node */
@@ -439,27 +262,35 @@ export function acceptRequest (id) {
   return promise
 }
 
-export async function getSaldo () {
-  const promise = await fetch(EXPRESS_URL + '/saldo', {
-    method: 'GET',
-    credentials: 'include'
+/*****************************************************************************
+ * 
+ *                                Shop
+ *                 
+ *****************************************************************************/
+
+export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
+  return await fetch(EXPRESS_URL + '/getAllListings/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
   })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return null
-    })
-  console.log(promise)
-  if (promise) {
-    return promise.completed.balance
-  } else {
-    return null
-  }
 }
+
+/*****************************************************************************
+ * 
+ *                                Create Article
+ *                 
+ *****************************************************************************/
 
 export async function uploadArticle (data) {
   const promise = await fetch(EXPRESS_URL + '/upload/article', { 
@@ -476,6 +307,151 @@ export async function uploadArticle (data) {
   
   return promise
 }
+
+/*****************************************************************************
+ * 
+ *                                Members
+ *                 
+ *****************************************************************************/
+
+export async function getAllMembers (searchWord) {
+  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+
+  let searchword = searchWord.split(' ')
+  searchword = searchword.filter(function (value, index, arr) {
+    return value !== ''
+  })
+
+  const allMembersArray = new Map()
+  const adminMembersArray = new Map()
+
+  promise.forEach(user => {
+    const name = user.profile.accountName
+    let foundSearchword = true
+    if (searchword.length !== 0) {
+      for (let i = 0; i < searchword.length; i++) {
+        if (!name.match(new RegExp(searchword[i], 'i'))) {
+          foundSearchword = false
+          break
+        } 
+      }
+      if (!foundSearchword) {
+        return
+      }
+    }
+    if (user.is_admin) {
+      if (!adminMembersArray.has('Admin')) {
+        adminMembersArray.set('Admin', [])
+      }
+      adminMembersArray.get('Admin').push(user.profile)
+    } else {
+      if (!allMembersArray.has(user.profile.city)) {
+        allMembersArray.set(user.profile.city, [])
+      }
+      allMembersArray.get(user.profile.city).push(user.profile)
+    }
+  })
+  
+  //Sort alphabetically by swedish.
+
+  for (const value of allMembersArray.values()) {
+    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
+  }
+  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+  const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+  return { allMembers: finishMap }
+}
+
+/*****************************************************************************
+ * 
+ *                                Notifications
+ *                 
+ *****************************************************************************/
+
+export async function getNotifications () {
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
+}
+
+export async function postNotification (type, user) {
+  const data = { 
+    date: '',
+    type: type,
+    toUser: user,
+    fromUser: '',
+    seen: false
+  }
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
+}
+
+export async function setNotificationsToSeen () {
+  const promise = await fetch(EXPRESS_URL + '/notification', {
+    method: 'PATCH',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  return promise
+}
+
+/*****************************************************************************
+ * 
+ *                                Cart
+ *                 
+ *****************************************************************************/
 
 export async function getCart () {
   const promise = await fetch(EXPRESS_URL + '/cart', { 
@@ -507,6 +483,28 @@ export async function createTransactions (cart) {
   })
 }
 
+export async function getSaldo () {
+  const promise = await fetch(EXPRESS_URL + '/saldo', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return null
+    })
+  console.log(promise)
+  if (promise) {
+    return promise.completed.balance
+  } else {
+    return null
+  }
+}
+
 export async function getAvailableBalance () {
   const saldo = await getSaldo()
   const promise = await fetch(EXPRESS_URL + '/minlimit', {
@@ -526,7 +524,5 @@ export async function getAvailableBalance () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  
-  console.log(saldo - promise.min_limit)
   return saldo - promise.min_limit
 }
