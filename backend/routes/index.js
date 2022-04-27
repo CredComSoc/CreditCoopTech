@@ -254,19 +254,20 @@ module.exports = function(dbUrl, dbFolder) {
     });
   });
 
+
+
+
+
   router.get('/cart', (req, res) => {
-    const myquery = { 'profile.accountName': req.user };
-    console.log(req.user)
-    
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      dbo.collection("users").findOne(myquery, function(err, result) {
+      dbo.collection("carts").find({cartOwner: req.user}).toArray( function(err, result) {
         if (err) {
           db.close();
           res.sendStatus(500)
         }
         else if (result != null) {
-          const cart = result.cart;
+          const cart = result;
           db.close();
           res.status(200).json(cart);
         }
@@ -280,10 +281,10 @@ module.exports = function(dbUrl, dbFolder) {
   });
 
   router.post('/cart/remove', (req, res) => {
-    const user = { 'profile.accountName': req.user };
+    const user = {cartOwner: req.user};
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      dbo.collection("users").updateOne(user, {$set: { cart: [] } }, function(err, result) {
+      dbo.collection("carts").deleteMany(user, function(err, result) {
         if (err) {
           db.close();
           res.sendStatus(500);
@@ -303,13 +304,11 @@ module.exports = function(dbUrl, dbFolder) {
 
 
   router.post('/cart/remove/item/:id', (req, res) => {
-    const user = { 'profile.accountName': req.user };
+    const query = {cartOwner: req.user};
     const id = req.params.id;
-    console.log("HERE")
-    console.log(id)
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      dbo.collection("users").updateOne(user, {$pull: { cart: { id: id } } }, function(err, result) {
+      dbo.collection('carts').deleteOne(query, {id: id}, function(err, result) {
         if (err) {
           db.close();
           res.sendStatus(500);
