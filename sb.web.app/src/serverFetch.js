@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
+export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
+//export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
