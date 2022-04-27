@@ -109,7 +109,7 @@ module.exports = function(dbUrl, dbFolder) {
 
   router.get("/admin", (req, res) => {
     getUser({"profile.accountName": req.user}).then((user) => {
-      res.status(200).send(user.is_admin)
+      res.status(200).json(user.is_admin)
     })
   })
 
@@ -418,7 +418,7 @@ module.exports = function(dbUrl, dbFolder) {
   router.get("/notification", (req, res) => {
      getUser({"profile.accountName": req.user}).then((user) => {
        if (user != null) {
-        res.status(200).send(user.notifications)
+        res.status(200).json(user.notifications)
        } else {
         res.status(404).send("User not found.")
        }
@@ -517,8 +517,9 @@ module.exports = function(dbUrl, dbFolder) {
 
   router.get("/minlimit", (req, res) => { 
     getUser({"profile.accountName": req.user}).then(user => {
+      console.log(user)
       if (user != null) {
-        res.status(200).send(user.min_limit)
+        res.status(200).json(user.min_limit)
       } else {
         res.status(404).send("The profile doesn't exist.")
       }

@@ -523,5 +523,5 @@ export async function getAvailableBalance () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  return saldo - promise.min_limit
+  return saldo - promise
 }
