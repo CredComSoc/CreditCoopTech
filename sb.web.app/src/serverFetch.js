@@ -150,6 +150,7 @@ export async function updateProfile (accountName, description, adress, city, bil
     phone: phone
   }))
   data.append('file', logo)
+  console.log(data)
   return await fetch(EXPRESS_URL + '/updateProfile', {
     method: 'POST',
     credentials: 'include',
@@ -168,86 +169,6 @@ export async function updateProfile (accountName, description, adress, city, bil
 export function getArticles () {
   const promise = fetch(EXPRESS_URL + '/articles', {
     method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-/* Routes using cc-node */
-
-export function getPurchases () {
-  const promise = fetch(EXPRESS_URL + '/purchases', {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-export function getRequests () {
-  const promise = fetch(EXPRESS_URL + '/requests', {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-export function cancelRequest (id) {
-  const data = { uuid: id }
-  const promise = fetch(EXPRESS_URL + '/cancelrequest', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-export function acceptRequest (id) {
-  const data = { uuid: id }
-  const promise = fetch(EXPRESS_URL + '/acceptrequest', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
     credentials: 'include'
   })
     .then((res) => {
@@ -500,20 +421,23 @@ export async function createTransactions (cart) {
   })
 }
 
+/*****************************************************************************
+ * 
+ *                                Transactions
+ *                 
+ *****************************************************************************/
+
 export async function getSaldo () {
   const promise = await fetch(EXPRESS_URL + '/saldo', {
     method: 'GET',
     credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((data) => {
+    return (data)
+  }).catch(() => {
+    return null
   })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return null
-    })
   if (promise) {
     return promise.completed.balance
   } else {
@@ -523,7 +447,7 @@ export async function getSaldo () {
 
 export async function getAvailableBalance () {
   const saldo = await getSaldo()
-  const promise = await fetch(EXPRESS_URL + '/minlimit', {
+  const promise = await fetch(EXPRESS_URL + '/limits/min', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -541,4 +465,129 @@ export async function getAvailableBalance () {
       console.error('There has been a problem with your fetch operation:', err)
     })
   return saldo - promise
+}
+
+export async function getUserSaldo (user) {
+  const promise = await fetch(EXPRESS_URL + '/saldo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user: user }),
+    credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((data) => {
+    return (data)
+  }).catch(() => {
+    return null
+  })
+  if (promise) {
+    return promise.completed.balance
+  } else {
+    return null
+  }
+}
+
+export async function getUserAvailableBalance (user) {
+  const saldo = await getUserSaldo(user)
+  
+  const promise = await fetch(EXPRESS_URL + '/limits/min', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'profile.accountName': user }),
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  console.log(saldo - promise)
+  return saldo - promise
+}
+
+export function getPurchases () {
+  const promise = fetch(EXPRESS_URL + '/purchases', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function getRequests () {
+  const promise = fetch(EXPRESS_URL + '/requests', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function cancelRequest (id) {
+  const data = { uuid: id }
+  const promise = fetch(EXPRESS_URL + '/cancelrequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export function acceptRequest (id) {
+  const data = { uuid: id }
+  const promise = fetch(EXPRESS_URL + '/acceptrequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
 }

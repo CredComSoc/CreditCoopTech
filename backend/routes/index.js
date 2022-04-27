@@ -154,7 +154,7 @@ module.exports = function(dbUrl, dbFolder) {
         }
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
-        const result = dbo.collection("users").insertOne(newUser)
+        const result = await dbo.collection("users").insertOne(newUser)
         db.close();
         if (result.acknowledged) {
           res.sendStatus(200)
@@ -188,7 +188,7 @@ module.exports = function(dbUrl, dbFolder) {
           "orgNumber"     : user.profile.billing.orgNumber,
           "email"         : user.email,
           "phone"         : user.profile.phone,
-          "logo"          : user.profile.logo
+          "logo"          : user.profile.logo             
         }
         res.status(200).send(userData)
       } else {
@@ -198,46 +198,55 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.post("/updateProfile", upload.single('file'), (req, res) => { 
-
     getUser({"profile.accountName": req.user}).then((user) => {
+      //console.log(user)
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
-        const newProfile = {
+        let newProfile =  {
+          website: "",
+          accountName: newPro.accountName,
+          description: newPro.description,
+          adress: newPro.adress,
+          city: newPro.city,
+          billing: {
+              name: newPro.billingName,
+              box: newPro.billingBox,
+              adress: newPro.billingAdress,
+              orgNumber: newPro.orgNumber
+          },
+          phone: newPro.phone,
+        }
+        if (req.file) {
+          newProfile.logo = req.file.filename
+          newProfile.logo_id = req.file.id
+        } else {
+          newProfile.logo = user.profile.logo
+          newProfile.logo_id = user.profile.logo_id
+        }
+        const query = {
           $set: {
             email: newPro.email,
-            profile: {
-              website: "",
-              accountName: newPro.accountName,
-              description: newPro.description,
-              adress: newPro.adress,
-              city: newPro.city,
-              billing: {
-                  name: newPro.billingName,
-                  box: newPro.billingBox,
-                  adress: newPro.billingAdress,
-                  orgNumber: newPro.orgNumber
-              },
-              phone: newPro.phone,
-              logo: req.file.filename,
-              logo_id: req.file.id
-            }
+            profile: newProfile
           }
         }
-        updateUser({"profile.accountName": req.user}, newProfile).then((query) => {
+        updateUser({"profile.accountName": req.user}, query).then((query) => {
+          console.log(query)
           if (query.acknowledged) {
             // delete old logo if exists
-            gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-              bucketName: "uploads",
-            });
-            gridfsBucket.delete(user.profile.logo_id, function(err, r) {
-              if (err) {
-                console.log(err)
-              }
-              else {
-                console.log("deleted")
-                console.log("image:", user.profile.logo_id, "filename:", user.profile.logo)
-              }
-            });
+            if (req.file) {
+              gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "uploads",
+              });
+              gridfsBucket.delete(user.profile.logo_id, function(err, r) {
+                if (err) {
+                  console.log(err)
+                }
+                else {
+                  console.log("deleted")
+                  console.log("image:", user.profile.logo_id, "filename:", user.profile.logo)
+                }
+              });
+            }
             res.sendStatus(200)
           } else {
             res.status(404).send("Unable to update profile.")
@@ -538,9 +547,24 @@ module.exports = function(dbUrl, dbFolder) {
     })
   });
 
-  router.get("/minlimit", (req, res) => { 
+  /*****************************************************************************
+   * 
+   *                                Balance Limit
+   *                 
+   *****************************************************************************/
+
+  router.get("/limits/min", (req, res) => { 
     getUser({"profile.accountName": req.user}).then(user => {
-      console.log(user)
+      if (user != null) {
+        res.status(200).json(user.min_limit)
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
+  router.post("/limits/min", (req, res) => { 
+    getUser(req.body).then(user => {
       if (user != null) {
         res.status(200).json(user.min_limit)
       } else {
