@@ -46,6 +46,11 @@ export default {
       popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.'
     }
   },
+  created () {
+    if (this.$route.params.artID) {
+      console.log(this.$route.params.artID)
+    }
+  },
   methods: {
     closePopup () {
       this.error = false
