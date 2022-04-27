@@ -70,7 +70,6 @@ module.exports = function(dbUrl) {
         }
       })
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
     console.log(response.data)
@@ -82,7 +81,6 @@ module.exports = function(dbUrl) {
       }})
       res.sendStatus(200)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     } 
   })
@@ -97,7 +95,6 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })
@@ -112,7 +109,6 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })
@@ -127,7 +123,6 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })

@@ -30,18 +30,18 @@
 </template>
 
 <script>
-import { getUserProfile } from './../../serverFetch'
+import { profile } from './../../serverFetch'
 
 export default {
   data () {
     return {
       profileData: [],
-      getUserProfile
+      profile
     }
   },
   methods: {
     getProfile (accountname) {
-      this.getUserProfile(accountname).then(res => {
+      this.profile().then(res => {
         this.profileData = res
       })
     }
