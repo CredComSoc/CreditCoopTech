@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
+export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
+// export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
@@ -236,6 +236,23 @@ export function getArticles () {
   return promise
 }
 
+export async function getArticleWithId (id) {
+  const promise = await fetch(EXPRESS_URL + '/article/' + id, {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data.listing)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
 export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
   console.log('updating profile')
   const data = new FormData()
@@ -450,7 +467,6 @@ export async function getSaldo () {
     .catch(() => {
       return null
     })
-  console.log(promise)
   if (promise) {
     return promise.completed.balance
   } else {

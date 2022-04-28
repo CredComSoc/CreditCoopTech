@@ -27,7 +27,6 @@
 
 <script>
 import { getArticles } from '../../serverFetch'
-//import Article from './Article'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {

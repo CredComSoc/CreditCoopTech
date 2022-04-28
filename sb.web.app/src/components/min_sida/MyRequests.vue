@@ -13,7 +13,7 @@
       <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td><Listing :listingId="getListing(item.entries[0])" /></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -25,7 +25,7 @@
       <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td><Listing :listingId="getListing(item.entries[0])" /></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -37,6 +37,7 @@
 
 <script>
 import { getRequests, cancelRequest, acceptRequest, postNotification } from '../../serverFetch'
+import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
 
@@ -50,6 +51,9 @@ export default {
       .then(res => {
         this.requests = res
       })
+  },
+  components: {
+    Listing
   },
   methods: {
     cancel (id, payer, index) {
@@ -85,6 +89,9 @@ export default {
         grandChild = child.lastElementChild
       }
       child.appendChild(tag)
+    },
+    getListing (item) {
+      return item.metadata.id
     }
   }
 }
