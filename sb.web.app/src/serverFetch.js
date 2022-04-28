@@ -504,6 +504,21 @@ export async function deleteCart (id) {
   return promise
 }
 
+export async function getImg (filename) {
+  const promise = await fetch(EXPRESS_URL + '/image/' + filename, {
+    method: 'GET',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
 export async function getCart () {
   const promise = await fetch(EXPRESS_URL + '/cart', { 
     method: 'GET',

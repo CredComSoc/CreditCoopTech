@@ -23,6 +23,7 @@
 <script>
 
 import UploadedImage from './UploadedImage.vue'
+import { EXPRESS_URL, getImg } from '../../serverFetch'
 
 export default {
   name: 'StepThree',
@@ -95,17 +96,52 @@ export default {
     validateImageFile (file) {
       const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
       return validImageTypes.includes(file.type)
-    }
-  },
-  mounted () {
-    if ('img' in this.savedProgress) {
+    },
+    displayImg () {
       this.$refs.addFile.innerText = 'Välj fler'
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)
       }
-    } 
+    }
+  },
+  mounted () {
+    // in edit mode
+    if ('coverImg' in this.savedProgress) {
+      if (this.savedProgress.img.length > 0) {
+        if (typeof this.savedProgress.img[0] === 'object') {
+          this.displayImg()
+          return
+        }
+      }
+
+      getImg(this.savedProgress.coverImg).then((res) => {
+        if (res.ok) {
+          return res.blob()
+        }
+      }).then(data => {
+        const URLImg = URL.createObjectURL(data)
+        this.imageObjs.push(new File([data], this.savedProgress.coverImg, { type: 'image/' + this.savedProgress.coverImg.split('.').pop() }))
+        this.images.push([URLImg, this.images.length, true])
+      })
+      // multiple images uploaded
+      if ('img' in this.savedProgress) {
+        for (const img of this.savedProgress.img) {
+          getImg(img).then((res) => {
+            if (res.ok) {
+              return res.blob()
+            }
+          }).then(data => {
+            const URLImg = URL.createObjectURL(data)
+            this.imageObjs.push(new File([data], img, { type: 'image/' + img.split('.').pop() }))
+            this.images.push([URLImg, this.images.length, false])
+          })
+        }
+      }     
+    } else if ('img' in this.savedProgress) { // not in edit mode
+      this.displayImg()
+    }
   }
 }
 </script>

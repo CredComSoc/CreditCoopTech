@@ -43,7 +43,8 @@ export default {
       newArticle: {},
       isPublished: false,
       error: false,
-      popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.'
+      popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.',
+      inEditMode: false
     }
   },
   created () {
@@ -56,7 +57,12 @@ export default {
           success.json().then(
             res => {
               this.newArticle = res
-              console.log(res)
+              // get print format from db object and assign to frontend
+              this.newArticle.destination = res.printFormat.destination
+              this.newArticle['end-date'] = res.printFormat['end-date']
+              this.newArticle.status = res.printFormat.status
+              this.newArticle.article = res.printFormat.article
+              this.newArticle.category = res.printFormat.category
             }
           )
         }
