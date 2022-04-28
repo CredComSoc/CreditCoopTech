@@ -353,6 +353,29 @@ module.exports = function(dbUrl, dbFolder) {
   });
 
 
+  router.get('/post/:id', (req, res) => {
+    const id = req.params.id;
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("posts").findOne( {id: id}, (err, result) => {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result.matchedCount != 0) {
+          const post = result;
+          db.close();
+          res.status(200).json(post);
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).json(null);
+        } 
+      })
+    })
+  });
+
   router.post('/getAllListings', (req, res) => {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')

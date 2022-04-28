@@ -41,7 +41,8 @@ const routes = [
   {
     path: '/add/article',
     name: 'New_Article',
-    component: NewArticle
+    component: NewArticle,
+    props: true
   },
   {
     path: '/members',

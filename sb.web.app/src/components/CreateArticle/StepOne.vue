@@ -73,6 +73,26 @@ export default {
       return true
     }
   },
+  beforeUpdate () {
+    if ('title' in this.savedProgress) {
+      this.$refs.titleInput.setValue(this.savedProgress.title) 
+    } 
+    if ('longDesc' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.longDesc)
+    } 
+    if ('article' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.article)
+    } 
+    if ('category' in this.savedProgress) {
+      this.$refs.categoryInput.setValue(this.savedProgress.category)
+    }
+    if ('shortDesc' in this.savedProgress) {
+      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
+    }
+    if ('status' in this.savedProgress) {
+      this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
+    }
+  },
   mounted () {
     if ('title' in this.savedProgress) {
       this.$refs.titleInput.setValue(this.savedProgress.title) 

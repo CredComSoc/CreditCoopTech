@@ -17,6 +17,11 @@
           <td><Listing className='article' :listingObj="item"/></td>
           <td>{{item.category}}</td>
           <td>{{item.price}}</td>
+          <td> 
+            <div class="edit">
+              <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link>
+            </div> 
+          </td>
         </tr>
       </table>
     </div>
