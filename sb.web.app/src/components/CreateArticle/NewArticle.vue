@@ -20,7 +20,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from './PopupCard.vue'
-import { uploadArticle } from '../../serverFetch'
+import { uploadArticle, EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -48,7 +48,21 @@ export default {
   },
   created () {
     if (this.$route.params.artID) {
-      console.log(this.$route.params.artID)
+      fetch(EXPRESS_URL + '/post/' + this.$route.params.artID, {
+        method: 'GET',
+        credentials: 'include'
+      }).then(
+        success => {
+          success.json().then(
+            res => {
+              this.newArticle = res
+              console.log(res)
+            }
+          )
+        }
+      ).catch(
+        error => console.log(error)
+      )
     }
   },
   methods: {
@@ -159,6 +173,15 @@ export default {
       this.newArticle.uploadDate = new Date().toLocaleString('sv-SE', options)
     },
     sanitizeArticle () {
+      // Frontend printing format for these fields to store in db
+      const printFormat = {}
+      printFormat.article = this.newArticle.article
+      printFormat.destination = this.newArticle.destination
+      printFormat.category = this.newArticle.category
+      printFormat.status = this.newArticle.status
+      printFormat['end-date'] = this.newArticle['end-date']
+      this.newArticle.printFormat = printFormat 
+
       // sanitize the article field
       switch (this.newArticle.article) {
         case 'Produkt':
@@ -168,46 +191,7 @@ export default {
           this.newArticle.article = 'service'
           break
       }
-  
-      // sanitize the destination field
-      switch (this.newArticle.destination) {
-        case 'Linköping':
-          this.newArticle.destination = 'linkoping'
-          break
-        case 'Norrköping':
-          this.newArticle.destination = 'norrkoping'
-          break
-        case 'Söderköping':
-          this.newArticle.destination = 'soderkoping'
-          break
-      }
-      // sanitize the category field
-      switch (this.newArticle.category) {
-        case 'Affärsutveckling & strategi':
-          this.newArticle.category = 'affarsutveckling'
-          break
-        case 'Arbetsyta':
-          this.newArticle.category = 'arbetsyta'
-          break
-        case 'Fotografering':
-          this.newArticle.category = 'fotografering'
-          break
-        case 'Kök & restaurang':
-          this.newArticle.category = 'restaurang'
-          break
-        case 'Marknadsföring':
-          this.newArticle.category = 'marknadsforing'
-          break
-        case 'Rengöring & städ':
-          this.newArticle.category = 'rengoring&stad'
-          break
-        case 'Skönhet':
-          this.newArticle.category = 'skonhet'
-          break
-        case 'Sömnad & tyg':
-          this.newArticle.category = 'somnad&tyg'
-          break
-      }
+
       // sanitize the status field
       switch (this.newArticle.status) {
         case 'Köpes':
@@ -228,6 +212,18 @@ export default {
           //this.newArticle['end-date'] = new Date(this.newArticle['end-date'])
           break 
       }
+
+      this.newArticle.destination = this.setDbFormat(this.newArticle.destination)
+      this.newArticle.category = this.setDbFormat(this.newArticle.category)
+    },
+    setDbFormat (field) {
+      field = field.toLowerCase()
+
+      field = field.replace(/\s/g, '')
+      field = field.replace(/[åä]/g, 'a')
+      field = field.replace(/ö/g, 'o')
+    
+      return field
     }
   }
 }
