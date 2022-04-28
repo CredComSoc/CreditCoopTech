@@ -474,6 +474,36 @@ export async function uploadArticle (data) {
   return promise
 }
 
+export async function deletePost (id) {
+  const promise = await fetch(EXPRESS_URL + '/upload/article/remove/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
+export async function deleteCart (id) {
+  const promise = await fetch(EXPRESS_URL + '/cart/remove/item/edit/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
 export async function getCart () {
   const promise = await fetch(EXPRESS_URL + '/cart', { 
     method: 'GET',

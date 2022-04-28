@@ -106,6 +106,7 @@ export default {
         this.addUploadDate()
         this.sanitizeArticle()
         this.uploadArticle()
+        //console.log(this.newArticle)
       }
     },
     goBackStep () {

@@ -165,6 +165,50 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
+  router.post('/upload/article/remove/:id', upload.array('file', 5), (req,res) => {
+    const query = {id: id};
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('posts').deleteOne(query, function(err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed from posts");
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).send("No item found");
+        } 
+      })
+    })
+  });
+
+  router.post('/cart/remove/item/edit/:id', (req, res) => {
+    const query = {id: id};
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('carts').deleteMany(query, function(err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed from cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();      
+          res.status(204).send("No item found");
+        } 
+      })
+    })
+  });
+
   // create a article object in mongoDB
   router.post('/upload/article', upload.array('file', 5), (req, res) => {
     const newArticle = JSON.parse(req.body.article);
@@ -182,25 +226,7 @@ module.exports = function(dbUrl, dbFolder) {
 
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      const myquery = { 'profile.accountName': req.user };;
-      /*
-      dbo.collection("users").updateOne(myquery, {$push: {posts : newArticle}}, (err, result) => {
-        if (err) {
-          db.close();
-          res.sendStatus(500)
-        }
-        else if (result != null || result.matchedCount != 0) {
-          console.log(result)
-          db.close();
-          res.sendStatus(200);
-        }
-        else {
-          // If we dont find a result
-          db.close();      
-          res.status(404).send("No posts found.")
-        } 
-      })
-      */
+      const myquery = { 'profile.accountName': req.user };
     
     dbo.collection("posts").insertOne(newArticle, (err, result)=>{
       if (err) {
