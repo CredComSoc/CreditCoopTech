@@ -78,7 +78,7 @@ export default {
     isDateWithinOneMonthFromNow (date) {
       const now = new Date()
       const chosenDate = new Date(date)
-      const oneMonthFromNow = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate() + 1)
+      const oneMonthFromNow = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate() + 1)
       return now.getTime() <= chosenDate.getTime() && chosenDate.getTime() <= oneMonthFromNow.getTime()
     }
   },
