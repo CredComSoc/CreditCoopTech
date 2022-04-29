@@ -5,7 +5,7 @@
     <div id="pic">
         <p>Välj fil</p>
     </div>
-    <button ref="addFile" @click=upload>Bläddra</button>
+    <button ref="addFile" id="upload-button" @click=upload>Bläddra</button>
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
@@ -61,6 +61,9 @@ export default {
         this.$refs.addFile.innerText = 'Välj fler'
         this.images.push([URLImg, this.images.length, false])
         this.imageObjs.push(imageObj)
+        if (this.images.length === 5) {
+          document.getElementById('upload-button').disabled = true
+        }
       } else {
         this.$emit('fileSizeError')
       }
@@ -87,6 +90,10 @@ export default {
       this.imageObjs.splice(imgId, 1)
       if (this.images.length === 0) {
         this.$refs.addFile.innerText = 'Bläddra'
+      } 
+
+      if (this.images.length < 5) {
+        document.getElementById('upload-button').disabled = false
       }
     },
     // less then 1MB
@@ -103,6 +110,10 @@ export default {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)
+
+        if (this.images.length === 5) {
+          document.getElementById('upload-button').disabled = true
+        }
       }
     }
   },
@@ -115,7 +126,6 @@ export default {
           return
         }
       }
-
       getImg(this.savedProgress.coverImg).then((res) => {
         if (res.ok) {
           return res.blob()
@@ -124,6 +134,7 @@ export default {
         const URLImg = URL.createObjectURL(data)
         this.imageObjs.push(new File([data], this.savedProgress.coverImg, { type: 'image/' + this.savedProgress.coverImg.split('.').pop() }))
         this.images.push([URLImg, this.images.length, true])
+        this.$refs.addFile.innerText = 'Välj fler'
       })
       // multiple images uploaded
       if ('img' in this.savedProgress) {
@@ -136,6 +147,9 @@ export default {
             const URLImg = URL.createObjectURL(data)
             this.imageObjs.push(new File([data], img, { type: 'image/' + img.split('.').pop() }))
             this.images.push([URLImg, this.images.length, false])
+            if (this.images.length === 5) {
+              document.getElementById('upload-button').disabled = true
+            }
           })
         }
       }     
