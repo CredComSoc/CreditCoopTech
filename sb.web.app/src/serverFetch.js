@@ -474,9 +474,13 @@ export async function uploadArticle (data) {
   return promise
 }
 
-export async function deletePost (id) {
-  const promise = await fetch(EXPRESS_URL + '/upload/article/remove/' + id, {
+export async function deletePost (id, imgIDs) {
+  const promise = await fetch(EXPRESS_URL + '/article/remove/' + id, {
     method: 'POST',
+    body: JSON.stringify({ imgIDs: imgIDs }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
     credentials: 'include'
   }).then((res) => {
     return res

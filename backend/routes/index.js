@@ -9,7 +9,7 @@ const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
 const uuid = require('uuid');
 const util = require('util');
-const {MongoClient} = require('mongodb');
+const {MongoClient, ObjectId} = require('mongodb');
 
 module.exports = function(dbUrl, dbFolder) {
   const router = express.Router();
@@ -165,8 +165,14 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
-  router.post('/upload/article/remove/:id', upload.array('file', 5), (req,res) => {
-    const query = {id: id};
+  router.post('/article/remove/:id', upload.array('file', 5), (req,res) => {
+
+    // get all img id from request payload
+    const imgIDs = req.body.imgIDs;
+    console.log(imgIDs);
+
+    // delete article from db
+    const query = {id: req.params.id};
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection('posts').deleteOne(query, function(err, result) {
@@ -174,21 +180,33 @@ module.exports = function(dbUrl, dbFolder) {
           db.close();
           res.sendStatus(500);
         }
-        else if (result != null) {
+        else if (result.matchedCount != 0) {
+          // delete all img of existing article
+          for (const id of imgIDs) {
+            gfs.delete(ObjectId(id), function(err, r2) {
+              if (err) {
+                console.log(err)
+              }
+              else {
+                console.log("deleted")
+                console.log("image:", id)
+              }
+            });
+          }
           db.close();
-          res.status(200).send("Removed from posts");
+          res.sendStatus(200);
         }
         else {
           // If we dont find a result
           db.close();      
-          res.status(204).send("No item found");
+          res.sendStatus(204);
         } 
       })
     })
   });
 
   router.post('/cart/remove/item/edit/:id', (req, res) => {
-    const query = {id: id};
+    const query = {id: req.params.id};
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection('carts').deleteMany(query, function(err, result) {
@@ -196,14 +214,14 @@ module.exports = function(dbUrl, dbFolder) {
           db.close();
           res.sendStatus(500);
         }
-        else if (result != null) {
+        else if (result.matchedCount != 0) {
           db.close();
-          res.status(200).send("Removed from cart");
+          res.sendStatus(200);
         }
         else {
           // If we dont find a result
           db.close();      
-          res.status(204).send("No item found");
+          res.sendStatus(204);
         } 
       })
     })
@@ -213,11 +231,13 @@ module.exports = function(dbUrl, dbFolder) {
   router.post('/upload/article', upload.array('file', 5), (req, res) => {
     const newArticle = JSON.parse(req.body.article);
     let images = req.files.map(obj => obj.filename);
+    let images_id = req.files.map(obj => obj.id);
     newArticle.coverImg = images[req.body.coverImgInd];
     images = images.filter((img) => { return img !== newArticle.coverImg })
     newArticle.id = uuid.v4().toString();
     newArticle.userUploader = req.user;
     newArticle.img = images;
+    newArticle.imgIDs = images_id;
 
     // for ttl index in posts
     if ('end-date' in newArticle) {
@@ -279,10 +299,6 @@ module.exports = function(dbUrl, dbFolder) {
       });
     });
   });
-
-
-
-
 
   router.get('/cart', (req, res) => {
     MongoClient.connect(dbUrl, (err, db) => {

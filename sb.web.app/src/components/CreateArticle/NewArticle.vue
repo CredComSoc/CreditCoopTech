@@ -20,7 +20,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from './PopupCard.vue'
-import { uploadArticle, EXPRESS_URL } from '../../serverFetch'
+import { uploadArticle, deletePost, deleteCart, EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -130,8 +130,30 @@ export default {
       } else if (this.currentStep === 4) {
         this.addUploadDate()
         this.sanitizeArticle()
-        this.uploadArticle()
-        //console.log(this.newArticle)
+        // if we edit a article
+        if ('coverImg' in this.newArticle) {
+          // delete old one
+          deletePost(this.newArticle.id, this.newArticle.imgIDs)
+            .then(r1 => {
+              // delete old one from all carts then upload
+              if (r1.status === 200) {
+                deleteCart(this.newArticle.id)
+                  .then (r2 => {
+                    if (r2.status === 200 || r2.status === 204) {
+                      this.uploadArticle()
+                    } else {
+                      this.error = true
+                      this.popupCardText = 'Något gick fel när artikeln skulle uppdateras.\nVar god försök igen senare.'
+                    }
+                  })
+              } else {
+                this.error = true
+                this.popupCardText = 'Något gick fel när artikeln skulle uppdateras.\nVar god försök igen senare.'
+              }
+            }) 
+        } else {
+          this.uploadArticle()
+        }
       }
     },
     goBackStep () {
@@ -166,8 +188,11 @@ export default {
       data.append('article', JSON.stringify(this.newArticle))
       // This will upload the article to the server
       uploadArticle(data).then((res) => {
-        if (res.ok) {
+        if (res.status === 200) {
           this.isPublished = true // open popup with success message
+        } else {
+          this.error = true
+          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
         }
       })
     },
