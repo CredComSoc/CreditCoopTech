@@ -201,6 +201,8 @@ p:empty:not(:focus)::before, input::placeholder {
 .dropdown-content-combo {
   display: none;
   position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
   background-color: #E5E5E5;
   width: 420px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
