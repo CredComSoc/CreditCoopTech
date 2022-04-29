@@ -132,7 +132,7 @@ export default {
         this.sanitizeArticle()
         // if we edit a article
         if ('coverImg' in this.newArticle) {
-          // delete old one
+          // delete old one from posts
           deletePost(this.newArticle.id, this.newArticle.imgIDs)
             .then(r1 => {
               // delete old one from all carts then upload
