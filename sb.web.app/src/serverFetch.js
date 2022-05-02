@@ -417,7 +417,8 @@ export async function createTransactions (cart) {
       },
       body: JSON.stringify(element),
       credentials: 'include'
-    })  
+    })
+    postNotification('saleRequest', element.userUploader) 
   })
 }
 

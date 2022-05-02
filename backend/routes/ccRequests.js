@@ -70,6 +70,7 @@ module.exports = function(dbUrl) {
         }
       })
     } catch (error) {
+      console.log(error)
       res.sendStatus(500)
     }
     console.log(response.data)
