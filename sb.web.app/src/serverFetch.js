@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
+export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
+// export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
 /*****************************************************************************
  * 
@@ -586,6 +586,23 @@ export function acceptRequest (id) {
     })
     .then((data) => {
       return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export async function getArticleWithId (id) {
+  const promise = await fetch(EXPRESS_URL + '/article/' + id, {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data.listing)
     })
     .catch(() => {
       return false

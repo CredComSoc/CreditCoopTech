@@ -573,6 +573,26 @@ module.exports = function(dbUrl, dbFolder) {
     })
   })
 
+  router.get("/article/:id", (req, res) => {
+    MongoClient.connect(dbUrl, (err, db) => {
+      const dbo = db.db(dbFolder) 
+      dbo.collection('posts').find({}).toArray(function (err, posts) {
+        if (err) {
+          res.sendStatus(500)
+          db.close();
+        }
+        else {
+          posts.forEach(listing => {
+            if(listing.id === req.params.id) {
+              res.status(200).send({listing})
+              db.close();
+            }
+          })
+        } 
+      })
+    })
+  })
+
   return router
 }
 
