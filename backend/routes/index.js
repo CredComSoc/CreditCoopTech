@@ -11,8 +11,10 @@ const uuid = require('uuid');
 const util = require('util');
 const {MongoClient} = require('mongodb');
 
-module.exports = function(dbUrl, dbFolder) {
+module.exports = async function(dbUrl, dbFolder) {
   const router = express.Router();
+  const db = await MongoClient.connect(dbUrl)
+  const dbo = db.db(dbFolder);
 
   /*****************************************************************************
    * 
@@ -21,19 +23,13 @@ module.exports = function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   async function getUser(user_query) {
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").findOne(user_query)
-    db.close();
     return result
   }
 
   async function updateUser(user_query, update_query) {
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").updateOne(user_query, update_query)
     //console.log(result)
-    db.close();
     return result
   }
 
@@ -94,7 +90,7 @@ module.exports = function(dbUrl, dbFolder) {
     if (req.isAuthenticated()) {
       res.status(200).send(true)
     } else {
-      res.status(200).send(false)
+      res.status(400).send(false)
     } 
   })
 
@@ -152,10 +148,7 @@ module.exports = function(dbUrl, dbFolder) {
           notifications: [],
           cart: []
         }
-        const db = await MongoClient.connect(dbUrl)
-        const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
-        db.close();
         if (result.acknowledged) {
           res.sendStatus(200)
         } else {
@@ -259,25 +252,19 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get("/articles", (req, res) => {
-    MongoClient.connect(dbUrl, (err, db) => {
-      const dbo = db.db(dbFolder);
-      let products = [];
-      
-      dbo.collection('posts').find({}).toArray(function (err, posts) {
-        if (err) {
-          res.sendStatus(500)
-          db.close();
-        }
-        else {
-          posts.forEach(listing => {
-            if(listing.userUploader === req.user) {
-              products.push(listing)
-            }
-          })
-          res.status(200).send({products})
-          db.close();
-        } 
-      })
+    let products = [];
+    dbo.collection('posts').find({}).toArray(function (err, posts) {
+      if (err) {
+        res.sendStatus(500)
+      }
+      else {
+        posts.forEach(listing => {
+          if(listing.userUploader === req.user) {
+            products.push(listing)
+          }
+        })
+        res.status(200).send({products})
+      } 
     })
   })
 
@@ -294,62 +281,57 @@ module.exports = function(dbUrl, dbFolder) {
     let categories = req.body.categories;
     let articles = req.body.articles;
 
-    MongoClient.connect(dbUrl, (err, db) => {
-        let dbo = db.db(dbFolder)
-        let productsAllListingsArray = []
-        let servicesAllListingsArray = []
+    let productsAllListingsArray = []
+    let servicesAllListingsArray = []
 
-        searchword = searchword.filter(function(value, index, arr) {
-          return value !== "";
-        })
-        dbo.collection('posts').find({}).toArray(function (err, posts) {
-          if (err) {
-            res.sendStatus(500)
-            db.close();
+    searchword = searchword.filter(function(value, index, arr) {
+      return value !== "";
+    })
+    dbo.collection('posts').find({}).toArray(function (err, posts) {
+      if (err) {
+        res.sendStatus(500)
+      }
+      else {
+        posts.forEach(listing => {
+          //Om ARTIKEL
+          if (articles.length !== 0) {
+            if (!articles.includes(listing.article)) {
+              return
+            }
           }
-          else {
-            posts.forEach(listing => {
-              //Om ARTIKEL
-              if (articles.length !== 0) {
-                if (!articles.includes(listing.article)) {
-                  return
-                }
-              }
-              //OM DESTINATION
-              if (destinations.length !== 0) {
-                if (!destinations.includes(listing.destination)) {
-                  return
-                }
-              } 
-              //OM CATEGORY
-              if (categories.length !== 0) {
-                if (!categories.includes(listing.category)) {
-                  return
-                }
-              } 
-              foundSearchword = true
-              if( searchword.length !== 0 ) {
-                for (let i = 0; i < searchword.length; i++) {
-                  if (!listing.title.match(new RegExp(searchword[i], "i"))) {
-                    foundSearchword = false
-                    break
-                  } 
-                }
-                if (!foundSearchword) {
-                  return
-                }
-              }
-              //TILLDELA TJÄNST ELLER PRODUKT
-              if(listing.article === "product") {
-                productsAllListingsArray.push(listing)
-              } else if (listing.article === "service") {
-                servicesAllListingsArray.push(listing)
-              }
-            })
-            res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
-            db.close();
+          //OM DESTINATION
+          if (destinations.length !== 0) {
+            if (!destinations.includes(listing.destination)) {
+              return
+            }
           } 
+          //OM CATEGORY
+          if (categories.length !== 0) {
+            if (!categories.includes(listing.category)) {
+              return
+            }
+          } 
+          foundSearchword = true
+          if( searchword.length !== 0 ) {
+            for (let i = 0; i < searchword.length; i++) {
+              if (!listing.title.match(new RegExp(searchword[i], "i"))) {
+                foundSearchword = false
+                break
+              } 
+            }
+            if (!foundSearchword) {
+              return
+            }
+          }
+          //TILLDELA TJÄNST ELLER PRODUKT
+          if(listing.article === "product") {
+            productsAllListingsArray.push(listing)
+          } else if (listing.article === "service") {
+            servicesAllListingsArray.push(listing)
+          }
         })
+        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
+      } 
     })
   })
 
@@ -361,37 +343,37 @@ module.exports = function(dbUrl, dbFolder) {
 
   // create a article object in mongoDB
   router.post('/upload/article', upload.array('file', 5), (req, res) => {
-    const newArticle = JSON.parse(req.body.article);
-    let images = req.files.map(obj => obj.filename);
-    newArticle.coverImg = images[req.body.coverImgInd];
-    images = images.filter((img) => { return img !== newArticle.coverImg })
-    newArticle.id = uuid.v4().toString();
-    newArticle.userUploader = req.user;
-    newArticle.img = images;
-
-    // for ttl index in posts
-    if ('end-date' in newArticle) {
-      newArticle['end-date'] = new Date(newArticle['end-date']);
-    }
-
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      const newArticle = JSON.parse(req.body.article);
+      if (req.files)
+      {
+        let images = req.files.map(obj => obj.filename);
+        newArticle.coverImg = images[req.body.coverImgInd];
+        images = images.filter((img) => { return img !== newArticle.coverImg })
+        newArticle.img = images;
+      }
+      newArticle.id = uuid.v4().toString();
+      newArticle.userUploader = req.user;
+      
+      // for ttl index in posts
+      if ('end-date' in newArticle) {
+        newArticle['end-date'] = new Date(newArticle['end-date']);
+      }
       dbo.collection("posts").insertOne(newArticle, (err, result)=>{
         if (err) {
-          db.close();
           res.sendStatus(500)
         }
         else if (result != null) {
-          db.close();
           res.sendStatus(200);
         }
         else {
-          // If we dont find a result
-          db.close();      
+          // If we dont find a result    
           res.status(404).send("No posts found.")
         } 
       })
-    })
+    }
   });
 
   /*****************************************************************************
@@ -425,19 +407,14 @@ module.exports = function(dbUrl, dbFolder) {
 
    router.get('/getAllMembers2/', (req, res) => {
     // fetch all metadata about listing from mongoDB
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder)
-      dbo.collection('users').find({}).toArray(function (err, users) { 
-        if (err) {
-          res.sendStatus(500)
-          db.close();
-        }
-        else {
-          users.forEach(user => user.password = null)
-          res.send(users)
-          db.close()
-        }
-      })
+    dbo.collection('users').find({}).toArray(function (err, users) { 
+      if (err) {
+        res.sendStatus(500)
+      }
+      else {
+        users.forEach(user => user.password = null)
+        res.send(users)
+      }
     })
   })
 
@@ -574,26 +551,21 @@ module.exports = function(dbUrl, dbFolder) {
   })
 
   router.get("/article/:id", (req, res) => {
-    MongoClient.connect(dbUrl, (err, db) => {
-      const dbo = db.db(dbFolder) 
-      dbo.collection('posts').find({}).toArray(function (err, posts) {
-        if (err) {
-          res.sendStatus(500)
-          db.close();
-        }
-        else {
-          posts.forEach(listing => {
-            if(listing.id === req.params.id) {
-              res.status(200).send({listing})
-              db.close();
-            }
-          })
-        } 
-      })
+    dbo.collection('posts').find({}).toArray(function (err, posts) {
+      if (err) {
+        res.sendStatus(500)
+      }
+      else {
+        posts.forEach(listing => {
+          if(listing.id === req.params.id) {
+            res.status(200).send({listing})
+          }
+        })
+      } 
     })
   })
 
-  return router
+  return { 'router': router, 'db': db, 'conn': conn}
 }
 
 
