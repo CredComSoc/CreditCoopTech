@@ -17,24 +17,23 @@
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='norrkoping' title='Norrköping'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='soderkoping' title='Söderköping'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='linkoping' title='Linköping'/>
-      
+
         <h1>Kategorier</h1>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='affarsutveckling' title='Affärsutveckling & strategi'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='arbetsyta' title='Arbetsyta'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='fotografering' title='Fotografering'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='restaurang' title='Kök & restaurang'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='marknadsforing' title='Marknadsföring'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='rengoring&stad' title='Rengöring & städ'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='skonhet' title='Skönhet'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='category' value='somnad&tyg' title='Sömnad & tyg'/>
+        <CategoryButton v-for="data in this.categoriesJson.categories" :key="data.value" @filterEvent="triggerFilterEvent" type='category' :value="data.value" :title="data.title"/>
 
     </div>
 </template>
 
 <script>
 import CategoryButton from '@/components/userstory4/categorybutton.vue'
+import jsonWithCategories from '@/components/userstory4/categories.json'
 
 export default {
+  data () {
+    return {
+      categoriesJson: jsonWithCategories
+    }
+  },
   methods: {
     triggerFilterEvent (checked, type, value) {
       this.$emit('filterEvent', checked, type, value)
