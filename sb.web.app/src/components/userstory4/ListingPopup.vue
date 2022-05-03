@@ -15,7 +15,7 @@
         <p>{{listingObj.destination}}</p>
         <p>{{listingObj.price}}</p>
       </div>
-      <div class="interactContent" >
+      <div class="interactContent" v-if="listingObj.status === 'selling'">
         <div>
           <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
           <p class="amountText"> {{amount}} </p>
@@ -23,6 +23,11 @@
         </div>
         <div>
           <button class="cartBtn" @click="placeInCart">Lägg i varukorg</button>
+        </div>
+      </div>
+      <div class="interactContent" v-if="listingObj.status === 'buying'">
+        <div>
+          <button class="chattBtn" @click="initiateChat">Starta chatt</button>
         </div>
       </div>
     </div>
@@ -63,6 +68,9 @@ export default {
           this.$emit('placeInCart', this.amount, this.listingObj)
         }
       })
+    },
+    initiateChat () {
+      console.log('Functionality not added')
     }
   }
 }
@@ -79,7 +87,7 @@ body {
   display: inline-block;
 }
 
-.cartBtn {
+.cartBtn, .chattBtn {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
