@@ -8,7 +8,9 @@ const CC_NODE_URL = 'http://155.4.159.231/cc-node'
 // Routes that make requests to the Credits Common Node on behalf of the user,
 // in order to authenticate the user with Passport before any requests to the ccNode is made.
 
-module.exports = function(dbUrl) {
+module.exports = async function(dbUrl, dbFolder) {
+  //const db = await MongoClient.connect(dbUrl)
+  //const dbo = db.db(dbFolder);
   const router = express.Router();
 
   // PAYER MUST ALSO BE AUTHOR OF TRANSACTION
