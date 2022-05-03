@@ -6,7 +6,9 @@ do not match the equivalent of the database.
   <div>
     <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
     <div class="element-container" @click="enterProfile"> 
-      <img :src='getImgURL()' />
+      <div class="imgContainer">
+        <img :src='getImgURL()' />
+      </div>
       <h4 class="element-title"> {{ listingObj.accountName }} </h4>
     </div>
     </router-link>
@@ -62,9 +64,16 @@ export default {
         font-size: 20px;
         text-align: left;
     }
-    img {
+
+    .imgContainer {
       height: 3rem;
       width: 3rem;
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
     h4 {
       margin-left: 0.5rem;
