@@ -1,15 +1,24 @@
 <template>
+<div id='container-input'>
   <textarea type="text" id="message-field" name="message"/>
   <button id="send-message">Skicka</button>
+</div>
 </template>
 
 <script>
 export default {
-
+  name: 'InputField'
 }
 </script>
 
 <style scoped>
+
+  #container-input {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+  }
+
   #message-field{
     border-radius: 8px;
     border: 2px solid #5c5c5c;

@@ -1,16 +1,20 @@
 <template>
-  <div class="chat">
   <h1 id="title">MEDDELANDEN</h1>
-  <InputField/>
+  <div class="container-chat">
+    <ChatHistory />
+    <InputField />
   </div>
 </template>
 
 <script>
 import InputField from './InputField.vue'
+import ChatHistory from './ChatHistory.vue'
+
 export default {
   name: 'Chat',
   components: {
-    InputField
+    InputField,
+    ChatHistory
   }
 
 }
@@ -20,23 +24,28 @@ export default {
  @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
  * {
-  font-family: Ubuntu;
+    font-family: Ubuntu;
+    padding: 0;
+    margin: 0;
   }
 
   #title {
     margin-top: 4rem;
     margin-bottom: 4rem;
     font-size: 1.5rem;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.3em;  
+    text-align: center;
   }
 
-  .chat {
+  .container-chat {
     margin: 0 auto;
     margin-top: 30px;
-    width: 80%;
-    font-family: 'Ubuntu';
+    width: 90%;
     position: relative;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    align-items: center;
   }
 
 </style>
