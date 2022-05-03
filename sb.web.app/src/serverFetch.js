@@ -189,13 +189,13 @@ export function getArticles () {
  *                 
  *****************************************************************************/
 
-export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
+export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray, statusArray) {
   return await fetch(EXPRESS_URL + '/getAllListings/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
+    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray, status: statusArray })
   }).then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok')

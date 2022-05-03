@@ -4,6 +4,11 @@
 
 <template>
     <div className="categories">
+      
+        <h1>Jag vill</h1>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='selling' title='Köpa'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='buying' title='Sälja'/>
+
         <h1>Typ av artikel</h1>
         <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' title='Produkter'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='service' title='Tjänster'/>
