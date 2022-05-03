@@ -13,8 +13,6 @@ const {MongoClient} = require('mongodb');
 
 module.exports = async function(dbUrl, dbFolder) {
   const router = express.Router();
-  const db = await MongoClient.connect(dbUrl)
-  const dbo = db.db(dbFolder);
 
   /*****************************************************************************
    * 
@@ -23,12 +21,18 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   async function getUser(user_query) {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").findOne(user_query)
+    db.close()
     return result
   }
 
   async function updateUser(user_query, update_query) {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").updateOne(user_query, update_query)
+    db.close()
     //console.log(result)
     return result
   }
@@ -148,11 +152,15 @@ module.exports = async function(dbUrl, dbFolder) {
           notifications: [],
           cart: []
         }
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
           res.sendStatus(200)
+          db.close()
         } else {
           res.sendStatus(500)
+          db.close()
         }
       } else {
         //Det finns redan en användare med namnet
@@ -251,11 +259,14 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.get("/articles", (req, res) => {
+  router.get("/articles", async (req, res) => {
     let products = [];
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     dbo.collection('posts').find({}).toArray(function (err, posts) {
       if (err) {
         res.sendStatus(500)
+        db.close()
       }
       else {
         posts.forEach(listing => {
@@ -264,6 +275,7 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         })
         res.status(200).send({products})
+        db.close()
       } 
     })
   })
@@ -274,7 +286,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-   router.post('/getAllListings', (req, res) => {
+   router.post('/getAllListings', async (req, res) => {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;
@@ -287,9 +299,12 @@ module.exports = async function(dbUrl, dbFolder) {
     searchword = searchword.filter(function(value, index, arr) {
       return value !== "";
     })
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     dbo.collection('posts').find({}).toArray(function (err, posts) {
       if (err) {
         res.sendStatus(500)
+        db.close()
       }
       else {
         posts.forEach(listing => {
@@ -331,7 +346,8 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         })
         res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
-      } 
+        db.close()  
+      }
     })
   })
 
@@ -342,7 +358,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   // create a article object in mongoDB
-  router.post('/upload/article', upload.array('file', 5), (req, res) => {
+  router.post('/upload/article', upload.array('file', 5), async (req, res) => {
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
@@ -361,16 +377,21 @@ module.exports = async function(dbUrl, dbFolder) {
       if ('end-date' in newArticle) {
         newArticle['end-date'] = new Date(newArticle['end-date']);
       }
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
       dbo.collection("posts").insertOne(newArticle, (err, result)=>{
         if (err) {
           res.sendStatus(500)
+          db.close()
         }
         else if (result != null) {
           res.sendStatus(200);
+          db.close()
         }
         else {
           // If we dont find a result    
           res.status(404).send("No posts found.")
+          db.close()
         } 
       })
     }
@@ -405,15 +426,19 @@ module.exports = async function(dbUrl, dbFolder) {
     }) 
   })
 
-   router.get('/getAllMembers2/', (req, res) => {
+   router.get('/getAllMembers2/', async (req, res) => {
     // fetch all metadata about listing from mongoDB
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     dbo.collection('users').find({}).toArray(function (err, users) { 
       if (err) {
         res.sendStatus(500)
+        db.close()
       }
       else {
         users.forEach(user => user.password = null)
         res.send(users)
+        db.close()
       }
     })
   })
@@ -550,22 +575,26 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.get("/article/:id", (req, res) => {
+  router.get("/article/:id", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
     dbo.collection('posts').find({}).toArray(function (err, posts) {
       if (err) {
         res.sendStatus(500)
+        db.close()
       }
       else {
         posts.forEach(listing => {
           if(listing.id === req.params.id) {
             res.status(200).send({listing})
+            db.close()
           }
         })
       } 
     })
   })
 
-  return { 'router': router, 'db': db, 'conn': conn}
+  return { 'router': router, 'conn': conn }
 }
 
 

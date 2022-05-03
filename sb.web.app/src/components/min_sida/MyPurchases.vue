@@ -70,6 +70,7 @@ export default {
     getPurchases()
       .then(res => {
         this.purchases = res
+        console.log(res)
       })
   },
   components: {

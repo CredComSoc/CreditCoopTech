@@ -326,6 +326,7 @@ export async function getNotifications () {
     credentials: 'include'
   })
     .then((response) => {
+      console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
@@ -353,17 +354,16 @@ export async function postNotification (type, user) {
     },
     body: JSON.stringify(data),
     credentials: 'include'
+  }).then((response) => {
+    console.log(response)
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
   return promise
 }
 
@@ -410,6 +410,7 @@ export async function getCart () {
 
 export async function createTransactions (cart) {
   cart.forEach(element => {
+    console.log(element)
     fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {

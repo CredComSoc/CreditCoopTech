@@ -7,7 +7,6 @@ const dbConfig = require('./mongoDB-config')
 
 let indexRouter
 
-
 async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
   const dbUrl = dbConfig.mongoURL(dbFolder, localDbUrl)
 
@@ -38,7 +37,7 @@ async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
   app.use(passport.session())
 
   indexRouter = await require('./routes/index')(dbUrl, dbFolder)
-  const ccRequests = require('./routes/ccRequests')(dbUrl)
+  const ccRequests = await require('./routes/ccRequests')(dbUrl, dbFolder)
   const ccUserStore = require('./routes/ccUserStore')(dbUrl, dbFolder)
   app.use('/', indexRouter.router)
   app.use('/', ccRequests)
@@ -56,7 +55,6 @@ function startServer(app, port) {
 
 function stopServer(server) {
   indexRouter.conn.close()
-  indexRouter.db.close()
   server.close()
   console.log(`Server stopped`)
 }
