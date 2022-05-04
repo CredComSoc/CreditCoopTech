@@ -1,7 +1,7 @@
 <template>
 <div id='container-input'>
   <textarea type="text" id="message-field" name="message"/>
-  <button id="send-message">Skicka</button>
+  <button id="send-message" @click="send()">Skicka</button>
 </div>
 </template>
 
