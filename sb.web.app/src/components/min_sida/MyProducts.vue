@@ -19,7 +19,7 @@
           <td>{{item.price}}</td>
           <td> 
             <div class="edit">
-              <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link>
+              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
             </div> 
           </td>
         </tr>
@@ -32,7 +32,6 @@
 
 <script>
 import { getArticles } from '../../serverFetch'
-//import Article from './Article'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {

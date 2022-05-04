@@ -2,11 +2,11 @@
   <div className="flexbox-container2 flexbox-item">
     
     <div className="image container-item">
-      <img src="../../assets/list_images/Ellipse_3.png" alt="Städservice AB">
+      <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
     </div>
     <div className="right container-item">
       <h1> Företagsnamn </h1>
-      <p> {{profileData.accountname}} </p>
+      <p> {{profileData.name}} </p>
 
       <h1> Beskrivning </h1>
       <p> {{profileData.description}} </p>
@@ -18,32 +18,39 @@
       <p> {{profileData.city}} </p>
 
       <h1> Faktureringsuppgifter </h1>
-      <p> {{profileData.billing_name}}<br/>{{profileData.billing_box}}<br/>{{profileData.billing_adress}}<br/> {{profileData.billing_orgNumber}} </p>
+      <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
     </div>
     <div className="right container-item">
       <div>
         <h1> Kontaktuppgifter </h1>
-        <p :key="profileData"> {{"Email: " + profileData.contact_email}}<br/><br/> {{"Tel: " + profileData.contact_phone}} </p>
+        <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getUserProfile } from './../../serverFetch'
+import { EXPRESS_URL, getMember } from './../../serverFetch'
 
 export default {
   data () {
     return {
+      logoURL: '',
       profileData: [],
-      getUserProfile
+      getMember
     }
   },
   methods: {
-    getProfile (accountname) {
-      this.getUserProfile(accountname).then(res => {
+    getProfile (member) {
+      console.log(member)
+      this.getMember(member).then(res => {
+        console.log(res)
         this.profileData = res
+        this.getImgURL()
       })
+    },
+    getImgURL () {
+      this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
     }
   },
   created: function () {
