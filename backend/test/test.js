@@ -18,13 +18,6 @@ const member = 'TestUser'
 const admin = 'TestAdmin'
 const password = '123'
 
-async function dropCollection(name) {
-  const db = await MongoClient.connect(dbConfig.mongoURL("test", true))
-  const dbo = db.db("test");
-  await dbo.collection(name).deleteMany({})
-  db.close();
-}
-
 async function getCollection(name) {
   const db = await MongoClient.connect(dbConfig.mongoURL("test", true))
   const dbo = db.db("test");
