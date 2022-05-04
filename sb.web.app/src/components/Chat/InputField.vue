@@ -1,6 +1,6 @@
 <template>
 <div id='container-input'>
-  <textarea type="text" id="message-field" name="message"/>
+  <textarea id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
   <button id="send-message" @click="send()">Skicka</button>
 </div>
 </template>
@@ -25,9 +25,11 @@ export default {
     border-radius: 8px;
     border: 2px solid #A8A8A8;
     width: 100%;
-    min-height: 35px;
+    min-height: 85px;
+    max-height: 172px;
     resize: none;
-    overflow: hidden;
+    overflow: scroll;
+    padding: 10px 20px;
  }
 
  textarea:focus {
