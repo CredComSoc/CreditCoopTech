@@ -27,6 +27,10 @@ export default {
       border-top: 2px solid #A8A8A8;
       width: 100%;
       height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: space-around;
+      justify-content: center;
     }
 
     p {
