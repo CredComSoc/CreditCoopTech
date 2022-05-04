@@ -70,7 +70,6 @@ module.exports = function(dbUrl) {
         }
       })
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
     console.log(response.data)
@@ -82,7 +81,6 @@ module.exports = function(dbUrl) {
       }})
       res.sendStatus(200)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     } 
   })
@@ -97,7 +95,6 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })
@@ -112,8 +109,7 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
-      res.sendStatus(500)
+      res.status(500).send(error)
     }
   })
   
@@ -127,7 +123,19 @@ module.exports = function(dbUrl) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
+      res.sendStatus(500)
+    }
+  })
+
+  router.post("/saldo", async (req, res) => { 
+    try {
+      const response = await axios.get(CC_NODE_URL + '/account/summary/' + req.body.user, { 
+      headers: {
+       'cc-user': req.body.user,
+       'cc-auth': '1'
+      }})
+      res.status(200).send(response.data)
+    } catch (error) {
       res.sendStatus(500)
     }
   })

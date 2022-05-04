@@ -13,19 +13,19 @@
       <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td><Listing :listingId="getListing(item.entries[0])" /></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <td id="buttons">
           <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
-          <button @click="accept(item.uuid, item.entries[0].payer, index)" style="background-color: green;"> Godkänn </button>
+          <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
         </td>
       </tr>
       <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+        <td><Listing :listingId="getListing(item.entries[0])" /></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { getRequests, cancelRequest, acceptRequest, postNotification } from '../../serverFetch'
+import { getRequests, cancelRequest, acceptRequest, postNotification, getUserAvailableBalance } from '../../serverFetch'
+import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
 
@@ -51,6 +52,9 @@ export default {
         this.requests = res
       })
   },
+  components: {
+    Listing
+  },
   methods: {
     cancel (id, payer, index) {
       //const element = this.$refs.reqRefs[index]
@@ -60,10 +64,17 @@ export default {
       postNotification('saleRequestDenied', payer)
     },
 
-    accept (id, payer, index) {
-      this.statusSwap(index, 'accept')
-      acceptRequest(id)
-      postNotification('saleRequestAccepted', payer)
+    accept (id, payer, index, cost) {
+      // also check payee balance here
+      getUserAvailableBalance(payer).then((payerBalance) => {
+        if (cost <= payerBalance) {
+          this.statusSwap(index, 'accept')
+          acceptRequest(id)
+          postNotification('saleRequestAccepted', payer)
+        } else {
+          // display msg
+        } 
+      })
     },
 
     statusSwap (index, answer) {
@@ -85,6 +96,9 @@ export default {
         grandChild = child.lastElementChild
       }
       child.appendChild(tag)
+    },
+    getListing (item) {
+      return item.metadata.id
     }
   }
 }

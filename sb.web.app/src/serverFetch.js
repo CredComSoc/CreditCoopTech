@@ -3,6 +3,12 @@ import JsSHA from 'jssha'
 export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
 //export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
+/*****************************************************************************
+ * 
+ *                           Helper Functions
+ *                 
+ *****************************************************************************/
+
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
@@ -10,46 +16,16 @@ function hashMyPassword (password) {
   return hash
 }
 
-export async function authenticate () {
-  return fetch(EXPRESS_URL + '/authenticate', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((response) => {
-    if (!response.ok) {
-      return false
-    }
-    return true
-  }).catch(() => {
-    return false
-  }) 
-}
-
-export async function checkAdminStatus () {
-  const authPromise = fetch(EXPRESS_URL + '/admin', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((response) => {
-    if (!response.ok) {
-      return false
-    }
-    return true
-  }).catch(() => {
-    return false
-  }) 
-
-  return authPromise 
-}
+/*****************************************************************************
+ * 
+ *                           Login & Authentication
+ *                 
+ *****************************************************************************/
 
 export async function login (email, password) {
   //const hashedPassword = hashMyPassword(password)
 
-  const loginPromise = fetch(EXPRESS_URL + '/login', {
+  return await fetch(EXPRESS_URL + '/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -65,32 +41,57 @@ export async function login (email, password) {
   }).catch(() => {
     return false
   })
-  return loginPromise
 }
 
 export async function logout () {
-  const logoutPromise = fetch(EXPRESS_URL + '/logout', {
+  await fetch(EXPRESS_URL + '/logout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
+  })
+  return true
+}
+
+export async function authenticate () {
+  return fetch(EXPRESS_URL + '/authenticate', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
   }).then((response) => {
-    if (!response.ok) {
-      return false
-    } else {
-      return true
-    }
+    return response.json()
   }).catch(() => {
     return false
-  })
-  return logoutPromise
+  }) 
 }
+
+export async function checkAdminStatus () {
+  return fetch(EXPRESS_URL + '/admin', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  }) 
+}
+
+/*****************************************************************************
+ * 
+ *                                Admin Page
+ *                 
+ *****************************************************************************/
 
 export async function register (username, password) {
   const hashedPassword = hashMyPassword(password)
 
-  fetch(EXPRESS_URL + '/register', {
+  return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -110,49 +111,233 @@ export async function register (username, password) {
     })
 }
 
-export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
-  const getAllListingsPromise = fetch(EXPRESS_URL + '/getAllListings/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
-
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-
-  return getAllListingsPromise
-}
+/*****************************************************************************
+ * 
+ *                                Profile 
+ *                 
+ *****************************************************************************/
 
 export async function profile () {
-  const profilePromise = fetch(EXPRESS_URL + '/profile', {
+  return await fetch(EXPRESS_URL + '/profile', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  return profilePromise
 }
+
+export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email,
+    phone: phone
+  }))
+  data.append('file', logo)
+  console.log(data)
+  return await fetch(EXPRESS_URL + '/updateProfile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
+export function getArticles () {
+  const promise = fetch(EXPRESS_URL + '/articles', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+/*****************************************************************************
+ * 
+ *                                Shop
+ *                 
+ *****************************************************************************/
+
+export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
+  return await fetch(EXPRESS_URL + '/getAllListings/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
+/*****************************************************************************
+ * 
+ *                                Create Article
+ *                 
+ *****************************************************************************/
+
+export async function uploadArticle (data) {
+  return await fetch(EXPRESS_URL + '/upload/article', { 
+    method: 'POST',
+    credentials: 'include',
+    body: data // This is your file object
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}
+
+export async function deletePost (id, imgIDs) {
+  const promise = await fetch(EXPRESS_URL + '/article/remove/' + id, {
+    method: 'POST',
+    body: JSON.stringify({ imgIDs: imgIDs }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
+/*****************************************************************************
+ * 
+ *                                Members
+ *                 
+ *****************************************************************************/
+
+export async function getMember (member) {
+  return await fetch(EXPRESS_URL + '/member', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'profile.accountName': member }),
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
+export async function getAllMembers (searchWord) {
+  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+
+  let searchword = searchWord.split(' ')
+  searchword = searchword.filter(function (value, index, arr) {
+    return value !== ''
+  })
+
+  const allMembersArray = new Map()
+  const adminMembersArray = new Map()
+
+  promise.forEach(user => {
+    const name = user.profile.accountName
+    let foundSearchword = true
+    if (searchword.length !== 0) {
+      for (let i = 0; i < searchword.length; i++) {
+        if (!name.match(new RegExp(searchword[i], 'i'))) {
+          foundSearchword = false
+          break
+        } 
+      }
+      if (!foundSearchword) {
+        return
+      }
+    }
+    if (user.is_admin) {
+      if (!adminMembersArray.has('Admin')) {
+        adminMembersArray.set('Admin', [])
+      }
+      adminMembersArray.get('Admin').push(user.profile)
+    } else {
+      if (!allMembersArray.has(user.profile.city)) {
+        allMembersArray.set(user.profile.city, [])
+      }
+      allMembersArray.get(user.profile.city).push(user.profile)
+    }
+  })
+  
+  //Sort alphabetically by swedish.
+
+  for (const value of allMembersArray.values()) {
+    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
+  }
+  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+  const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+  return { allMembers: finishMap }
+}
+
+/*****************************************************************************
+ * 
+ *                                Notifications
+ *                 
+ *****************************************************************************/
 
 export async function getNotifications () {
   const promise = await fetch(EXPRESS_URL + '/notification', {
@@ -219,144 +404,149 @@ export async function setNotificationsToSeen () {
   return promise
 }
 
-export function getArticles () {
-  const promise = fetch(EXPRESS_URL + '/articles', {
+/*****************************************************************************
+ * 
+ *                                Cart
+ *                 
+ *****************************************************************************/
+
+export async function getCart () {
+  const promise = await fetch(EXPRESS_URL + '/cart', { 
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((success) => {
+    return success
+  }).catch((error) => {
+    return error
   })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
   return promise
 }
 
-export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
-  console.log('updating profile')
-  const data = new FormData()
-  data.append('accountInfo', JSON.stringify({ 
-    accountName: accountName,
-    description: description,
-    adress: adress,
-    city: city,
-    billingName: billingName,
-    billingBox: billingBox,
-    billingAdress: billingAdress,
-    orgNumber: orgNumber, 
-    email: email,
-    phone: phone
-  }))
-  data.append('file', logo)
-  const updateProfilePromise = fetch(EXPRESS_URL + '/updateProfile', {
+export async function deleteCart (id) {
+  const promise = await fetch(EXPRESS_URL + '/cart/remove/item/edit/' + id, {
     method: 'POST',
-    credentials: 'include',
-    body: data 
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
+export async function createTransactions (cart) {
+  cart.forEach(element => {
+    fetch(EXPRESS_URL + '/createrequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(element),
+      credentials: 'include'
+    })  
+  })
+}
+
+/*****************************************************************************
+ * 
+ *                                Transactions
+ *                 
+ *****************************************************************************/
+
+export async function getSaldo () {
+  const promise = await fetch(EXPRESS_URL + '/saldo', {
+    method: 'GET',
+    credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((data) => {
+    return (data)
+  }).catch(() => {
+    return null
+  })
+  if (promise) {
+    return promise.completed.balance
+  } else {
+    return null
+  }
+}
+
+export async function getAvailableBalance () {
+  const saldo = await getSaldo()
+  const promise = await fetch(EXPRESS_URL + '/limits/min', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
-        console.log('Update ok')
-        return response
+        return response.json()
       }
     })
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-
-  return updateProfilePromise
+  return saldo - promise
 }
 
-export async function getUserProfile (accountname) {
-  const userProfilePromise = fetch(EXPRESS_URL + '/members/', {
+export async function getUserSaldo (user) {
+  const promise = await fetch(EXPRESS_URL + '/saldo', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ accountname: accountname })
+    body: JSON.stringify({ user: user }),
+    credentials: 'include'
+  }).then((res) => {
+    return res.json()
+  }).then((data) => {
+    return (data)
+  }).catch(() => {
+    return null
   })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return userProfilePromise
+  if (promise) {
+    return promise.completed.balance
+  } else {
+    return null
+  }
 }
 
-export async function getAllMembers (searchWord) {
-  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
-    method: 'GET',
+export async function getUserAvailableBalance (user) {
+  const saldo = await getUserSaldo(user)
+  
+  const promise = await fetch(EXPRESS_URL + '/limits/min', {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
-    }
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
+    },
+    body: JSON.stringify({ 'profile.accountName': user }),
+    credentials: 'include'
   })
-  console.log(promise)
-
-  let searchword = searchWord.split(' ')
-  searchword = searchword.filter(function (value, index, arr) {
-    return value !== ''
-  })
-
-  const allMembersArray = new Map()
-  const adminMembersArray = new Map()
-
-  promise.forEach(user => {
-    const name = user.profile.accountName
-    let foundSearchword = true
-    if (searchword.length !== 0) {
-      for (let i = 0; i < searchword.length; i++) {
-        if (!name.match(new RegExp(searchword[i], 'i'))) {
-          foundSearchword = false
-          break
-        } 
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
       }
-      if (!foundSearchword) {
-        return
-      }
-    }
-    if (user.is_admin) {
-      if (!adminMembersArray.has('Admin')) {
-        adminMembersArray.set('Admin', [])
-      }
-      adminMembersArray.get('Admin').push(user.profile)
-    } else {
-      if (!allMembersArray.has(user.profile.city)) {
-        allMembersArray.set(user.profile.city, [])
-      }
-      allMembersArray.get(user.profile.city).push(user.profile)
-    }
-  })
-  
-  //Sort alphabetically by swedish.
-
-  for (const value of allMembersArray.values()) {
-    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
-  }
-  console.log(allMembersArray)
-  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
-  const finishMap = new Map([...adminMembersArray, ...sortedMap])
-
-  return { allMembers: finishMap }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+  console.log(saldo - promise)
+  return saldo - promise
 }
-
-/* Routes using cc-node */
 
 export function getPurchases () {
   const promise = fetch(EXPRESS_URL + '/purchases', {
@@ -436,8 +626,8 @@ export function acceptRequest (id) {
   return promise
 }
 
-export async function getSaldo () {
-  const promise = await fetch(EXPRESS_URL + '/saldo', {
+export async function getArticleWithId (id) {
+  const promise = await fetch(EXPRESS_URL + '/article/' + id, {
     method: 'GET',
     credentials: 'include'
   })
@@ -445,67 +635,17 @@ export async function getSaldo () {
       return res.json()
     })
     .then((data) => {
-      return (data)
+      return (data.listing)
     })
     .catch(() => {
-      return null
+      return false
     })
-  console.log(promise)
-  if (promise) {
-    return promise.completed.balance
-  } else {
-    return null
-  }
-}
-
-export async function uploadArticle (data) {
-  const promise = await fetch(EXPRESS_URL + '/upload/article', { 
-    method: 'POST',
-    credentials: 'include',
-    body: data // This is your file object
-  }).then((res) => {
-    return res
-  }).then((success) => {
-    return success
-  }).catch(error => {
-    return error
-  }) 
-  
-  return promise
-}
-
-export async function deletePost (id, imgIDs) {
-  const promise = await fetch(EXPRESS_URL + '/article/remove/' + id, {
-    method: 'POST',
-    body: JSON.stringify({ imgIDs: imgIDs }),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((res) => {
-    return res
-  }).then((success) => {
-    return success
-  }).catch(error => {
-    return error
-  }) 
-
-  return promise
-}
-
-export async function deleteCart (id) {
-  const promise = await fetch(EXPRESS_URL + '/cart/remove/item/edit/' + id, {
-    method: 'POST',
-    credentials: 'include'
-  }).then((res) => {
-    return res
-  }).then((success) => {
-    return success
-  }).catch(error => {
-    return error
-  }) 
-
-  return promise
+  // console.log(promise)
+  // if (promise) {
+  //   return promise.completed.balance
+  // } else {
+  //   return null
+  // }
 }
 
 export async function getImg (filename) {
@@ -521,58 +661,4 @@ export async function getImg (filename) {
   }) 
 
   return promise
-}
-
-export async function getCart () {
-  const promise = await fetch(EXPRESS_URL + '/cart', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((res) => {
-    return res.json()
-  }).then((success) => {
-    return success
-  }).catch((error) => {
-    return error
-  })
-  return promise
-}
-
-export async function createTransactions (cart) {
-  cart.forEach(element => {
-    fetch(EXPRESS_URL + '/createrequest', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(element),
-      credentials: 'include'
-    })  
-  })
-}
-
-export async function getAvailableBalance () {
-  const saldo = await getSaldo()
-  const promise = await fetch(EXPRESS_URL + '/minlimit', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
-  
-  console.log(saldo - promise.min_limit)
-  return saldo - promise.min_limit
 }
