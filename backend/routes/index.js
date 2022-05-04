@@ -9,7 +9,7 @@ const { GridFsStorage } = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
 const uuid = require('uuid');
 const util = require('util');
-const {MongoClient} = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 module.exports = async function(dbUrl, dbFolder) {
   const router = express.Router();
@@ -43,44 +43,44 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-   let gfs;
-   const conn = mongoose.createConnection(dbUrl, { 
-     useNewUrlParser: true, 
-     useUnifiedTopology: true 
-   }).useDb(dbFolder);
-   conn.once('open', () => {
-     gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads"})
-   });
-   
-   const storage = new GridFsStorage({
-       url: dbUrl,
-       file: (req, file) => {
-           return new Promise((resolve, reject) => {
-               crypto.randomBytes(16, (err, buf) => {
-                   if (err) {
-                       return reject(err);
-                   }
-                   const filename = buf.toString('hex') + path.extname(file.originalname);
-                   const fileInfo = {
-                       filename: filename,
-                       bucketName: 'uploads'
-                   };
-                   resolve(fileInfo);
-               });
-           });
-       }
-   }); 
-   const upload = multer({ storage });
+  let gfs;
+  const conn = mongoose.createConnection(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).useDb(dbFolder);
+  conn.once('open', () => {
+    gfs = new mongoose.mongo.GridFSBucket(conn.db, { bucketName: "uploads" })
+  });
+
+  const storage = new GridFsStorage({
+    url: dbUrl,
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err);
+          }
+          const filename = buf.toString('hex') + path.extname(file.originalname);
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+          };
+          resolve(fileInfo);
+        });
+      });
+    }
+  });
+  const upload = multer({ storage });
 
   router.get('/image/:filename', (req, res) => {
-    gfs.find({filename: req.params.filename}).toArray((err, files) => {
-        if(!files[0] || files.length === 0) {
-          res.status(404).send('No file exists');
-        } else {
-          if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png') {
-            gfs.openDownloadStreamByName(files[0].filename).pipe(res)
-          }
+    gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+      if (!files[0] || files.length === 0) {
+        res.status(404).send('No file exists');
+      } else {
+        if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/gif') {
+          gfs.openDownloadStreamByName(files[0].filename).pipe(res)
         }
+      }
     })
   });
 
@@ -102,13 +102,13 @@ module.exports = async function(dbUrl, dbFolder) {
     res.sendStatus(200)
   })
 
-  router.post('/logout', function(req, res){
+  router.post('/logout', function (req, res) {
     req.logout()
     res.sendStatus(200)
   });
 
   router.get("/admin", (req, res) => {
-    getUser({"profile.accountName": req.user}).then((user) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
       res.status(200).json(user.is_admin)
     })
   })
@@ -121,15 +121,15 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/register", (req, res) => {
 
-    getUser({email: req.body.email}).then(async (user) => {
+    getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
         const newUser = {
-          email: req.body.email, 
-          password: req.body.password, 
-          is_active: req.body.is_active, 
+          email: req.body.email,
+          password: req.body.password,
+          is_active: req.body.is_active,
           min_limit: req.body.min_limit,
           max_limit: req.body.max_limit,
-          is_admin: req.body.is_admin, 
+          is_admin: req.body.is_admin,
           pendingPosts: {},
           events: {},
           profile: {
@@ -176,20 +176,20 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get("/profile", (req, res) => {
-    getUser({"profile.accountName": req.user}).then((user) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
         const userData = {
-          "name"          : user.profile.accountName,
-          "description"   : user.profile.description,
-          "adress"        : user.profile.adress,
-          "city"          : user.profile.city,
-          "billingName"   : user.profile.billing.name,
-          "billingBox"    : user.profile.billing.box,
-          "billingAdress" : user.profile.billing.adress,
-          "orgNumber"     : user.profile.billing.orgNumber,
-          "email"         : user.email,
-          "phone"         : user.profile.phone,
-          "logo"          : user.profile.logo             
+          "name": user.profile.accountName,
+          "description": user.profile.description,
+          "adress": user.profile.adress,
+          "city": user.profile.city,
+          "billingName": user.profile.billing.name,
+          "billingBox": user.profile.billing.box,
+          "billingAdress": user.profile.billing.adress,
+          "orgNumber": user.profile.billing.orgNumber,
+          "email": user.email,
+          "phone": user.profile.phone,
+          "logo": user.profile.logo
         }
         res.status(200).send(userData)
       } else {
@@ -198,22 +198,22 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.post("/updateProfile", upload.single('file'), (req, res) => { 
-    getUser({"profile.accountName": req.user}).then((user) => {
+  router.post("/updateProfile", upload.single('file'), (req, res) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
       //console.log(user)
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
-        let newProfile =  {
+        let newProfile = {
           website: "",
           accountName: newPro.accountName,
           description: newPro.description,
           adress: newPro.adress,
           city: newPro.city,
           billing: {
-              name: newPro.billingName,
-              box: newPro.billingBox,
-              adress: newPro.billingAdress,
-              orgNumber: newPro.orgNumber
+            name: newPro.billingName,
+            box: newPro.billingBox,
+            adress: newPro.billingAdress,
+            orgNumber: newPro.orgNumber
           },
           phone: newPro.phone,
         }
@@ -230,7 +230,7 @@ module.exports = async function(dbUrl, dbFolder) {
             profile: newProfile
           }
         }
-        updateUser({"profile.accountName": req.user}, query).then((query) => {
+        updateUser({ "profile.accountName": req.user }, query).then((query) => {
           console.log(query)
           if (query.acknowledged) {
             // delete old logo if exists
@@ -238,7 +238,7 @@ module.exports = async function(dbUrl, dbFolder) {
               gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
                 bucketName: "uploads",
               });
-              gridfsBucket.delete(user.profile.logo_id, function(err, r) {
+              gridfsBucket.delete(user.profile.logo_id, function (err, r) {
                 if (err) {
                   console.log(err)
                 }
@@ -280,13 +280,55 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  router.get("/article/:id", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    dbo.collection('posts').find({}).toArray(function (err, posts) {
+      if (err) {
+        res.sendStatus(500)
+        db.close()
+      }
+      else {
+        posts.forEach(listing => {
+          if(listing.id === req.params.id) {
+            res.status(200).send({listing})
+            db.close()
+          }
+        })
+      } 
+    })
+  })
+
   /*****************************************************************************
    * 
    *                                Shop
    *                 
    *****************************************************************************/
 
-   router.post('/getAllListings', async (req, res) => {
+  router.get('/post/:id', (req, res) => {
+    const id = req.params.id;
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("posts").findOne({ id: id }, (err, result) => {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result.matchedCount != 0) {
+          const post = result;
+          db.close();
+          res.status(200).json(post);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(204).json(null);
+        }
+      })
+    })
+  });
+
+  router.post('/getAllListings', async (req, res) => {
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;
@@ -389,13 +431,55 @@ module.exports = async function(dbUrl, dbFolder) {
           db.close()
         }
         else {
-          // If we dont find a result    
+          // If we dont find a result
+          db.close();
           res.status(404).send("No posts found.")
-          db.close()
-        } 
+        }
       })
     }
   });
+
+  router.post('/article/remove/:id', (req, res) => {
+
+    // get all img id from request payload
+    const imgIDs = req.body.imgIDs;
+    console.log(imgIDs);
+
+    // delete article from db
+    const query = { id: req.params.id };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('posts').deleteOne(query, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result.matchedCount != 0) {
+          // delete all img of existing article
+          for (const id of imgIDs) {
+            gfs.delete(ObjectId(id), function (err, r2) {
+              if (err) {
+                console.log(err)
+              }
+              else {
+                console.log("deleted")
+                console.log("image:", id)
+              }
+            });
+          }
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.sendStatus(204);
+        }
+      })
+    })
+  });
+
+
 
   /*****************************************************************************
    * 
@@ -407,24 +491,24 @@ module.exports = async function(dbUrl, dbFolder) {
     getUser(req.body).then((user) => {
       if (user != null) {
         const userData = {
-          "name"          : user.profile.accountName,
-          "description"   : user.profile.description,
-          "adress"        : user.profile.adress,
-          "city"          : user.profile.city,
-          "billingName"   : user.profile.billing.name,
-          "billingBox"    : user.profile.billing.box,
-          "billingAdress" : user.profile.billing.adress,
-          "orgNumber"     : user.profile.billing.orgNumber,
-          "email"         : user.email,
-          "phone"         : user.profile.phone,
-          "logo"          : user.profile.logo
+          "name": user.profile.accountName,
+          "description": user.profile.description,
+          "adress": user.profile.adress,
+          "city": user.profile.city,
+          "billingName": user.profile.billing.name,
+          "billingBox": user.profile.billing.box,
+          "billingAdress": user.profile.billing.adress,
+          "orgNumber": user.profile.billing.orgNumber,
+          "email": user.email,
+          "phone": user.profile.phone,
+          "logo": user.profile.logo
         }
         res.status(200).send(userData)
       } else {
         res.status(404).send("The profile doesn't exist.")
       }
-    }) 
-  })
+    })
+  });
 
    router.get('/getAllMembers2/', async (req, res) => {
     // fetch all metadata about listing from mongoDB
@@ -450,13 +534,13 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get("/notification", (req, res) => {
-     getUser({"profile.accountName": req.user}).then((user) => {
-       if (user != null) {
+    getUser({ "profile.accountName": req.user }).then((user) => {
+      if (user != null) {
         res.status(200).json(user.notifications)
-       } else {
+      } else {
         res.status(404).send("User not found.")
-       }
-     })
+      }
+    })
   })
 
   router.post("/notification", (req, res) => {
@@ -464,7 +548,7 @@ module.exports = async function(dbUrl, dbFolder) {
     notification.date = new Date()
     notification.fromUser = req.user
 
-    getUser({'profile.accountName': notification.toUser}).then((user) => {
+    getUser({ 'profile.accountName': notification.toUser }).then((user) => {
       if (user != null) {
         let notification_list = user.notifications
         if (notification_list.length >= 4) {
@@ -472,7 +556,7 @@ module.exports = async function(dbUrl, dbFolder) {
         } else {
           notification_list.push(notification)
         }
-        updateUser({'profile.accountName': notification.toUser}, {$set: {notifications: notification_list}}).then((query) => {
+        updateUser({ 'profile.accountName': notification.toUser }, { $set: { notifications: notification_list } }).then((query) => {
           if (query.acknowledged) {
             res.sendStatus(200)
           } else {
@@ -486,11 +570,11 @@ module.exports = async function(dbUrl, dbFolder) {
   })
 
   router.patch("/notification", (req, res) => {
-    getUser({"profile.accountName": req.user}).then((user) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
         let notification_list = user.notifications
         notification_list.forEach(notification => notification.seen = true)
-        updateUser({"profile.accountName": req.user}, {$set: {notifications: notification_list}}).then((query) => {
+        updateUser({ "profile.accountName": req.user }, { $set: { notifications: notification_list } }).then((query) => {
           if (query.acknowledged) {
             res.sendStatus(200)
           } else {
@@ -510,7 +594,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get('/cart', (req, res) => {
-    getUser({"profile.accountName": req.user}).then((user) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
         res.status(200).json(user.cart)
       } else {
@@ -519,8 +603,8 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   });
 
-  router.post('/cart', (req, res) =>  {
-    updateUser({"profile.accountName": req.user}, {$push: {cart: req.body}}).then((query) => {
+  router.post('/cart', (req, res) => {
+    updateUser({ "profile.accountName": req.user }, { $push: { cart: req.body } }).then((query) => {
       if (query.modifiedCount == 1) {
         res.sendStatus(200);
       } else {
@@ -530,7 +614,7 @@ module.exports = async function(dbUrl, dbFolder) {
   });
 
   router.post('/cart/remove', (req, res) => {
-    updateUser({"profile.accountName": req.user}, {$set: {cart: []}}).then((query) => {
+    updateUser({ "profile.accountName": req.user }, { $set: { cart: [] } }).then((query) => {
       if (query.modifiedCount == 1) {
         res.status(200).send("Removed cart");
       } else {
@@ -540,7 +624,7 @@ module.exports = async function(dbUrl, dbFolder) {
   });
 
   router.post('/cart/remove/item/:id', (req, res) => {
-    updateUser({"profile.accountName": req.user}, {$pull: {cart: {id: req.params.id}}}).then((query) => {
+    updateUser({ "profile.accountName": req.user }, { $pull: { cart: { id: req.params.id } } }).then((query) => {
       if (query.modifiedCount == 1) {
         res.status(200).send("Removed from cart");
       } else {
@@ -549,14 +633,37 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   });
 
+  /*
+  router.post('/cart/remove/item/edit/:id', (req, res) => {
+    const query = { id: req.params.id };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('carts').deleteMany(query, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result.matchedCount != 0) {
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.sendStatus(204);
+        }
+      })
+    })
+  }); */
+
   /*****************************************************************************
    * 
    *                                Balance Limit
    *                 
    *****************************************************************************/
 
-  router.get("/limits/min", (req, res) => { 
-    getUser({"profile.accountName": req.user}).then(user => {
+  router.get("/limits/min", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then(user => {
       if (user != null) {
         res.status(200).json(user.min_limit)
       } else {
@@ -565,7 +672,7 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.post("/limits/min", (req, res) => { 
+  router.post("/limits/min", (req, res) => {
     getUser(req.body).then(user => {
       if (user != null) {
         res.status(200).json(user.min_limit)
@@ -575,28 +682,9 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.get("/article/:id", async (req, res) => {
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    dbo.collection('posts').find({}).toArray(function (err, posts) {
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      }
-      else {
-        posts.forEach(listing => {
-          if(listing.id === req.params.id) {
-            res.status(200).send({listing})
-            db.close()
-          }
-        })
-      } 
-    })
-  })
+
 
   return { 'router': router, 'conn': conn }
 }
-
-
 
 

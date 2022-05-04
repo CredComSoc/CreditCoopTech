@@ -25,18 +25,6 @@ export default {
     getCart().then((res) => { 
       if (res) {
         this.cart = res
-        // this.cart[0].quantity = 2
-        // let first = {}
-        // let sec = {}
-        // let third = {}
-        // first = Object.assign(first, this.cart[0])
-        // first.title = 'Test1'
-        // sec = Object.assign(sec, this.cart[0])
-        // sec.title = 'Test2'
-        // third = Object.assign(third, this.cart[0])
-        // third.title = 'Test3'
-        // const ma = [first, sec, third]
-        // this.cart = ma
         this.calcTotal()
       }
       this.gotCartRes = true
@@ -88,23 +76,23 @@ export default {
       getAvailableBalance().then((res) => {
         if (res >= this.total) {
           this.confirmPress = true
-          createTransactions(this.cart)
+          //createTransactions(this.cart)
+          this.cart = []
+          // remove all items from cart
+          fetch(EXPRESS_URL + '/cart/remove', {
+            method: 'POST',
+            credentials: 'include'
+          }).then(
+            success => {
+              console.log(success)
+            }
+          ).catch(
+            error => console.log(error)
+          )
         } else {
           // display insufficient balance msg
           this.insufficientBalance = true
         }
-        this.cart = []
-        // remove all items from cart
-        fetch(EXPRESS_URL + '/cart/remove', {
-          method: 'POST',
-          credentials: 'include'
-        }).then(
-          success => {
-            console.log(success)
-          }
-        ).catch(
-          error => console.log(error)
-        )
       })
     }
   }

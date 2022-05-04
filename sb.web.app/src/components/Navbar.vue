@@ -77,12 +77,12 @@
               <Notifications></Notifications>
           </div> 
           <div class="navlogo">
-            <a href="#">
+            <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
-            </a>
+            </router-link>
             <router-link :to="{}" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
             </router-link>

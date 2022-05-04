@@ -59,9 +59,9 @@ export default {
     },
     placeInCart () {
       profile().then(res => {
-        if (res.name !== this.listingObj.userUploader) {
-          this.$emit('placeInCart', this.amount, this.listingObj)
-        }
+        // if (res.name !== this.listingObj.userUploader) {
+        this.$emit('placeInCart', this.amount, this.listingObj)
+        // }
       })
     }
   }
