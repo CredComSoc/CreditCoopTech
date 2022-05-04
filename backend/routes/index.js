@@ -150,7 +150,6 @@ module.exports = async function(dbUrl, dbFolder) {
           },
           messages: {},
           notifications: [],
-          cart: []
         }
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
@@ -593,47 +592,109 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.get('/cart', (req, res) => {
-    getUser({ "profile.accountName": req.user }).then((user) => {
-      if (user != null) {
-        res.status(200).json(user.cart)
-      } else {
-        res.status(204).json(null);
-      }
-    })
+   router.get('/cart', (req, res) => {
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("carts").find({ cartOwner: req.user }).toArray(function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result != null) {
+          const cart = result;
+          db.close();
+          res.status(200).json(cart);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.sendStatus(204).json(null);
+        }
+      });
+    });
   });
+
 
   router.post('/cart', (req, res) => {
-    updateUser({ "profile.accountName": req.user }, { $push: { cart: req.body } }).then((query) => {
-      if (query.modifiedCount == 1) {
-        res.sendStatus(200);
-      } else {
-        res.status(404).send("No posts found.")
-      }
+    const cartItem = req.body;
+    console.log(cartItem);
+    cartItem.cartOwner = req.user;
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("carts").updateOne({ id: cartItem.id, cartOwner: req.user }, { $inc: { quantity: cartItem.quantity } }, (err, result) => {
+        if (err) {
+          db.close();
+          res.sendStatus(500)
+        }
+        else if (result.matchedCount == 0) {
+          dbo.collection("carts").insertOne(cartItem, (err, result) => {
+            if (err) {
+              db.close();
+              res.sendStatus(500)
+            }
+            else if (result != null) {
+              console.log(result)
+              db.close();
+              res.sendStatus(200)
+            }
+            else {
+              // If we dont find a result
+              db.close();
+              res.sendStatus(404)
+            }
+          })
+        }
+      })
     })
   });
+
 
   router.post('/cart/remove', (req, res) => {
-    updateUser({ "profile.accountName": req.user }, { $set: { cart: [] } }).then((query) => {
-      if (query.modifiedCount == 1) {
-        res.status(200).send("Removed cart");
-      } else {
-        res.status(404).send("No cart found");
-      }
+    const user = { cartOwner: req.user };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("carts").deleteMany(user, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(204).send("No cart found");
+        }
+      })
     })
   });
+
 
   router.post('/cart/remove/item/:id', (req, res) => {
-    updateUser({ "profile.accountName": req.user }, { $pull: { cart: { id: req.params.id } } }).then((query) => {
-      if (query.modifiedCount == 1) {
-        res.status(200).send("Removed from cart");
-      } else {
-        res.status(404).send("No item found");
-      }
+    const query = { cartOwner: req.user };
+    const id = req.params.id;
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('carts').deleteOne(query, { id: id }, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Removed from cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(204).send("No item found");
+        }
+      })
     })
   });
 
-  /*
   router.post('/cart/remove/item/edit/:id', (req, res) => {
     const query = { id: req.params.id };
     MongoClient.connect(dbUrl, (err, db) => {
@@ -654,7 +715,8 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       })
     })
-  }); */
+  });
+
 
   /*****************************************************************************
    * 
