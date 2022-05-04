@@ -1,4 +1,5 @@
 <template>
+<div id="frame">
   <div id="container-msg-disp">
     <SpeechBubble v-for="(msg) in this.messages"
           :sender="msg[1]"
@@ -6,6 +7,7 @@
           :message="msg[2]"
         />
   </div>
+</div>
 </template>
 
 <script>
@@ -17,11 +19,7 @@ export default {
   components: {
     SpeechBubble
   },
-  data () {
-    return {
-      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja'], [1, true, 'ndjjansjd'], [2, false, 'hererer']]
-    }
-  }
+  props: ['messages']
 }
 </script>
 
@@ -29,8 +27,20 @@ export default {
 
     #container-msg-disp {
         width: 100%;
-        height: 100%;
-        overflow-y: scroll;
+        max-height: 100%;
+        overflow-y: auto;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    #frame {
+      overflow:   none;
+      position:   relative;
+      width:      100%;
+      height:     100%;
     }
 
 </style>

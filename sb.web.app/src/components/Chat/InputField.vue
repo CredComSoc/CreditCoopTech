@@ -1,13 +1,22 @@
 <template>
 <div id='container-input'>
-  <textarea id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+  <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
   <button id="send-message" @click="send()">Skicka</button>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'InputField'
+  name: 'InputField',
+  methods: {
+    send () {
+      if (this.$refs.textValue.value !== '') {
+        this.$emit('sendMessage', this.$refs.textValue.value)
+        this.$refs.textValue.value = ''
+      }
+    }
+  }
+  
 }
 </script>
 
@@ -15,9 +24,6 @@ export default {
 
   #container-input {
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     width: 100%;
   }
 
@@ -28,7 +34,7 @@ export default {
     min-height: 85px;
     max-height: 172px;
     resize: none;
-    overflow: scroll;
+    overflow-y: scroll;
     padding: 10px 20px;
  }
 
@@ -46,6 +52,10 @@ export default {
      border: none;
      width: 70px;
      height: 30px;
+ }
+
+ #send-message:hover{
+     background-color: #0a60a6;
  }
 
 </style>

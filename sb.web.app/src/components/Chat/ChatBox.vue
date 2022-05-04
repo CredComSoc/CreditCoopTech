@@ -2,8 +2,8 @@
   <div id="frame-chatbox">
     <p> {{ this.reciever }} </p>
     <div id="container-chatbox">
-      <MessageDisplay />
-      <InputField />
+      <MessageDisplay ref="msgDisp" :messages="this.messages"/>
+      <InputField @sendMessage="this.sendMessage"/>
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script>
 import InputField from './InputField.vue'
 import MessageDisplay from './MessageDisplay.vue'
+import { nextTick } from 'vue'
 
 export default {
   name: 'ChatBox',
@@ -18,7 +19,21 @@ export default {
     InputField,
     MessageDisplay
   },
-  props: ['reciever']
+  props: ['reciever'],
+  data () {
+    return {
+      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja']]//, [1, true, 'ndjjansjd'], [2, false, 'hererer']]
+    }
+  },
+  methods: {
+    sendMessage (message) {
+      this.messages.push([this.messages.length - 1, true, message])
+      nextTick(function () {
+        const container = document.getElementById('container-msg-disp').lastElementChild
+        container.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      })
+    }
+  }
 }
 </script>
 

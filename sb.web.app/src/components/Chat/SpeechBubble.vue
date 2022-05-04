@@ -20,8 +20,7 @@ export default {
     .fill{
         width: 100%;
         display: block;
-        overflow: auto;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     .speech-bubble{
         border-radius: 10px;
