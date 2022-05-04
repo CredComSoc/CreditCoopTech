@@ -1,13 +1,20 @@
 <template>
 <div id='container-input'>
-  <textarea type="text" id="message-field" name="message"/>
+  <textarea type="text" ref="textValue" id="message-field" name="message"/>
   <button id="send-message" @click="send()">Skicka</button>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'InputField'
+  name: 'InputField',
+  methods: {
+    send () {
+      const message = this.$refs.textValue.value
+      this.$emit('sendMessage', message)
+    }
+  }
+  
 }
 </script>
 
