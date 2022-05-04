@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-// export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
+//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
+export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
 
 /*****************************************************************************
  * 
@@ -227,6 +227,25 @@ export async function uploadArticle (data) {
   }) 
 }
 
+export async function deletePost (id, imgIDs) {
+  const promise = await fetch(EXPRESS_URL + '/article/remove/' + id, {
+    method: 'POST',
+    body: JSON.stringify({ imgIDs: imgIDs }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
 /*****************************************************************************
  * 
  *                                Members
@@ -405,6 +424,21 @@ export async function getCart () {
   }).catch((error) => {
     return error
   })
+  return promise
+}
+
+export async function deleteCart (id) {
+  const promise = await fetch(EXPRESS_URL + '/cart/remove/item/edit/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
   return promise
 }
 
@@ -607,5 +641,25 @@ export async function getArticleWithId (id) {
     .catch(() => {
       return false
     })
+  // console.log(promise)
+  // if (promise) {
+  //   return promise.completed.balance
+  // } else {
+  //   return null
+  // }
+}
+
+export async function getImg (filename) {
+  const promise = await fetch(EXPRESS_URL + '/image/' + filename, {
+    method: 'GET',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
   return promise
 }

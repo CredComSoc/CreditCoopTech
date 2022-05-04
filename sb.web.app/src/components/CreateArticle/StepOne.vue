@@ -16,7 +16,71 @@
       <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
     </div>
     <div class="input">
-      <Combobox ref="categoryInput" name="category-type" label="Kategori" :options="['Affärsutveckling & strategi', 'Arbetsyta', 'Fotografering', 'Kök & restaurang', 'Marknadsföring', 'Rengöring & städ', 'Skönhet', 'Sömnad & tyg']" placeholder="Vilken av Kategorierna nedan tillhör din produkt?" />
+      <Combobox ref="categoryInput" name="category-type" label="Kategori" 
+        :options='[
+          "Affärsnätverk",
+          "Anläggning",
+          "Antikviteter",
+          "Auktion",
+          "Bank & Försäkring",
+          "Begagnat & Återbruk",
+          "Bemanning",
+          "Butiker",
+          "Bygg och Fastighetsunderhåll",
+          "Café, Pub & Servering",
+          "Ekonomi, Juridik & Affärsutveckling",
+          "Energi",
+          "Engagemang & CSR",
+          "Entreprenad",
+          "Fordon & Transport",
+          "Foto, Film & Marknadsföring",
+          "Fritid & Lek",
+          "Företagcoach",
+          "Försäljning",
+          "Hotell & Konferenser",
+          "IT, Datorer & Telefoni",
+          "Ideella Föreningar",
+          "Investeringar",
+          "Kaffe, Te & Fruktkorg",
+          "Kiosk",
+          "Kläder, Skor & Mode",
+          "Konst",
+          "Konsult",
+          "Kontorslokaler",
+          "Kontorsmaterial",
+          "Kroppsvård & Hälsa",
+          "Kultur",
+          "Lantbruk och Skog",
+          "Livsmedel",
+          "Metall & Plåt",
+          "Mäklare & Fastigheter",
+          "Mässor & Utställningar",
+          "Möbler & Inredning",
+          "Nattklubb & Barer",
+          "Nöjen & Underhållning",
+          "Presentkort",
+          "Psykolog",
+          "Reklam & Media",
+          "Restaurang & Catering",
+          "Skönhet",
+          "Smycken",
+          "Snickeri & Trävaror",
+          "Sociala Företag",
+          "Spel & Gaming",
+          "Städ, VVS & El",
+          "Teknik, Elektronik & Vitvaror",
+          "Textil & Sömnad",
+          "Tolk & Översättning",
+          "Trycksaker & Presenter",
+          "Trädgård & Blommor",
+          "Turism & Resor",
+          "Tvätteri & Rengöring",
+          "Upplevelser & Evenemang",
+          "Välgörenhet & Sponsring",
+          "Övrigt"
+        ]' 
+        placeholder="Vilken av Kategorierna nedan tillhör din produkt?" 
+      />
     </div>
   </div>
 </template>
@@ -71,6 +135,26 @@ export default {
         return false
       }
       return true
+    }
+  },
+  beforeUpdate () {
+    if ('title' in this.savedProgress) {
+      this.$refs.titleInput.setValue(this.savedProgress.title) 
+    } 
+    if ('longDesc' in this.savedProgress) {
+      this.$refs.descInput.setValue(this.savedProgress.longDesc)
+    } 
+    if ('article' in this.savedProgress) {
+      this.$refs.typeInput.setValue(this.savedProgress.article)
+    } 
+    if ('category' in this.savedProgress) {
+      this.$refs.categoryInput.setValue(this.savedProgress.category)
+    }
+    if ('shortDesc' in this.savedProgress) {
+      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
+    }
+    if ('status' in this.savedProgress) {
+      this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
   },
   mounted () {

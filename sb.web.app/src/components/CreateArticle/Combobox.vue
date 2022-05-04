@@ -99,7 +99,7 @@ export default {
       minLimitDate.setDate(minLimitDate.getDate() + 1)
       datePicker.setAttribute('min', minLimitDate.toISOString().split('T')[0])
       const maxLimitDate = new Date()
-      maxLimitDate.setMonth(maxLimitDate.getMonth() + 1)
+      maxLimitDate.setFullYear(maxLimitDate.getFullYear() + 1)
       datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     } 
   },
@@ -201,6 +201,8 @@ p:empty:not(:focus)::before, input::placeholder {
 .dropdown-content-combo {
   display: none;
   position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
   background-color: #E5E5E5;
   width: 420px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);

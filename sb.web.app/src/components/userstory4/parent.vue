@@ -128,7 +128,8 @@ export default {
         article: listingObj.article, // produkt eller tjänst
         id: listingObj.id, // Id for the article
         status: listingObj.status, // köpes eller säljes
-        userUploader: listingObj.userUploader // user who uploaded the article, use to see if article is still for sale
+        userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
+        'end-date': listingObj['end-date'] // end date for the article
       }
       console.log(cartItem)
       JSONdata.append('cartItem', JSON.stringify(cartItem))
