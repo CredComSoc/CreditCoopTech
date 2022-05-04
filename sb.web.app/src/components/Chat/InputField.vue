@@ -1,7 +1,7 @@
 <template>
 <div id='container-input'>
   <textarea type="text" id="message-field" name="message"/>
-  <button id="send-message">Skicka</button>
+  <button id="send-message" @click="send()">Skicka</button>
 </div>
 </template>
 
@@ -14,18 +14,25 @@ export default {
 <style scoped>
 
   #container-input {
-   display: flex;
-   flex-direction: row;
-   align-items: center;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
   }
 
   #message-field{
     border-radius: 8px;
-    border: 2px solid #5c5c5c;
-    width: 400px;
+    border: 2px solid #A8A8A8;
+    width: 100%;
     min-height: 35px;
     resize: none;
     overflow: hidden;
+ }
+
+ textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px #4690CD;
  }
 
  #send-message{

@@ -1,9 +1,11 @@
 <template>
-    <div v-if='sender' class="speech-bubble" id="blue-speech-bubble">
-        <p>{{message}}</p>
-    </div> 
-    <div v-if='!sender' class="speech-bubble" id="gray-speech-bubble">
-        <p>{{message}}</p>
+    <div class="fill">
+        <div v-if='sender' class="speech-bubble" id="blue-speech-bubble">
+            <p>{{message}}</p>
+        </div> 
+        <div v-if='!sender' class="speech-bubble" id="gray-speech-bubble">
+            <p>{{message}}</p>
+        </div>
     </div>
 </template>
 
@@ -15,17 +17,22 @@ export default {
 </script>
 
 <style scoped>
-
+    .fill{
+        width: 100%;
+        display: block;
+        overflow: auto;
+        margin-bottom: 10px;
+    }
     .speech-bubble{
         border-radius: 10px;
         border: 10px;
-        width: 250px;
-        margin-left: 500px;
+        width: 300px;
         padding: 10px;
+        overflow: auto;
     }
-
     #blue-speech-bubble{
         background-color: #5C9BCF4D;
+        float: right;
     }
 
     #gray-speech-bubble{

@@ -33,17 +33,19 @@ export default {
 
     #container-history {
         width: 300px;
-        height: 700px;
+        height: 100%;
         overflow-y: scroll;
         overflow-x: hidden;
     }
 
     #container-outer {
         border-radius: 10px;
+        height: 100%;
         border: 2px solid #A8A8A8;
     }
 
     #container-frame {
        position: relative;        
+       height: 100%;
     }
 </style>
