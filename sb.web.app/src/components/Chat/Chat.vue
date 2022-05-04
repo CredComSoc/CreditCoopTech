@@ -1,5 +1,6 @@
 <template>
   <h1 id="title">MEDDELANDEN</h1>
+  <SpeechBubble :sender="false" :message="'hello this is me'"/>
   <div class="container-chat">
     <ChatHistory />
     <InputField />
@@ -9,12 +10,14 @@
 <script>
 import InputField from './InputField.vue'
 import ChatHistory from './ChatHistory.vue'
+import SpeechBubble from './SpeechBubble.vue'
 
 export default {
   name: 'Chat',
   components: {
     InputField,
-    ChatHistory
+    ChatHistory,
+    SpeechBubble
   }
 
 }
