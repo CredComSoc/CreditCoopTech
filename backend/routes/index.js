@@ -238,6 +238,7 @@ module.exports = function(dbUrl, dbFolder) {
     newArticle.userUploader = req.user;
     newArticle.img = images;
     newArticle.imgIDs = images_id;
+    delete newArticle._id;
 
     // for ttl index in posts
     if ('end-date' in newArticle) {
