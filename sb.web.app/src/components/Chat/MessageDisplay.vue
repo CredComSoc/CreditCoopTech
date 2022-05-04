@@ -17,11 +17,7 @@ export default {
   components: {
     SpeechBubble
   },
-  data () {
-    return {
-      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja'], [1, true, 'ndjjansjd'], [2, false, 'hererer']]
-    }
-  }
+  props: ['messages']
 }
 </script>
 

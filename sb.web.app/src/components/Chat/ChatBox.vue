@@ -2,8 +2,8 @@
   <div id="frame-chatbox">
     <p> {{ this.reciever }} </p>
     <div id="container-chatbox">
-      <MessageDisplay />
-      <InputField />
+      <MessageDisplay :messages="this.messages"/>
+      <InputField @sendMessage="this.sendMessage"/>
     </div>
   </div>
 </template>
@@ -18,7 +18,17 @@ export default {
     InputField,
     MessageDisplay
   },
-  props: ['reciever']
+  props: ['reciever'],
+  data () {
+    return {
+      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja'], [1, true, 'ndjjansjd'], [2, false, 'hererer']]
+    }
+  },
+  methods: {
+    sendMessage (message) {
+      this.messages.push([this.messages.length - 1, true, message])
+    }
+  }
 }
 </script>
 

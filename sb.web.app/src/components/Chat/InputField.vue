@@ -12,6 +12,7 @@ export default {
     send () {
       const message = this.$refs.textValue.value
       this.$emit('sendMessage', message)
+      this.$refs.textValue.value = ''
     }
   }
   
