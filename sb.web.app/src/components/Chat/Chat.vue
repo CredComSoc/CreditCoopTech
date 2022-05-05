@@ -20,6 +20,8 @@ export default {
     return {
       history: [[0, 'Hello'], [1, 'Anna Book'], [2, 'Alicia Bergman']]
     }
+  },
+  methods: {
   }
 
 }

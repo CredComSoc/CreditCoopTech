@@ -1,24 +1,20 @@
 <template>
-  <div class="user-chat" type="button" v-if="!active" @click="openChat()">
+  <div :id="id" class="user-chat" type="button" v-if="!active" @click="openChat()">
       <p>{{userchat}}</p>
-  </div>
-  <div class="user-chat active" v-if="active" type="button">
-      <p>{{userchat}}</p>
-  </div>  
+  </div> 
 </template>
 
 <script>
 export default {
   name: 'UserChat',
-  props: ['userchat'],
+  props: ['userchat', 'id'],
   methods: {
-    openChat () { 
-      this.active = true
-    }
-  },
-  data () {
-    return {
-      active: false
+    openChat () {
+      const chats = document.getElementsByClassName('user-chat')
+      for (const chat of chats) {
+        chat.classList.remove('active')
+      } 
+      document.getElementById(this.id).classList.add('active')
     }
   }
 
@@ -31,7 +27,8 @@ export default {
       height: 75px;
       text-align: center;
       vertical-align: middle;
-      line-height: 75px; 
+      line-height: 75px;
+      background-color: white; 
     }
 
     .active{
