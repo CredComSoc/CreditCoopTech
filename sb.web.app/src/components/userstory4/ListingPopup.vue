@@ -13,7 +13,7 @@
         <h5>{{listingObj.title}}</h5>
         <p>{{listingObj.longDesc}}</p>
         <p>{{listingObj.destination}}</p>
-        <p>{{listingObj.price}}</p>
+        <p>{{listingObj.price}} Barter Kr</p>
       </div>
       <div class="interactContent" v-if="listingObj.status === 'selling'">
         <div>

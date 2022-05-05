@@ -69,6 +69,10 @@ export default {
         margin: 1rem;
     }
 
+    .element-container:hover {
+        box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.35);
+    }
+
      .element-container h4 {
         margin-top: 4px;
         font-weight: bold;
