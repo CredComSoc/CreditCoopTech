@@ -46,6 +46,8 @@
         <div className="container-item">
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
+          <img :src="this.localURL" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">Företagsnamn:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
@@ -112,14 +114,14 @@ export default {
     profile()
       .then(res => {
         this.profileData = res
-        console.log(this.profileData)
+        //console.log(this.profileData)
         this.getImgURL()
       })
   },
   methods: {
     addLogo (e) {
       this.profileData.logo = e.target.files[0]
-      console.log(this.profileData.logo)
+      //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
       console.log(this.localURL)
     },
@@ -138,7 +140,9 @@ export default {
         this.profileData.logo
       )
       this.edit = !this.edit
-      this.logoURL = this.localURL
+      if (this.localUrl) {
+        this.logoURL = this.localURL
+      }
     },
     getImgURL () {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo

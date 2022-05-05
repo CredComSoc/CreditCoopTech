@@ -3,7 +3,7 @@
   <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep="goBackStep" />
   <div id="center">
     <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett tal.\nVar god ändra detta och försök igen.`)" />
+    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett positivt heltal.\nVar god ändra detta och försök igen.`)" />
     <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
     <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
   </div>
@@ -20,7 +20,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from './PopupCard.vue'
-import { uploadArticle } from '../../serverFetch'
+import { uploadArticle, deletePost, deleteCart, EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -43,7 +43,32 @@ export default {
       newArticle: {},
       isPublished: false,
       error: false,
-      popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.'
+      popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.',
+      inEditMode: false
+    }
+  },
+  created () {
+    if (this.$route.params.artID) {
+      fetch(EXPRESS_URL + '/post/' + this.$route.params.artID, {
+        method: 'GET',
+        credentials: 'include'
+      }).then(
+        success => {
+          success.json().then(
+            res => {
+              this.newArticle = res
+              // get print format from db object and assign to frontend
+              this.newArticle.destination = res.printFormat.destination
+              this.newArticle['end-date'] = res.printFormat['end-date']
+              this.newArticle.status = res.printFormat.status
+              this.newArticle.article = res.printFormat.article
+              this.newArticle.category = res.printFormat.category
+            }
+          )
+        }
+      ).catch(
+        error => console.log(error)
+      )
     }
   },
   methods: {
@@ -105,7 +130,30 @@ export default {
       } else if (this.currentStep === 4) {
         this.addUploadDate()
         this.sanitizeArticle()
-        this.uploadArticle()
+        // if we edit a article
+        if ('coverImg' in this.newArticle) {
+          // delete old one from posts
+          deletePost(this.newArticle.id, this.newArticle.imgIDs)
+            .then(r1 => {
+              // delete old one from all carts then upload
+              if (r1.status === 200) {
+                deleteCart(this.newArticle.id)
+                  .then (r2 => {
+                    if (r2.status === 200 || r2.status === 204) {
+                      this.uploadArticle()
+                    } else {
+                      this.error = true
+                      this.popupCardText = 'Något gick fel när artikeln skulle uppdateras.\nVar god försök igen senare.'
+                    }
+                  })
+              } else {
+                this.error = true
+                this.popupCardText = 'Något gick fel när artikeln skulle uppdateras.\nVar god försök igen senare.'
+              }
+            }) 
+        } else {
+          this.uploadArticle()
+        }
       }
     },
     goBackStep () {
@@ -140,8 +188,11 @@ export default {
       data.append('article', JSON.stringify(this.newArticle))
       // This will upload the article to the server
       uploadArticle(data).then((res) => {
-        if (res.ok) {
+        if (res.status === 200) {
           this.isPublished = true // open popup with success message
+        } else {
+          this.error = true
+          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
         }
       })
     },
@@ -154,6 +205,15 @@ export default {
       this.newArticle.uploadDate = new Date().toLocaleString('sv-SE', options)
     },
     sanitizeArticle () {
+      // Frontend printing format for these fields to store in db
+      const printFormat = {}
+      printFormat.article = this.newArticle.article
+      printFormat.destination = this.newArticle.destination
+      printFormat.category = this.newArticle.category
+      printFormat.status = this.newArticle.status
+      printFormat['end-date'] = this.newArticle['end-date']
+      this.newArticle.printFormat = printFormat 
+
       // sanitize the article field
       switch (this.newArticle.article) {
         case 'Produkt':
@@ -163,46 +223,7 @@ export default {
           this.newArticle.article = 'service'
           break
       }
-  
-      // sanitize the destination field
-      switch (this.newArticle.destination) {
-        case 'Linköping':
-          this.newArticle.destination = 'linkoping'
-          break
-        case 'Norrköping':
-          this.newArticle.destination = 'norrkoping'
-          break
-        case 'Söderköping':
-          this.newArticle.destination = 'soderkoping'
-          break
-      }
-      // sanitize the category field
-      switch (this.newArticle.category) {
-        case 'Affärsutveckling & strategi':
-          this.newArticle.category = 'affarsutveckling'
-          break
-        case 'Arbetsyta':
-          this.newArticle.category = 'arbetsyta'
-          break
-        case 'Fotografering':
-          this.newArticle.category = 'fotografering'
-          break
-        case 'Kök & restaurang':
-          this.newArticle.category = 'restaurang'
-          break
-        case 'Marknadsföring':
-          this.newArticle.category = 'marknadsforing'
-          break
-        case 'Rengöring & städ':
-          this.newArticle.category = 'rengoring&stad'
-          break
-        case 'Skönhet':
-          this.newArticle.category = 'skonhet'
-          break
-        case 'Sömnad & tyg':
-          this.newArticle.category = 'somnad&tyg'
-          break
-      }
+
       // sanitize the status field
       switch (this.newArticle.status) {
         case 'Köpes':
@@ -223,6 +244,18 @@ export default {
           //this.newArticle['end-date'] = new Date(this.newArticle['end-date'])
           break 
       }
+
+      this.newArticle.destination = this.setDbFormat(this.newArticle.destination)
+      this.newArticle.category = this.setDbFormat(this.newArticle.category)
+    },
+    setDbFormat (field) {
+      field = field.toLowerCase()
+
+      field = field.replace(/\s/g, '')
+      field = field.replace(/[åä]/g, 'a')
+      field = field.replace(/ö/g, 'o')
+    
+      return field
     }
   }
 }
@@ -234,7 +267,7 @@ export default {
 
  #input-form {
      margin: 0 auto;
-     margin-top: 100px;
+     margin-top: 30px;
      width: 1000px;
      font-family: 'Ubuntu';
      position: relative;

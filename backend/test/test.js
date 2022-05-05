@@ -1,9 +1,13 @@
 const express = require('express');
 const assert = require('assert');
 const server = require('../server')
+const dbConfig = require('../mongoDB-config')
+const {MongoClient} = require('mongodb');
 let fetch = require('node-fetch')
 const fetchCookie = require('fetch-cookie')
 fetch = fetchCookie(fetch)
+const FormData = require('form-data')
+const fastJson = require('fast-json-stringify')
 
 const test_port = 3001
 const express_url = 'http://localhost:' + test_port
@@ -14,19 +18,27 @@ const member = 'TestUser'
 const admin = 'TestAdmin'
 const password = '123'
 
+async function getCollection(name) {
+  const db = await MongoClient.connect(dbConfig.mongoURL("test", true))
+  const dbo = db.db("test");
+  const result = await dbo.collection(name).find({}).toArray()
+  db.close();
+  return result
+}
+
 async function loginUser(user) {
-    const res = await fetch(express_url + '/login', {
+    return await fetch(express_url + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: user, password: password }),
+        body: JSON.stringify({ email: user, password: password }),
         credentials: 'include'
     })
 }
 
 async function logoutUser() {
-    await fetch(express_url + '/logout', {
+    return await fetch(express_url + '/logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,132 +47,372 @@ async function logoutUser() {
     })
 }
 
+async function registerUser(name, is_admin) {
+  await fetch(express_url + '/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "password"  : password,
+      "email"     : name,
+      "min_limit" : -100,
+      "max_limit" : 100,
+      "is_active" : true,
+      "is_admin"  : is_admin
+    }),
+    credentials: 'include'
+  })
+}
+
+/*****************************************************************************
+ *****************************************************************************
+ * 
+ *                                Index Routes
+ *                 
+ *****************************************************************************
+ *****************************************************************************/
+
 describe('index routes', function () {
-    this.beforeAll(async function() {
-        server.initApp(app, dbFolder="test")
-        // register user
+  this.beforeAll(async function() {
+      await dropCollection("users")
+      server.initApp(app, dbFolder="test", localDbUrl = true)
+      server_instance = server.startServer(app, test_port)
+      await registerUser(member, false)
+      await registerUser(admin, true)
+  })
+
+  this.afterAll(async function() {
+    server.stopServer(server_instance)
+  })
+
+  this.beforeEach(function(done) {
+      done()
+  })
+
+  this.afterEach(function(done) {
+      done()
+  }) 
+
+  /*****************************************************************************
+   * 
+   *                                Admin Page
+   *                 
+   *****************************************************************************/
+
+  describe('POST /register', function() {
+    it('todo')
+  })
+
+  /*****************************************************************************
+   * 
+   *                                   Images
+   *                 
+   *****************************************************************************/
+
+    describe('GET /image/:filename', function() {
+      it('todo')
     })
 
-    this.beforeEach(function(done) {
-        server_instance = server.startServer(app, test_port)
-        done()
+  /*****************************************************************************
+   * 
+   *                           Login & Authentication
+   *                 
+   *****************************************************************************/
+
+    describe('POST /login', function() {
+        it('Login fail', async function() {
+          const result = await loginUser("invalidUser")
+          assert(result.status === 401)
+        })
+
+        it('Login member', async function() {
+          const result = await loginUser(member)
+          logoutUser()
+          assert(result.status === 200)
+        })
+
+        it('Login admin', async function() {
+          const result = await loginUser(admin)
+          logoutUser()
+          assert(result.status === 200)
+        })
+
+        it('Login twice, same user', async function() {
+          await loginUser(admin)
+          const result = await loginUser(admin)
+          logoutUser()
+          assert(result.status === 200)
+        })
+
+        it('Login twice, different users', async function() {
+          await loginUser(admin)
+          const result = await loginUser(member)
+          logoutUser()
+          assert(result.status === 200)
+        })
     })
 
-    this.afterEach(function(done) {
-        server.stopServer(server_instance)
-        done()
-    }) 
+    describe('POST /logout', async function() {
+        it('Logout w/o being logged in', async function() {
+          const result = await logoutUser()
+          assert(result.status === 200)
+        })
+
+        it('Logout member', async function() {
+          await loginUser(member)
+          const result = await logoutUser()
+          assert(result.status === 200)
+        })
+
+        it('Logout admin', async function() {
+          await loginUser(admin)
+          const result = await logoutUser()
+          assert(result.status === 200)
+        })
+    })
 
     describe('GET /authenticate', function() {
-        it('Fail to authenticate', async function() {
-            await fetch(express_url + '/authenticate', { 
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-              }).then((response) => {
-                if (!response.ok) {
-                  assert.ok(true)
-                  return false
-                }
-                assert.fail()
-              }).catch(() => {
-                assert.ok(true)
-                return false
-              }) 
-        })
+      async function authenticate() {
+        return fetch(express_url + '/authenticate', { 
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include'
+        }).then((response) => {
+          return response
+        }).catch((error) => {
+          return error
+        }) 
+      }
 
-        it('Authenticate member', async function() {
-            await loginUser(member)
-            await fetch(express_url + '/authenticate', { 
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-              }).then((response) => {
-                if (!response.ok) {
-                  assert.fail()
-                }
-                assert.ok(true)
-              })
-            await logoutUser()
-        })
+      it('Fail to authenticate', async function() {
+        result = await authenticate()
+        assert(result.status === 400)
+      })
 
-        describe('Authenticate admin', function() {
-            it('todo')
-        })
+      it('Authenticate member', async function() {
+        await loginUser(member)
+        await fetch(express_url + '/authenticate', { 
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          }).then((response) => {
+            if (!response.ok) {
+              assert.fail()
+            }
+            assert.ok(true)
+          })
+        await logoutUser()
+      })
+    
+      describe('Authenticate admin', async function() {
+        await loginUser(admin)
+        await fetch(express_url + '/authenticate', { 
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          }).then((response) => {
+            if (!response.ok) {
+              assert.fail()
+            }
+            assert.ok(true)
+          })
+        await logoutUser()
+      })
 
     })
 
     describe('GET /admin', function() {
-        it('Admin status: logged out')
+      it('Admin status: logged out')
 
-        it('Admin status: member')
+      it('Admin status: member', async function() {
+        await loginUser(member)
+        await fetch(express_url + '/admin', { 
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+          }).then((response) => {
+            return response.json()
+          }).then(result => {
+            if (!result) {
+              assert.ok(true)
+            } else {
+              assert.fail()
+            }
+          }).catch(() => {
+            assert.fail()
+          }) 
+        await logoutUser()
+    })
 
-        it('Admin status: admin', async function() {
-            await loginUser(admin)
-            await fetch(express_url + '/admin', { 
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                credentials: 'include'
-              }).then((response) => {
-                if (!response.ok) {
-                  assert.fail()
-                }
+      it('Admin status: admin', async function() {
+          await loginUser(admin)
+          await fetch(express_url + '/admin', { 
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include'
+            }).then((response) => {
+              return response.json()
+            }).then(result => {
+              if (result) {
                 assert.ok(true)
-              }).catch(() => {
+              } else {
                 assert.fail()
-              }) 
-            await logoutUser()
-        })
+              }
+            }).catch(() => {
+              assert.fail()
+            }) 
+          await logoutUser()
+      })
     })
 
-    describe('POST /login', function() {
-        it('todo')
+  /*****************************************************************************
+   * 
+   *                                Create Article
+   *                 
+   *****************************************************************************/
+
+  describe('Create article', function() {
+
+    const stringify = fastJson({
+      title: 'Test Article Schema',
+      type: 'object',
+      properties: {
+        value: {
+          type: 'integer'
+        }
+      }
     })
 
-    describe('POST /logout', function() {
-        it('todo')
+    async function createArticle(data) {
+      return await fetch(express_url + '/upload/article', { 
+        method: 'POST',
+        credentials: 'include',
+        body: data 
+      }).then((res) => {
+        return res
+      }).then((success) => {
+        return success
+      }).catch(error => {
+        return error
+      }) 
+    }
+
+    it('Fail to create article when logged out', async function() {
+      const data = new FormData()
+      data.append('article', stringify({'value': 1}))
+      const result = await createArticle(data)
+      assert(result.status === 401)
     })
 
-    describe('GET /profile', function() {
-        it('todo')
+    it('Create article', async function() {
+      await dropCollection("posts")
+      await loginUser(member)
+      const data = new FormData()
+      data.append('article', stringify({'value': 2}))
+      const result = await createArticle(data)
+      await logoutUser()
+      if (result.status !== 200) {
+        assert.fail()
+      }
+      const posts = await getCollection("posts")
+      if (posts[0].value === 2 && posts[0].userUploader === member) {
+        assert.ok(true)
+      } else {
+        assert.fail()
+      }
     })
 
-    describe('POST /getAllListings', function() {
-        it('todo')
-    })
+    it('Create several articles', async function() {
 
-    describe('GET /image/:filename', function() {
-        it('todo')
     })
+  })
 
-    describe('GET /notification', function() {
-        it('todo')
-    })
+  /*****************************************************************************
+   * 
+   *                                Profile
+   *                 
+   *****************************************************************************/
 
-    describe('POST /notification', function() {
-        it('todo')
-    })
+  describe('GET /profile', function() {
+        it('Get profile data when logged out')
 
-    describe('PATCH /notification', function() {
-        it('todo')
-    })
+        it('Get invalid user profile data')
 
-    describe('POST /register', function() {
-        it('todo')
-    })
+        it('Get member profile data')
+
+        it('Get admin profile data')
+  })
 
     describe('POST /updateProfile', function() {
-        it('todo')
-    })
+      it('todo')
+  })
 
-    describe('GET /articles', function() {
-        it('todo')
-    })
+  describe('GET /articles', function() {
+      it('todo')
+  })
+
+
+  /*****************************************************************************
+   * 
+   *                                Shop
+   *                 
+   *****************************************************************************/
+
+  describe('POST /getAllListings', function() {
+    it('todo')
+  })
+
+  /*****************************************************************************
+   * 
+   *                                Cart
+   *                 
+   *****************************************************************************/
+
+  /*****************************************************************************
+   * 
+   *                                Balance Limit
+   *                 
+   *****************************************************************************/
+
+  /*****************************************************************************
+   * 
+   *                                Notifications
+   *                 
+   *****************************************************************************/
+
+  describe('GET /notification', function() {
+      it('todo')
+  })
+
+  describe('POST /notification', function() {
+      it('todo')
+  })
+
+  describe('PATCH /notification', function() {
+      it('todo')
+  })
+
+/*****************************************************************************
+ * 
+ *                                Members
+ *                 
+ *****************************************************************************/
+
+/*****************************************************************************
+ * 
+ *                                Profile
+ *                 
+ *****************************************************************************/
+
 })
 
 

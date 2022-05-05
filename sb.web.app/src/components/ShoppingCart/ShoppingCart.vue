@@ -4,6 +4,7 @@
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
+    <PopupCard v-if="this.insufficientBalance" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra köpet.`" />
   </div>
 </template>
 
@@ -11,7 +12,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '../CreateArticle/PopupCard.vue'
-import { EXPRESS_URL, getCart, createTransactions } from '../../serverFetch'
+import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -24,18 +25,6 @@ export default {
     getCart().then((res) => { 
       if (res) {
         this.cart = res
-        // this.cart[0].quantity = 2
-        // let first = {}
-        // let sec = {}
-        // let third = {}
-        // first = Object.assign(first, this.cart[0])
-        // first.title = 'Test1'
-        // sec = Object.assign(sec, this.cart[0])
-        // sec.title = 'Test2'
-        // third = Object.assign(third, this.cart[0])
-        // third.title = 'Test3'
-        // const ma = [first, sec, third]
-        // this.cart = ma
         this.calcTotal()
       }
       this.gotCartRes = true
@@ -46,7 +35,8 @@ export default {
       cart: [],
       total: 0,
       gotCartRes: false,
-      confirmPress: false
+      confirmPress: false,
+      insufficientBalance: false
     }
   },
   methods: {
@@ -83,21 +73,27 @@ export default {
       this.total = total
     },
     completePurchase () {
-      this.confirmPress = true
-      createTransactions(this.cart)
-      this.cart = []
-      
-      // remove all items from cart
-      fetch(EXPRESS_URL + '/cart/remove', {
-        method: 'POST',
-        credentials: 'include'
-      }).then(
-        success => {
-          console.log(success)
+      getAvailableBalance().then((res) => {
+        if (res >= this.total) {
+          this.confirmPress = true
+          //createTransactions(this.cart)
+          this.cart = []
+          // remove all items from cart
+          fetch(EXPRESS_URL + '/cart/remove', {
+            method: 'POST',
+            credentials: 'include'
+          }).then(
+            success => {
+              console.log(success)
+            }
+          ).catch(
+            error => console.log(error)
+          )
+        } else {
+          // display insufficient balance msg
+          this.insufficientBalance = true
         }
-      ).catch(
-        error => console.log(error)
-      )
+      })
     }
   }
 }
@@ -112,7 +108,7 @@ export default {
   }
 
   #cart-container{
-    margin-top: 175px;
+    margin-top: 75px;
     width: 60%;
     min-height: 200px;
     position: relative;

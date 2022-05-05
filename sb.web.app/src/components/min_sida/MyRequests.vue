@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { getRequests, cancelRequest, acceptRequest, postNotification } from '../../serverFetch'
+import { getRequests, cancelRequest, acceptRequest, postNotification, getUserAvailableBalance } from '../../serverFetch'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -71,10 +71,17 @@ export default {
       postNotification('saleRequestDenied', payer)
     },
 
-    accept (id, payer, index) {
-      this.statusSwap(index, 'accept')
-      acceptRequest(id)
-      postNotification('saleRequestAccepted', payer)
+    accept (id, payer, index, cost) {
+      // also check payee balance here
+      getUserAvailableBalance(payer).then((payerBalance) => {
+        if (cost <= payerBalance) {
+          this.statusSwap(index, 'accept')
+          acceptRequest(id)
+          postNotification('saleRequestAccepted', payer)
+        } else {
+          // display msg
+        } 
+      })
     },
 
     statusSwap (index, answer) {

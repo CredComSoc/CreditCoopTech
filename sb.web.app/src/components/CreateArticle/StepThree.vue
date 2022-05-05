@@ -5,7 +5,7 @@
     <div id="pic">
         <p>Välj fil</p>
     </div>
-    <button ref="addFile" @click=upload>Bläddra</button>
+    <button ref="addFile" id="upload-button" @click=upload>Bläddra</button>
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
@@ -23,6 +23,7 @@
 <script>
 
 import UploadedImage from './UploadedImage.vue'
+import { EXPRESS_URL, getImg } from '../../serverFetch'
 
 export default {
   name: 'StepThree',
@@ -60,6 +61,9 @@ export default {
         this.$refs.addFile.innerText = 'Välj fler'
         this.images.push([URLImg, this.images.length, false])
         this.imageObjs.push(imageObj)
+        if (this.images.length === 5) {
+          document.getElementById('upload-button').disabled = true
+        }
       } else {
         this.$emit('fileSizeError')
       }
@@ -86,26 +90,72 @@ export default {
       this.imageObjs.splice(imgId, 1)
       if (this.images.length === 0) {
         this.$refs.addFile.innerText = 'Bläddra'
+      } 
+
+      if (this.images.length < 5) {
+        document.getElementById('upload-button').disabled = false
       }
     },
-    // less then 1MB
+    // less then 2MB
     validatedFileSize (byteSize) {
-      return byteSize <= 1000000
+      return byteSize <= 2000000
     },
     validateImageFile (file) {
       const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
       return validImageTypes.includes(file.type)
-    }
-  },
-  mounted () {
-    if ('img' in this.savedProgress) {
+    },
+    displayImg () {
       this.$refs.addFile.innerText = 'Välj fler'
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
         this.imageObjs.push(img)
+
+        if (this.images.length === 5) {
+          document.getElementById('upload-button').disabled = true
+        }
       }
-    } 
+    }
+  },
+  mounted () {
+    // in edit mode
+    if ('coverImg' in this.savedProgress) {
+      if (this.savedProgress.img.length > 0) {
+        if (typeof this.savedProgress.img[0] === 'object') {
+          this.displayImg()
+          return
+        }
+      }
+      getImg(this.savedProgress.coverImg).then((res) => {
+        if (res.ok) {
+          return res.blob()
+        }
+      }).then(data => {
+        const URLImg = URL.createObjectURL(data)
+        this.imageObjs.push(new File([data], this.savedProgress.coverImg, { type: 'image/' + this.savedProgress.coverImg.split('.').pop() }))
+        this.images.push([URLImg, this.images.length, true])
+        this.$refs.addFile.innerText = 'Välj fler'
+      })
+      // multiple images uploaded
+      if ('img' in this.savedProgress) {
+        for (const img of this.savedProgress.img) {
+          getImg(img).then((res) => {
+            if (res.ok) {
+              return res.blob()
+            }
+          }).then(data => {
+            const URLImg = URL.createObjectURL(data)
+            this.imageObjs.push(new File([data], img, { type: 'image/' + img.split('.').pop() }))
+            this.images.push([URLImg, this.images.length, false])
+            if (this.images.length === 5) {
+              document.getElementById('upload-button').disabled = true
+            }
+          })
+        }
+      }     
+    } else if ('img' in this.savedProgress) { // not in edit mode
+      this.displayImg()
+    }
   }
 }
 </script>

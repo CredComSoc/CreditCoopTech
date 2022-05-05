@@ -15,7 +15,7 @@
       <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
       <PreviewItem title='Bilder' :text="null" :images='this.images' />
     </div>
-    <PopupCard v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel blir nu granskad och du får en notis när artikeln publiceras i shopen.`" btnLink='\' btnText="Ok" />
+    <PopupCard v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel är nu publicerad i shopen.`" btnLink='\' btnText="Ok" />
   </div>
 </template>
 

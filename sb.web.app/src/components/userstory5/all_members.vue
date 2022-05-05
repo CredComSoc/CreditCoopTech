@@ -13,12 +13,24 @@
   <div class="container_all_listings">
     <ul>
       <div v-for="city in searchData" :key="city">
-        <!-- city[0] == Name -->
-        <h3>{{city[0]}}</h3>
-        <!-- city[1] = array of members in city -->
-        <li v-for="member in city[1]" :key="member.title">
-          <Member :listingObj="member"/>
-        </li>
+        <div v-if="city[0] !== ''">
+          <!-- city[0] == Name -->
+          <h3>{{city[0]}}</h3>
+          <!-- city[1] = array of members in city -->
+          <li v-for="member in city[1]" :key="member.title">
+            <Member :listingObj="member"/>
+          </li>
+        </div>
+      </div>
+      <div v-for="city in searchData" :key="city">
+        <div v-if="city[0] === ''">
+          <!-- city[0] == Name -->
+          <h3>Okänd Stad</h3>
+          <!-- city[1] = array of members in city -->
+          <li v-for="member in city[1]" :key="member.title">
+            <Member :listingObj="member"/>
+          </li>
+        </div>
       </div>
     </ul>
   </div>
@@ -62,7 +74,12 @@ ul {
 
 li {
   list-style-type: none;
+  margin-bottom: 15px;
+}
 
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 /* @media only screen and (min-width: 1200) {

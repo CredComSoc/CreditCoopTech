@@ -109,7 +109,7 @@ export default {
           }
         })
       }
-    }), 120000)
+    }), 10000)
   },
   methods: {
     moveNotification (notification) {

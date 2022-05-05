@@ -1,5 +1,6 @@
 const express = require('express');
 const {MongoClient} = require('mongodb');
+const ObjectId = require('mongodb').ObjectId
 
 // Routes required by the Credits Common Node
 // https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
@@ -21,7 +22,7 @@ module.exports = function(dbUrl, dbFolder) {
           if (result != null) {
             for (user of result) {
               let userData = {
-              "id"      : user.profile.accountName,
+              "id"      : user._id.toString(),
               "status"  : user.is_active,
               "min"     : user.min_limit,
               "max"     : user.max_limit,
@@ -50,7 +51,7 @@ module.exports = function(dbUrl, dbFolder) {
         else  {
           let userArray = []
           if (result != null) {
-            result.forEach(user => userArray.push(user.profile.accountName))
+            result.forEach(user => userArray.push(user._id.toString()))
           }
           res.status(200).send(userArray)
           db.close();
@@ -84,7 +85,7 @@ module.exports = function(dbUrl, dbFolder) {
   
   router.get("/:acc_id", (req, res) => {
     console.log(req.params.acc_id)
-    let myquery = { 'profile.accountName': req.params.acc_id}
+    let myquery = { '_id': ObjectId(req.params.acc_id)}
   
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
@@ -95,7 +96,7 @@ module.exports = function(dbUrl, dbFolder) {
         }
         else if (result != null) {
           let userData = {
-            "id"      : result.profile.accountName,
+            "id"      : result._id.toString(),
             "status"  : result.is_active,
             "min"     : result.min_limit,
             "max"     : result.max_limit,

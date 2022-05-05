@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios').default;
-
+const {MongoClient} = require('mongodb');
+const ObjectId = require('mongodb').ObjectId
 
 const CC_NODE_URL = 'http://155.4.159.231/cc-node'
 
@@ -8,20 +9,48 @@ const CC_NODE_URL = 'http://155.4.159.231/cc-node'
 // Routes that make requests to the Credits Common Node on behalf of the user,
 // in order to authenticate the user with Passport before any requests to the ccNode is made.
 
-module.exports = function(dbUrl) {
+module.exports = async function(dbUrl, dbFolder) {
   const router = express.Router();
 
+  async function getUser(user_query) {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    const result = await dbo.collection("users").findOne(user_query)
+    db.close()
+    return result
+  }
+
   // PAYER MUST ALSO BE AUTHOR OF TRANSACTION
-  router.get("/purchases", async (req, res) => { 
+  router.get("/purchases", async (req, res) => {
+    const user = await getUser({'profile.accountName': req.user})
+    console.log(user._id.toString()) 
     try {
       const response = await axios.get(CC_NODE_URL + '/transaction/full', { 
       headers: {
-      'cc-user': req.user,
+      'cc-user': user._id.toString(),
       'cc-auth': '1'
       },
       params: {
-        'payer': req.user
+        'payer': user._id.toString()
       }})
+      let userNames = {}
+      for (const entry of response.data) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]
+      }
       res.status(200).send(response.data)
     } catch (error) {
       res.sendStatus(500)
@@ -29,15 +58,34 @@ module.exports = function(dbUrl) {
   })
 
   router.get("/requests", async (req, res) => { 
+    const user = await getUser({'profile.accountName': req.user})
     try {
       const response = await axios.get(CC_NODE_URL + '/transaction/full', { 
       headers: {
-       'cc-user': req.user,
+       'cc-user': user._id.toString(),
        'cc-auth': '1'
       },
       params: {
-        'payee': req.user
+        'payee': user._id.toString()
       }})
+      let userNames = {}
+      for (const entry of response.data) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]
+      }
       res.status(200).send(response.data)
     } catch (error) {
       res.sendStatus(500)
@@ -46,8 +94,9 @@ module.exports = function(dbUrl) {
 
   router.post("/createrequest", async (req, res) => {
     const article = req.body
-    console.log(article)
-    if (req.user == article.userUploader) {
+    const payer = await getUser({'profile.accountName': req.user})
+    const payee = await getUser({'profile.accountName': article.userUploader})
+    if (req.user === article.userUploader) {
       res.sendStatus(500)
       return
     }
@@ -55,8 +104,8 @@ module.exports = function(dbUrl) {
     try {
       response = await axios.post(CC_NODE_URL + '/transaction', 
       {
-        "payee"       : article.userUploader, 
-        "payer"       : req.user,
+        "payee"       : payee._id.toString(), 
+        "payer"       : payer._id.toString(),
         "quant"       : article.quantity * parseInt(article.price),
         "description" : article.article,
         "type"        : "credit",
@@ -65,69 +114,82 @@ module.exports = function(dbUrl) {
       {
         headers: 
         {
-          'cc-user': req.user,
+          'cc-user': payer._id.toString(),
           'cc-auth': '123'
         }
       })
     } catch (error) {
       console.log(error)
       res.sendStatus(500)
+      return
     }
-    console.log(response.data)
     try {
       await axios.patch(CC_NODE_URL + '/transaction/' + response.data.uuid + '/pending', {}, { 
       headers: {
-       'cc-user': req.user,
+       'cc-user': payer._id.toString(),
        'cc-auth': '1'
       }})
       res.sendStatus(200)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     } 
   })
 
   router.post("/cancelrequest", async (req, res) => {
+    const user = await getUser({'profile.accountName': req.user})
     const transactionId = req.body
     try {
       const response = await axios.patch(CC_NODE_URL + '/transaction/' + transactionId.uuid + '/erased', {}, { 
       headers: {
-       'cc-user': req.user,
+       'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
       res.sendStatus(500)
     }
   })
   
   router.post("/acceptrequest", async (req, res) => {
+    const user = await getUser({'profile.accountName': req.user})
     const transactionId = req.body
     try {
       const response = await axios.patch(CC_NODE_URL + '/transaction/' + transactionId.uuid + '/completed', {}, { 
       headers: {
-       'cc-user': req.user,
+       'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
-      res.sendStatus(500)
+      res.status(500).send(error)
     }
   })
   
   
-  router.get("/saldo", async (req, res) => { 
+  router.get("/saldo", async (req, res) => {
+    const user = await getUser({'profile.accountName': req.user}) 
     try {
-      const response = await axios.get(CC_NODE_URL + '/account/summary/' + req.user, { 
+      const response = await axios.get(CC_NODE_URL + '/account/summary/' + user._id.toString(), { 
       headers: {
-       'cc-user': req.user,
+       'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
+      res.sendStatus(500)
+    }
+  })
+
+  router.post("/saldo", async (req, res) => {
+    const user = await getUser({'profile.accountName': req.body.user}) 
+    try {
+      const response = await axios.get(CC_NODE_URL + '/account/summary/' + user._id.toString(), { 
+      headers: {
+       'cc-user': user._id.toString(),
+       'cc-auth': '1'
+      }})
+      res.status(200).send(response.data)
+    } catch (error) {
       res.sendStatus(500)
     }
   })

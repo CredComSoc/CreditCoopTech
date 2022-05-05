@@ -30,7 +30,7 @@
 </div>
 </template>
 <script>
-import { EXPRESS_URL } from '../../serverFetch'
+import { EXPRESS_URL, profile } from '../../serverFetch'
 export default {
 
   props: {
@@ -55,11 +55,14 @@ export default {
       }
     },
     getImgURL () {
-      console.log(EXPRESS_URL + '/image/' + this.listingObj.coverImg)
       return EXPRESS_URL + '/image/' + this.listingObj.coverImg
     },
     placeInCart () {
-      this.$emit('placeInCart', this.amount, this.listingObj)
+      profile().then(res => {
+        // if (res.name !== this.listingObj.userUploader) {
+        this.$emit('placeInCart', this.amount, this.listingObj)
+        // }
+      })
     }
   }
 }

@@ -13,20 +13,18 @@
       </nav>
     </header>
   </div>
-  <div id="space">
-  </div>
   <div class="login-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
       <div class="box-text">Logga in på Svensk Barter</div>
       <div>
         <label class="box-label">E-postadress</label>
-        <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" required>
+        <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
       </div>
       <div>
         <label class="box-label">Lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" required>
+        <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" id="password-input" required>
       </div>
-      <button>Logga in</button>
+      <button id="login-button" >Logga in</button>
     </form>
     <div class="box-error" v-if="error">
       Fel epost eller lösenord ({{ loginCount }})
