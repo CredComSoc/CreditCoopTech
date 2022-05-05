@@ -4,6 +4,7 @@
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
+    <PopupCard v-if="this.insufficientBalance" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra köpet.`" />
   </div>
 </template>
 
@@ -11,7 +12,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '../CreateArticle/PopupCard.vue'
-import { EXPRESS_URL, getCart } from '../../serverFetch'
+import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -46,12 +47,13 @@ export default {
       cart: [],
       total: 0,
       gotCartRes: false,
-      confirmPress: false
+      confirmPress: false,
+      insufficientBalance: false
     }
   },
   methods: {
     removeRow (ind) {
-      fetch(EXPRESS_URL + '/cart/remove/item' + this.cart[ind - 1].id, {
+      fetch(EXPRESS_URL + '/cart/remove/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
       }).then(
@@ -83,20 +85,27 @@ export default {
       this.total = total
     },
     completePurchase () {
-      this.confirmPress = true
-      this.cart = []
-      
-      // remove all items from cart
-      fetch(EXPRESS_URL + '/cart/remove', {
-        method: 'POST',
-        credentials: 'include'
-      }).then(
-        success => {
-          console.log(success)
+      getAvailableBalance().then((res) => {
+        if (res >= this.total) {
+          this.confirmPress = true
+          createTransactions(this.cart)
+        } else {
+          // display insufficient balance msg
+          this.insufficientBalance = true
         }
-      ).catch(
-        error => console.log(error)
-      )
+        this.cart = []
+        // remove all items from cart
+        fetch(EXPRESS_URL + '/cart/remove', {
+          method: 'POST',
+          credentials: 'include'
+        }).then(
+          success => {
+            console.log(success)
+          }
+        ).catch(
+          error => console.log(error)
+        )
+      })
     }
   }
 }

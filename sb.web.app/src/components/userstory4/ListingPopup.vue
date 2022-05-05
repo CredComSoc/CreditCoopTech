@@ -15,7 +15,7 @@
         <p>{{listingObj.destination}}</p>
         <p>{{listingObj.price}}</p>
       </div>
-      <div class="interactContent" >
+      <div class="interactContent" v-if="listingObj.status === 'selling'">
         <div>
           <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
           <p class="amountText"> {{amount}} </p>
@@ -25,12 +25,17 @@
           <button class="cartBtn" @click="placeInCart">Lägg i varukorg</button>
         </div>
       </div>
+      <div class="interactContent" v-if="listingObj.status === 'buying'">
+        <div>
+          <button class="chattBtn" @click="initiateChat">Starta chatt</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 </template>
 <script>
-import { EXPRESS_URL } from '../../serverFetch'
+import { EXPRESS_URL, profile } from '../../serverFetch'
 export default {
 
   props: {
@@ -55,11 +60,17 @@ export default {
       }
     },
     getImgURL () {
-      console.log(EXPRESS_URL + '/image/' + this.listingObj.img)
-      return EXPRESS_URL + '/image/' + this.listingObj.img
+      return EXPRESS_URL + '/image/' + this.listingObj.coverImg
     },
     placeInCart () {
-      this.$emit('placeInCart', this.amount, this.listingObj)
+      profile().then(res => {
+        if (res.name !== this.listingObj.userUploader) {
+          this.$emit('placeInCart', this.amount, this.listingObj)
+        }
+      })
+    },
+    initiateChat () {
+      console.log('Functionality not added')
     }
   }
 }
@@ -76,7 +87,7 @@ body {
   display: inline-block;
 }
 
-.cartBtn {
+.cartBtn, .chattBtn {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
@@ -108,8 +119,8 @@ body {
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 100vh;
-  height: 70%;
+  width: max(70%, 30rem);
+  height: max(80%, 20rem);
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
@@ -128,6 +139,7 @@ h5 {
 }
 
 .content-right {
+  width:100%;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -135,12 +147,18 @@ h5 {
 }
 
 .p-image {
-  height: 100%
+  object-fit: cover;
+  width: 70%;
+  height: 70%;
+  /*max-height: 70vh;*/
 }
 
 .xBtn {
   border: none;
   background-color: white;
+      position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .flex-center-bottom {
@@ -162,6 +180,22 @@ h5 {
 
 .interactContent > * {
   width: 100%;
+}
+
+@media screen and (max-width: 860px) {
+  .popup-inner {
+    width: 80%;
+    flex-wrap: wrap;
+  }
+  .content-right {
+    width: 100%;
+  }
+
+  .p-image {
+    width: 100%;
+    height: 45%;
+  }
+
 }
 
 </style>

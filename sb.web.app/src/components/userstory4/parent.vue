@@ -12,12 +12,12 @@
     <br>
 
     <div class="main">
+
+    <div class="filterButton">
+      <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
+    </div>
+
       <!-- KOLUMN FÖR KATERGORI-->
-
-      <div class="filterButton">
-        <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
-      </div>
-
       <div id="categories" class="categories">
         <Categories v-if="filterActive" @filterEvent="filteringMethod"/>
       </div>
@@ -61,7 +61,8 @@ export default {
       getAllListings,
       categoryArray: [],
       destinationsArray: [],
-      articleArray: []
+      articleArray: [],
+      statusArray: []
     }
   },
 
@@ -75,7 +76,12 @@ export default {
 
   methods: {
     triggerSearch (newSearchWord) {
-      this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray).then(res => {
+      console.log(newSearchWord)
+      console.log(this.destinationsArray)
+      console.log(this.categoryArray)
+      console.log(this.articleArray)
+      console.log(this.statusArray)
+      this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
         return res
       })
         .then(data => {
@@ -91,18 +97,25 @@ export default {
       this.popupActive = false
     },
     filteringMethod (checked, type, value) {
+      console.log(value)
+      console.log(checked)
+
       if (type === 'destination') {
         this.changeFiltering(checked, this.destinationsArray, value)
       } else if (type === 'category') {
         this.changeFiltering(checked, this.categoryArray, value)
       } else if (type === 'article') {
         this.changeFiltering(checked, this.articleArray, value)
+      } else if (type === 'status') {
+        this.changeFiltering(checked, this.statusArray, value)
       }
     },
     changeFiltering (checked, specificArray, value) {
       if (!checked) {
+        console.log('ADDED')
         specificArray.push(value)
       } else {
+        console.log('removed')
         specificArray.splice(specificArray.indexOf(value), 1)
       }
     },
@@ -216,5 +229,4 @@ h3 {
     flex-basis: 100%;
   }
 }
-
 </style>

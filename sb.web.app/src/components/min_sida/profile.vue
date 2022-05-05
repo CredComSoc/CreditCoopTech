@@ -48,17 +48,17 @@ export default {
     MyProducts,
     MyRequests
   },
+  created () {
+    if (this.$route.params.tab) {
+      this.tab = this.$route.params.tab
+    }
+  },
+  beforeUpdate () {
+    if (this.$route.params.tab) {
+      this.tab = this.$route.params.tab
+    }
+  },
   methods: {
-    created () {
-      if (this.$route.params.tab) {
-        this.tab = this.$route.params.tab
-      }
-    },
-    beforeUpdate () {
-      if (this.$route.params.tab) {
-        this.tab = this.$route.params.tab
-      }
-    },
     isMobile () {
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         return true

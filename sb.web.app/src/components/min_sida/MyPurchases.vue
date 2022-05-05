@@ -17,10 +17,10 @@
         <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td><img src="../../assets/städning.png" alt="Generisk Bild"></td>
+          <td><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{'1'}}</td>
-          <td>{{'1'}}</td>
           <td className="green">{{item.state}}</td>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
@@ -43,9 +43,9 @@
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
-            <td><img src="../../assets/städning.png" alt="Städservice AB"></td>
-            <td>{{'1'}}</td>
-            <td>{{item.entries[0].quant}}</td>
+            <td><Listing :listingId="getListing(item.entries[0])" /></td>
+            <td>{{item.entries[0].metadata.quantity}}</td>
+            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
             <td style="color: silver;">{{item.state}}</td>
           </tr>
@@ -56,12 +56,14 @@
 
 <script>
 import { getPurchases } from '../../serverFetch'
+import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
 
   data () {
     return {
-      purchases: []
+      purchases: [],
+      componentKey: 0
     }
   },
   mounted () {
@@ -69,6 +71,9 @@ export default {
       .then(res => {
         this.purchases = res
       })
+  },
+  components: {
+    Listing
   },
   methods: {
     invoice (filename, item) {
@@ -85,6 +90,9 @@ export default {
       } else {
         pom.click()
       }
+    },
+    getListing (item) {
+      return item.metadata.id
     }
   }
 }

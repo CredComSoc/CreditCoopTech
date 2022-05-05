@@ -1,9 +1,14 @@
 <template>
   <div>
-    <div class="element-container" @click="togglePopup">
+    <div v-if="listingObj" class="element-container" @click="togglePopup">
         <img :src='getImgURL()' />
         <h4 class="element-title"> {{ listingObj.title }} </h4>
         <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
+    </div>
+    <div v-if="listingId" class="element-container" @click="togglePopup">
+        <img :src='getImgURL()' />
+        <h4 class="element-title"> {{ newListingObj.title }} </h4>
+        <p class="element-desc"> {{ newListingObj.shortDesc }}  </p>
     </div>
   </div>
 </template>
@@ -11,19 +16,34 @@
 <script>
 
 // import ListingPopup from '@/components/userstory4/ListingPopup.vue'
-import { EXPRESS_URL } from '../../serverFetch'
+import { EXPRESS_URL, getArticleWithId } from '../../serverFetch'
 
 export default {
-
+  data () {
+    return {
+      newListingObj: Object
+    }
+  },
+  mounted () {
+    getArticleWithId(this.listingId)
+      .then(res => {
+        this.newListingObj = res
+      })
+  },
   props: {
-    listingObj: Object
+    listingObj: Object,
+    listingId: String
   },
   methods: {
     togglePopup () {
       this.$emit('togglePopupEvent', this.listingObj)
     },
     getImgURL () {
-      return EXPRESS_URL + '/image/' + this.listingObj.coverImg
+      if (this.listingId) {
+        return EXPRESS_URL + '/image/' + this.newListingObj.coverImg
+      } else {
+        return EXPRESS_URL + '/image/' + this.listingObj.coverImg
+      }
     }
   }
 }
@@ -63,6 +83,12 @@ export default {
         color: grey;
         margin-left: 9px;
         margin-right: 30px;
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 60%;
     }
 
 </style>

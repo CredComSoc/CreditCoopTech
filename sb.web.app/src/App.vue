@@ -7,6 +7,8 @@
   <!-- < User page /> -->
   <div id="app" v-else-if="auth">
     <Navbar :screenWidth="screenWidth"/>
+      <div id="space">
+      </div>
       <div className='body'>
         <router-view/>
       </div>
@@ -106,6 +108,10 @@ html, body {
 
 .body {  
   min-height: calc(90vh - 70px);
+}
+
+#space {
+  height:65px;
 }
 
 </style>
