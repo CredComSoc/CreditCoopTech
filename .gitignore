@@ -2,6 +2,8 @@
 backend/node_modules
 node_modules/
 sb.web.app/dist
+sb.web.app/node_modules
+
 
 
 # local env files
