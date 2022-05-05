@@ -26,7 +26,7 @@ export default {
     .speech-bubble{
         border-radius: 10px;
         border: 10px;
-        width: 300px;
+        width: 50%;
         padding: 10px;
         overflow: auto;
     }
@@ -43,5 +43,11 @@ export default {
         font-size: 16px;
         word-wrap: break-word;
     }
+
+    @media (max-width: 580px) {
+        p {
+            font-size: 14px;
+        }
+  }
 
 </style>

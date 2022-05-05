@@ -40,12 +40,8 @@ export default {
 <style scoped>
     #container-chatbox {
       border-top: 2px solid #A8A8A8;
-      width: 680px;
+      width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: space-around;
-      justify-content: center;
     }
 
     p {
@@ -61,4 +57,5 @@ export default {
       height: 100%;
       width: 100%;
     }
+    
 </style>

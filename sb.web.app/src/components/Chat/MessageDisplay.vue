@@ -39,7 +39,7 @@ export default {
     #frame {
       overflow:   none;
       position:   relative;
-      width:      615px;
+      width:      100%;
       height:     100%;
     }
 

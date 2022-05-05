@@ -1,7 +1,9 @@
 <template>
-<div id='container-input'>
-  <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
-  <button id="send-message" @click="send()">Skicka</button>
+<div id="frame-input">
+  <div id='container-input'>
+    <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+    <button id="send-message" @click="send()">Skicka</button>
+  </div>
 </div>
 </template>
 
@@ -21,7 +23,6 @@ export default {
 </script>
 
 <style scoped>
-
   #container-input {
     position: relative;
     width: 100%;
@@ -60,5 +61,17 @@ export default {
  #send-message:hover{
      background-color: #0a60a6;
  }
+
+ @media (max-height: 500px) {
+    #message-field {
+        min-height: 40px;
+        max-height: 50px;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #message-field::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
+    }
+  }
 
 </style>
