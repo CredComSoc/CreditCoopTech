@@ -1,8 +1,8 @@
 <template>
   <h1 id="title">MEDDELANDEN</h1>
   <div id="container-chat">
-    <ChatHistory :history="this.history"/>
-    <ChatBox reciever="Annas Kanelbullar" />
+    <ChatHistory @openChat="this.openChat" :history="this.history"/>
+    <ChatBox :activeChat="activeChat" :reciever="this.reciever" user="Kasper" @sendMessage="this.sendMessage"/>
   </div>
 </template>
 
@@ -18,12 +18,27 @@ export default {
   },
   data () {
     return {
-      history: [[0, 'Hello'], [1, 'Anna Book'], [2, 'Alicia Bergman']]
+      Chats: [[{ sender: 'Kasper', reciever: 'Alicica', message: 'how are you my dear' }, { sender: 'Alicia', reciever: 'Kasper', message: 'helloooooo' }], [{ sender: 'Anna Book', reciever: 'Kasper', message: 'Vad kul att chatta' }], [{ sender: 'Kasper', reciever: 'James', message: 'Okej' }, { sender: 'James', reciever: 'Kasper', message: 'låter bra' }, { sender: 'James', reciever: 'Kasper', message: 'super' }]],
+      history: ['Alicia', 'Anna Book', 'James'],
+      activeChat: [],
+      reciever: ''
     }
   },
   methods: {
+    openChat (userchat) {
+      if (userchat === 'Alicia') {
+        this.activeChat = this.Chats[0]
+      } else if (userchat === 'Anna Book') {
+        this.activeChat = this.Chats[1] 
+      } else if (userchat === 'James') {
+        this.activeChat = this.Chats[2] 
+      }
+      this.reciever = userchat
+    },
+    sendMessage (message) {
+      this.activeChat.push(message)
+    }
   }
-
 }
 </script>
 

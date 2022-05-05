@@ -1,9 +1,9 @@
 <template>
     <div class="fill">
-        <div v-if='sender' class="speech-bubble" id="blue-speech-bubble">
+        <div v-if='sender === user' class="speech-bubble" id="blue-speech-bubble">
             <p>{{message}}</p>
         </div> 
-        <div v-if='!sender' class="speech-bubble" id="gray-speech-bubble">
+        <div v-else class="speech-bubble" id="gray-speech-bubble">
             <p>{{message}}</p>
         </div>
     </div>
@@ -11,7 +11,7 @@
 
 <script>
 export default {   
-  props: ['sender', 'message']
+  props: ['sender', 'message', 'reciever', 'user']
 
 }
 </script>

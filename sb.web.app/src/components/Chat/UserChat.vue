@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="user-chat" type="button" v-if="!active" @click="openChat()">
+  <div :id="this.userchat" class="user-chat" type="button" @click="this.openChat">
       <p>{{userchat}}</p>
   </div> 
 </template>
@@ -7,14 +7,15 @@
 <script>
 export default {
   name: 'UserChat',
-  props: ['userchat', 'id'],
+  props: ['userchat'],
   methods: {
     openChat () {
       const chats = document.getElementsByClassName('user-chat')
       for (const chat of chats) {
         chat.classList.remove('active')
       } 
-      document.getElementById(this.id).classList.add('active')
+      document.getElementById(this.userchat).classList.add('active')
+      this.$emit('openChat', this.userchat)
     }
   }
 

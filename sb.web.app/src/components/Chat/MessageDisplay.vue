@@ -1,10 +1,12 @@
 <template>
 <div id="frame">
   <div id="container-msg-disp">
-    <SpeechBubble v-for="(msg) in this.messages"
-          :sender="msg[1]"
-          :key="msg[0]"
-          :message="msg[2]"
+    <SpeechBubble v-for="(msg,i) in this.messages"
+          :sender="msg.sender"
+          :reciever="msg.reciever"
+          :key="i"
+          :message="msg.message"
+          :user="this.user"
         />
   </div>
 </div>
@@ -19,7 +21,7 @@ export default {
   components: {
     SpeechBubble
   },
-  props: ['messages']
+  props: ['messages', 'user']
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div id="frame-chatbox">
     <p> {{ this.reciever }} </p>
     <div id="container-chatbox">
-      <MessageDisplay ref="msgDisp" :messages="this.messages"/>
+      <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
       <InputField @sendMessage="this.sendMessage"/>
     </div>
   </div>
@@ -19,15 +19,10 @@ export default {
     InputField,
     MessageDisplay
   },
-  props: ['reciever'],
-  data () {
-    return {
-      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja'], [1, true, 'ndjjansjd'], [2, false, 'hererer']]
-    }
-  },
+  props: ['reciever', 'activeChat', 'user'],
   methods: {
     sendMessage (message) {
-      this.messages.push([this.messages.length - 1, true, message])
+      this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message })
       nextTick(function () {
         const container = document.getElementById('container-msg-disp').lastElementChild
         container.scrollIntoView({ behavior: 'smooth', block: 'end' })

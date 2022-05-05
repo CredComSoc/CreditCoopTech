@@ -3,10 +3,9 @@
     <h3>DINA CHATTAR</h3>
     <div id="container-outer">
         <div id="container-history">
-            <UserChat v-for="(h) in this.history"
-                        :userchat="h[1]"
-                        :key="h[0]"
-                        :id="h[0]"
+            <UserChat @openChat="this.openChat" v-for="(h, i) in this.history"
+                        :userchat="h"
+                        :key="i"
                         />
         </div>
     </div>
@@ -24,6 +23,9 @@ export default {
     UserChat
   },
   methods: {
+    openChat (userchat) {
+      this.$emit('openChat', userchat)
+    }
   }
 }
 </script>
