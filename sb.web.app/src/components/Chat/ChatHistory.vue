@@ -47,8 +47,14 @@ export default {
     #container-history {
         width: 300px;
         height: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    #container-history::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
     }
 
     #container-outer {

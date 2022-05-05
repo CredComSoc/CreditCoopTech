@@ -29,6 +29,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  #container-input::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
   }
 
   #message-field{
@@ -61,15 +67,11 @@ export default {
  #send-message:hover{
      background-color: #0a60a6;
  }
+ 
  @media (max-height: 500px) {
     #message-field {
-        min-height: 40px;
-        max-height: 50px;
-        -ms-overflow-style: none;  /* Internet Explorer 10+ */
-        scrollbar-width: none;  /* Firefox */
-    }
-    #message-field::-webkit-scrollbar { 
-      display: none;  /* Safari and Chrome */
+      min-height: 40px;
+      max-height: 50px;
     }
   } 
 

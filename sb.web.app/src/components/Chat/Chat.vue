@@ -1,6 +1,6 @@
 <template>
   <h1 id="title">MEDDELANDEN</h1>
-  <div class="container-chat">
+  <div id="container-chat">
     <ChatHistory :history="this.history"/>
     <ChatBox reciever="Annas Kanelbullar" />
   </div>
