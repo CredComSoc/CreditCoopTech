@@ -1,6 +1,6 @@
 <template>
   <div style="max-height: 50em; overflow: scroll;">
-    <table>
+    <table v-if="requests">
       <tr>
         <th></th>
         <th>Köpare</th>
@@ -10,28 +10,35 @@
         <th>Summa</th>
         <th>Status</th>
       </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
-        <td>{{index + 1 + '.'}}</td>
-        <td>{{item.entries[0].payer}}</td>
-        <td><Listing :listingId="getListing(item.entries[0])" /></td>
-        <td>{{item.entries[0].metadata.quantity}}</td>
-        <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-        <td>{{item.entries[0].quant}}</td>
-        <td id="buttons">
-          <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
-          <button @click="accept(item.uuid, item.entries[0].payer, index)" style="background-color: green;"> Godkänn </button>
-        </td>
-      </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
-        <td>{{index + 1 + '.'}}</td>
-        <td>{{item.entries[0].payer}}</td>
-        <td><Listing :listingId="getListing(item.entries[0])" /></td>
-        <td>{{item.entries[0].metadata.quantity}}</td>
-        <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-        <td>{{item.entries[0].quant}}</td>
-        <td><p style="color: green;">GODKÄND</p></td>
-      </tr>
+      <div v-if="requests">
+        <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
+          <td>{{index + 1 + '.'}}</td>
+          <td>{{item.entries[0].payer}}</td>
+          <td><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant}}</td>
+          <td id="buttons">
+            <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
+            <button @click="accept(item.uuid, item.entries[0].payer, index)" style="background-color: green;"> Godkänn </button>
+          </td>
+        </tr>
+      </div>
+      <div v-if="requests">
+        <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
+          <td>{{index + 1 + '.'}}</td>
+          <td>{{item.entries[0].payer}}</td>
+          <td><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant}}</td>
+          <td><p style="color: green;">GODKÄND</p></td>
+        </tr>
+      </div>
     </table>
+    <div v-if="!requests">
+      <h1> Du har inte fått några köpförfrågningar än. </h1>
+    </div>
   </div>
 </template>
 

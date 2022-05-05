@@ -14,21 +14,25 @@
           <th>Status</th>
           <th>Faktura</th>
         </tr>
-        <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
-          <td>{{index + 1 + '.'}}</td>
-          <td>{{item.entries[0].payee}}</td>
-          <td><Listing :listingId="getListing(item.entries[0])" /></td>
-          <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
-          <td className="green">{{item.state}}</td>
-          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
-        </tr>
+        <div v-if="requests">
+          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
+            <td>{{index + 1 + '.'}}</td>
+            <td>{{item.entries[0].payee}}</td>
+            <td><Listing :listingId="getListing(item.entries[0])" /></td>
+            <td>{{item.entries[0].metadata.quantity}}</td>
+            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
+            <td>{{item.entries[0].quant}}</td>
+            <td className="green">{{item.state}}</td>
+            <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+          </tr>
+        </div>
       </table>
       </div>
 
       <h1> Väntande köp </h1>
-      <p> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+      <div>
+      <p> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+      </div>
       <div style="max-height: 50em; overflow: scroll;">
         <table>
           <tr>
@@ -40,15 +44,18 @@
             <th>Summa</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
-            <td>{{index + 1 + '.'}}</td>
-            <td>{{item.entries[0].payee}}</td>
-            <td><Listing :listingId="getListing(item.entries[0])" /></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <td style="color: silver;">{{item.state}}</td>
-          </tr>
+          <div v-if="requests">
+            <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
+              <td>{{index + 1 + '.'}}</td>
+              <td>{{item.entries[0].payee}}</td>
+              <td><Listing :listingId="getListing(item.entries[0])" /></td>
+              <td>{{item.entries[0].metadata.quantity}}</td>
+              <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
+              <td>{{item.entries[0].quant}}</td>
+              <td style="color: silver;">{{item.state}}</td>
+              <td> Avbryt </td>
+            </tr>
+          </div>
         </table>
       </div>
     </div>
@@ -69,6 +76,7 @@ export default {
   mounted () {
     getPurchases()
       .then(res => {
+        console.log(res)
         this.purchases = res
       })
   },

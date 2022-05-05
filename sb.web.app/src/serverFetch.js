@@ -519,3 +519,13 @@ export async function createTransactions (cart) {
     })  
   })
 }
+
+export async function resetPassword (email) {
+  fetch(EXPRESS_URL + '/forgot', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: email
+  })  
+}
