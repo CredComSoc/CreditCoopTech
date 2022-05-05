@@ -176,7 +176,26 @@ module.exports = async function(dbUrl, dbFolder) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      res.sendStatus(500)
+      res.status(200).send({
+        completed: {
+          balance: 0,
+          trades: 0,
+          entries: 0,
+          gross_in: 0,
+          gross_out: 0,
+          partners: 0,
+          volume: 0
+        },
+        pending: {
+          balance: 0,
+          trades: 0,
+          entries: 0,
+          gross_in: 0,
+          gross_out: 0,
+          partners: 0,
+          volume: 0
+        }
+      })
     }
   })
 

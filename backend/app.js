@@ -1,11 +1,12 @@
 const express = require('express');
 const server = require('./server');
+const dbConfig = require('./mongoDB-config')
 
 const port = 3000
 
 const app = express()
 
-server.initApp(app, dbFolder="tvitter")
+server.initApp(app, dbFolder=dbConfig.dbFolder)
 
 server_instance = server.startServer(app, port)
 

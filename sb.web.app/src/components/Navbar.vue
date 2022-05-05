@@ -4,15 +4,10 @@
       <nav>
         <div class="left-logos" v-if="this.desc">
           <div class="navlogo">
-            <router-link :to="{name:''}" @click="logOut">
-              <figure class="logo-click">
-                  <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
-                  <figcaption class="l-text"> </figcaption>
-              </figure>
-            </router-link>
-            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
-              <span class="mob-cap"> Logga Ut</span>
-            </router-link>
+            <figure>
+                <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
+                <figcaption class="l-text"> </figcaption>
+            </figure>
           </div>
             <div class="navlogo">
               <router-link :to="{name:'Shop'}">
