@@ -3,15 +3,25 @@
     <h3>DINA CHATTAR</h3>
     <div id="container-outer">
         <div id="container-history">
+            <UserChat v-for="(h) in this.history"
+                        :userchat="h[1]"
+                        :key="h[0]"
+                        />
         </div>
     </div>
 </div>
 </template>
 
 <script>
-export default {
-  name: 'ChatHistory'
 
+import UserChat from './UserChat.vue'
+
+export default {
+  name: 'ChatHistory',
+  props: ['history'],
+  components: {
+    UserChat
+  }
 }
 </script>
 

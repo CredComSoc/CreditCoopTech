@@ -1,7 +1,7 @@
 <template>
   <h1 id="title">MEDDELANDEN</h1>
   <div class="container-chat">
-    <ChatHistory />
+    <ChatHistory :history="this.history"/>
     <ChatBox reciever="Annas Kanelbullar" />
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
   components: {
     ChatHistory,
     ChatBox
+  },
+  data () {
+    return {
+      history: [[0, 'Hello'], [1, 'Anna Book'], [2, 'Alicia Bergman']]
+    }
   }
 
 }
