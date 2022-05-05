@@ -25,6 +25,9 @@ export default {
   #container-input {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   #message-field{

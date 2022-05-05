@@ -55,17 +55,18 @@ export async function logout () {
 }
 
 export async function authenticate () {
-  return fetch(EXPRESS_URL + '/authenticate', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((response) => {
-    return response.json()
-  }).catch(() => {
-    return false
-  }) 
+  // return fetch(EXPRESS_URL + '/authenticate', { 
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   credentials: 'include'
+  // }).then((response) => {
+  //   return response.json()
+  // }).catch(() => {
+  //   return false
+  // }) 
+  return true
 }
 
 export async function checkAdminStatus () {
