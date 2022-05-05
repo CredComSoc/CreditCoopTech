@@ -76,7 +76,7 @@ export default {
       getAvailableBalance().then((res) => {
         if (res >= this.total) {
           this.confirmPress = true
-          //createTransactions(this.cart)
+          createTransactions(this.cart)
           this.cart = []
           // remove all items from cart
           fetch(EXPRESS_URL + '/cart/remove', {

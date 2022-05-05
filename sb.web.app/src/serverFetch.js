@@ -642,12 +642,7 @@ export async function getArticleWithId (id) {
     .catch(() => {
       return false
     })
-  // console.log(promise)
-  // if (promise) {
-  //   return promise.completed.balance
-  // } else {
-  //   return null
-  // }
+  return promise
 }
 
 export async function getImg (filename) {
