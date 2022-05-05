@@ -55,6 +55,7 @@ export async function logout () {
 }
 
 export async function authenticate () {
+  /*
   return fetch(EXPRESS_URL + '/authenticate', { 
     method: 'GET',
     headers: {
@@ -65,10 +66,12 @@ export async function authenticate () {
     return response.json()
   }).catch(() => {
     return false
-  }) 
+  }) */
+  return true
 }
 
 export async function checkAdminStatus () {
+  /*
   return fetch(EXPRESS_URL + '/admin', { 
     method: 'GET',
     headers: {
@@ -79,7 +82,8 @@ export async function checkAdminStatus () {
     return response.json()
   }).catch(() => {
     return false
-  }) 
+  }) */
+  return false
 }
 
 /*****************************************************************************
