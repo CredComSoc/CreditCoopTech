@@ -3,7 +3,7 @@
     <h3>DINA CHATTAR</h3>
     <div id="container-outer">
         <div id="container-history">
-            <UserChat @openChat="this.openChat" v-for="(h) in this.history"
+            <UserChat v-for="(h) in this.history"
                         :userchat="h[1]"
                         :key="h[0]"
                         :id="h[0]"
@@ -24,8 +24,6 @@ export default {
     UserChat
   },
   methods: {
-    openChat (id) {
-    }
   }
 }
 </script>
@@ -63,4 +61,36 @@ export default {
        position: relative;        
        height: 100%;
     }
+
+    @media (max-width: 1090px) {
+        #container-history {
+            width: 220px;
+        }
+    }
+
+    @media (max-width: 740px) {
+        #container-history {
+            width: 150px;
+        }
+    }
+
+    @media (max-width: 580px) {
+    #container-history {
+      width: 129px; 
+    }
+    h3 {
+        font-size: 14px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    #container-history{
+      width: 110px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+  }
+    
 </style>

@@ -22,7 +22,7 @@ export default {
   props: ['reciever'],
   data () {
     return {
-      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja']]//, [1, true, 'ndjjansjd'], [2, false, 'hererer']]
+      messages: [[0, true, 'bllsndjksdns ckskd clkcjnsdcnjks c s csaskldkasjdlkasjdlkjasd lkasjldkjaslkdjlas dlaksjdkljaslkdja dlaskjdkljaslkdjklasjdlkaja'], [1, true, 'ndjjansjd'], [2, false, 'hererer']]
     }
   },
   methods: {
@@ -42,10 +42,6 @@ export default {
       border-top: 2px solid #A8A8A8;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: space-around;
-      justify-content: center;
     }
 
     p {
@@ -61,4 +57,5 @@ export default {
       height: 100%;
       width: 100%;
     }
+    
 </style>
