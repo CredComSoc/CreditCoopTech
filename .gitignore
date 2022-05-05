@@ -3,6 +3,7 @@ backend/node_modules
 node_modules/
 sb.web.app/dist
 sb.web.app/node_modules
+sb.web.app/package-lock.json
 
 
 
