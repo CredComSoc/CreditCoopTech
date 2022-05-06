@@ -2,7 +2,7 @@
   <h1 id="title">MEDDELANDEN</h1>
   <div id="container-chat">
     <ChatHistory @openChat="this.openChat" :history="this.history"/>
-    <ChatBox :activeChat="activeChat" :reciever="this.reciever" user="Kasper" @sendMessage="this.sendMessage"/>
+    <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" user="Kasper" @sendMessage="this.sendMessage"/>
   </div>
 </template>
 
@@ -34,6 +34,7 @@ export default {
         this.activeChat = this.Chats[2] 
       }
       this.reciever = userchat
+      this.$refs.chatbox.scrolltoBottom()
     },
     sendMessage (message) {
       this.activeChat.push(message)
