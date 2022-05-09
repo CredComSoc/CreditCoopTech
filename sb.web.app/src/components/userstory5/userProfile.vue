@@ -1,60 +1,92 @@
 <template>
-  <div className="flexbox-container2 flexbox-item">
-    
-    <div className="image container-item">
-      <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+  <div>
+    <div className="flexbox-container2 flexbox-item">
+      <div className="image container-item">
+        <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+      </div>
+      <div className="right container-item">
+        <h1> Företagsnamn </h1>
+        <p> {{profileData.name}} </p>
+
+        <h1> Beskrivning </h1>
+        <p> {{profileData.description}} </p>
+
+        <h1> Adress </h1>
+        <p> {{profileData.adress}} </p>
+
+        <h1> Stad/ort </h1>
+        <p> {{profileData.city}} </p>
+
+        <h1> Faktureringsuppgifter </h1>
+        <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
+      </div>
+      <div className="right container-item">
+        <div>
+          <h1> Kontaktuppgifter </h1>
+          <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
+        </div>
+      </div>
     </div>
-    <div className="right container-item">
-      <h1> Företagsnamn </h1>
-      <p> {{profileData.name}} </p>
-
-      <h1> Beskrivning </h1>
-      <p> {{profileData.description}} </p>
-
-      <h1> Adress </h1>
-      <p> {{profileData.adress}} </p>
-
-      <h1> Stad/ort </h1>
-      <p> {{profileData.city}} </p>
-
-      <h1> Faktureringsuppgifter </h1>
-      <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
-    </div>
-    <div className="right container-item">
-      <div>
-        <h1> Kontaktuppgifter </h1>
-        <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
+    <div class="sendmoney-box" v-if="profileData.name !== currentUser">
+      <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
+        <h1 class="box-text">Skicka Barterkronor</h1>
+        <div>
+          <label class="box-label">Antal</label>
+          <input class="box-input" type="text" v-model="bkr" name="" placeholder="Antal" id="bkr-input" pattern="\d*" required>
+        </div>
+        <div>
+          <label class="box-label">Kommentar</label>
+          <textarea class="box-textarea" type="password" v-model="comment" name="" placeholder="Kommentar" id="comment-input"> </textarea>
+        </div>
+        <button id="login-button">Skicka</button>
+      </form>
+      <div class="box-error" v-if="error">
+        Fel epost eller lösenord ({{ loginCount }})
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { EXPRESS_URL, getMember } from './../../serverFetch'
+import { EXPRESS_URL, getMember, profile, getSaldo, sendMoney } from './../../serverFetch'
 
 export default {
   data () {
     return {
       logoURL: '',
       profileData: [],
-      getMember
+      getMember,
+      currentUser: '',
+      bkr: 0,
+      comment: ''
     }
   },
   methods: {
     getProfile (member) {
-      console.log(member)
       this.getMember(member).then(res => {
-        console.log(res)
         this.profileData = res
         this.getImgURL()
       })
     },
     getImgURL () {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
+    },
+    async sendBkr () {
+      const saldo = await getSaldo()
+      if (saldo < this.bkr) {
+        // error för lite saldo
+      }
+      await sendMoney(this.bkr, this.comment, this.profileData.name)
+      await confirm('test msg')
+      this.bkr = 0
+      this.comment = ''
     }
   },
   created: function () {
     this.getProfile(this.$route.params.userprofile)
+    profile().then((res) => {
+      this.currentUser = res.name
+    })
   }
 }
 
@@ -106,6 +138,66 @@ h1 {
   .image {
     width: 50%;
   }
+}
+
+.sendmoney-box {
+    font-family: Ubuntu;
+    font-style: Regular;
+    font-size:  20px;
+    text-align: left;
+    letter-spacing: 0.05em;
+    padding-left: 19px;
+    padding-right: 19px;
+    width: 345px;
+    height: 570px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 5%;
+    position: relative;
+}
+
+button {
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 2px 12px 2px 12px;
+  background-color: #F3F3F3;
+}
+
+.box-text {
+  padding-top: 20px;
+  padding-bottom: 18px;
+}
+
+.box-label {
+  padding-bottom: 8px;
+}
+
+.box-input {
+  border: 0px;
+  width: 340px;
+  height: 34px;
+  background-color: #F3F3F3;
+  margin-left: 20px;
+  margin-bottom: 16px;
+  padding-left: 8px;
+}
+
+.box-textarea{
+  border: 0px;
+  width: 340px;
+  height: 102px;
+  background-color: #F3F3F3;
+  margin-left: 20px;
+  margin-bottom: 36px;
+  padding-left: 8px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
 
 </style>

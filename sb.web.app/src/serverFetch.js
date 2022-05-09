@@ -18,6 +18,27 @@ function hashMyPassword (password) {
 
 /*****************************************************************************
  * 
+ *                               Images
+ *                 
+ *****************************************************************************/
+
+export async function getImg (filename) {
+  const promise = await fetch(EXPRESS_URL + '/image/' + filename, {
+    method: 'GET',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}
+
+/*****************************************************************************
+ * 
  *                           Login & Authentication
  *                 
  *****************************************************************************/
@@ -150,7 +171,6 @@ export async function updateProfile (accountName, description, adress, city, bil
     phone: phone
   }))
   data.append('file', logo)
-  console.log(data)
   return await fetch(EXPRESS_URL + '/updateProfile', {
     method: 'POST',
     credentials: 'include',
@@ -165,6 +185,12 @@ export async function updateProfile (accountName, description, adress, city, bil
     console.error('There has been a problem with your fetch operation:', err)
   })
 }
+
+/*****************************************************************************
+ * 
+ *                                Articles 
+ *                 
+ *****************************************************************************/
 
 export function getArticles () {
   const promise = fetch(EXPRESS_URL + '/articles', {
@@ -183,35 +209,22 @@ export function getArticles () {
   return promise
 }
 
-/*****************************************************************************
- * 
- *                                Shop
- *                 
- *****************************************************************************/
-
-export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
-  return await fetch(EXPRESS_URL + '/getAllListings/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
+export async function getArticleWithId (id) {
+  const promise = await fetch(EXPRESS_URL + '/article/' + id, {
+    method: 'GET',
+    credentials: 'include'
   })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      return (data.listing)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
 }
-
-/*****************************************************************************
- * 
- *                                Create Article
- *                 
- *****************************************************************************/
 
 export async function uploadArticle (data) {
   return await fetch(EXPRESS_URL + '/upload/article', { 
@@ -228,7 +241,7 @@ export async function uploadArticle (data) {
 }
 
 export async function deletePost (id, imgIDs) {
-  const promise = await fetch(EXPRESS_URL + '/article/remove/' + id, {
+  return await fetch(EXPRESS_URL + '/article/remove/' + id, {
     method: 'POST',
     body: JSON.stringify({ imgIDs: imgIDs }),
     headers: {
@@ -242,8 +255,31 @@ export async function deletePost (id, imgIDs) {
   }).catch(error => {
     return error
   }) 
+}
 
-  return promise
+/*****************************************************************************
+ * 
+ *                                Shop
+ *                 
+ *****************************************************************************/
+
+export async function getAllListings (searchword, destinationsArray, categoryArray, articleArray) {
+  return await fetch(EXPRESS_URL + '/getAllListings/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json()
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
 }
 
 /*****************************************************************************
@@ -331,6 +367,24 @@ export async function getAllMembers (searchWord) {
   const finishMap = new Map([...adminMembersArray, ...sortedMap])
 
   return { allMembers: finishMap }
+}
+
+export async function sendMoney (amount, comment, payee) {
+  const data = {
+    price: amount,
+    quantity: 1,
+    article: comment,
+    id: '0',
+    userUploader: payee
+  }
+  await fetch(EXPRESS_URL + '/createrequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
 }
 
 /*****************************************************************************
@@ -444,7 +498,6 @@ export async function deleteCart (id) {
 
 export async function createTransactions (cart) {
   cart.forEach(element => {
-    console.log(element)
     fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {
@@ -459,7 +512,7 @@ export async function createTransactions (cart) {
 
 /*****************************************************************************
  * 
- *                                Transactions
+ *                                Saldo
  *                 
  *****************************************************************************/
 
@@ -550,6 +603,12 @@ export async function getUserAvailableBalance (user) {
   return saldo - promise
 }
 
+/*****************************************************************************
+ * 
+ *                                Transactions
+ *                 
+ *****************************************************************************/
+
 export function getPurchases () {
   const promise = fetch(EXPRESS_URL + '/purchases', {
     method: 'GET',
@@ -625,37 +684,5 @@ export function acceptRequest (id) {
     .catch(() => {
       return false
     })
-  return promise
-}
-
-export async function getArticleWithId (id) {
-  const promise = await fetch(EXPRESS_URL + '/article/' + id, {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data.listing)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-export async function getImg (filename) {
-  const promise = await fetch(EXPRESS_URL + '/image/' + filename, {
-    method: 'GET',
-    credentials: 'include'
-  }).then((res) => {
-    return res
-  }).then((success) => {
-    return success
-  }).catch(error => {
-    return error
-  }) 
-
   return promise
 }

@@ -1,16 +1,22 @@
 <template>
   <div>
-    <div v-if="listingObj" class="element-container" @click="togglePopup">
-        <img :src='getImgURL()' />
-        <h4 class="element-title"> {{ listingObj.title }} </h4>
-        <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
+      <div v-if="listingObj" class="element-container" @click="togglePopup">
+          <img :src='getImgURL()' />
+          <h4 class="element-title"> {{ listingObj.title }} </h4>
+          <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
+      </div>
+      <div v-if="listingId && listingId !== '0'" class="element-container">
+          <img :src='getImgURL()' />
+          <h4 class="element-title"> {{ newListingObj.title }} </h4>
+          <p class="element-desc"> {{ newListingObj.shortDesc }}  </p>
+      </div>
+      <div v-if="listingId && listingId === '0'" class="element-container">
+          <img src='../../assets/sb2.png' />
+          <h4 class="element-title"> Överföring </h4>
+          <p class="element-desc"> {{ comment }}  </p>
+      </div>
     </div>
-    <div v-if="listingId" class="element-container" @click="togglePopup">
-        <img :src='getImgURL()' />
-        <h4 class="element-title"> {{ newListingObj.title }} </h4>
-        <p class="element-desc"> {{ newListingObj.shortDesc }}  </p>
-    </div>
-  </div>
+    
 </template>
 
 <script>
@@ -25,15 +31,19 @@ export default {
     }
   },
   mounted () {
-    getArticleWithId(this.listingId)
-      .then(res => {
-        this.newListingObj = res
-        console.log(res)
-      })
+    if (this.listingId !== '0') {
+      getArticleWithId(this.listingId)
+        .then(res => {
+          this.newListingObj = res
+          console.log(res)
+        })
+    } else {
+    }
   },
   props: {
     listingObj: Object,
-    listingId: String
+    listingId: String,
+    comment: String
   },
   methods: {
     togglePopup () {

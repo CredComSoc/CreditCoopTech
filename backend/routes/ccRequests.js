@@ -94,6 +94,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/createrequest", async (req, res) => {
     const article = req.body
+    console.log(article)
     const payer = await getUser({'profile.accountName': req.user})
     const payee = await getUser({'profile.accountName': article.userUploader})
     if (req.user === article.userUploader) {
@@ -146,6 +147,7 @@ module.exports = async function(dbUrl, dbFolder) {
       }})
       res.status(200).send(response.data)
     } catch (error) {
+      console.log(error)
       res.sendStatus(500)
     }
   })

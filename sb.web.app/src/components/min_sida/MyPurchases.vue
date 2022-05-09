@@ -6,7 +6,7 @@
       <table>
         <tr>
           <th></th>
-          <th>Säljare</th>
+          <th>Företag</th>
           <th>Artikel</th>
           <th>Antal</th>
           <th>Pris</th>
@@ -17,7 +17,8 @@
         <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
@@ -33,7 +34,7 @@
         <table>
           <tr>
             <th></th>
-            <th>Säljare</th>
+            <th>Företag</th>
             <th>Artikel</th>
             <th>Antal</th>
             <th>Pris</th>
@@ -43,7 +44,8 @@
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
-            <td><Listing :listingId="getListing(item.entries[0])" /></td>
+            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
+            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
             <td>{{item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>

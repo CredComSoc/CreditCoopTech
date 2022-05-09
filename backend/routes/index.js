@@ -110,6 +110,8 @@ module.exports = async function(dbUrl, dbFolder) {
   router.get("/admin", (req, res) => {
     getUser({ "profile.accountName": req.user }).then((user) => {
       res.status(200).json(user.is_admin)
+    }).catch((error) => {
+      res.sendStatus(500)
     })
   })
 
@@ -199,7 +201,6 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/updateProfile", upload.single('file'), (req, res) => {
     getUser({ "profile.accountName": req.user }).then((user) => {
-      //console.log(user)
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
         let newProfile = {
@@ -230,7 +231,6 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         }
         updateUser({ "profile.accountName": req.user }, query).then((query) => {
-          console.log(query)
           if (query.acknowledged) {
             // delete old logo if exists
             if (req.file) {
@@ -240,10 +240,6 @@ module.exports = async function(dbUrl, dbFolder) {
               gridfsBucket.delete(user.profile.logo_id, function (err, r) {
                 if (err) {
                   console.log(err)
-                }
-                else {
-                  console.log("deleted")
-                  console.log("image:", user.profile.logo_id, "filename:", user.profile.logo)
                 }
               });
             }
@@ -258,45 +254,144 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  /*****************************************************************************
+   * 
+   *                                Articles
+   *                 
+   *****************************************************************************/
+
   router.get("/articles", async (req, res) => {
-    let products = [];
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    dbo.collection('posts').find({}).toArray(function (err, posts) {
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      }
-      else {
-        posts.forEach(listing => {
-          if(listing.userUploader === req.user) {
-            products.push(listing)
-          }
-        })
-        res.status(200).send({products})
-        db.close()
-      } 
-    })
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      let products = [];
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      dbo.collection('posts').find({}).toArray(function (err, posts) {
+        if (err) {
+          res.sendStatus(500)
+          db.close()
+        }
+        else {
+          posts.forEach(listing => {
+            if(listing.userUploader === req.user) {
+              products.push(listing)
+            }
+          })
+          res.status(200).send({products})
+          db.close()
+        } 
+      })
+    }
   })
 
   router.get("/article/:id", async (req, res) => {
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    dbo.collection('posts').find({}).toArray(function (err, posts) {
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      }
-      else {
-        posts.forEach(listing => {
-          if(listing.id === req.params.id) {
-            res.status(200).send({listing})
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      dbo.collection('posts').find({}).toArray(function (err, posts) {
+        if (err) {
+          res.sendStatus(500)
+          db.close()
+        }
+        else {
+          let foundArticle = false
+          posts.forEach(listing => {
+            if(listing.id === req.params.id) {
+              foundArticle = true;
+              res.status(200).send({listing})
+              db.close()
+            }
+          })
+          if (!foundArticle) {
+            res.sendStatus(500)
             db.close()
           }
-        })
-      } 
-    })
+        } 
+      })
+    }
   })
+
+    // create a article object in mongoDB
+    router.post('/upload/article', upload.array('file', 5), async (req, res) => {
+      if (!req.isAuthenticated()) {
+        res.sendStatus(401)
+      } else {
+        const newArticle = JSON.parse(req.body.article);
+        if (req.files)
+        {
+          let images = req.files.map(obj => obj.filename);
+          newArticle.coverImg = images[req.body.coverImgInd];
+          images = images.filter((img) => { return img !== newArticle.coverImg })
+          newArticle.img = images;
+        }
+        newArticle.id = uuid.v4().toString();
+        newArticle.userUploader = req.user;
+        
+        // for ttl index in posts
+        if ('end-date' in newArticle) {
+          newArticle['end-date'] = new Date(newArticle['end-date']);
+        }
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
+        dbo.collection("posts").insertOne(newArticle, (err, result)=>{
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else if (result != null) {
+            res.sendStatus(200);
+            db.close()
+          }
+          else {
+            // If we dont find a result
+            db.close();
+            res.status(404).send("No posts found.")
+          }
+        })
+      }
+    });
+  
+    router.post('/article/remove/:id', (req, res) => {
+  
+      // get all img id from request payload
+      const imgIDs = req.body.imgIDs; 
+  
+      // delete article from db
+      const query = { id: req.params.id };
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection('posts').deleteOne(query, function (err, result) {
+          if (err) {
+            db.close();
+            res.sendStatus(500);
+          }
+          else if (result.matchedCount != 0) {
+            // delete all img of existing article
+            for (const id of imgIDs) {
+              gfs.delete(ObjectId(id), function (err, r2) {
+                if (err) {
+                  console.log(err)
+                }
+                else {
+                  console.log("deleted")
+                  console.log("image:", id)
+                }
+              });
+            }
+            db.close();
+            res.sendStatus(200);
+          }
+          else {
+            // If we dont find a result
+            db.close();
+            res.sendStatus(204);
+          }
+        })
+      })
+    });
 
   /*****************************************************************************
    * 
@@ -304,31 +399,11 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.get('/post/:id', (req, res) => {
-    const id = req.params.id;
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
-      dbo.collection("posts").findOne({ id: id }, (err, result) => {
-        if (err) {
-          db.close();
-          res.sendStatus(500)
-        }
-        else if (result.matchedCount != 0) {
-          const post = result;
-          db.close();
-          res.status(200).json(post);
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.status(204).json(null);
-        }
-      })
-    })
-  });
-
   router.post('/getAllListings', async (req, res) => {
-    // fetch all metadata about listing from mongoDB
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+          // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;
     let categories = req.body.categories;
@@ -340,6 +415,7 @@ module.exports = async function(dbUrl, dbFolder) {
     searchword = searchword.filter(function(value, index, arr) {
       return value !== "";
     })
+
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     dbo.collection('posts').find({}).toArray(function (err, posts) {
@@ -390,94 +466,8 @@ module.exports = async function(dbUrl, dbFolder) {
         db.close()  
       }
     })
-  })
-
-  /*****************************************************************************
-   * 
-   *                                Create Article
-   *                 
-   *****************************************************************************/
-
-  // create a article object in mongoDB
-  router.post('/upload/article', upload.array('file', 5), async (req, res) => {
-    if (!req.isAuthenticated()) {
-      res.sendStatus(401)
-    } else {
-      const newArticle = JSON.parse(req.body.article);
-      if (req.files)
-      {
-        let images = req.files.map(obj => obj.filename);
-        newArticle.coverImg = images[req.body.coverImgInd];
-        images = images.filter((img) => { return img !== newArticle.coverImg })
-        newArticle.img = images;
-      }
-      newArticle.id = uuid.v4().toString();
-      newArticle.userUploader = req.user;
-      
-      // for ttl index in posts
-      if ('end-date' in newArticle) {
-        newArticle['end-date'] = new Date(newArticle['end-date']);
-      }
-      const db = await MongoClient.connect(dbUrl)
-      const dbo = db.db(dbFolder);
-      dbo.collection("posts").insertOne(newArticle, (err, result)=>{
-        if (err) {
-          res.sendStatus(500)
-          db.close()
-        }
-        else if (result != null) {
-          res.sendStatus(200);
-          db.close()
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.status(404).send("No posts found.")
-        }
-      })
     }
-  });
-
-  router.post('/article/remove/:id', (req, res) => {
-
-    // get all img id from request payload
-    const imgIDs = req.body.imgIDs;
-    console.log(imgIDs);
-
-    // delete article from db
-    const query = { id: req.params.id };
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
-      dbo.collection('posts').deleteOne(query, function (err, result) {
-        if (err) {
-          db.close();
-          res.sendStatus(500);
-        }
-        else if (result.matchedCount != 0) {
-          // delete all img of existing article
-          for (const id of imgIDs) {
-            gfs.delete(ObjectId(id), function (err, r2) {
-              if (err) {
-                console.log(err)
-              }
-              else {
-                console.log("deleted")
-                console.log("image:", id)
-              }
-            });
-          }
-          db.close();
-          res.sendStatus(200);
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.sendStatus(204);
-        }
-      })
-    })
-  });
-
+  })
 
 
   /*****************************************************************************

@@ -3,7 +3,7 @@
     <table>
       <tr>
         <th></th>
-        <th>Köpare</th>
+        <th>Företag</th>
         <th>Artikel</th>
         <th>Antal</th>
         <th>Pris</th>
@@ -13,7 +13,8 @@
       <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><Listing :listingId="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -25,7 +26,8 @@
       <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
         <td>{{index + 1 + '.'}}</td>
         <td>{{item.entries[0].payer}}</td>
-        <td><Listing :listingId="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -49,6 +51,7 @@ export default {
   mounted () {
     getRequests()
       .then(res => {
+        console.log(res)
         this.requests = res
       })
   },
