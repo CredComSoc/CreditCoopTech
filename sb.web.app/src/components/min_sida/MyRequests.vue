@@ -10,11 +10,10 @@
         <th>Summa</th>
         <th>Status</th>
       </tr>
-      <div v-if="requests">
         <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payer}}</td>
-          <td><Listing :listingId="getListing(item.entries[0])" /></td>
+          <td className='article'><Listing :listingId="getListing(item.entries[0])"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
@@ -23,8 +22,6 @@
             <button @click="accept(item.uuid, item.entries[0].payer, index)" style="background-color: green;"> Godkänn </button>
           </td>
         </tr>
-      </div>
-      <div v-if="requests">
         <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
           <td>{{index + 1 + '.'}}</td>
           <td>{{item.entries[0].payer}}</td>
@@ -34,7 +31,6 @@
           <td>{{item.entries[0].quant}}</td>
           <td><p style="color: green;">GODKÄND</p></td>
         </tr>
-      </div>
     </table>
     <div v-if="!requests">
       <h1> Du har inte fått några köpförfrågningar än. </h1>
@@ -138,6 +134,12 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 15px 2px 15px;
+}
+
+.article {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

@@ -3,7 +3,7 @@
       <h1><b> Bekräftade köp </b></h1>
       <p> Dina bekräftade köp. </p>
       <div style="max-height: 50em; overflow: scroll;">
-      <table>
+      <table v-if="purchases">
         <tr>
           <th></th>
           <th>Säljare</th>
@@ -14,18 +14,16 @@
           <th>Status</th>
           <th>Faktura</th>
         </tr>
-        <div v-if="requests">
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
-            <td><Listing :listingId="getListing(item.entries[0])" /></td>
+            <td className='article'><Listing :listingId="getListing(item.entries[0])" /></td>
             <td>{{item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
             <td className="green">{{item.state}}</td>
             <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
           </tr>
-        </div>
       </table>
       </div>
 
@@ -44,25 +42,23 @@
             <th>Summa</th>
             <th>Status</th>
           </tr>
-          <div v-if="requests">
             <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
               <td>{{index + 1 + '.'}}</td>
               <td>{{item.entries[0].payee}}</td>
-              <td><Listing :listingId="getListing(item.entries[0])" /></td>
+              <td className='article'><Listing :listingId="getListing(item.entries[0])" /></td>
               <td>{{item.entries[0].metadata.quantity}}</td>
               <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
               <td>{{item.entries[0].quant}}</td>
               <td style="color: silver;">{{item.state}}</td>
-              <td> Avbryt </td>
+              <td><button className="red" @click="cancel(item.uuid)">Avbryt</button></td>
             </tr>
-          </div>
         </table>
       </div>
     </div>
 </template>
 
 <script>
-import { getPurchases } from '../../serverFetch'
+import { getPurchases, cancelRequest } from '../../serverFetch'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -78,7 +74,6 @@ export default {
       .then(res => {
         console.log(res)
         this.purchases = res
-        console.log(res)
       })
   },
   components: {
@@ -101,7 +96,13 @@ export default {
       }
     },
     getListing (item) {
+      console.log(item.metadata.id)
       return item.metadata.id
+    },
+    cancel (id, index) {
+      console.log('Canceling order: ' + id)
+      //this.statusSwap(index, 'cancel')
+      cancelRequest(id)
     }
   }
 }
@@ -143,6 +144,12 @@ p {
 
 .red {
   color: red;
+}
+
+.article {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

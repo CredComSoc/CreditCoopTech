@@ -46,8 +46,10 @@
         <div className="container-item">
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
-          <img :src="this.localURL" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <div class="image">
+            <img :src="this.localURL" style="object-fit:contain;max-width:120px;max-height:120px;">
+            <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          </div>
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">Företagsnamn:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
@@ -180,6 +182,14 @@ export default {
 .image {
   align-self: left;
   margin: 20px;
+  display: inline-block; 
+  position: relative; 
+  width: 100px; 
+  height: 100px; 
+  overflow: hidden; 
+  border-radius: 50%;
+  display: flex;
+  justify-content: space-around;
   }
 
 .right {
