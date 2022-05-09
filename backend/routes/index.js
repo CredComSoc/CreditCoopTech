@@ -408,6 +408,7 @@ module.exports = async function(dbUrl, dbFolder) {
     let destinations = req.body.destinations;
     let categories = req.body.categories;
     let articles = req.body.articles;
+    let status = req.body.status;
 
     let productsAllListingsArray = []
     let servicesAllListingsArray = []
@@ -424,6 +425,10 @@ module.exports = async function(dbUrl, dbFolder) {
         db.close()
       }
       else {
+        console.log(articles)
+        console.log(destinations)
+        console.log(categories)
+        console.log(status)
         posts.forEach(listing => {
           //Om ARTIKEL
           if (articles.length !== 0) {
@@ -442,7 +447,15 @@ module.exports = async function(dbUrl, dbFolder) {
             if (!categories.includes(listing.category)) {
               return
             }
+          }
+          // OM STATUS
+          if (status.length !== 0) {
+            if (!status.includes(listing.status)) {
+              return
+            }
           } 
+
+
           foundSearchword = true
           if( searchword.length !== 0 ) {
             for (let i = 0; i < searchword.length; i++) {
@@ -463,7 +476,7 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         })
         res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
-        db.close()  
+        db.close();
       }
     })
     }

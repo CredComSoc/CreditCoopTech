@@ -14,14 +14,13 @@ export default {
 
   data () {
     return {
-      checked: Boolean
+      checked: false
     }
   },
   props: {
     type: String,
     value: String,
     title: String
-
   }
 }
 </script>

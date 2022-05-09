@@ -13,7 +13,6 @@
     "ajax": "0.0.4",
     "axios": "^0.26.1",
     "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
     "constantinople": "^4.0.1",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
@@ -45,6 +44,7 @@
     "@babel/core": "^7.17.5",
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
+    "babel-cli": "^6.26.0",
     "babel-node": "^0.0.1-security",
     "mocha": "^9.2.2"
   }
