@@ -6,6 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "test:open": "peeky open",
+    "test": "peeky run",
     "cypress": "./node_modules/.bin/cypress open"
   },
   "dependencies": {
@@ -25,6 +27,7 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@peeky/test": "^0.13.5",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
