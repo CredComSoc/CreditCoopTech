@@ -26,9 +26,17 @@
             <h1> Kontaktuppgifter </h1>
             <p> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
           </div>
-        </div>
-        <div className="edit">
-          <button @click="edit = !edit"> Redigera <img style="width: 25px;" src="../../assets/edit.png" alt="Redigera"/></button>
+          <div>
+            <button @click="edit = !edit" class="buttonflex"> 
+              <p style="padding-right:7px" > Redigera </p>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                <line x1="16" y1="5" x2="19" y2="8" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -38,8 +46,10 @@
         <div className="container-item">
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
-          <img :src="this.localURL" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <div class="image">
+            <img :src="this.localURL" style="object-fit:contain;max-width:120px;max-height:120px;">
+            <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          </div>
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">Företagsnamn:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
@@ -66,8 +76,23 @@
           <label for="phone">Telefon:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
 
-          <button @click="submit"> Spara </button>
-          <button @click="edit = !edit"> Avbryt </button>
+          <button @click="submit" class="buttonflex">
+            <p style="padding-right:7px" > Spara </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+              <circle cx="12" cy="14" r="2" />
+              <polyline points="14 4 14 8 8 8 8 4" />
+          </svg>
+          </button>
+          <button @click="edit = !edit" class="buttonflex"> 
+            <p style="padding-right:0px" > Avbryt </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+          </button>
         </div>
       </form>
     </div>
@@ -157,10 +182,19 @@ export default {
 .image {
   align-self: left;
   margin: 20px;
+  display: inline-block; 
+  position: relative; 
+  width: 100px; 
+  height: 100px; 
+  overflow: hidden; 
+  border-radius: 50%;
+  display: flex;
+  justify-content: space-around;
   }
 
 .right {
   display: flex;
+  justify-content: space-around;
   flex-direction: column;
   justify-content: space-between;
 
@@ -168,6 +202,17 @@ export default {
 
 h1 {
   font-size: 2rem;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.buttonflex {
+  display: flex;
+  justify-content: space-around;
 }
 
 </style>

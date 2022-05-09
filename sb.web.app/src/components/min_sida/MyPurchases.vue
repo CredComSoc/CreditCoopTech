@@ -3,7 +3,7 @@
       <h1><b> Bekräftade köp </b></h1>
       <p> Dina bekräftade köp. </p>
       <div style="max-height: 50em; overflow: scroll;">
-      <table>
+      <table v-if="purchases">
         <tr>
           <th></th>
           <th>Företag</th>
@@ -29,7 +29,9 @@
       </div>
 
       <h1> Väntande köp </h1>
-      <p> Du har ett väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+      <div>
+      <p> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+      </div>
       <div style="max-height: 50em; overflow: scroll;">
         <table>
           <tr>
@@ -57,7 +59,7 @@
 </template>
 
 <script>
-import { getPurchases } from '../../serverFetch'
+import { getPurchases, cancelRequest } from '../../serverFetch'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -71,8 +73,8 @@ export default {
   mounted () {
     getPurchases()
       .then(res => {
-        this.purchases = res
         console.log(res)
+        this.purchases = res
       })
   },
   components: {
@@ -95,7 +97,13 @@ export default {
       }
     },
     getListing (item) {
+      console.log(item.metadata.id)
       return item.metadata.id
+    },
+    cancel (id, index) {
+      console.log('Canceling order: ' + id)
+      //this.statusSwap(index, 'cancel')
+      cancelRequest(id)
     }
   }
 }
@@ -137,6 +145,12 @@ p {
 
 .red {
   color: red;
+}
+
+.article {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

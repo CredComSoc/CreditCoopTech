@@ -1,6 +1,6 @@
 <template>
   <div style="max-height: 50em; overflow: scroll;">
-    <table>
+    <table v-if="requests">
       <tr>
         <th></th>
         <th>Företag</th>
@@ -34,6 +34,9 @@
         <td><p style="color: green;">GODKÄND</p></td>
       </tr>
     </table>
+    <div v-if="!requests">
+      <h1> Du har inte fått några köpförfrågningar än. </h1>
+    </div>
   </div>
 </template>
 
@@ -134,6 +137,12 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 15px 2px 15px;
+}
+
+.article {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 </style>

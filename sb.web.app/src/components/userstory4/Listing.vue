@@ -35,10 +35,8 @@ export default {
       getArticleWithId(this.listingId)
         .then(res => {
           this.newListingObj = res
-          console.log(res)
         })
-    } else {
-    }
+    } 
   },
   props: {
     listingObj: Object,
