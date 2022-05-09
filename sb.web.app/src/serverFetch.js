@@ -100,7 +100,7 @@ export async function checkAdminStatus () {
     return response.json()
   }).catch(() => {
     return false
-  }) 
+  })
 }
 
 /*****************************************************************************

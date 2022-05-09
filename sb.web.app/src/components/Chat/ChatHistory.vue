@@ -3,15 +3,30 @@
     <h3>DINA CHATTAR</h3>
     <div id="container-outer">
         <div id="container-history">
+            <UserChat @openChat="this.openChat" v-for="(h, i) in this.history"
+                        :userchat="h"
+                        :key="i"
+                        />
         </div>
     </div>
 </div>
 </template>
 
 <script>
-export default {
-  name: 'ChatHistory'
 
+import UserChat from './UserChat.vue'
+
+export default {
+  name: 'ChatHistory',
+  props: ['history'],
+  components: {
+    UserChat
+  },
+  methods: {
+    openChat (userchat) {
+      this.$emit('openChat', userchat)
+    }
+  }
 }
 </script>
 
@@ -34,8 +49,14 @@ export default {
     #container-history {
         width: 300px;
         height: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    #container-history::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
     }
 
     #container-outer {
@@ -48,4 +69,36 @@ export default {
        position: relative;        
        height: 100%;
     }
+
+    @media (max-width: 1090px) {
+        #container-history {
+            width: 220px;
+        }
+    }
+
+    @media (max-width: 740px) {
+        #container-history {
+            width: 150px;
+        }
+    }
+
+    @media (max-width: 580px) {
+    #container-history {
+      width: 129px; 
+    }
+    h3 {
+        font-size: 14px;
+    }
+  }
+
+  @media (max-width: 350px) {
+    #container-history{
+      width: 110px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+  }
+    
 </style>
