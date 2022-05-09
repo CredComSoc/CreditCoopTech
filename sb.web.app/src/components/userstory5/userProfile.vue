@@ -36,7 +36,7 @@
         </div>
         <div>
           <label class="box-label">Kommentar</label>
-          <textarea class="box-textarea" type="password" v-model="comment" name="" placeholder="Kommentar" id="comment-input"> </textarea>
+          <textarea class="box-textarea" type="password" v-model="comment" name="" placeholder="Text" id="comment-input"> </textarea>
         </div>
         <button id="login-button">Skicka</button>
       </form>
@@ -72,14 +72,16 @@ export default {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
     },
     async sendBkr () {
-      const saldo = await getSaldo()
-      if (saldo < this.bkr) {
-        // error för lite saldo
+      if (this.bkr !== 0) {
+        const saldo = await getSaldo()
+        if (saldo < this.bkr) {
+          // error för lite saldo
+        }
+        await sendMoney(this.bkr, this.comment, this.profileData.name)
+        await confirm('test msg')
+        this.bkr = 0
+        this.comment = ''
       }
-      await sendMoney(this.bkr, this.comment, this.profileData.name)
-      await confirm('test msg')
-      this.bkr = 0
-      this.comment = ''
     }
   },
   created: function () {
