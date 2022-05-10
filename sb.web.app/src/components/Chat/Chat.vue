@@ -18,8 +18,8 @@ export default {
   },
   data () {
     return {
-      Chats: [[{ sender: 'Kasper', reciever: 'Alicica', message: 'how are you my dear' }, { sender: 'Alicia', reciever: 'Kasper', message: 'helloooooo' }], [{ sender: 'Anna Book', reciever: 'Kasper', message: 'Vad kul att chatta' }], [{ sender: 'Kasper', reciever: 'James', message: 'Okej' }, { sender: 'James', reciever: 'Kasper', message: 'låter bra' }, { sender: 'James', reciever: 'Kasper', message: 'super' }]],
-      history: ['Alicia', 'Anna Book', 'James'],
+      Chats: [[{ sender: 'Kasper', reciever: 'Alicia', message: 'Hi!' }, { sender: 'Alicia', reciever: 'Kasper', message: 'Hello!' }], [{ sender: 'Anna', reciever: 'Kasper', message: 'Fun chatting...' }], [{ sender: 'James', reciever: 'Kasper', message: 'Testing multiple rows of text, hope it looks okay. What do you think?' }, { sender: 'Kasper', reciever: 'James', message: 'Looks good!' }]],
+      history: ['Alicia', 'Anna', 'James'],
       activeChat: [],
       reciever: ''
     }
@@ -28,7 +28,7 @@ export default {
     openChat (userchat) {
       if (userchat === 'Alicia') {
         this.activeChat = this.Chats[0]
-      } else if (userchat === 'Anna Book') {
+      } else if (userchat === 'Anna') {
         this.activeChat = this.Chats[1] 
       } else if (userchat === 'James') {
         this.activeChat = this.Chats[2] 
