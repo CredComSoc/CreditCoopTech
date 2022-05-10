@@ -1,0 +1,29 @@
+{
+    "admin": {
+        "key": "123",
+        "admin": true,
+        "id": "admin",
+        "created": 1637489309,
+        "status": true,
+        "min": "-1000",
+        "max": "1000"
+    },
+    "bob": {
+        "key": "123",
+        "admin": false,
+        "id": "bob",
+        "created": 1637489309,
+        "status": true,
+        "min": null,
+        "max": null
+    },
+    "alice": {
+        "key": "123",
+        "admin": false,
+        "id": "alice",
+        "created": 1637489309,
+        "status": true,
+        "min": null,
+        "max": null
+    }
+}

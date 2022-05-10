@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "Credit commons: Business logic service"
+  description: Internal API called by Credit Commons reference implementation 
+  contact:
+    name: Matthew Slater
+    url: http://matslats.net/contact
+  license:
+    name: GNU GPL
+paths:
+  /append:
+    post:
+      summary: Retrieve any dependent transactions according to business logic
+      operationId: appendEntries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ledgerService.swagger.yml#/components/schemas
+        description: the originating entry
+        required: true
+      responses:
+        "200":
+          description: Entries to be appended.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rule'
+  /rules:
+    get:
+      summary: Retrieve all the rules
+      operationId: getRules
+      responses:
+        "200":
+          description: The rules, in some yet-to-be-defined format.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: definitions/Rule
+components:
+  schemas:
+    Rule:
+      type: object
+      description: Describing the problem with a remote server.
+      properties:
+        description:
+          type: string
+          description: a description of the rule (placeholder field).
+          example: "charges the payer and payee one each."
+

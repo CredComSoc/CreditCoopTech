@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "Credit commons: AccountStore service"
+  description: Internal API called by Credit Commons reference implementation for managing accounts and balance limits.
+  contact:
+    name: Matthew Slater
+    url: https://matslats.net/contact
+  license:
+    name: GNU GPL
+paths:
+  /{acc_id}:
+    get:
+      summary: Get one account.
+      operationId: listActive.
+      parameters:
+        - in: path
+          name: acc_id
+          description: The name of the account to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: the account
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Account"
+        "404":
+          description: The account doesn't exist.
+  "/filter/{full}":
+    get:
+      summary: Filter account objects
+      operationId: filterAccount
+      description: Filter accounts, and return full account objects
+      parameters:
+        - name: chars
+          in: path
+          description: the string or fragment to check against account names.
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter for active (true) or blocked (false) accounts
+          required: false
+          schema:
+            type: boolean
+        - name: auth
+          in: query
+          description: The account's auth key. (Must be used in conjunction with name for login)
+          required: false
+          schema:
+            type: boolean
+        - name: local
+          in: query
+          description: Filter for local (TRUE) accounts or remote (FALSE) accounts
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: An array of names
+          content:
+            "application/json":
+              schema:
+                # Can be ids or full account objects
+                type: array
+                items:
+                  type: string
+  "/filter":
+    get:
+      summary: Filter account names
+      operationId: filterName
+      description: Filter accounts, and return a list of names
+      parameters:
+        - name: chars
+          in: path
+          description: the string or fragment to check against account names.
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter for active (true) or blocked (false) accounts
+          required: false
+          schema:
+            type: boolean
+        - name: auth
+          in: query
+          description: The account's auth key. (Must be used in conjunction with name for login)
+          required: false
+          schema:
+            type: boolean
+        - name: local
+          in: query
+          description: Filter for local (TRUE) accounts or remote (FALSE) accounts
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: An array of names
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    Account:
+      type: object
+      description: All the ledger needs to know about an account.
+      properties:
+        name:
+          type: string
+          description: The name of the account in the ledger
+          example: jack99
+        min:
+          type: number
+          description: the minimum allowed balance for an account
+          example: -100
+        max:
+          type: number
+          description: the maximum allowed balance for an account
+          example: 100
+        blocked:
+          type: boolean
+          description: TRUE if the account is blocked.
+          example: false
+        url:
+          type: string
+          description: The credit commons remote ledger url
+          example: http://cc.example.com
+        ip:
+          type: string
+          description: The credit commons remote ledger ip
+          example: 127.0.0.1
+        rate:
+          type: string
+          description: The exchange rate relative to the parent's accuouting unit (BoT
+            account only?)
+          example: 1
+

@@ -3,14 +3,20 @@
   <div id="popup-container">
     <div id="popup-head">
       <h3>{{ this.title }}</h3>
-      <a id="popup-close-img" @click="this.closePopup" :href="this.btnLink"> <img src="../../assets/link_arrow/popup_close.png" /> </a>
+      <a v-if="this.btnLink !== undefined" id="popup-close-img" @click="this.closePopup" :href="this.btnLink"> <img src="../../assets/link_arrow/popup_close.png" /> </a>
+      <a v-if="this.btnLink === undefined" id="popup-close-img" @click="this.closePopup" href="Javascript:void(0)"> <img src="../../assets/link_arrow/popup_close.png" /> </a>
     </div>
     <div id="popup-middle">
       <p>{{ this.cardText }}</p>
     </div>
-    <div id="popup-bottom">
+    <div v-if="this.btnLink !== undefined" id="popup-bottom">
       <form :action="this.btnLink" @click="this.closePopup">
         <input id="confirm-btn" type="submit" :value="this.btnText"/>
+      </form>
+    </div>
+    <div v-if="this.btnLink === undefined" id="popup-bottom">
+      <form @click="this.closePopup">
+        <input id="confirm-btn" type="button" :value="this.btnText"/>
       </form>
     </div>
   </div>
@@ -23,7 +29,7 @@ export default {
   props: ['title', 'cardText', 'btnLink', 'btnText'],
   methods: {
     closePopup () {
-      if (this.btnLink === null) {
+      if (this.btnLink === null || this.btnLink === undefined) {
         this.$emit('closePopup')
       }
     }

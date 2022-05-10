@@ -1,0 +1,125 @@
+[
+  {
+    "id": "bill",
+    "label": "Bill",
+    "summary": "The author bills another account, who must confirm.",
+    "active": "1",
+    "creation": {
+      "by" : ["payee"],
+      "state": "pending",
+      "label": "Create",
+      "confirm": true
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "signatories": [
+            "payer"
+          ]
+        },
+        "erased": {
+          "label": "Erase",
+          "signatories": [
+            "payee"
+          ]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "signatories": []
+        }
+      }
+    }
+  },
+  {
+    "id": "credit",
+    "label": "Credit",
+    "summary": "The author credits another account, who must confirm.",
+    "active": "1",
+    "creation": {
+      "by" : ["payer"],
+      "state": "pending",
+      "label": "Create",
+      "confirm": true
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "signatories": [
+            "payee"
+          ]
+        },
+        "erased": {
+          "label": "Erase",
+          "signatories": [
+            "payer"
+          ]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "signatories": []
+        }
+      }
+    }
+  },
+  {
+    "id": "disabled",
+    "label": "Disabled",
+    "summary": "This workflow is not available for new transactions. (Needed for testing.)",
+    "active": "0",
+    "creation": {
+      "by" : ["payer"],
+      "state": "pending",
+      "label": "Create",
+      "confirm": false
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "signatories": [
+            "payee"
+          ]
+        },
+        "erased": {
+          "label": "Erase",
+          "signatories": [
+            "payer"
+          ]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "signatories": []
+        }
+      }
+    }
+  },
+  {
+    "id": "3rdparty",
+    "label": "3rdparty transaction",
+    "summary": "Admin creates instantly. (Needed for testing.)",
+    "active": "1",
+    "creation": {
+      "by" : ["<admin>"],
+      "state": "completed",
+      "label": "Create",
+      "confirm": false
+    },
+    "states": {
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "signatories": []
+        }
+      },
+      "erased": {}
+    }
+  }
+]

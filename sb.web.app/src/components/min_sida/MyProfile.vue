@@ -3,7 +3,8 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
           <h1> Företagsnamn </h1>
@@ -126,6 +127,7 @@ export default {
       //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
       console.log(this.localURL)
+      console.log(this.logoURL)
     },
     submit () {
       this.updateProfile(
@@ -141,10 +143,14 @@ export default {
         this.profileData.phone,
         this.profileData.logo
       )
-      this.edit = !this.edit
+      console.log(this.localURL)
+      console.log(this.logoURL)
       if (this.localUrl) {
         this.logoURL = this.localURL
       }
+      console.log(this.localURL)
+      console.log(this.logoURL)
+      this.edit = !this.edit
     },
     getImgURL () {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo

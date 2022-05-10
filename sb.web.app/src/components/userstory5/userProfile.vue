@@ -44,13 +44,19 @@
         Fel epost eller lösenord ({{ loginCount }})
       </div>
     </div>
+    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.name + ' har mottagits.'" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
   </div>
 </template>
 
 <script>
-import { EXPRESS_URL, getMember, profile, getSaldo, sendMoney } from './../../serverFetch'
+import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney } from './../../serverFetch'
+import PopupCard from '../CreateArticle/PopupCard.vue'
 
 export default {
+  components: {
+    PopupCard
+  },
   data () {
     return {
       logoURL: '',
@@ -58,7 +64,9 @@ export default {
       getMember,
       currentUser: '',
       bkr: 0,
-      comment: ''
+      comment: '',
+      bkrSentMsg: false,
+      notEnoughBkrMsg: false
     }
   },
   methods: {
@@ -73,15 +81,20 @@ export default {
     },
     async sendBkr () {
       if (this.bkr !== 0) {
-        const saldo = await getSaldo()
+        const saldo = await getAvailableBalance()
         if (saldo < this.bkr) {
-          // error för lite saldo
+          this.notEnoughBkrMsg = true
+        } else {
+          await sendMoney(this.bkr, this.comment, this.profileData.name)
+          this.bkrSentMsg = true
         }
-        await sendMoney(this.bkr, this.comment, this.profileData.name)
-        await confirm('test msg')
-        this.bkr = 0
-        this.comment = ''
       }
+    },
+    closePopup () {
+      this.bkrSentMsh = false
+      this.notEnoughBkrMsg = false
+      this.bkr = 0
+      this.comment = ''
     }
   },
   created: function () {
