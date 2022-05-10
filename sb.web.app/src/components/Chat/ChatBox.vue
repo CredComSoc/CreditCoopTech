@@ -23,6 +23,9 @@ export default {
   methods: {
     sendMessage (message) {
       this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message })
+      this.scrolltoBottom()
+    },
+    scrolltoBottom () {
       nextTick(function () {
         const container = document.getElementById('container-msg-disp').lastElementChild
         container.scrollIntoView({ behavior: 'smooth', block: 'end' })

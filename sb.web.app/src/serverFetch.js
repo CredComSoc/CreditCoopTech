@@ -69,7 +69,6 @@ export async function authenticate () {
 }
 
 export async function checkAdminStatus () {
-  /*
   return fetch(EXPRESS_URL + '/admin', { 
     method: 'GET',
     headers: {
@@ -80,8 +79,7 @@ export async function checkAdminStatus () {
     return response.json()
   }).catch(() => {
     return false
-  }) */
-  return false
+  })
 }
 
 /*****************************************************************************
