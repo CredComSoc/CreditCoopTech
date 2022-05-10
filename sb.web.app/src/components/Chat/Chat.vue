@@ -9,6 +9,7 @@
 <script>
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
+import io from 'socket.io-client'
 
 export default {
   name: 'Chat',
@@ -21,7 +22,8 @@ export default {
       Chats: [[{ sender: 'Kasper', reciever: 'Alicica', message: 'how are you my dear' }, { sender: 'Alicia', reciever: 'Kasper', message: 'helloooooo' }], [{ sender: 'Anna Book', reciever: 'Kasper', message: 'Vad kul att chatta' }], [{ sender: 'Kasper', reciever: 'James', message: 'Okej' }, { sender: 'James', reciever: 'Kasper', message: 'låter bra' }, { sender: 'James', reciever: 'Kasper', message: 'super' }]],
       history: ['Alicia', 'Anna Book', 'James'],
       activeChat: [],
-      reciever: ''
+      reciever: '',
+      socket: 0
     }
   },
   methods: {
@@ -38,7 +40,17 @@ export default {
     },
     sendMessage (message) {
       this.activeChat.push(message)
+      this.socket.emit('message', message)
     }
+  }, 
+  created () {
+    this.socket = io('http://localhost:3001')
+    this.socket.on('broadcast', (data) => {
+      console.log(data)
+    })
+  },
+  beforeUnmount () {
+    this.socket.disconnect()
   }
 }
 </script>

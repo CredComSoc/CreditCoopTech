@@ -1,7 +1,8 @@
 const express = require('express');
 const passport = require('passport')
 const session = require('cookie-session')
-const dbConfig = require('./mongoDB-config')
+const dbConfig = require('./mongoDB-config');
+//const { Socket } = require('socket.io');
 // const path = require('path');
 // const { v1: uuidv1, v4: uuidv4 } = require('uuid');
 
@@ -54,4 +55,32 @@ function stopServer(server) {
   console.log(`Server stopped`)
 }
 
-module.exports = { initApp, startServer, stopServer }
+function startChat(app) {
+  const http = require('http').createServer(app);
+
+  const io = require('socket.io')(http, {
+    cors: {
+      origins: ['http://localhost:8080']
+    }
+  });
+
+  io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+
+    socket.on('message', (msg) => {
+        console.log('message: ' + msg.message);
+        socket.broadcast.emit('broadcast', `server: ${msg.message}`);
+      });
+
+  });
+  
+  http.listen(3001, () => {
+    console.log('listening on *:3001');
+  });
+}
+
+
+module.exports = { initApp, startServer, stopServer, startChat}
