@@ -17,7 +17,7 @@ module.exports.initChat = async (sender, receiver) => {
        else {
             const db = await MongoClient.connect(mongoURL);
             const dbo = db.db(dbFolder);
-            dbo.collection('chats').insertOne({ chatID : [] }, (err, res) => {
+            dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
                 if (err) {
                     console.log(err);
                     db.close();
@@ -65,7 +65,6 @@ module.exports.createChat = (user, chatter, chatID) => {
                 resolve(false);
             } else if (res.matchedCount > 0) {
                 console.log(res);
-                
                 db.close();
                 resolve(true);
             }
