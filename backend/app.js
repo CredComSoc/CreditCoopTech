@@ -7,5 +7,9 @@ const app = express()
 
 server.initApp(app)
 
+server.startChat(app)
+
 server.startServer(app, port)
+
+
 
