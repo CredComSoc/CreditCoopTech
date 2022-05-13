@@ -25,7 +25,8 @@ export default {
       history_values: {},
       activeChat: [],
       reciever: '',
-      socket: 0
+      socket: 0,
+      all_chatIDs: {}
     }
   },
   methods: {
@@ -37,16 +38,22 @@ export default {
       // } else if (userchat === 'James') {
       //   this.activeChat = this.Chats[2] 
       // }
+      this.socket.emit('join', this.all_chatIDs[userchat])
       this.activeChat = this.history_values[userchat]
+      console.log(this.activeChat)
+      console.log(this.all_chatIDs)
       this.reciever = userchat
-      this.$refs.chatbox.scrolltoBottom()
+      if (this.activeChat.length > 0) {
+        this.$refs.chatbox.scrolltoBottom()
+      }
     },
     sendMessage (message) {
       this.activeChat.push(message)
       this.socket.emit('message', {
         message: message.message,
-        to: 'user',
-        from: 'user2'
+        sender: this.reciever,
+        id: this.all_chatIDs[this.reciever],
+        reciever: 'User2'
       })
     },
     getChatHistories () {
@@ -59,12 +66,14 @@ export default {
       })
         .then(res => res.json())
         .then(data => {
-          data.forEach((hist) => {
-            console.log(hist)
-            const chatter = Object.keys(hist)[0]
-            this.history.push(chatter)
-            this.history_values[chatter] = { [chatter]: hist[chatter] }
-          })
+          if (data) {
+            data.forEach((hist) => {
+              const chatter = Object.keys(hist)[0]
+              this.history.push(chatter)
+              this.history_values[chatter] = hist[chatter]
+              this.all_chatIDs[chatter] = hist.chatID
+            })  
+          }
         })
     }
   },
@@ -72,7 +81,12 @@ export default {
     console.log(this.$route.params.chatID)
     this.getChatHistories()
     this.socket = io('http://localhost:3001')
-    this.socket.emit('join', 'user')
+  
+    this.socket.on('message', (data) => {
+      console.log(data)
+      this.activeChat.push(data)
+      this.$refs.chatbox.scrolltoBottom()
+    })
 
     this.socket.onAny((event, ...args) => {
       console.log(event, args)

@@ -117,7 +117,7 @@ module.exports.getAllChatIDs = async (user) => {
                 console.log(err);
                 db.close();
                 resolve(false);
-            } else if (res) {
+            } else if (res.chats) {
                 console.log(res.chats);
                 db.close();
                 resolve(res.chats);
@@ -227,7 +227,7 @@ module.exports.checkChatStatus = async (chatter) => {
 }
 
 
-module.exports.sendChatMsg = async (chatID, msg) => {
+module.exports.storeChatMsg = async (chatID, msg) => {
     const db = await MongoClient.connect(mongoURL);
     const dbo = db.db(dbFolder);
     dbo.collection('chats').updateOne({[chatID]: {$exists: true}}, { $push: { [chatID]: msg } }, (err, res) => {

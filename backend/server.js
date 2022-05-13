@@ -74,8 +74,11 @@ function startChat(app) {
     })
 
     socket.on('message', (msg) => {
-      console.log(msg.to)
-      socket.to(msg.to).emit('message', msg);
+      socket.to(msg.id).emit('message', msg);
+      const { storeChatMsg } = require('./routes/chatFunctions');
+      const chatID = msg.id;
+      delete msg.id;
+      storeChatMsg(chatID, msg)
     });
 
     socket.on('disconnect', () => {
