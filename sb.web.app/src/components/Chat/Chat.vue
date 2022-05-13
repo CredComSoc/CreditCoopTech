@@ -43,6 +43,13 @@ export default {
     },
     sendMessage (message) {
       this.activeChat.push(message)
+<<<<<<< HEAD
+      this.socket.emit('message', {
+        message: message.message,
+        to: 'user',
+        from: 'user2'
+      })
+=======
       this.socket.emit('message', message)
     },
     getChatHistories () {
@@ -61,14 +68,17 @@ export default {
             this.history_values[chatter] = { [chatter]: hist[chatter] }
           })
         })
+>>>>>>> 82dd9efd8598eb9aa7021d32f15486abbc04a149
     }
   },
   created () {
     console.log(this.$route.params.chatID)
     this.getChatHistories()
     this.socket = io('http://localhost:3001')
-    this.socket.on('broadcast', (data) => {
-      console.log(data)
+    this.socket.emit('join', 'user')
+
+    this.socket.onAny((event, ...args) => {
+      console.log(event, args)
     })
   },
   beforeUnmount () {
