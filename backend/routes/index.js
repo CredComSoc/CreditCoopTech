@@ -384,6 +384,27 @@ module.exports = function (dbUrl, dbFolder) {
     })
   });
 
+  router.get('/chat/histories/', (req, res) => {
+    const { getAllChatHistories } = require('./chatFunctions.js');
+    getAllChatHistories(req.user).then((histories) => {
+      console.log(histories)
+      res.json(histories);
+    }
+    ).catch((err) => {
+      res.status(500).json(err);
+    }
+    )
+  })
+
+  router.get('/chat/:user', (req, res) => {
+    const { chatExists } = require('./chatFunctions.js');
+    const chatter = req.params.user;
+    console.log(req.user)
+    chatExists(req.user, chatter).then((exists) => {
+      res.json(exists);
+    });
+  })
+
   /*****************************************************************************
    * 
    *                                Shop
@@ -415,7 +436,7 @@ module.exports = function (dbUrl, dbFolder) {
 
   router.post('/getAllListings', (req, res) => {
     const {initChat} = require('./chatFunctions.js');
-    initChat("User", "User2");
+    initChat("Admin1", "User2");
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;

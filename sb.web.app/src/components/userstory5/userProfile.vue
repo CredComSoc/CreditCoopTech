@@ -25,7 +25,7 @@
         <h1> Kontaktuppgifter </h1>
         <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
       </div>
-      <button> Starta chatt </button>
+      <button @click="goToChat" > Starta chatt </button>
     </div>
   </div>
 </template>
@@ -52,6 +52,24 @@ export default {
     },
     getImgURL () {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
+    },
+    goToChat () {
+      fetch(EXPRESS_URL + '/chat/' + this.profileData.name, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      }).then(res => res.json())
+        .then(data => {
+          console.log(data)
+          if (data !== false) {
+            this.$router.push({ name: 'Chat', params: { chatID: data } })
+          } else {
+            console.log('chat error!!')
+          }
+        })
+        .catch(err => console.log(err))
     }
   },
   created: function () {

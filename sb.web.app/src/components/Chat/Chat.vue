@@ -64,6 +64,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$route.params.chatID)
     this.getChatHistories()
     this.socket = io('http://localhost:3001')
     this.socket.on('broadcast', (data) => {

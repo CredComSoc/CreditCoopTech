@@ -4,30 +4,38 @@ const uuid = require('uuid');
 
 
 module.exports.initChat = async (sender, receiver) => {
-    const chatID = uuid.v4();
-    const res1 = await this.createChat(sender, receiver, chatID);
-    console.log("RES1:", res1); 
-    if (res1) {
-       const res2 = await this.createChat(receiver, sender, chatID);
-       console.log("RES2:", res2);
-       if (!res2) {
-            this.deleteChat(sender, receiver);
-            console.log("Kan inte skapa chatten just nu");
-       }
-       else {
-            const db = await MongoClient.connect(mongoURL);
-            const dbo = db.db(dbFolder);
-            dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
-                if (err) {
-                    console.log(err);
-                    db.close();
-                } else {
-                    console.log(res);
-                    db.close();
-                }
-            });
-       }     
-    }
+    return new Promise(async (resolve, reject) => {
+        const chatID = uuid.v4();
+        const res1 = await this.createChat(sender, receiver, chatID);
+        console.log("RES1:", res1); 
+        if (res1) {
+            const res2 = await this.createChat(receiver, sender, chatID);
+            console.log("RES2:", res2);
+            if (!res2) {
+                this.deleteChat(sender, receiver);
+                console.log("Kan inte skapa chatten just nu");
+                resolve(false);
+            }
+            else {
+                const db = await MongoClient.connect(mongoURL);
+                const dbo = db.db(dbFolder);
+                dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        db.close();
+                        resolve(false);
+                    } else {
+                        console.log(res);
+                        db.close();
+                        resolve(chatID);
+                    }
+                });
+            }     
+        }
+        else {
+            resolve(false);
+        }
+    });
 }
 
 
@@ -76,24 +84,77 @@ module.exports.createChat = (user, chatter, chatID) => {
 module.exports.chatExists = async (user, chatter) => {
     const chatExist = await this.checkChatStatus(chatter);
     if (!chatExist) {
-        this.initChat(user, chatter);
+        const chatID = await this.initChat(user, chatter);
+        return chatID;
     }
     else {
         const chatID = await this.getChatID(user, chatter);
         if (chatID === false) {
             console.log("Kan inte hämta chatten");
+            return chatID;
         }   
         else {
-            const chatHistory =  await this.getChatHistory(chatID);
-            if (chatHistory === false) {
-                console.log("Kan inte hämta chattens historia");
-            }
-            else {
-                console.log(chatHistory);
-                return chatHistory;
-            }
+            console.log(chatID);
+            return chatID;
+        //     const chatHistory =  await this.getChatHistory(chatID);
+        //     if (chatHistory === false) {
+        //         console.log("Kan inte hämta chattens historia");
+        //     }
+        //     else {
+        //         console.log(chatHistory);
+        //         return chatHistory;
+        //     }
         }
     }
+}
+
+module.exports.getAllChatIDs = async (user) => {
+    return new Promise( async (resolve, reject) => {
+        const db = await MongoClient.connect(mongoURL);
+        const dbo = db.db(dbFolder);
+        dbo.collection('users').findOne({'profile.accountName': user}, (err, res) => {
+            if (err) {
+                console.log(err);
+                db.close();
+                resolve(false);
+            } else if (res) {
+                console.log(res.chats);
+                db.close();
+                resolve(res.chats);
+            }
+            else {
+                db.close();
+                resolve(false);
+            }
+        });
+    });
+}
+
+module.exports.getAllChatHistories = async (user) => {
+    return new Promise( async (resolve, reject) => {
+        console.log(user);
+        const chatIDs = await this.getAllChatIDs(user);
+        if (chatIDs === false) {
+            console.log("Kan inte hämta chattens historia");
+            resolve(false);
+        }
+        else {
+            const chatHistories = [];
+            for (const [key, val] of Object.entries(chatIDs)) {
+                const chatHistory = await this.getChatHistory(val);
+                if (chatHistory === false) {
+                    console.log("Kan inte hämta chattens historia");
+                    //resolve(false);
+                }
+                else {
+                    console.log(chatHistory);
+                    chatHistories.push({[key]: chatHistory});
+                }
+            }
+            //resolve(true);
+            resolve(chatHistories);
+        }
+    });
 }
 
 
@@ -106,7 +167,7 @@ module.exports.getChatHistory = async (chatID) => {
                 console.log(err);
                 db.close();
                 resolve(false);
-            } else if (res.matchedCount > 0) {
+            } else if (res) {
                 console.log(res);
                 db.close();
                 resolve(res[chatID]);
@@ -123,16 +184,16 @@ module.exports.getChatID = async (user, chatter) => {
     return new Promise(async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
         const dbo = db.db(dbFolder);
-        const key = user + '.chats.' + chatter;
+        const key = 'chats.' + chatter;
         dbo.collection('users').findOne({$and:[ { [key] : {$exists : true} }, { 'profile.accountName': user } ]}, (err, res) => {
             if (err) {
                 console.log(err);
                 db.close();
                 resolve(false);
-            } else if (res.matchedCount > 0) {
-                console.log(res);
+            } else if (res) {
+                console.log(res.chats[chatter]);
                 db.close();
-                resolve(res[key]);
+                resolve(res.chats[chatter]);
             }
             else {
                 db.close();
@@ -153,7 +214,7 @@ module.exports.checkChatStatus = async (chatter) => {
                 console.log(err);
                 db.close();
                 resolve(false);
-            } else if (res.matchedCount > 0) {
+            } else if (res) {
                 console.log(res);
                 db.close();
                 resolve(true);
@@ -173,7 +234,7 @@ module.exports.sendChatMsg = async (chatID, msg) => {
         if (err) {
             console.log(err);
             db.close();
-        } else if (res.matchedCount > 0) {
+        } else if (res) {
             console.log(res);
             db.close();
         } else {
