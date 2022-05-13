@@ -25,6 +25,7 @@
         <h1> Kontaktuppgifter </h1>
         <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
       </div>
+      <button> Starta chatt </button>
     </div>
   </div>
 </template>

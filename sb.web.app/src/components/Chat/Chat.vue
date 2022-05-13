@@ -10,6 +10,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
+import { EXPRESS_URL } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -20,7 +21,8 @@ export default {
   data () {
     return {
       Chats: [[{ sender: 'Kasper', reciever: 'Alicica', message: 'how are you my dear' }, { sender: 'Alicia', reciever: 'Kasper', message: 'helloooooo' }], [{ sender: 'Anna Book', reciever: 'Kasper', message: 'Vad kul att chatta' }], [{ sender: 'Kasper', reciever: 'James', message: 'Okej' }, { sender: 'James', reciever: 'Kasper', message: 'låter bra' }, { sender: 'James', reciever: 'Kasper', message: 'super' }]],
-      history: ['Alicia', 'Anna Book', 'James'],
+      history: [],
+      history_values: {},
       activeChat: [],
       reciever: '',
       socket: 0
@@ -28,22 +30,41 @@ export default {
   },
   methods: {
     openChat (userchat) {
-      if (userchat === 'Alicia') {
-        this.activeChat = this.Chats[0]
-      } else if (userchat === 'Anna Book') {
-        this.activeChat = this.Chats[1] 
-      } else if (userchat === 'James') {
-        this.activeChat = this.Chats[2] 
-      }
+      // if (userchat === 'Admin1') {
+      //   this.activeChat = this.Chats[0]
+      // } else if (userchat === 'Anna Book') {
+      //   this.activeChat = this.Chats[1] 
+      // } else if (userchat === 'James') {
+      //   this.activeChat = this.Chats[2] 
+      // }
+      this.activeChat = this.history_values[userchat]
       this.reciever = userchat
       this.$refs.chatbox.scrolltoBottom()
     },
     sendMessage (message) {
       this.activeChat.push(message)
       this.socket.emit('message', message)
+    },
+    getChatHistories () {
+      fetch(EXPRESS_URL + '/chat/histories/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
+        .then(res => res.json())
+        .then(data => {
+          data.forEach((hist) => {
+            const chatter = Object.keys(hist)[0]
+            this.history.push(chatter)
+            this.history_values[chatter] = { [chatter]: hist[chatter] }
+          })
+        })
     }
-  }, 
+  },
   created () {
+    this.getChatHistories()
     this.socket = io('http://localhost:3001')
     this.socket.on('broadcast', (data) => {
       console.log(data)
