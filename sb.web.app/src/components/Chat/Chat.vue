@@ -43,14 +43,11 @@ export default {
     },
     sendMessage (message) {
       this.activeChat.push(message)
-<<<<<<< HEAD
       this.socket.emit('message', {
         message: message.message,
         to: 'user',
         from: 'user2'
       })
-=======
-      this.socket.emit('message', message)
     },
     getChatHistories () {
       fetch(EXPRESS_URL + '/chat/histories/', {
@@ -63,12 +60,12 @@ export default {
         .then(res => res.json())
         .then(data => {
           data.forEach((hist) => {
+            console.log(hist)
             const chatter = Object.keys(hist)[0]
             this.history.push(chatter)
             this.history_values[chatter] = { [chatter]: hist[chatter] }
           })
         })
->>>>>>> 82dd9efd8598eb9aa7021d32f15486abbc04a149
     }
   },
   created () {

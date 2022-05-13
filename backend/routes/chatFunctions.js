@@ -148,7 +148,7 @@ module.exports.getAllChatHistories = async (user) => {
                 }
                 else {
                     console.log(chatHistory);
-                    chatHistories.push({[key]: chatHistory});
+                    chatHistories.push({[key]: chatHistory, chatID: val});
                 }
             }
             //resolve(true);
