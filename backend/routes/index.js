@@ -414,6 +414,8 @@ module.exports = function (dbUrl, dbFolder) {
   });
 
   router.post('/getAllListings', (req, res) => {
+    const {initChat} = require('./chatFunctions.js');
+    initChat("User", "User2");
     // fetch all metadata about listing from mongoDB
     let searchword = req.body.searchword.split(' ')
     let destinations = req.body.destinations;

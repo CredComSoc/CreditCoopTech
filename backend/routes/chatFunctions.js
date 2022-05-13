@@ -17,7 +17,7 @@ module.exports.initChat = async (sender, receiver) => {
        else {
             const db = await MongoClient.connect(mongoURL);
             const dbo = db.db(dbFolder);
-            dbo.collection('chats').insertOne({ chatID : [] }, (err, res) => {
+            dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
                 if (err) {
                     console.log(err);
                     db.close();
@@ -28,13 +28,8 @@ module.exports.initChat = async (sender, receiver) => {
             });
        }     
     }
-
-    // if (sen && rec) {
-    //     return true;
-    // } else {
-    //     return false;
-    // }
 }
+
 
 module.exports.deleteChat = async (user, chatter) => {
     console.log(mongoURL);
@@ -53,6 +48,7 @@ module.exports.deleteChat = async (user, chatter) => {
     }); 
 }
 
+
 module.exports.createChat = (user, chatter, chatID) => {
     return new Promise( async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
@@ -65,7 +61,6 @@ module.exports.createChat = (user, chatter, chatID) => {
                 resolve(false);
             } else if (res.matchedCount > 0) {
                 console.log(res);
-                
                 db.close();
                 resolve(true);
             }
@@ -77,33 +72,113 @@ module.exports.createChat = (user, chatter, chatID) => {
     });
 }
 
-module.exports.checkChatStatus = async (chatter) => {
-    const db = await MongoClient.connect(mongoURL);
-    const dbo = db.db(dbFolder);
-    const key = 'chats.' + chatter;
-    const res = await dbo.collection('users').findOne({[key] : {$exists : true} }, (err, res) => {
-        if (err) {
-            console.log(err);
-            db.close();
-            return false;
-        } else if (res.matchedCount > 0) {
-            console.log(res);
-            db.close();
-            return true;
-        } else {
-            db.close();
-            return false;
-        }
-    });
 
-    return res;
+module.exports.chatExists = async (user, chatter) => {
+    const chatExist = await this.checkChatStatus(chatter);
+    if (!chatExist) {
+        this.initChat(user, chatter);
+    }
+    else {
+        const chatID = await this.getChatID(user, chatter);
+        if (chatID === false) {
+            console.log("Kan inte hämta chatten");
+        }   
+        else {
+            const chatHistory =  await this.getChatHistory(chatID);
+            if (chatHistory === false) {
+                console.log("Kan inte hämta chattens historia");
+            }
+            else {
+                console.log(chatHistory);
+                return chatHistory;
+            }
+        }
+    }
 }
 
 
-const sendChatMsg = async (msg) => {
+module.exports.getChatHistory = async (chatID) => {
+    return new Promise(async (resolve, reject) => {
+        const db = await MongoClient.connect(mongoURL);
+        const dbo = db.db(dbFolder);
+        dbo.collection('chats').findOne({[chatID]: {$exists: true}}, (err, res) => {
+            if (err) {
+                console.log(err);
+                db.close();
+                resolve(false);
+            } else if (res.matchedCount > 0) {
+                console.log(res);
+                db.close();
+                resolve(res[chatID]);
+            } else {
+                db.close();
+                resolve(false);
+            }
+        });
+    });
+}
+
+
+module.exports.getChatID = async (user, chatter) => {
+    return new Promise(async (resolve, reject) => {
+        const db = await MongoClient.connect(mongoURL);
+        const dbo = db.db(dbFolder);
+        const key = user + '.chats.' + chatter;
+        dbo.collection('users').findOne({$and:[ { [key] : {$exists : true} }, { 'profile.accountName': user } ]}, (err, res) => {
+            if (err) {
+                console.log(err);
+                db.close();
+                resolve(false);
+            } else if (res.matchedCount > 0) {
+                console.log(res);
+                db.close();
+                resolve(res[key]);
+            }
+            else {
+                db.close();
+                resolve(false);
+            }
+        });
+    });
+}
+
+
+module.exports.checkChatStatus = async (chatter) => {
+    return new Promise(async (resolve, reject) => {
+        const db = await MongoClient.connect(mongoURL);
+        const dbo = db.db(dbFolder);
+        const key = 'chats.' + chatter;
+        dbo.collection('users').findOne({[key] : {$exists : true} }, (err, res) => {
+            if (err) {
+                console.log(err);
+                db.close();
+                resolve(false);
+            } else if (res.matchedCount > 0) {
+                console.log(res);
+                db.close();
+                resolve(true);
+            } else {
+                db.close();
+                resolve(false);
+            }
+        });
+    });
+}
+
+
+module.exports.sendChatMsg = async (chatID, msg) => {
     const db = await MongoClient.connect(mongoURL);
     const dbo = db.db(dbFolder);
-
-    db.close();
-
+    dbo.collection('chats').updateOne({[chatID]: {$exists: true}}, { $push: { [chatID]: msg } }, (err, res) => {
+        if (err) {
+            console.log(err);
+            db.close();
+        } else if (res.matchedCount > 0) {
+            console.log(res);
+            db.close();
+        } else {
+            console.log(res);
+            db.close();
+        }
+    });
 }

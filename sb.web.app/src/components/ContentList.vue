@@ -26,6 +26,7 @@ export default {
     screenWidth: {
       handler: function (scrWidth) {
         this.setItems(scrWidth)
+        console.log(scrWidth)
       }
     }
   },
