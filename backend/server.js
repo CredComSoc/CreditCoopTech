@@ -66,14 +66,28 @@ function startChat(app) {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
+
+    socket.on("join", (roomId) => {
+      socket.join(roomId);
+      console.log(`User with ID: ${socket.id} joined room: ${roomId}`)
+      
+    })
+
+    socket.on('message', (msg) => {
+      console.log(msg.to)
+      socket.to(msg.to).emit('message', msg);
+    });
+
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
 
+    /*
+
     socket.on('message', (msg) => {
-        console.log('message: ' + msg.message);
+        console.log('message: ' + msg.sender);
         socket.broadcast.emit('broadcast', `server: ${msg.message}`);
-      });
+      });*/
 
   });
   

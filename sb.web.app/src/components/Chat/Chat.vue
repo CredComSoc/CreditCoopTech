@@ -40,13 +40,19 @@ export default {
     },
     sendMessage (message) {
       this.activeChat.push(message)
-      this.socket.emit('message', message)
+      this.socket.emit('message', {
+        message: message.message,
+        to: 'user',
+        from: 'user2'
+      })
     }
   }, 
   created () {
     this.socket = io('http://localhost:3001')
-    this.socket.on('broadcast', (data) => {
-      console.log(data)
+    this.socket.emit('join', 'user')
+
+    this.socket.onAny((event, ...args) => {
+      console.log(event, args)
     })
   },
   beforeUnmount () {
