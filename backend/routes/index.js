@@ -388,7 +388,10 @@ module.exports = function (dbUrl, dbFolder) {
     const { getAllChatHistories } = require('./chatFunctions.js');
     getAllChatHistories(req.user).then((histories) => {
       console.log(histories)
-      res.json(histories);
+      const userInfo = {};
+      userInfo.histories = histories;
+      userInfo.username = req.user;
+      res.json(userInfo);
     }
     ).catch((err) => {
       res.status(500).json(err);

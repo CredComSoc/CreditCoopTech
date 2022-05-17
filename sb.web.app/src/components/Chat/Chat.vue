@@ -2,7 +2,7 @@
   <h1 id="title">MEDDELANDEN</h1>
   <div id="container-chat">
     <ChatHistory @openChat="this.openChat" :history="this.history"/>
-    <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" user="Kasper" @sendMessage="this.sendMessage"/>
+    <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage"/>
   </div>
 </template>
 
@@ -20,28 +20,19 @@ export default {
   },
   data () {
     return {
-      Chats: [[{ sender: 'Kasper', reciever: 'Alicica', message: 'how are you my dear' }, { sender: 'Alicia', reciever: 'Kasper', message: 'helloooooo' }], [{ sender: 'Anna Book', reciever: 'Kasper', message: 'Vad kul att chatta' }], [{ sender: 'Kasper', reciever: 'James', message: 'Okej' }, { sender: 'James', reciever: 'Kasper', message: 'låter bra' }, { sender: 'James', reciever: 'Kasper', message: 'super' }]],
       history: [],
       history_values: {},
       activeChat: [],
       reciever: '',
       socket: 0,
-      all_chatIDs: {}
+      all_chatIDs: {},
+      user: ''
     }
   },
   methods: {
     openChat (userchat) {
-      // if (userchat === 'Admin1') {
-      //   this.activeChat = this.Chats[0]
-      // } else if (userchat === 'Anna Book') {
-      //   this.activeChat = this.Chats[1] 
-      // } else if (userchat === 'James') {
-      //   this.activeChat = this.Chats[2] 
-      // }
       this.socket.emit('join', this.all_chatIDs[userchat])
       this.activeChat = this.history_values[userchat]
-      console.log(this.activeChat)
-      console.log(this.all_chatIDs)
       this.reciever = userchat
       if (this.activeChat.length > 0) {
         this.$refs.chatbox.scrolltoBottom()
@@ -51,9 +42,9 @@ export default {
       this.activeChat.push(message)
       this.socket.emit('message', {
         message: message.message,
-        sender: this.reciever,
+        sender: this.user,
         id: this.all_chatIDs[this.reciever],
-        reciever: 'User2'
+        reciever: this.reciever
       })
     },
     getChatHistories () {
@@ -67,12 +58,13 @@ export default {
         .then(res => res.json())
         .then(data => {
           if (data) {
-            data.forEach((hist) => {
+            data.histories.forEach((hist) => {
               const chatter = Object.keys(hist)[0]
               this.history.push(chatter)
               this.history_values[chatter] = hist[chatter]
               this.all_chatIDs[chatter] = hist.chatID
-            })  
+            })
+            this.user = data.username
           }
         })
     }
