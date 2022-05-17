@@ -79,6 +79,12 @@ function startChat(app) {
       const chatID = msg.id;
       delete msg.id;
       storeChatMsg(chatID, msg)
+
+    });
+
+    socket.on('leave', (data) => {
+      console.log(`User ${socket.id} disconnected.`)
+      socket.leave(data);
     });
 
     socket.on('disconnect', () => {
