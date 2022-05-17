@@ -1,7 +1,7 @@
 <template>
   <h1 id="title">MEDDELANDEN</h1>
   <div id="container-chat">
-    <ChatHistory @openChat="this.openChat" :history="this.history"/>
+    <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat"/>
     <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage"/>
   </div>
 </template>
@@ -26,7 +26,8 @@ export default {
       reciever: '',
       socket: 0,
       all_chatIDs: {},
-      user: ''
+      user: '',
+      chosenChat: null
     }
   },
   methods: {
@@ -63,6 +64,11 @@ export default {
               this.history.push(chatter)
               this.history_values[chatter] = hist[chatter]
               this.all_chatIDs[chatter] = hist.chatID
+              if (this.$route.params.chatID) {
+                if (this.$route.params.chatID === hist.chatID) {
+                  this.chosenChat = chatter
+                }
+              }
             })
             this.user = data.username
           }

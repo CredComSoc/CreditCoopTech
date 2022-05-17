@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'UserChat',
-  props: ['userchat'],
+  props: ['userchat', 'chosenChat'],
   methods: {
     openChat () {
       const chats = document.getElementsByClassName('user-chat')
@@ -17,8 +17,13 @@ export default {
       document.getElementById(this.userchat).classList.add('active')
       this.$emit('openChat', this.userchat)
     }
+  },
+  mounted () {
+    console.log(this.listIndex)
+    if (this.chosenChat === this.userchat) {
+      this.openChat()
+    }
   }
-
 }
 </script>
 

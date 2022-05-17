@@ -25,19 +25,25 @@
         <h1> Kontaktuppgifter </h1>
         <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
       </div>
-      <button @click="goToChat" > Starta chatt </button>
+      <button id="chat-btn" @click="goToChat" > Starta chatt </button>
     </div>
+    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
   </div>
 </template>
 
 <script>
 import { EXPRESS_URL, getMember } from './../../serverFetch'
+import PopupCard from './../CreateArticle/PopupCard.vue'
 
 export default {
+  components: {
+    PopupCard
+  },
   data () {
     return {
       logoURL: '',
       profileData: [],
+      chatError: false,
       getMember
     }
   },
@@ -62,11 +68,11 @@ export default {
         credentials: 'include'
       }).then(res => res.json())
         .then(data => {
-          console.log(data)
           if (data !== false) {
             this.$router.push({ name: 'Chat', params: { chatID: data } })
           } else {
             console.log('chat error!!')
+            this.chatError = true
           }
         })
         .catch(err => console.log(err))
@@ -114,6 +120,20 @@ h1 {
   /**margin-left: auto;
   margin-right: auto;*/
   width: 50%;
+}
+
+#chat-btn {
+  font-size: 17px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+  color: #FFF;
+  border: none;
+  display: block;
+  width: 150px;
+  height:50px;
+  border-radius: 10px;
+  background: #4690CD;
+  border: 1px solid #4690CD;
 }
 
 @media screen and (min-width: 860px) {
