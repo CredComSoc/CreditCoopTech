@@ -139,20 +139,20 @@ module.exports.getAllChatHistories = async (user) => {
             resolve(false);
         }
         else {
-            const chatHistories = [];
-            for (const [key, val] of Object.entries(chatIDs)) {
-                const chatHistory = await this.getChatHistory(key);
-                if (chatHistory === false) {
-                    console.log("Kan inte hämta chattens historia");
+           // const chatHistories = [];
+            //for (const [key, val] of Object.entries(chatIDs)) {
+               // const chatHistory = await this.getChatHistory(key);
+               // if (chatHistory === false) {
+                   // console.log("Kan inte hämta chattens historia");
                     //resolve(false);
-                }
-                else {
-                    console.log(chatHistory);
-                    chatHistories.push({[val]: chatHistory, chatID: key});
-                }
-            }
+               // }
+               // else {
+                    //console.log(chatIDs);
+                   // chatHistories.push({[val]: chatHistory, chatID: key});
+               // }
+            //}
             //resolve(true);
-            resolve(chatHistories);
+            resolve(chatIDs);
         }
     });
 }

@@ -36,8 +36,9 @@ export default {
         this.socket.emit('leave', this.all_chatIDs[this.reciever])
       }
       this.socket.emit('join', this.all_chatIDs[userchat])
-      this.activeChat = this.history_values[userchat]
+      //this.activeChat = this.history_values[userchat]
       this.reciever = userchat
+      this.getChatHistory(this.all_chatIDs[userchat])
       if (this.activeChat.length > 0) {
         this.$refs.chatbox.scrolltoBottom()
       }
@@ -51,8 +52,22 @@ export default {
         reciever: this.reciever
       })
     },
+    getChatHistory (chatID) {
+      fetch(EXPRESS_URL + '/chat/history/' + chatID, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.history_values[this.reciever] = data
+          this.activeChat = this.history_values[this.reciever]
+        })
+        .catch(err => console.log(err))
+    },
     getChatHistories () {
-      fetch(EXPRESS_URL + '/chat/histories/', {
+      fetch(EXPRESS_URL + '/chat/histories', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -62,17 +77,17 @@ export default {
         .then(res => res.json())
         .then(data => {
           if (data) {
-            data.histories.forEach((hist) => {
-              const chatter = Object.keys(hist)[0]
-              this.history.push(chatter)
-              this.history_values[chatter] = hist[chatter]
+           // data.histories.forEach((hist) => {
+              //const chatter = Object.keys(hist)[0]
+              //this.history.push(chatter)
+              this.history_values[chatter] = data[chatter]
               this.all_chatIDs[chatter] = hist.chatID
               if (this.$route.params.chatID) {
                 if (this.$route.params.chatID === hist.chatID) {
                   this.chosenChat = chatter
                 }
               }
-            })
+           // })
             this.user = data.username
           }
         })

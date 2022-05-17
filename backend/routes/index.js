@@ -384,7 +384,7 @@ module.exports = function (dbUrl, dbFolder) {
     })
   });
 
-  router.get('/chat/histories/', (req, res) => {
+  router.get('/chat/histories', (req, res) => {
     const { getAllChatHistories } = require('./chatFunctions.js');
     getAllChatHistories(req.user).then((histories) => {
       console.log(histories)
@@ -397,6 +397,14 @@ module.exports = function (dbUrl, dbFolder) {
       res.status(500).json(err);
     }
     )
+  })
+
+  router.get('/chat/history/:id', (req, res) => {
+    const chatID = req.params.id;
+    const { getChatHistory } = require('./chatFunctions.js');
+    getChatHistory(chatID).then((history) => {
+      res.json(history);
+    });
   })
 
   router.get('/chat/:user', (req, res) => {
