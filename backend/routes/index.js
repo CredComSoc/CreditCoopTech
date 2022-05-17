@@ -387,7 +387,6 @@ module.exports = function (dbUrl, dbFolder) {
   router.get('/chat/histories', (req, res) => {
     const { getAllChatHistories } = require('./chatFunctions.js');
     getAllChatHistories(req.user).then((histories) => {
-      console.log(histories)
       const userInfo = {};
       userInfo.histories = histories;
       userInfo.username = req.user;

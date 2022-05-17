@@ -36,12 +36,8 @@ export default {
         this.socket.emit('leave', this.all_chatIDs[this.reciever])
       }
       this.socket.emit('join', this.all_chatIDs[userchat])
-      //this.activeChat = this.history_values[userchat]
       this.reciever = userchat
       this.getChatHistory(this.all_chatIDs[userchat])
-      if (this.activeChat.length > 0) {
-        this.$refs.chatbox.scrolltoBottom()
-      }
     },
     sendMessage (message) {
       this.activeChat.push(message)
@@ -63,6 +59,9 @@ export default {
         .then(data => {
           this.history_values[this.reciever] = data
           this.activeChat = this.history_values[this.reciever]
+          if (this.activeChat.length > 0) {
+            this.$refs.chatbox.scrolltoBottom()
+          }
         })
         .catch(err => console.log(err))
     },
@@ -76,18 +75,17 @@ export default {
       })
         .then(res => res.json())
         .then(data => {
-          if (data) {
-           // data.histories.forEach((hist) => {
-              //const chatter = Object.keys(hist)[0]
-              //this.history.push(chatter)
-              this.history_values[chatter] = data[chatter]
-              this.all_chatIDs[chatter] = hist.chatID
+          console.log(data)
+          if (data.histories) {
+            for (const [key, value] of Object.entries(data.histories)) {
+              this.all_chatIDs[value] = key
+              this.history.push(value)
               if (this.$route.params.chatID) {
-                if (this.$route.params.chatID === hist.chatID) {
-                  this.chosenChat = chatter
+                if (this.$route.params.chatID === key) {
+                  this.chosenChat = value
                 }
               }
-           // })
+            }
             this.user = data.username
           }
         })
