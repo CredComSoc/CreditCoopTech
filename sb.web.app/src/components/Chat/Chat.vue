@@ -32,6 +32,9 @@ export default {
   },
   methods: {
     openChat (userchat) {
+      if (this.reciever !== '') {
+        this.socket.emit('leave', this.all_chatIDs[this.reciever])
+      }
       this.socket.emit('join', this.all_chatIDs[userchat])
       this.activeChat = this.history_values[userchat]
       this.reciever = userchat
