@@ -38,13 +38,22 @@
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'chatMessage'">
+                    <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" @click.prevent="moveNotification(item)">
+                        <div id="new-list-content">
+                        <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                        <p class="notice-desc">{{ item.fromUser }} har skickat ett chatt-meddelande.</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
                 </div>
             </div>
             <div id="previous-notice-list" v-if="oldNotifications.length > 0">
                 <p class="notice-title">Tidigare</p>
                 <div v-for="item in oldNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
-                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" >
                         <div id="new-list-content">
                         <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
@@ -52,7 +61,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'saleRequestAccepted'">
-                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
                         <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
@@ -60,9 +69,17 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'saleRequestDenied'">
-                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
                         <p class="notice-desc">{{ item.fromUser }} har nekat din köpförfrågan.</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
+                    <div v-if="item.type == 'chatMessage'">
+                    <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" >
+                        <div id="new-list-content">
+                        <p class="notice-desc">{{ item.fromUser }} har skickat ett chatt-meddelande.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 

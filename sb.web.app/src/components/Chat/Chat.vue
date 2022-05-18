@@ -35,7 +35,11 @@ export default {
       if (this.reciever !== '') {
         this.socket.emit('leave', this.all_chatIDs[this.reciever])
       }
-      this.socket.emit('join', this.all_chatIDs[userchat])
+      const chatRoom = {
+        user: this.user,
+        chatID: this.all_chatIDs[userchat]
+      }
+      this.socket.emit('join', chatRoom)
       this.reciever = userchat
       this.getChatHistory(this.all_chatIDs[userchat])
     },
@@ -91,7 +95,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route.params.chatID)
     this.getChatHistories()
     this.socket = io('http://localhost:3001')
   

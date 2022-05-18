@@ -67,16 +67,33 @@ function startChat(app) {
   io.on('connection', (socket) => {
     console.log('a user connected');
 
-    socket.on("join", (roomId) => {
-      socket.join(roomId);
-      console.log(`User with ID: ${socket.id} joined room: ${roomId}`)
+    socket.on("join", (chatRoom) => {
+      socket.join(chatRoom.chatID);
+      const { markNotification } = require('./routes/chatFunctions');
+      //console.log(roomId.length);
+      markNotification(chatRoom.chatID, chatRoom.user);
+      console.log(`User with ID: ${socket.id} joined room: ${chatRoom.chatID}`)
     })
 
     socket.on('message', (msg) => {
       socket.to(msg.id).emit('message', msg);
       const { storeChatMsg } = require('./routes/chatFunctions');
       const chatID = msg.id;
+      //console.log("CHATID:", chatID.length)
+      console.log(io.sockets.adapter.rooms.get(chatID).size);      
       delete msg.id;
+      if (io.sockets.adapter.rooms.get(chatID).size === 1) {
+        const notification = {
+          date: new Date(),
+          type: 'chatMessage',
+          toUser: msg.reciever,
+          fromUser: msg.sender,
+          seen: false,
+          chatID: chatID
+        } 
+        const { storeNotification } = require('./routes/chatFunctions');
+        storeNotification(notification);
+      }
       storeChatMsg(chatID, msg)
     });
 

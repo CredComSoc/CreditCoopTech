@@ -1,6 +1,8 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const { mongoURL, dbFolder } = require('../mongoDB-config');
 const uuid = require('uuid');
+const { query } = require('express');
+const { model } = require('mongoose');
 
 
 module.exports.initChat = async (sender, receiver) => {
@@ -220,6 +222,91 @@ module.exports.storeChatMsg = async (chatID, msg) => {
             db.close();
         } else {
             console.log(res);
+            db.close();
+        }
+    });
+}
+
+module.exports.storeNotification = async (notification) => {
+    const db = await MongoClient.connect(mongoURL)
+    const dbo = db.db(dbFolder);
+   
+    dbo.collection('users').findOne({ 'profile.accountName': notification.toUser }, (err, user) => {
+        if (err) {
+            console.log(err);
+            db.close();
+        }  
+        else if (user) {
+          let notification_list = user.notifications
+          for (let i = 0; i < notification_list.length; i++) {
+            if (notification_list[i].fromUser === notification.fromUser && notification_list[i].type === notification.type) {
+              notification_list.splice(i, 1);
+              console.log(notification_list);
+              break
+            }
+          }
+          if (notification_list.length >= 4) {
+            notification_list = [notification, notification_list[0], notification_list[1], notification_list[2]]
+          } else {
+            notification_list.push(notification)
+          }
+          dbo.collection('users').updateOne({ 'profile.accountName': notification.toUser }, { $set: { notifications: notification_list } }, (err, query) => {
+            if (err) {
+                console.log(err);
+                db.close();
+            }
+            else if (query.acknowledged) {
+                console.log("ADDED NOTIFICATION")
+                db.close();
+            } else {
+                db.close();
+            }
+          });
+        } else {
+            db.close();
+        }
+    });
+}
+
+module.exports.markNotification = async (chatID, username) => {
+    const db = await MongoClient.connect(mongoURL)
+    const dbo = db.db(dbFolder);
+   
+    dbo.collection('users').findOne({ 'profile.accountName': username }, (err, user) => {
+        if (err) {
+            console.log(err);
+            db.close();
+        }
+        else if (user) {
+            let found_notice = false;
+            let notification_list = user.notifications
+            for (let i = 0; i < notification_list.length; i++) {
+                if (notification_list[i].chatID === chatID && notification_list[i].type === "chatMessage" ) {
+                    notification_list[i].seen = true;
+                    found_notice = true;
+                    break
+                }
+            }
+            console.log(notification_list);
+            if (found_notice) {
+                console.log(user);
+                dbo.collection('users').updateOne({ 'profile.accountName': username }, { $set: { notifications: notification_list } }, (err, query) => {
+                    if (err) {
+                        console.log(err);
+                        db.close();
+                    }
+                    else if (query.acknowledged) {
+                        console.log("MARKED NOTIFICATION")
+                        db.close();
+                    } else {
+                        db.close();
+                    }
+                });
+            } else {
+                db.close();
+            }
+        }
+        else {
             db.close();
         }
     });
