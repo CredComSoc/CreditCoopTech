@@ -7,10 +7,8 @@ module.exports.initChat = async (sender, receiver) => {
     return new Promise(async (resolve, reject) => {
         const chatID = uuid.v4();
         const res1 = await this.createChat(sender, receiver, chatID);
-        console.log("RES1:", res1); 
         if (res1) {
             const res2 = await this.createChat(receiver, sender, chatID);
-            console.log("RES2:", res2);
             if (!res2) {
                 this.deleteChat(sender, receiver, chatID);
                 console.log("Kan inte skapa chatten just nu");
@@ -25,7 +23,6 @@ module.exports.initChat = async (sender, receiver) => {
                         db.close();
                         resolve(false);
                     } else {
-                        console.log(res);
                         db.close();
                         resolve(chatID);
                     }
@@ -40,8 +37,6 @@ module.exports.initChat = async (sender, receiver) => {
 
 
 module.exports.deleteChat = async (user, chatter, chatID) => {
-    console.log(mongoURL);
-    console.log(dbFolder);
     const db = await MongoClient.connect(mongoURL);
     const dbo = db.db(dbFolder);
     const key = 'chats.' + chatID;
@@ -68,7 +63,6 @@ module.exports.createChat = (user, chatter, chatID) => {
                 db.close();
                 resolve(false);
             } else if (res.matchedCount > 0) {
-                console.log(res);
                 db.close();
                 resolve(true);
             }
@@ -94,16 +88,7 @@ module.exports.chatExists = async (user, chatter) => {
             return chatID;
         }   
         else {
-            console.log(chatID);
             return chatID;
-        //     const chatHistory =  await this.getChatHistory(chatID);
-        //     if (chatHistory === false) {
-        //         console.log("Kan inte hämta chattens historia");
-        //     }
-        //     else {
-        //         console.log(chatHistory);
-        //         return chatHistory;
-        //     }
         }
     }
 }
@@ -132,7 +117,6 @@ module.exports.getAllChatIDs = async (user) => {
 
 module.exports.getAllChatHistories = async (user) => {
     return new Promise( async (resolve, reject) => {
-        console.log(user);
         const chatIDs = await this.getAllChatIDs(user);
         if (chatIDs === false) {
             console.log("Kan inte hämta chattens historia");
@@ -155,7 +139,6 @@ module.exports.getChatHistory = async (chatID) => {
                 db.close();
                 resolve(false);
             } else if (res) {
-                console.log(res);
                 db.close();
                 resolve(res[chatID]);
             } else {
@@ -210,7 +193,6 @@ module.exports.checkChatStatus = async (user, chatter) => {
                 db.close();
                 resolve(false);
             } else if (res) {
-                console.log(res);
                 if ('chats' in res) {
                     Object.values(res.chats).findIndex(val => val === chatter) > -1 ? resolve(true) : resolve(false);
                 }
@@ -235,7 +217,6 @@ module.exports.storeChatMsg = async (chatID, msg) => {
             console.log(err);
             db.close();
         } else if (res) {
-            console.log(res);
             db.close();
         } else {
             console.log(res);

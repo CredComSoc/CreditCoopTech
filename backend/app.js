@@ -3,13 +3,11 @@ const server = require('./server');
 
 const port = 3000
 
-const app = express()
+let app = express()
 
 server.initApp(app)
 
+app = server.startServer(app, port)
+
 server.startChat(app)
-
-server.startServer(app, port)
-
-
 

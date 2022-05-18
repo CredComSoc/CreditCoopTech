@@ -44,6 +44,7 @@ function initApp(app, dbUrl = dbConfig.mongoURL, dbFolder=dbConfig.dbFolder) {
 function startServer(app, port) {
   let server = app.listen(port, () => {
     let host = server.address().address
+    console.log(host);
     let port = server.address().port
     console.log(`Listening to http://${host}:${port}`)
    })
@@ -57,10 +58,9 @@ function stopServer(server) {
 
 function startChat(app) {
   const http = require('http').createServer(app);
-
-  const io = require('socket.io')(http, {
-    cors: {
-      origins: ['http://localhost:8080']
+  const io = require('socket.io')(http,{
+    cors : {
+      origin: '*'
     }
   });
 
@@ -70,7 +70,6 @@ function startChat(app) {
     socket.on("join", (roomId) => {
       socket.join(roomId);
       console.log(`User with ID: ${socket.id} joined room: ${roomId}`)
-      
     })
 
     socket.on('message', (msg) => {
@@ -79,7 +78,6 @@ function startChat(app) {
       const chatID = msg.id;
       delete msg.id;
       storeChatMsg(chatID, msg)
-
     });
 
     socket.on('leave', (data) => {
@@ -90,14 +88,6 @@ function startChat(app) {
     socket.on('disconnect', () => {
       console.log('user disconnected');
     });
-
-    /*
-
-    socket.on('message', (msg) => {
-        console.log('message: ' + msg.sender);
-        socket.broadcast.emit('broadcast', `server: ${msg.message}`);
-      });*/
-
   });
   
   http.listen(3001, () => {

@@ -75,7 +75,6 @@ export default {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data)
           if (data.histories) {
             for (const [key, value] of Object.entries(data.histories)) {
               this.all_chatIDs[value] = key
@@ -97,7 +96,6 @@ export default {
     this.socket = io('http://localhost:3001')
   
     this.socket.on('message', (data) => {
-      console.log(data)
       this.activeChat.push(data)
       this.$refs.chatbox.scrolltoBottom()
     })
