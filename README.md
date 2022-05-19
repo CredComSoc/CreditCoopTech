@@ -2,14 +2,14 @@
 
 Cooperative Barter Software is an online trading post for entrepreneurs. Created with Vue.js and Express.js, and uses a [Credit Commons node](https://gitlab.com/credit-commons-software-stack/cc-node).  
 
-## Installation
-
-### Requirements
+## Requirements
 
 - A web server that meet the cc-node requirements, listed in cc-node/INSTALL.md
 - [Node.js](https://nodejs.org)
 - A [MongoDB](https://www.mongodb.com/) database.
 
+
+## Installation
 
 ### Install cc-node
 
