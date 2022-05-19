@@ -13,57 +13,49 @@
       </nav>
     </header>
   </div>
-  <div class="login-box">
+  <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Logga in på Svensk Barter</div>
+      <div class="box-text">Återställ lösenord</div>
       <div>
         <label class="box-label">E-postadress</label>
-        <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
+        <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
       </div>
-      <div>
-        <label class="box-label">Lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" id="password-input" required>
-      </div>
-      <button id="login-button" >Logga in</button>
+      <button id="reset-button" >Återställ</button>
     </form>
-    <div class="box-error" v-if="this.error">
-      Fel epost eller lösenord ({{ loginCount }})
+    <div class="box-error" v-if="error">
+      Det finns ingen användare med den e-postadressen
     </div>
-    <div class="box-link">
-      <a href="/forgot">Återställ lösenord</a>
-    </div> 
+    <div class="box-sent" v-if="sent">
+      Ett e-post med instruktioner för lösenordsåterställning har skickats!
+    </div>
   </div>
 </div>
 
 </template>
 
 <script>
-import { login } from '../serverFetch'
+import { mail } from '../serverFetch'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 export default {
-  name: 'Login',
+  name: 'Forgot',
   data () {
     return {
-      username: '',
-      password: '',
+      email: '',
       error: false,
-      loginCount: 0
+      sent: false
     }
   },
   methods: {
     async handleSubmit () {
-      login(this.username.toLowerCase(), this.password).then((response) => {
-        console.log(response)
+      mail(this.email).then((response) => {
         if (response) {
-          this.error = false  
-          this.loginCount = 0   
-          //this.$router.push({ name: 'Home' })
-          window.location.reload()
+          this.error = false
+          this.sent = true     
         } else {
           this.error = true
-          this.loginCount += 1
+          this.sent = false
         } 
       })
     }
@@ -81,7 +73,7 @@ export default {
   box-sizing: border-box;
 }
 
-.login-box {
+.reset-box {
     font-family: Ubuntu;
     font-style: Regular;
     font-size:  20px;
@@ -129,7 +121,12 @@ button {
   font-size: 14px;
   text-align: center;
   color: red;
-  margin-top: 50px;
+}
+
+.box-sent{
+  font-size: 14px;
+  text-align: center;
+  color: green;
 }
 
 .box-link {

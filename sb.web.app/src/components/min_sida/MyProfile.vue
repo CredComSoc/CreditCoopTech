@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, profile, updateProfile } from '../../serverFetch'
+import { EXPRESS_URL, profile, updateProfile, mail } from '../../serverFetch'
 
 export default {
   data () {

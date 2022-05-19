@@ -1,9 +1,9 @@
 import JsSHA from 'jssha'
 
-const urlBase = 'http://155.4.159.231'
+const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
+//const urlBase = 'http://localhost'       // USE LOCAL EXPRESS
 
-//export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-export const EXPRESS_URL = urlBase + ':3000' // USE HOST EXPRESS
+export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
 
 /*****************************************************************************
@@ -684,6 +684,49 @@ export function acceptRequest (id) {
     })
     .then((data) => {
       return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+/*****************************************************************************
+* 
+*                                Reset Password
+*                 
+*****************************************************************************/
+
+export async function mail (email) {
+  const data = { email: email }
+  const promise = fetch(EXPRESS_URL + '/forgot', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.ok
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export async function resetToken (token, newpass) {
+  const promise = fetch(EXPRESS_URL + '/reset/' + token, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ newpass: newpass }),
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res.ok
     })
     .catch(() => {
       return false
