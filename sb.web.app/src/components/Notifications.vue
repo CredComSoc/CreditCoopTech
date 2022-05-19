@@ -324,14 +324,14 @@ figcaption {
     display: none;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1025px) {
   #profile-dropdown:hover .dropdown-content {
     display: block;  
     border-top: 1px;
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1025px) {
 
  .header-container {
     -ms-overflow-style: none;  /* IE and Edge */
