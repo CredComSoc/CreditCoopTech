@@ -27,7 +27,7 @@
       </div>
       <div class="interactContent" v-if="listingObj.status === 'buying'">
         <div>
-          <button class="chattBtn" @click="initiateChat">Starta chatt</button>
+          <button class="chattBtn" @click="goToChat">Starta chatt</button>
         </div>
       </div>
     </div>
@@ -69,8 +69,22 @@ export default {
         // }
       })
     },
-    initiateChat () {
-      console.log('Functionality not added')
+    goToChat () {
+      fetch(EXPRESS_URL + '/chat/' + this.listingObj.userUploader, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      }).then(res => res.json())
+        .then(data => {
+          if (data !== false) {
+            this.$router.push({ name: 'Chat', params: { chatID: data } })
+          } else {
+            console.log('chat error!!')
+            this.chatError = true
+          }
+        }).catch(err => console.log(err))
     }
   }
 }
