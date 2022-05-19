@@ -21,7 +21,7 @@
         "erased": {
           "label": "Erase",
           "signatories": [
-            "payee"
+            "payer", "payee"
           ]
         }
       },
@@ -55,7 +55,7 @@
         "erased": {
           "label": "Erase",
           "signatories": [
-            "payer"
+            "payer", "payee"
           ]
         }
       },

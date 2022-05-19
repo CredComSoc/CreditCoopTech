@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     async handleSubmit () {
-      login(this.username, this.password).then((response) => {
+      login(this.username.toLowerCase(), this.password).then((response) => {
         if (response) {
           this.error = false  
           this.loginCount = 0   

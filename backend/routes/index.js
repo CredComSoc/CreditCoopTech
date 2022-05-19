@@ -126,7 +126,7 @@ module.exports = async function(dbUrl, dbFolder) {
     getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
         const newUser = {
-          email: req.body.email,
+          email: req.body.email.toLowerCase(),
           password: req.body.password,
           is_active: req.body.is_active,
           min_limit: req.body.min_limit,
@@ -425,10 +425,6 @@ module.exports = async function(dbUrl, dbFolder) {
         db.close()
       }
       else {
-        console.log(articles)
-        console.log(destinations)
-        console.log(categories)
-        console.log(status)
         posts.forEach(listing => {
           //Om ARTIKEL
           if (articles.length !== 0) {
