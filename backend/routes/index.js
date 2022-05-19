@@ -785,12 +785,14 @@ module.exports = async function(dbUrl, dbFolder) {
     await transporter.sendMail({
       from: 'svenskbarter.reset@outlook.com', // sender address
       to: user.email, // list of receivers
-      subject: 'Password Reset', // Subject line
+      subject: 'Återställning av lösenord', // Subject line
       text: `
-      You are receiving this because you (or someone else) have requested the reset of the password for your account.
-      Please click on the following link, or paste this into your browser to complete the process:
+      Du får det här mailet för att du (eller någon annan) har begärt att ditt lösenord hos Svensk Barter ska återställas.
+      Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+      
       http://localhost:8080/reset/${token}
-      If you did not request this, please ignore this email and your password will remain unchanged.
+
+      Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
     `
     })
     return res.status(200).send("Email successfully sent")
@@ -820,9 +822,9 @@ module.exports = async function(dbUrl, dbFolder) {
     const resetEmail = {
       to: user.email,
       from: 'svenskbarter.reset@outlook.com',
-      subject: 'Your password has been changed',
+      subject: 'Ditt lösenord har ändrats',
       text: `
-        This is a confirmation that the password for your account "${user.profile.accountName}" has just been changed.
+      Det här är en bekräftelse på att lösenordet för ditt konto "${user.profile.accountName}" hos Svensk Barter har ändrats.
       `,
     };
     await transporter.sendMail(resetEmail);
