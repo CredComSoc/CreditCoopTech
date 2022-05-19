@@ -1,7 +1,7 @@
 <template>
 <div id="frame">
   <div id="container-msg-disp">
-    <SpeechBubble v-for="(msg,i) in this.messages"
+    <SpeechBubble :v-if="this.messages.length > 0" v-for="(msg,i) in this.messages"
           :sender="msg.sender"
           :reciever="msg.reciever"
           :key="i"

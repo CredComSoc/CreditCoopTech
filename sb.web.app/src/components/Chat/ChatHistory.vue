@@ -6,6 +6,7 @@
             <UserChat @openChat="this.openChat" v-for="(h, i) in this.history"
                         :userchat="h"
                         :key="i"
+                        :chosenChat="this.chosenChat"
                         />
         </div>
     </div>
@@ -18,7 +19,7 @@ import UserChat from './UserChat.vue'
 
 export default {
   name: 'ChatHistory',
-  props: ['history'],
+  props: ['history', 'chosenChat'],
   components: {
     UserChat
   },

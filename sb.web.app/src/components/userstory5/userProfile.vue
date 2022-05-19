@@ -1,8 +1,10 @@
 <template>
   <div>
     <div className="flexbox-container2 flexbox-item">
+      
       <div className="image container-item">
         <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <button id="chat-btn" @click="goToChat" > Starta chatt </button>
       </div>
       <div className="right container-item">
         <h1> Företagsnamn </h1>
@@ -28,6 +30,7 @@
       </div>
     </div>
     <div class="sendmoney-box" v-if="profileData.name !== currentUser">
+      
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
         <h1 class="box-text">Skicka Barterkronor</h1>
         <div>
@@ -46,6 +49,7 @@
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.name + ' har mottagits.'" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
+    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
   </div>
 </template>
 
@@ -66,7 +70,8 @@ export default {
       bkr: 0,
       comment: '',
       bkrSentMsg: false,
-      notEnoughBkrMsg: false
+      notEnoughBkrMsg: false,
+      chatError: false
     }
   },
   methods: {
@@ -95,6 +100,23 @@ export default {
       this.notEnoughBkrMsg = false
       this.bkr = 0
       this.comment = ''
+    },
+    goToChat () {
+      fetch(EXPRESS_URL + '/chat/' + this.profileData.name, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      }).then(res => res.json())
+        .then(data => {
+          if (data !== false) {
+            this.$router.push({ name: 'Chat', params: { chatID: data } })
+          } else {
+            console.log('chat error!!')
+            this.chatError = true
+          }
+        }).catch(err => console.log(err))
     }
   },
   created: function () {
@@ -144,11 +166,28 @@ h1 {
   width: 50%;
 }
 
+#chat-btn {
+  font-size: 17px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+  color: #FFF;
+  border: none;
+  width: 150px;
+  height:50px;
+  border-radius: 10px;
+  background: #4690CD;
+  border: 1px solid #4690CD;
+  margin-left: 30%;
+  margin-bottom: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media screen and (min-width: 860px) {
   .flexbox-container2 {
     padding-top: 50px;
     display: flex;
-    align-content: center;
   }
   .image {
     width: 50%;
@@ -167,7 +206,6 @@ h1 {
     height: 570px;
     border-radius: 20px;
     margin: auto;
-    margin-top: 5%;
     position: relative;
 }
 

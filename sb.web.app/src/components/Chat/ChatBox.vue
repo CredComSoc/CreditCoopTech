@@ -1,9 +1,10 @@
 <template>
   <div id="frame-chatbox">
-    <p> {{ this.reciever }} </p>
+    <p v-if="this.reciever.length > 0"> {{ this.reciever }} </p>
+    <p v-else> Välj någon att chatta med </p>
     <div id="container-chatbox">
       <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
-      <InputField @sendMessage="this.sendMessage"/>
+      <InputField v-if="this.reciever.length > 0" @sendMessage="this.sendMessage"/>
     </div>
   </div>
 </template>
