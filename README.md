@@ -6,7 +6,7 @@ Cooperative Barter Software is an online trading post for entrepreneurs. Created
 
 ### Requirements
 
-- A web server that meets the cc-node requirements, listed in cc-node/INSTALL.md
+- A web server that meet the cc-node requirements, listed in cc-node/INSTALL.md
 - [Node.js](https://nodejs.org)
 - A [MongoDB](https://www.mongodb.com/) database.
 
