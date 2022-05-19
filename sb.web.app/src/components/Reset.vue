@@ -13,58 +13,58 @@
       </nav>
     </header>
   </div>
-  <div class="login-box">
+  <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Logga in på Svensk Barter</div>
+      <div class="box-text">Återställ lösenord</div>
       <div>
-        <label class="box-label">E-postadress</label>
-        <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
+        <label class="box-label">Nytt lösenord</label>
+        <input class="box-input" type="password" v-model="password" name="" placeholder="Nytt lösenord" id="password" required>
+        <input class="box-input" type="password" v-model="password2" name="" placeholder="Bekräfta lösenord" id="password2" required>
       </div>
-      <div>
-        <label class="box-label">Lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" id="password-input" required>
-      </div>
-      <button id="login-button" >Logga in</button>
+      <button id="reset-button" >Återställ</button>
     </form>
     <div class="box-error" v-if="error">
-      Fel epost eller lösenord ({{ loginCount }})
+      {{this.errorText}}
     </div>
-    <div class="box-link">
-      <a href="/forgot">Återställ lösenord</a>
-    </div> 
   </div>
 </div>
 
 </template>
 
 <script>
-import { login } from '../serverFetch'
+import { resetToken } from '../serverFetch'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 export default {
-  name: 'Login',
+  name: 'Reset',
   data () {
     return {
-      username: '',
-      password: '',
       error: false,
-      loginCount: 0
+      errorText: '',
+      password: '',
+      password2: ''
     }
   },
   methods: {
     async handleSubmit () {
-      login(this.username, this.password).then((response) => {
-        if (response) {
-          this.error = false  
-          this.loginCount = 0   
-          //this.$router.push({ name: 'Home' })
-          window.location.reload()
-        } else {
-          this.error = true
-          this.loginCount += 1
-        } 
-      })
+      const uri = window.location.href.split('/')
+      const token = uri[4]
+      if (this.password === this.password2) {
+        console.log('Token = ' + token)
+        resetToken(token, this.password).then((response) => {
+          if (response) {
+            this.error = false
+            this.$router.push({ name: 'Home' }) 
+          } else {
+            this.errorText = 'Något gick fel. Vänligen testa att återställa lösenordet på nytt.'
+            this.error = true
+          }
+        })
+      } else {
+        this.errorText = 'Lösenorden stämmer ej överens.'
+        this.error = true
+      }  
     }
   }
 
@@ -80,7 +80,7 @@ export default {
   box-sizing: border-box;
 }
 
-.login-box {
+.reset-box {
     font-family: Ubuntu;
     font-style: Regular;
     font-size:  20px;
@@ -120,7 +120,7 @@ button {
   height: 34px;
   background-color: #F3F3F3;
   margin-left: 20px;
-  margin-bottom: 36px;
+  margin-bottom: 12px;
   padding-left: 8px;
 }
 

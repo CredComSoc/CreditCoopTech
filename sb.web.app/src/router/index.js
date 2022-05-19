@@ -3,6 +3,8 @@ import { authenticate, checkAdminStatus } from '../serverFetch'
 import Home from '../views/Home.vue'
 import Navbar from '../components/Navbar.vue'
 import Login from '../components/Login.vue'
+import Forgot from '../components/Forgot.vue'
+import Reset from '../components/Reset.vue'
 import Shop from '../components/userstory4/parent.vue'
 import Members from '../components/userstory5/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
@@ -27,6 +29,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/forgot',
+    name: 'Forgot',
+    component: Forgot
+  },
+  {
+    path: '/reset/:token',
+    name: 'Reset',
+    component: Reset,
+    props: true
   },
   {
     path: '/shop',
@@ -88,7 +101,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   //Navbar.forceRerender()
   const auth = await authenticate()
-  if (to.name !== 'Login') {
+  if (to.name !== 'Login' && to.name !== 'Forgot' && to.name !== 'Reset') {
     if (!auth) {
       return { name: 'Login' }
     } else {

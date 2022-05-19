@@ -10,6 +10,16 @@ const methodOverride = require('method-override');
 const uuid = require('uuid');
 const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
+const nodemailer = require('nodemailer')
+const { promisify } = require('util');
+
+const transporter = nodemailer.createTransport({
+  service: 'hotmail',
+  auth: {
+    user: 'svenskbarter.reset@outlook.com',
+    pass: 'SvenskBarter2022!'
+  }
+})
 
 module.exports = async function(dbUrl, dbFolder) {
   const router = express.Router();
@@ -746,7 +756,78 @@ module.exports = async function(dbUrl, dbFolder) {
 
 
 
+
+  /*****************************************************************************
+   * 
+   *                                Reset Password
+   *                 
+   *****************************************************************************/
+
+  router.post("/forgot", async (req, res) => {
+    
+    const user = await getUser({ "email": req.body.email })
+
+    if (!user) {
+      return res.status(404).send("There is no user with this email.")
+    }
+
+    const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+
+    const query = {
+      $set: {
+        resetPasswordToken: token,
+        resetPasswordExpires: Date.now() + 3600000
+      }
+    }
+    console.log(user)
+    updateUser(user, query)
+
+    await transporter.sendMail({
+      from: 'svenskbarter.reset@outlook.com', // sender address
+      to: user.email, // list of receivers
+      subject: 'Password Reset', // Subject line
+      text: `
+      You are receiving this because you (or someone else) have requested the reset of the password for your account.
+      Please click on the following link, or paste this into your browser to complete the process:
+      http://localhost:8080/reset/${token}
+      If you did not request this, please ignore this email and your password will remain unchanged.
+    `
+    })
+    return res.status(200).send("Email successfully sent")
+  }) 
+
+  router.post('/reset/:token', async (req, res) => {
+    console.log(req.params.token)
+
+    const user = await getUser({ "resetPasswordToken": req.params.token })
+
+    console.log(user)
+  
+    if (!user || !user.resetPasswordExpires > Date.now() || !crypto.timingSafeEqual(Buffer.from(user.resetPasswordToken), Buffer.from(req.params.token))) {
+      return res.status(404).send("Password reset token is invalid or has expired.")
+    }
+
+    const query = {
+      $set: {
+        password: req.body.newpass,
+        resetPasswordToken: null,
+        resetPasswordExpires: null
+      }
+    }
+
+    updateUser(user, query)
+  
+    const resetEmail = {
+      to: user.email,
+      from: 'svenskbarter.reset@outlook.com',
+      subject: 'Your password has been changed',
+      text: `
+        This is a confirmation that the password for your account "${user.profile.accountName}" has just been changed.
+      `,
+    };
+    await transporter.sendMail(resetEmail);
+    return res.status(200).send("Email successfully sent")
+  })
+
   return { 'router': router, 'conn': conn }
 }
-
-
