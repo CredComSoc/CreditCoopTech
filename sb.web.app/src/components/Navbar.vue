@@ -3,15 +3,12 @@
     <header>
       <nav>
         <div class="left-logos" v-if="this.desc">
-          <div class="navlogo">
+          <div class="navlogo" v-if="!this.isActive">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
                   <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
                   <figcaption class="l-text"> </figcaption>
               </figure>
-            </router-link>
-            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
-              <span class="mob-cap"> Logga Ut</span>
             </router-link>
           </div>
             <div class="navlogo">
@@ -37,7 +34,7 @@
               <span class="mob-cap"> Events </span>
             </router-link>
           </div>
-          <div class="navlogo" v-if="!this.isActive">
+          <div class="navlogo">
             <div class="dropdown">
               <a href="#">
                 <figure id="add-logo" :class="[`logo-click`,`add`]">
@@ -50,6 +47,9 @@
                   <a href="#">Nytt event </a>
               </div>
             </div>
+            <router-link :to="{name:'New_Article'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Lägg upp </span>
+            </router-link>
           </div>
           <div class="navlogo">
              <router-link :to="{name:'Members'}">
@@ -83,7 +83,7 @@
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </router-link>
-            <router-link :to="{}" v-if="this.isActive">
+            <router-link :to="{name: 'Chat'}" v-if="this.isActive">
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
@@ -237,7 +237,7 @@ export default {
         const box = document.getElementById('header-box')
         const height = window.innerHeight
 
-        if (height < 550) {
+        if (height < 720) {
           box.style.height = '' + height + 'px'
         } else {
           box.style.height = 'fit-content'
