@@ -1,23 +1,23 @@
 <template>
   <!-- < Admin page /> -->
   <div v-if="auth && admin">
-    <AdminNavbar :screenWidth="screenWidth"/>
+    <AdminNavbar :screenWidth="windowWidth"/>
     <router-view/>
   </div>
   <!-- < User page /> -->
   <div id="app" v-else-if="auth">
-    <Navbar :screenWidth="screenWidth"/>
+    <Navbar :screenWidth="windowWidth"/>
       <div id="space">
       </div>
       <div className='body'>
-        <router-view/>
+        <router-view :scrWidth="windowWidth"/>
       </div>
-    <SaldoCard :saldo="saldo" :screenWidth="screenWidth"/>
+    <SaldoCard :saldo="saldo" :screenWidth="windowWidth"/>
     <Footer id="footer" />
   </div>
   <!-- < Login page /> -->
   <div v-else>
-     <router-view/>
+     <router-view />
   </div>
 </template>
 
@@ -31,6 +31,7 @@ import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { authenticate, checkAdminStatus, getSaldo } from './serverFetch'
+import { useWindowSize } from 'vue-window-size'
  
 // import Home from '@/components/Home.vue'
 //import Parent from '@/components/userstory4/parent.vue'
@@ -44,29 +45,11 @@ export default {
     AdminNavbar
   },
   setup () {
-    const route = useRoute()
-    const router = useRouter()
-
-    onMounted(async () => {
-      await router.isReady()
-      onResize()
-      window.addEventListener('resize', onResize)
-    })
-
-    const screenWidth = ref(0)
-    const onResize = () => {
-      const scrWidth = window.innerWidth
-      screenWidth.value = scrWidth
-      if (route.path === 'Home' || route.path === '/') {
-        router.push({
-          name: 'Home',
-          params: { scrWidth }
-        }) 
-      } 
-    }
+    const { width, height } = useWindowSize()
 
     return {
-      screenWidth
+      windowWidth: width,
+      windowHeight: height
     }
   },
   data () {

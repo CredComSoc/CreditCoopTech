@@ -167,11 +167,11 @@ export default {
     // When screen resize, make navbar responsive
     screenWidth: {
       handler: function (scrWidth) {
-        if (scrWidth < 861 && !this.isActive) {
+        if (scrWidth < 1025 && !this.isActive) {
           this.desc = false
         } else {
           this.desc = true
-          if (scrWidth > 861) {
+          if (scrWidth > 1025) {
             this.isActive = false
             const box = document.getElementById('header-box')
             box.style.height = 'fit-content'
@@ -430,7 +430,7 @@ figcaption {
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1025px) {
 
  .header-container {
     -ms-overflow-style: none;  /* IE and Edge */
