@@ -83,7 +83,7 @@
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </router-link>
-            <router-link :to="{name: 'Chat'}" v-if="this.isActive">
+            <router-link :to="{name: 'Chat'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
@@ -130,14 +130,19 @@
               <span class="mob-cap"> Logga Ut</span>
             </router-link>
           </div>
-        </div>
+        </div> 
+        <div id="bell-container" class="navlogo" v-if="!this.desc && !this.isActive" @click.prevent="setNotificationsToSeen">
+            <Notifications></Notifications>
+        </div> 
         <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
         <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
         </button>
       </nav>
     </header>
+    
   </div>
+  
 </template>
 
 <script>
@@ -167,21 +172,12 @@ export default {
     // When screen resize, make navbar responsive
     screenWidth: {
       handler: function (scrWidth) {
-        if (scrWidth < 1025 && !this.isActive) {
-          this.desc = false
-        } else {
-          this.desc = true
-          if (scrWidth > 1025) {
-            this.isActive = false
-            const box = document.getElementById('header-box')
-            box.style.height = 'fit-content'
-            box.style.overflow = 'inherit'
-          }
-        }
+        this.handleScrWidth(scrWidth)
       }
     }
   },
   mounted () {
+    this.handleScrWidth(this.screenWidth)
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
     window.addEventListener('click', (e) => {
@@ -194,14 +190,23 @@ export default {
       
       if (this.dropdownActive) {
         let dropdown = document.getElementById('upload-dropdown')
-        dropdown.style.display = 'none'
+        if (dropdown !== null) {
+          dropdown.style.display = 'none'
+        }
         dropdown = document.getElementById('bell-dropdown')
-        dropdown.style.display = 'none'
-        this.dropdownActive = false
+        if (dropdown != null) {
+          dropdown.style.display = 'none'
+        }
         let logo = document.getElementById('add-logo')
-        logo.classList.remove('active-dropdown')
+        if (logo !== null) {
+          logo.classList.remove('active-dropdown')
+        }
+
         logo = document.getElementById('bell-logo')
-        logo.classList.remove('active-dropdown')
+        if (logo !== null) {
+          logo.classList.remove('active-dropdown')
+        }
+        this.dropdownActive = false
       } else {
         if ([...e.target.classList].includes('add')) {
           const dropdown = document.getElementById('upload-dropdown')
@@ -230,6 +235,19 @@ export default {
         this.isActive = true
       }
       this.resizeNav()
+    },
+    handleScrWidth (scrWidth) {
+      if (scrWidth <= 1025 && !this.isActive) {
+        this.desc = false
+      } else {
+        this.desc = true
+        if (scrWidth > 1025) {
+          this.isActive = false
+          const box = document.getElementById('header-box')
+          box.style.height = 'fit-content'
+          box.style.overflow = 'inherit'
+        }
+      }
     },
     // make height for mobile navbar responsive and scrollable
     resizeNav () {
@@ -314,6 +332,12 @@ header {
   margin-top: 0;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+#bell-container {
+  position: absolute;
+  left:5%;
+  top:30%;
 }
 
 a {
@@ -454,9 +478,8 @@ figcaption {
   }
 
   nav .middle-logo {
-    left: 0;
-    top: 0;
-    margin:0;
+    align-self: center;
+    justify-self: center;
     order: 4;
   }
 
