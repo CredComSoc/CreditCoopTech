@@ -26,7 +26,7 @@
       </div>
       <button id="login-button" >Logga in</button>
     </form>
-    <div class="box-error" v-if="error">
+    <div class="box-error" v-if="this.error">
       Fel epost eller lösenord ({{ loginCount }})
     </div>
     <!-- 
@@ -57,6 +57,7 @@ export default {
   methods: {
     async handleSubmit () {
       login(this.username.toLowerCase(), this.password).then((response) => {
+        console.log(response)
         if (response) {
           this.error = false  
           this.loginCount = 0   
@@ -130,6 +131,7 @@ button {
   font-size: 14px;
   text-align: center;
   color: red;
+  margin-top: 50px;
 }
 
 .box-link {

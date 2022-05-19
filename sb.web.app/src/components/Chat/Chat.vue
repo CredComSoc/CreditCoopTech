@@ -12,7 +12,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
-import { EXPRESS_URL } from '../../serverFetch.js'
+import { EXPRESS_URL, CHAT_URL } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -98,7 +98,7 @@ export default {
   },
   created () {
     this.getChatHistories()
-    this.socket = io('http://localhost:3001')
+    this.socket = io(CHAT_URL)
   
     this.socket.on('message', (data) => {
       this.activeChat.push(data)

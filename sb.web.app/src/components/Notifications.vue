@@ -20,11 +20,20 @@
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'sendRequest'">
+                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
+                        <div id="new-list-content">
+                        <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
+                        <p class="notice-desc">{{ item.fromUser }} har skickat {{ item.amount }} barterkronor. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
                     <div v-if="item.type == 'saleRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
                         <div id="new-list-content">
                         <img class="notice-img" src="../assets/navbar_logos/notice.png" alt="ny notis"/>
-                        <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
+                        <p class="notice-desc">{{ item.fromUser }} har godkänt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 

@@ -289,9 +289,7 @@ module.exports.markNotification = async (chatID, username) => {
                     break
                 }
             }
-            console.log(notification_list);
             if (found_notice) {
-                console.log(user);
                 dbo.collection('users').updateOne({ 'profile.accountName': username }, { $set: { notifications: notification_list } }, (err, query) => {
                     if (err) {
                         console.log(err);

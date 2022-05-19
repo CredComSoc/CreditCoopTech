@@ -1,7 +1,10 @@
 import JsSHA from 'jssha'
 
+const urlBase = 'http://155.4.159.231'
+
 //export const EXPRESS_URL = 'http://localhost:3000' // USE LOCAL EXPRESS
-export const EXPRESS_URL = 'http://155.4.159.231:3000' // USE HOST EXPRESS
+export const EXPRESS_URL = urlBase + ':3000' // USE HOST EXPRESS
+export const CHAT_URL = urlBase + ':3001'
 
 /*****************************************************************************
  * 
@@ -413,13 +416,14 @@ export async function getNotifications () {
   return promise
 }
 
-export async function postNotification (type, user) {
+export async function postNotification (type, user, amount = 0) {
   const data = { 
     date: '',
     type: type,
     toUser: user,
     fromUser: '',
-    seen: false
+    seen: false,
+    amount: amount
   }
   const promise = await fetch(EXPRESS_URL + '/notification', {
     method: 'POST',
@@ -429,7 +433,6 @@ export async function postNotification (type, user) {
     body: JSON.stringify(data),
     credentials: 'include'
   }).then((response) => {
-    console.log(response)
     if (!response.ok) {
       throw new Error('Network response was not ok')
     } else {

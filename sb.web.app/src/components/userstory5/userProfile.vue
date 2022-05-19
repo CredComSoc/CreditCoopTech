@@ -4,7 +4,7 @@
       
       <div className="image container-item">
         <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <button id="chat-btn" @click="goToChat" > Starta chatt </button>
+        <button v-if="show_optional && profileData.name !== currentUser" id="chat-btn" @click="goToChat" > Starta chatt </button>
       </div>
       <div className="right container-item">
         <h1> Företagsnamn </h1>
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="sendmoney-box" v-if="profileData.name !== currentUser">
+    <div class="sendmoney-box" v-if="show_optional && profileData.name !== currentUser">
       
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
         <h1 class="box-text">Skicka Barterkronor</h1>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney } from './../../serverFetch'
+import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney, postNotification } from './../../serverFetch'
 import PopupCard from '../CreateArticle/PopupCard.vue'
 
 export default {
@@ -71,7 +71,8 @@ export default {
       comment: '',
       bkrSentMsg: false,
       notEnoughBkrMsg: false,
-      chatError: false
+      chatError: false,
+      show_optional: false
     }
   },
   methods: {
@@ -91,6 +92,7 @@ export default {
           this.notEnoughBkrMsg = true
         } else {
           await sendMoney(this.bkr, this.comment, this.profileData.name)
+          postNotification('sendRequest', this.profileData.name, this.bkr)
           this.bkrSentMsg = true
         }
       }
@@ -123,6 +125,9 @@ export default {
     this.getProfile(this.$route.params.userprofile)
     profile().then((res) => {
       this.currentUser = res.name
+      if (this.profileData.name !== this.currentUser) {
+        this.show_optional = true
+      }
     })
   }
 }

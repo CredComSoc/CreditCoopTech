@@ -81,7 +81,6 @@ function startChat(app) {
     })
 
     socket.on('message', (msg) => {
-      console.log("CHAT TEST")
       socket.to(msg.id).emit('message', msg);
       const { storeChatMsg } = require('./routes/chatFunctions');
       const chatID = msg.id;

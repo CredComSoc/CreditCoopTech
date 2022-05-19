@@ -393,6 +393,12 @@ module.exports = async function(dbUrl, dbFolder) {
       })
     });
 
+  /*****************************************************************************
+   * 
+   *                                Chat
+   *                 
+   *****************************************************************************/
+
   router.get('/chat/histories', (req, res) => {
     const { getAllChatHistories } = require('./chatFunctions.js');
     getAllChatHistories(req.user).then((histories) => {
