@@ -12,7 +12,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
-import { EXPRESS_URL, CHAT_URL } from '../../serverFetch.js'
+import { CHAT_URL, getChatHistory, getChatHistories } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -55,12 +55,7 @@ export default {
       })
     },
     getChatHistory (chatID) {
-      fetch(EXPRESS_URL + '/chat/history/' + chatID, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      getChatHistory(chatID)
         .then(res => res.json())
         .then(data => {
           this.history_values[this.reciever] = data
@@ -72,13 +67,7 @@ export default {
         .catch(err => console.log(err))
     },
     getChatHistories () {
-      fetch(EXPRESS_URL + '/chat/histories', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      })
+      getChatHistories()
         .then(res => res.json())
         .then(data => {
           if (data.histories) {
@@ -94,6 +83,7 @@ export default {
             this.user = data.username
           }
         })
+        .catch(err => console.log(err))
     }
   },
   created () {
