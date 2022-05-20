@@ -518,7 +518,7 @@ module.exports = async function(dbUrl, dbFolder) {
             servicesAllListingsArray.push(listing)
           }
         })
-        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
+        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray, username: req.user})
         db.close();
       }
     })

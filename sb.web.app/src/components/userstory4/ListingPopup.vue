@@ -16,18 +16,18 @@
         <p>{{listingObj.price}} Barter Kr</p>
       </div>
       <div class="interactContent" v-if="listingObj.status === 'selling'">
-        <div>
+        <div v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase()">
           <b-button class="decreaseBtn" @click="decreaseAmount">-</b-button>
           <p class="amountText"> {{amount}} </p>
           <b-button class="increaseBtn" @click="amount++">+</b-button>
         </div>
         <div>
-          <button class="cartBtn" @click="placeInCart">Lägg i varukorg</button>
+          <button v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase()" class="cartBtn" @click="placeInCart">Lägg i varukorg</button>
         </div>
       </div>
       <div class="interactContent" v-if="listingObj.status === 'buying'">
         <div>
-          <button class="chattBtn" @click="goToChat">Starta chatt</button>
+          <button v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase()" class="chattBtn" @click="goToChat">Starta chatt</button>
         </div>
       </div>
     </div>
@@ -39,7 +39,8 @@ import { EXPRESS_URL, profile } from '../../serverFetch'
 export default {
 
   props: {
-    listingObj: Object  
+    listingObj: Object,
+    username: String  
   },
 
   data () {

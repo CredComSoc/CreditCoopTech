@@ -32,7 +32,7 @@
           <h3>Tjänster</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=servicesSearchData />
         </div>
-        <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup />
+        <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
       </div>
     </div>
     
@@ -62,7 +62,8 @@ export default {
       categoryArray: [],
       destinationsArray: [],
       articleArray: [],
-      statusArray: []
+      statusArray: [],
+      username: ''
     }
   },
 
@@ -87,6 +88,7 @@ export default {
         .then(data => {
           this.productsSearchData = data.allProducts
           this.servicesSearchData = data.allServices
+          this.username = data.username
         })
     },
     openPopUp (listingObj) {
