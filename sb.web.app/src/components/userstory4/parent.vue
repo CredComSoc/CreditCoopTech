@@ -159,6 +159,7 @@ export default {
       ).then(
         success => {
           console.log(success)
+          this.popupActive = false
         } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object
