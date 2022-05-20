@@ -733,3 +733,42 @@ export async function resetToken (token, newpass) {
     })
   return promise
 }
+
+/*****************************************************************************
+* 
+*                                  Chat
+*                 
+*****************************************************************************/
+
+export async function getChatHistory (chatID) {
+  const promise = fetch(EXPRESS_URL + '/chat/history/' + chatID, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((res) => {
+      return res
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export async function getChatHistories () {
+  const promise = fetch(EXPRESS_URL + '/chat/histories', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
