@@ -790,7 +790,68 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  /*****************************************************************************
+   * 
+   *                                Home
+   *                 
+   *****************************************************************************/
 
+  router.get("/home", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then(user => {
+      if (user != null) {
+        const homeData = {
+          companyName: user.profile.accountName,
+          shop: [],
+          members: []
+        };
+        MongoClient.connect(dbUrl, (err, db) => {
+          let dbo = db.db(dbFolder);
+          dbo.collection("posts").find().sort({uploadDate: -1}).limit(10).toArray(function (err, res1) {
+            if (err) {
+              db.close();
+              res.sendStatus(500)
+            }
+            else if (res1 != null) {
+              for (const post of res1) {
+                const postInfo = { id: post.id, title: post.title, desc:post.shortDesc, theme: 'regular', img_path: post.coverImg };
+                homeData.shop.push(postInfo);
+              }
+              // TODO not sorted based on newest member
+              dbo.collection("users").find().limit(10).toArray(function (err, res2) {
+                if (err) {
+                  db.close();
+                  res.sendStatus(500)
+                }
+                else if (res2 != null) {
+                  db.close();
+                  let index = 0;
+                  for (const member of res2) {
+                    const memberInfo = {id: index, img_path: member.profile.logo, title: member.profile.accountName, theme: 'ellipse'}
+                    homeData.members.push(memberInfo);
+                    index++;
+                  }
+                  res.status(200).json(homeData);
+                  //TODO ADD MONGO QUERY FOR EVENTS NEXT
+                }
+                else {
+                  // If we dont find a result
+                  db.close();
+                  res.sendStatus(204)
+                }
+              });
+            }
+            else {
+              // If we dont find a result
+              db.close();
+              res.sendStatus(204)
+            }
+          });
+        });
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
 
 
   /*****************************************************************************
