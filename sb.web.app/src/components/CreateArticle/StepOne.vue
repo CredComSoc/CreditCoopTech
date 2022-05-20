@@ -13,9 +13,6 @@
       <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
     </div>
     <div class="input">
-      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
-    </div>
-    <div class="input">
       <Combobox ref="categoryInput" name="category-type" label="Kategori" 
         :options='[
           "Affärsnätverk",
@@ -81,6 +78,9 @@
         ]' 
         placeholder="Vilken av Kategorierna nedan tillhör din produkt?" 
       />
+    </div>
+    <div class="input">
+      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
     </div>
   </div>
 </template>
