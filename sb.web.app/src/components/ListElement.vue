@@ -2,14 +2,16 @@
   <div>
     <a href="#">
       <span v-if="elementInfo.theme === `regular`" class="element-container">
-          <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
+          <img v-if="elementInfo.img_path.length === 0" :class="elementInfo.theme" :src="require(`../assets/list_images/event.png`)" alt="element img">
+          <img v-else :class="elementInfo.theme" :src="getImgURL()" alt="element img">
           <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
           <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
       </span>
     </a>
       <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
         <figure>
-            <img :class="elementInfo.theme" :src="require(`../assets/list_images/${elementInfo.img_path}`)" alt="Coffea">
+            <img v-if="elementInfo.img_path.length === 0" :class="elementInfo.theme" :src="require(`../assets/list_images/user.png`)" alt="member img">
+            <img v-else :class="elementInfo.theme" :src="getImgURL()" alt="member img">
         </figure>
         <div class="chin-card">
           <NestedAtagInDiv />
@@ -23,6 +25,7 @@
 // Component that represent a list element in ContentList, can have rectangle (regular) theme or ellipse theme
 
 import NestedAtagInDiv from './NestedAtagInDiv.vue'
+import { EXPRESS_URL } from '../serverFetch'
 
 export default {
   name: 'ListElement',
@@ -50,6 +53,9 @@ export default {
           return str
         }
       }
+    },
+    getImgURL () {
+      return EXPRESS_URL + '/image/' + this.elementInfo.img_path
     },
     // Set limits for number of chars depending on Upper or lower case for the title in list element
     formatTitle (str) {

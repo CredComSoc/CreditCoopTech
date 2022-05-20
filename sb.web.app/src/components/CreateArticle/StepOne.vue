@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- To change character limit on textfields change value for length prop  -->
     <div class="input">
       <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
     </div>
