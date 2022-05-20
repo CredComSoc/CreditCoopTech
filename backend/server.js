@@ -85,7 +85,7 @@ function startChat(app) {
       const { storeChatMsg } = require('./routes/chatFunctions');
       const chatID = msg.id;
       //console.log("CHATID:", chatID.length)
-      console.log(io.sockets.adapter.rooms.get(chatID).size);      
+     //console.log(io.sockets.adapter.rooms.get(chatID).size);      
       delete msg.id;
       if (io.sockets.adapter.rooms.get(chatID).size === 1) {
         const notification = {

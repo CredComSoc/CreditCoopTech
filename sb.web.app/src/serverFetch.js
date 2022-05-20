@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
-const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
-//const urlBase = 'http://localhost'       // USE LOCAL EXPRESS
+//const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
+const urlBase = 'http://localhost' // USE LOCAL EXPRESS
 
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
@@ -403,7 +403,7 @@ export async function getNotifications () {
     credentials: 'include'
   })
     .then((response) => {
-      console.log(response)
+      //console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
