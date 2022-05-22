@@ -1,9 +1,10 @@
 #Options +FollowSymLinks
 RewriteEngine on
 # Allow navigation to the following
-RewriteRule ^config - [L,NC] 
-RewriteRule ^AccountStore - [L,NC] 
-RewriteRule ^BlogicService - [L,NC] 
+RewriteRule ^config - [L,NC]
+RewriteRule ^AccountStore - [L,NC]
+RewriteRule ^BlogicService - [L,NC]
+RewriteRule ^index.html - [L,NC]
 
 #Everything else goes to index.php
 RewriteRule ^ index.php [L]

@@ -1,5 +1,5 @@
 <?php
-namespace CCNode;
+namespace CCNode\Transaction;
 
 use CCNode\Db;
 
@@ -7,7 +7,6 @@ use CCNode\Db;
  * Transaction entry in a flat format.
  */
 class StandaloneEntry extends \CreditCommons\StandaloneEntry {
-
 
   /**
    * @param string $uuid
@@ -27,7 +26,7 @@ class StandaloneEntry extends \CreditCommons\StandaloneEntry {
   }
 
   /**
-   * Load a flat entry from the database.
+   * Load a flat entry from the database, returning items in the order given.
    *
    * @param array $entry_ids
    * @return \static[]
@@ -40,14 +39,25 @@ class StandaloneEntry extends \CreditCommons\StandaloneEntry {
     $entries = [];
     foreach (Db::query($query)->fetch_all(MYSQLI_ASSOC) as $row) {
       $data = (object)$row;
-      $data->payee = accountStore()->fetch($data->payee)->getRelPath();
-      $data->payer = accountStore()->fetch($data->payer)->getRelPath();
       // @todo Get the full paths from the metadata
       $data->metadata = unserialize($data->metadata);
-      $data->version = (int)$data->version;
-      $entries[] = new static($data->payer, $data->payee, $data->description, $data->quant, $data->type, $data->uuid, $data->author, $data->state, $data->version);
+      $entries[$data->id] = new static(
+        $data->uuid,
+        $data->payer,
+        $data->payee,
+        $data->quant,
+        $data->type,
+        $data->author,
+        $data->state,
+        $data->written,
+        $data->description,
+        $data->metadata
+      );
     }
-    return $entries;
+    foreach($entry_ids as $id) {
+      $sorted[$id] = $entries[$id];
+    }
+    return $sorted;
   }
 
 }

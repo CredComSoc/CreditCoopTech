@@ -14,15 +14,11 @@
       "pending": {
         "completed": {
           "label": "Sign",
-          "signatories": [
-            "payer"
-          ]
+          "signatories": ["payer"]
         },
         "erased": {
           "label": "Erase",
-          "signatories": [
-            "payer", "payee"
-          ]
+          "signatories": ["payer", "payee"]
         }
       },
       "completed": {
@@ -48,15 +44,11 @@
       "pending": {
         "completed": {
           "label": "Sign",
-          "signatories": [
-            "payee"
-          ]
+          "signatories": ["payee"]
         },
         "erased": {
           "label": "Erase",
-          "signatories": [
-            "payer", "payee"
-          ]
+          "signatories": ["payer", "payee"]
         }
       },
       "completed": {
@@ -82,15 +74,11 @@
       "pending": {
         "completed": {
           "label": "Sign",
-          "signatories": [
-            "payee"
-          ]
+          "signatories": ["payee"]
         },
         "erased": {
           "label": "Erase",
-          "signatories": [
-            "payer"
-          ]
+          "signatories": ["payer"]
         }
       },
       "completed": {
@@ -104,10 +92,10 @@
   {
     "id": "3rdparty",
     "label": "3rdparty transaction",
-    "summary": "Admin creates instantly. (Needed for testing.)",
+    "summary": "Admin creates instantly with no confirmation",
     "active": "1",
     "creation": {
-      "by" : ["<admin>"],
+      "by" : [],
       "state": "completed",
       "label": "Create",
       "confirm": false

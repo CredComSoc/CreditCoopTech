@@ -1,6 +1,6 @@
 <?php
 
-namespace CCNode;
+namespace CCNode\Transaction;
 
 use CreditCommons\BaseNewTransaction;
 
@@ -16,7 +16,7 @@ class NewTransaction extends BaseNewTransaction{
    */
   static function prepareClientInput(\stdClass &$data) {
     static::validateFields($data);
-    $data->uuid = sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+    $uuid = sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
       mt_rand(0, 0xffff),
       mt_rand(0, 0xffff),
       mt_rand(0, 0xffff),
@@ -27,12 +27,18 @@ class NewTransaction extends BaseNewTransaction{
       mt_rand(0, 0xffff)
     );
 
-    $data->entries = [(object)[
+    $first_entry = (object)[
       'payee' => $data->payee,
       'payer' => $data->payer,
       'quant' => $data->quant,
       'description' => $data->description,
-    ]];
+      'metadata' => $data->metadata ?? (new \stdClass())
+    ];
+    return (object)[
+      'uuid' => $uuid,
+      'type' => $data->type,
+      'entries' => [$first_entry]
+    ];
   }
 
 }

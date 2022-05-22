@@ -2,36 +2,45 @@
 
 namespace CCNode;
 use CreditCommons\Requester;
-use GuzzleHttp\RequestOptions;
+use CCNode\Transaction\Transaction;
+use CCNode\Transaction\Entry;
 
 /**
  * Calls to the business logic service.
  */
 class BlogicRequester extends Requester {
 
-
   /**
    * Add a new rule.
    *
    * @param Transaction $transaction
-   * @return array
+   * @return \stdClass[]
+   *   Simplified entries with names only for payee, payer, author.
    */
-  function appendto(Transaction $transaction) : array {
-    $additional = $this
-      ->setBody($transaction->entries[0])
+  function getRows(Transaction $transaction) : array {
+    $first_entry = $this->convert($transaction->entries[0]);
+    $rows = $this
+      ->setBody($first_entry)
       ->setMethod('post')
-      ->request(200, 'append/'.$transaction->type);
-    return $additional;
+      ->request(200, $transaction->type);
+    // ensure there are no zero value rows;
+    return array_filter($rows, function($r) {return $r->quant > 0;});
   }
 
   /**
-   * Get a list of the Blogic rules.
-   *
-   * @param bool $full
+   * This is instead of using the Serialize callback which is used for transversal messaging.
+   * @param Entry $entry
+   * @return \stdClass
    */
-  function getRules(bool $full = TRUE) : array {
-    $this->options[RequestOptions::QUERY] = ['full' => (int)$full];
-    list (, $rules) = $this->request(200, 'rules');
-    return (array)$rules;
+  function convert(Entry $entry) : \stdClass {
+    // we only send the local account names because the blogic doesn't know anything about specific foreign accounts
+    $item = [
+      'payee' => $entry->payee->id,
+      'payer' => $entry->payer->id,
+      'quant' => $entry->quant,
+      'author' => $entry->author
+    ];
+    return (object)$item;
   }
+
 }

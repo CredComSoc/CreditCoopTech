@@ -2,23 +2,27 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: "Credit commons: Business logic service"
-  description: Internal API called by Credit Commons reference implementation 
+  description: Internal API called by Credit Commons reference implementation
   contact:
     name: Matthew Slater
     url: http://matslats.net/contact
   license:
     name: GNU GPL
 paths:
-  /append:
+  /{type}:
     post:
       summary: Retrieve any dependent transactions according to business logic
       operationId: appendEntries
+      parameters:
+        - name: type
+          in: path
+          description: The transaction type (workflow id)
+          required: true
+          schema:
+            type: string
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: ledgerService.swagger.yml#/components/schemas
-        description: the originating entry
+        $ref: '#/components/requestBodies/FirstEntry'
+        description: The originating entry. Note that account names given refer to the local ledger only, not the full path.
         required: true
       responses:
         "200":
@@ -28,28 +32,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Rule'
-  /rules:
-    get:
-      summary: Retrieve all the rules
-      operationId: getRules
-      responses:
-        "200":
-          description: The rules, in some yet-to-be-defined format.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: definitions/Rule
+                  $ref: 'https://gitlab.com/credit-commons-software-stack/cc-php-lib/-/raw/master/docs/credit-commons-openapi-3.0.yml#/components/schemas/Entry'
 components:
-  schemas:
-    Rule:
+  requestBodies:
+    FirstEntry:
       type: object
-      description: Describing the problem with a remote server.
+      description: A not-yet built transaction object.
+      required:
+        - type
+        - entries
       properties:
-        description:
+        payer:
           type: string
-          description: a description of the rule (placeholder field).
-          example: "charges the payer and payee one each."
-
+        payee::
+          type: string
+        quant:
+          type: integer
+        author:
+          type: string

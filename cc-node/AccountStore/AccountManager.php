@@ -41,43 +41,23 @@ class AccountManager implements \Iterator, \ArrayAccess, \Countable {
 
   /**
    * @param string $string
-   * This looks weird and next time I would check the login credentials differently.
    */
-  function filterByAuth(string $string) {
-    $this->accounts = array_filter($this->accounts, function ($a) use ($string) {
-      $auth = $a->key??$a->url;
-      return $auth === $string;
-    });
-  }
-
-  /**
-   * @param string $string
-   */
-  function filterByName(string $string) {
-    $this->accounts = array_filter($this->accounts, function ($a) use ($string) {
-      return is_int(stripos($a->id, $string));
-    });
-  }
-
-  /**
-   * @param bool $status
-   *   True for active, FALSE for Blocked
-   */
-  function filterByStatus(bool $status) {
-    $this->accounts = array_filter($this->accounts, function ($a) use ($status) {
-      return $status == $a->status;
+  function filterByName(string $str_fragment) {
+    $this->accounts = array_filter($this->accounts, function ($a) use ($str_fragment) {
+      return stripos($a->id, $str_fragment) !== FALSE;
     });
   }
 
   /**
    * @param bool $local
-   *   TRUE for local accounts, FALSE for remote accounts
+   *   TRUE for only local accounts, FALSE for only remote accounts
    */
   function filterByLocal(bool $local) {
     $class = $local ? 'AccountStore\UserRecord' : 'AccountStore\RemoteRecord';
-    $this->accounts = array_filter($this->accounts, function ($a) use ($class) {
-      return $a instanceof $class;
-    });
+    $this->accounts = array_filter(
+      $this->accounts,
+      function ($a) use ($class) {return $a instanceof $class;}
+    );
   }
 
   /**

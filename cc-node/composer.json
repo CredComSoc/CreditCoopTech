@@ -4,6 +4,11 @@
   "license": "GPL-2.0+",
   "homepage": "https://creditcommons.net",
   "minimum-stability": "dev",
+  "config": {
+    "platform-check": true,
+    "discard-changes": true,
+    "lock": false
+  },
   "authors": [
     {
       "name": "Matthew Slater",
@@ -12,16 +17,17 @@
       "role": "Maintainer"
     }
   ],
-  "repositories": {
-    "cclib": {
-      "type": "vcs",
+  "repositories": [
+    {
+      "type": "gitlab",
       "url": "git@gitlab.com:credit-commons-software-stack/cc-php-lib.git"
     }
-  },
+  ],
   "require": {
-    "composer/installers": "^1.7",
     "credit-commons-software-stack/cc-php-lib": "@dev",
-    "slim/slim": "^3"
+    "slim/slim": "^3",
+    "ext-mysqli": "*",
+    "php": "^8.0"
   },
   "require-dev": {
     "slim/psr7": "dev-master",
@@ -32,8 +38,15 @@
   "autoload": {
     "psr-4": {
       "CCNode\\": "src",
+      "CCNode\\Tests\\": "tests",
       "AccountStore\\": "AccountStore",
       "BlogicService\\": "BlogicService"
     }
+  },
+  "scripts": {
+    "post-create-project-cmd": [
+      "cp node.ini.example node.ini",
+      "touch last_exception.log"
+    ]
   }
 }

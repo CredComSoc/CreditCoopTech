@@ -2,84 +2,163 @@
 
 namespace CCNode;
 
+use CCNode\Accounts\User;
 use CreditCommons\Exceptions\CCFailure;
 use CreditCommons\Exceptions\DoesNotExistViolation;
 use CreditCommons\Requester;
+use CreditCommons\Account;
+use CreditCommons\AccountStoreInterface;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Client;
-use CreditCommons\Account;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Handle requests & responses from the ledger to the accountStore.
  */
-class AccountStore extends Requester {
+class AccountStore extends Requester implements AccountStoreInterface {
+
+  private $exists = [];
+
+  /**
+   * Accounts already retrieved.
+   * @var Account[]
+   */
+  private $cached = [];
 
   function __construct($base_url) {
     parent::__construct($base_url);
     $this->options[RequestOptions::HEADERS]['Accept'] = 'application/json';
   }
 
-  // Instantiate this object by calling AccountStore();
-  function __invoke() {
-    return new static();
+  public static function create() : AccountStoreInterface {
+    return new static(getConfig('account_store_url'));
+  }
+
+  /**
+   * @inheritdoc
+   */
+  function checkCredentials(string $name, string $pass) : bool {
+    try {
+      $this->localRequest("creds/$name/$pass");
+    }
+    catch(ClientException $e) {
+      // this would be a 400 error
+      return FALSE;
+    }
+    return TRUE;
   }
 
 
-  /**
-   * Filter on the account names.
-   *
-   * @param array $filters
-   *   possible keys are status, local, chars, key
-   * @param bool $full
-   *   TRUE to return the loaded Account objects
-   * @return array
-   *   CreditCommons\Account[] or string[]
-   */
-  function filter(array $filters = [], $full = FALSE) : array {
+  function filter(
+    int $offset = 0,
+    int $limit = 10,
+    bool $local= NULL,
+    string $fragment = NULL
+  ) : array {
     $path = 'filter';
-    if ($full) {
-      $path .= '/full';
+    if (isset($local)) {
+      // covert to a path boolean... tho shouldn't guzzle do that?
+      $this->options[RequestOptions::QUERY]['local'] = $local ? 'true' : 'false';
     }
-    // Ensure only known filters are passed
-    $filters = array_intersect_key($filters, array_flip(['status', 'local', 'chars', 'auth']));
-    $this->options[RequestOptions::QUERY] = $filters;
+    foreach(['fragment', 'offset', 'limit'] as $param) {
+      if (isset($$param)) {
+        $this->options[RequestOptions::QUERY][$param] = $$param;
+      }
+    }
     $results = (array)$this->localRequest($path);
-    if ($full) {
-      array_walk($results, [$this, 'upcast']);
+    $pos = array_search(getConfig('trunkward_acc_id'), $results);
+    if ($pos !== FALSE) {
+      unset($results[$pos]);
     }
     return $results;
   }
 
   /**
-   * Get an account object by name.
-   *
-   * @param string $name
-   *   Need to be clear if this is the local name or a path
-   * @param string $view_mode
-   * @return stdClass|string
-   *   The account object
-   *
-   * @todo rename this to load
+   * @inheritdoc
+   */
+  function filterFull(
+    int $offset = 0,
+    int $limit = 10,
+    bool $local = NULL,
+    string $fragment = NULL
+  ) : array {
+    if (isset($local)) {
+      // covert to a path boolean... tho shouldn't guzzle do that?
+      $this->options[RequestOptions::QUERY]['local'] = $local ? 'true' : 'false';
+    }
+    $this->options[RequestOptions::QUERY]['full'] = 'true';
+
+    foreach(['fragment', 'offset', 'limit'] as $param) {
+      if (isset($$param)) {
+        $this->options[RequestOptions::QUERY][$param] = $$param;
+      }
+    }
+    // 404?
+    $results = (array)$this->localRequest('filter/full');
+    // remove the trunkward account
+    foreach ($results as $key => $r) {
+      if ($r->id == getConfig('trunkward_acc_id')) {
+        unset($results[$key]);
+        break;
+      }
+    }
+    return array_map([$this, 'upcast'], $results);
+  }
+
+  /**
+   * @inheritdoc
    */
   function fetch(string $name) : Account {
     $path = urlencode($name);
     try{
       $result = $this->localRequest($path);
     }
-    catch (\Exception $e) {
+    catch (ClientException $e) {
       if ($e->getCode() == 404) {
         // N.B. the name might have been deleted because of GDPR
         throw new DoesNotExistViolation(type: 'account', id: $name);
       }
-      else {
-        throw new CCFailure("AccountStore returned an invalid error code looking for $name: ".$e->getCode());
-      }
+    }
+    catch (\Exception $e) {
+      throw new CCFailure("AccountStore returned a ".$e->getCode() ." from $name: ".$e->getMessage());
     }
     return $this->upcast($result);
   }
 
   /**
-   * {@inheritDoc}
+   * Get the transaction limits for all accounts.
+   * @return array
+   */
+  function allLimits() : array {
+    $limits = [];
+    foreach ($this->filterFull() as $info) {
+      $limits[$info->id] = (object)['min' => $info->min, 'max' => $info->max];
+    }
+    return $limits;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function has(string $name) : bool {
+    if ((!in_array($name, $this->exists))) {
+      try {
+
+        $this->method = 'HEAD';
+        $this->localRequest($name);
+        $this->method = 'GET';
+      }
+      catch (\GuzzleHttp\Exception\RequestException $e) {
+        $this->method = 'GET';
+        return FALSE;
+      }
+      $this->exists[] = $name;
+    }
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   protected function localRequest(string $endpoint = '') {
     $client = new Client(['base_uri' => $this->baseUrl, 'timeout' => 1]);
@@ -91,101 +170,57 @@ class AccountStore extends Requester {
     }
     catch (RequestException $e) {
       if ($e->getStatusCode() == 500) {
-        throw new CCFailure(message: $e->getMessage());
+        throw new CCFailure($e->getMessage());
       }
       throw $e;
     }
     $contents = $response->getBody()->getContents();
-    return json_decode($contents);
+    $result = json_decode($contents);
+    if ($contents and is_null($result)) {
+      throw new CCFailure('Non-json result from account service: '.$contents);
+    }
+    return $result;
   }
 
   /**
-   * Resolve to an account on the current node.
-   * @return Account
-   * @param bool $existing
-   *   TRUE if we know the account exists. Then unknown accounts either resolve
-   *   to the BoT account or throw an exception
-   * @todo why is this only used while making transactions?
+   * {@inheritdoc}
    */
-  public function resolveAddressToLocal(string $given_path, bool $existing) : Account {
-    global $orientation, $config;
-    $parts = explode('/', $given_path);
-    // If it is one path item long.
-    if (count($parts) == 1) {
-      // If it exists on this node.
-      if ($pol = $this->fetch($given_path)) {
-        return $pol;
-      }
-      throw new AccountResolutionViolation(path: $given_path);
-    }
-
-    // A branchwards account, including the local node name
-    $pos = array_search($config['node_name'], $parts);
-    if ($pos !== FALSE and $branch_name = $parts[$pos+1]) {
-      try {
-        return $this->fetch($branch_name);
-      }
-      catch (DoesNotExistViolation $e) {}
-    }
-    // A branchwards or trunkwards account, starting with the account name on the local node
-    $branch_name = reset($parts);
-    try {
-      return $this->fetch($branch_name);
-    }
-    catch (DoesNotExistViolation $e) {}
-
-    // Now the path is either trunkwards, or invalid.
-    if ($config['bot']['acc_id']) {
-      // Don't have to 'try' because this account is known to exist.
-      $trunkwardsAccount = $this->fetch($config['bot']['acc_id']);
-      if ($existing) {
-        return $trunkwardsAccount;
-      }
-      if ($orientation->isUpstreamBranch()) {
-        return $trunkwardsAccount;
-      }
-    }
-    throw new AccountResolutionViolation(type: 'account', id: $given_path);
+  public static function anonAccount() : Account {
+    $obj = ['id' => '-anon-', 'max' => 0, 'min' => 0, 'status' => 1];
+    return User::create((object)$obj);
   }
 
   /**
    * Determine what Account class has been fetched and instantiate it.
    *
-   * @global type $orientation
-   * @global type $config
    * @param \stdClass $data
    * @return Account
    */
-  private function upcast(\stdClass $data) : Account {
-    global $orientation, $config;
-    $class = self::determineAccountClass(
-      $data->id,
-      $data->url??'',
-      isset($orientation->upstreamAccount) ? $orientation->upstreamAccount->id : '',
-      $config['bot']['acc_id']
-    );
-    return $class::create($data);
+  private function upcast(\stdclass $data) : Account {
+    $class = self::determineAccountClass($data);
+    $this->cached[$data->id] = $class::create($data);
+    return $this->cached[$data->id];
   }
 
   /**
    * Determine the class of the given Account, considering this node's position
    * in the ledger tree.
    *
-   * @param string $acc_id
-   * @param string $account_url
-   * @param string $upstream_acc_id
-   * @param string $BoT_acc_id
+   * @param \stdClass $data
+   * @param string $trunkward_acc_id
    * @return string
    */
-  private static function determineAccountClass(string $acc_id, string $account_url = '', string $upstream_acc_id = '', string $BoT_acc_id = '') : string {
-    if ($account_url) {
-      $BoT = $acc_id == $BoT_acc_id;
-      $upS = $acc_id == $upstream_acc_id;
-      if ($BoT and $upS) {
-        $class = 'UpstreamBoT';
+  private static function determineAccountClass(\stdClass $data) : string {
+    global $user;
+    $trunkward_acc_id = \CCNode\getConfig('trunkward_acc_id');
+    if (!empty($data->url)) {
+      $upS = $user ? ($data->id == $user->id) : TRUE;
+      $trunkward = $data->id == $trunkward_acc_id;
+      if ($trunkward and $upS) {
+        $class = 'UpstreamTrunkward';
       }
-      elseif ($BoT and !$upS) {
-        $class = 'DownstreamBoT';
+      elseif ($trunkward and !$upS) {
+        $class = 'DownstreamTrunkward';
       }
       elseif ($upS) {
         $class = 'UpstreamBranch';
@@ -195,9 +230,10 @@ class AccountStore extends Requester {
       }
     }
     else {
-      $class = 'User';
+      $class = $data->admin ? 'Admin' : 'User';
     }
     return 'CCNode\Accounts\\'. $class;
   }
+
 
 }

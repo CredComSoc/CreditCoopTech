@@ -1,14 +1,7 @@
 <?php
 // included by index.php based on url param.
-use CCNode\AccountStore;
-use AccountStore\AccountManager;
-$store = '../AccountStore/'.AccountManager::FILESTORE;
-touch($store);
-ini_set('display_errors', 1);
-
-$errs = [];
-if (!is_writable($store)) {
-  $errs[] = $store . " is not writable";
+if (!is_writable(ACCOUNT_STORE)) {
+  $errs[] = ACCOUNT_STORE . " is not writable";
 }
 if ($_POST) {
   unset($_POST['submit']);
@@ -36,26 +29,22 @@ if ($_POST) {
         mod_account('node', $id, $fields);
       }
     }
-    $node_conf = parse_ini_file(NODE_INI_FILE);
-    // Save or resave the BoT account
-    if ($node_conf['bot']['acc_id'] or !empty($_POST['bot']['acc_id'])) {
+    // Save or resave the Trunkward account
+    if (count($abs_path) > 1) {
+      if (empty($_POST['trunkward']['url']) and empty($accounts[$trunkward_name]->url)) {
+        die('trunkward account must have a url, or remove it from the path in the general settings.');
+      }
       $accs = editable_accounts();
-      if (isset($_POST['bot']['acc_id'])) {
-        add_account('node', $_POST['bot'] + ['id' => $_POST['bot']['acc_id']]);
+      if (!isset($accs[$trunkward_name])) {
+        add_account('node', $_POST['trunkward'] + ['id' => $trunkward_name]);
       }
-      elseif (isset($accs[$node_conf['bot']['acc_id']])) {
-        mod_account('node', $node_conf['bot']['acc_id'], $_POST['bot']);
+      elseif (isset($accs[$trunkward_name])) {
+        mod_account('node', $trunkward_name, $_POST['trunkward']);
       }
-      else{
-        $errs[] = "Balance of trade account does not exist: ". $node_conf['bot']['acc_id'];
-      }
-      // populate unchecked boxes
-      $bot_settings = $_POST['bot'] + ['priv_accounts' => 0, 'priv_transactions' => 0, 'priv_stats' => '0', 'metadata' => 0];
-      replaceIni(['bot' => $bot_settings], NODE_INI_FILE);
     }
   }
 }
-$node_conf = parse_ini_file(NODE_INI_FILE);
+$config = parse_ini_file(NODE_INI_FILE);
 $accs = editable_accounts();
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
@@ -78,7 +67,6 @@ $accs = editable_accounts();
             <th title = "Password-like string">API Key</th>
             <th title = "Minimum/Maximium balance REQUIRED">Min/Max</th>
             <th title = "Checked if this account has admin privileges">Admin</th>
-            <th title = "Account is active or blocked">Enabled</th>
           </tr>
         </thead>
         <tbody>
@@ -96,9 +84,6 @@ $accs = editable_accounts();
             <td title = "Checked if this account has admin privileges">
               <input name="user[<?php print $id;?>][admin]" type="checkbox" value = "1" <?php print !empty($acc->admin)?'checked':'';?>>
             </td>
-            <td title = "Account is active or blocked">
-              <input type="checkbox" name="user[<?php print $id ?>][status]" value = 1 <?php if ($acc->status) print ' checked'?> />
-            </td>
           </tr>
           <?php endforeach; ?>
           <tr>
@@ -112,13 +97,10 @@ $accs = editable_accounts();
             <td title = "Checked if this account has admin privileges">
               <input name="user[new][admin]" type="checkbox" value = "1" >
             </td>
-            <td title = "Account is active or blocked">
-              <input name="user[new][status]" type="checkbox" value = 1 checked />
-            </td>
           </tr>
         </tbody>
       </table>
-<!--
+
       <h2>Leafward nodes</h2>
       <p>Special accounts which are controlled by other, credit commons nodes.
       <table>
@@ -127,75 +109,60 @@ $accs = editable_accounts();
           <th title = "Wallet id, must be unique on this node">Node name</th>
           <th title = "Url of the node">Node url</th>
           <th title = "Minimum/Maximum balance (override default @todo)">Min/Max</th>
-          <th title = "Account is active or blocked">Enabled</th>
         </tr>
       </thead>
       <tbody>
       <?php
       $nodes = array_filter(
         $accs,
-        function($a, $id) use ($node_conf){return !empty($a->url) and $id <> $node_conf['bot']['acc_id'];},
+        function($a, $id) use ($trunkward_name){return !empty($a->url) and $id <> $trunkward_name;},
         ARRAY_FILTER_USE_BOTH
       );
       foreach ($nodes as $id => $acc) : ?>
       <tr>
         <th><?php print $id;?></th>
         <td title = "Url of the node">
-          <input name="node[<?php print $id;?>][url]" value="<?php print $acc->url;?>" size = "8">
+          <input name="node[<?php print $id;?>][url]" placeholder="http://mynode.net" value="<?php print $acc->url;?>" size = "8">
         </td>
         <?php print minmax_cell('td', 'node['.$id.']', $acc); ?>
-        <td title = "Account is active or blocked">
-          <input type="checkbox" name="node[<?php print $id; ?>][status]" value = 1 <?php if ($acc->status) print ' checked'?> />
-        </td>
       </tr>
       <?php endforeach; ?>
       <tr>
-        <td title = "Wallet id, must be unique on this node"><input name="node[new][id]" size = "8" placeholder = "new_account_id" value="<?php $bot_name;?>"></td>
-        <td title = "Url of the remote node"><input name="node[new][url]" size = "8"  value="<?php $bot_url;?>"></td>
+        <td title = "Wallet id, must be unique on this node"><input name="node[new][id]" size = "8" placeholder = "new_account_id" value=""></td>
+        <td title = "Url of the remote node"><input name="node[new][url]" size = "8"  value=""></td>
         <?php print minmax_cell('td', 'node[new]'); ?>
-        <td title = "Account is active or blocked"></td>
       </tr>
       </tbody>
       </table>
-
-      <h2>Balance of Trade account</h2>
-      <p>The BoT account is the special special account used to connect to the wider Credit Commons tree. These settings cannot be changed after trading with branchward node.
-        <?php $bot = $accs[$node_conf['bot']['acc_id']]??NULL; ?>
+<?php if ($trunkward_name) : ?>
+      <h2>Trunkward node</h2>
+      <p>The trunkward node records the balance of trade with the rest of the world.
+        <?php $trunkward_acc = $accs[$trunkward_name]??NULL;?>
       </p>
       <table>
         <thead>
           <tr>
             <th title = "This is how this node identifies itself to the trunkward node.">Node name</th>
-            <th title = "Url of the BoT node">Trunkwards url</th>
-            <th title = "The ratio of the local unit to the Branchward ledger's unit @todo clarify which way around this is">Exchange rate</th>
+            <th title = "Url of the Trunkward node">Trunkwards url</th>
             <th title = "Minimum/Maximum balance (override default @todo)">Min/Max</th>
-          </tr>
+            </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <input name="bot[acc_id]" size = "8" placeholder = "bot_account_id" value="<?php print $node_conf['bot']['acc_id']; ?>" <?php if ($node_conf['bot']['acc_id']); ?>>
+              <?php print $trunkward_name; ?>
             </td>
             <td>
-              <input name="bot[url]" size = "8" value="<?php print $bot?$bot->url:''; ?>" <?php if ($bot and $bot->url)print ' disabled';?>>
+              <input name="trunkward[url]" size = "8" placeholder="http://mynode.net" value="<?php print $trunkward_acc?$trunkward_acc->url:''; ?>" <?php if ($bot and $bot->url)print ' disabled';?>><font color=red>*</font>
             </td>
             <td>
-              <?php print minmax_cell('span', 'bot', $bot); ?>
-            </td>
-            <td>
-              <input name = "bot[rate]" type = "number" min = "0.001" max = "1000" step = "0.001" size = "2" value = "<?php print $node_conf['bot']['rate']; ?>">
+              <?php print minmax_cell('span', 'trunkward', $trunkward_acc); ?>
             </td>
           </tr>
         <tbody>
       </table>
-      <p title = "Privacy settings: which aspects of the ledger are visible to the public?">
-        <label>Expose account Ids</label>
-        <input name = "bot[priv_accounts]" type = "checkbox" value = "1" <?php print $node_conf['bot']['priv_accounts'] ? 'checked ': ''; ?>>
-        <br />Expose account transactions <input name = "bot[priv_transactions]" type = "checkbox" value = "1" <?php print $node_conf['bot']['priv_transactions'] ? 'checked ': ''; ?>>
-        <br />Expose anonymised stats<input name = "bot[priv_stats]" type = "checkbox" value = "1" <?php print $node_conf['bot']['priv_stats'] ? 'checked ': ''; ?>>
-        <br />Transaction metadata <input name = "bot[metadata]" type = "checkbox" value = "1" <?php print $node_conf['bot']['metadata'] ? 'checked' : ''; ?>></span>
-      </p>
-      -->
+
+<?php endif; ?>
       <input type="submit" value="Save">
     </form>
   </body>
@@ -203,12 +170,13 @@ $accs = editable_accounts();
 
 
 function add_account($type, $fields): void {
-  $fields['status'] = parse_ini_file(ACC_STORAGE_INI_FILE)['default_status'];
+
   $id = $fields['id'];
   unset($fields['id']);
   $fields = array_filter($fields, 'strlen');
-  $fields['admin'] = (int)!empty($fields['admin']);
-
+  $fields += [
+    'admin' => 0
+  ];
   if ($type == 'node') {
     if (empty($fields['url'])) {
       die('bad data');
@@ -232,20 +200,11 @@ function add_account($type, $fields): void {
 }
 
 function mod_account($type, $id, $fields) : void {
-  global $config;
-  $config = parse_ini_file('../node.ini');
   // Ensure there's a value in case of empty checkboxes
   $fields['admin'] = (int)!empty($fields['admin']);
-  $fields['status'] = (int)!empty($fields['status']);
   $accounts = editable_accounts();
   $accounts[$id] = (object)$fields;
   editable_accounts($accounts);
-}
-
-
-function status_cell($tag, $type, $acc = NULL) {
-  $status = $acc && isset($acc->status) ? $acc->status : NULL;
-  ?><checkbox name="<?php print $type; ?>[status]" value = 1 <?php if ($status) print ' checked'?>><?php
 }
 
 function minmax_cell($tag, $type, $acc = NULL) {
@@ -253,24 +212,4 @@ function minmax_cell($tag, $type, $acc = NULL) {
     <input name="<?php print $type; ?>[min]" type="number" min="-999999" max="0" size="4" placeholder = "<0" value="<?php print $acc?$acc->min:'-100';?>" />
     <input name="<?php print $type; ?>[max]" type="number" max="999999" min="0" size="4"  placeholder = ">0" value="<?php print $acc?$acc->max:'100';?>" />
   </<?php print $tag; ?>><?php
-}
-
-/**
- * load or save the set of accounts directly to the file.
- * @param array $accounts
- * @return array
- */
-function editable_accounts(array $accounts = []) : array {
-  if ($accounts) {//save
-    foreach ($accounts as $id => &$account) {
-      $account->id = $id;
-      if ($account->max === '')$account->max = NULL;
-      if ($account->min === '')$account->min = NULL;
-    }
-    file_put_contents('../AccountStore/store.json', json_encode($accounts));
-    return [];
-  }
-  else {
-    return (array)json_decode(file_get_contents('../AccountStore/store.json'));
-  }
 }

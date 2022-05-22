@@ -14,11 +14,6 @@ abstract class Record {
   public string $id;
 
   /**
-   * @var bool
-   */
-  public bool $status;
-
-  /**
    * @var int|null
    */
   public int $min;
@@ -28,9 +23,8 @@ abstract class Record {
    */
   public int $max;
 
-  function __construct(string $id, bool $status, int $min, int $max) {
+  function __construct(string $id, int $min, int $max) {
     $this->id = $id;
-    $this->status = $status;
     $this->min = $min;
     $this->max = $max;
   }
@@ -41,7 +35,6 @@ abstract class Record {
    * @param \stdClass $new_data
    */
   function set(\stdClass $new_data) {
-    $this->status = (bool)$new_data->status;
     $this->min = (int)$new_data->min;
     $this->max = (int)$new_data->max;
   }
