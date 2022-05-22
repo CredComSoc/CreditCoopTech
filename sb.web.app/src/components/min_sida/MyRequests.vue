@@ -37,18 +37,27 @@
     <div v-if="!requests">
       <h4> Du har inte fått några köpförfrågningar än. </h4>
     </div>
+    <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan ;)" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
+    <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan ;)" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
   </div>
 </template>
 
 <script>
-import { getRequests, cancelRequest, acceptRequest, postNotification, getUserAvailableBalance } from '../../serverFetch'
+import { getRequests, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
 import Listing from '@/components/userstory4/Listing.vue'
+import PopupCard from '../CreateArticle/PopupCard.vue'
 
 export default {
-
+  components: {
+    Listing,
+    PopupCard
+  },
   data () {
     return {
-      requests: []
+      requests: [],
+      payerNotEnoughBkr: false,
+      payeeTooMuchBkr: false,
+      max_limit: 0
     }
   },
   mounted () {
@@ -57,9 +66,6 @@ export default {
         console.log(res)
         this.requests = res
       })
-  },
-  components: {
-    Listing
   },
   methods: {
     cancel (id, payer, index) {
@@ -71,18 +77,29 @@ export default {
     },
 
     accept (id, payer, index, cost) {
-      // also check payee balance here
-      getUserAvailableBalance(payer).then((payerBalance) => {
-        if (cost <= payerBalance) {
-          this.statusSwap(index, 'accept')
-          acceptRequest(id)
-          postNotification('saleRequestAccepted', payer)
-        } else {
-          // display msg
-        } 
+      getAvailableBalance().then((balance) => {
+        getLimits().then((limits) => {
+          this.max_limit = limits.max
+          if (balance + limits.min + cost > limits.max) {
+            this.payeeTooMuchBkr = true
+          } else {
+            getUserAvailableBalance(payer).then((payerBalance) => {
+              if (cost <= payerBalance) {
+                this.statusSwap(index, 'accept')
+                acceptRequest(id)
+                postNotification('saleRequestAccepted', payer)
+              } else {
+                this.payerNotEnoughBkr = true
+              } 
+            })
+          }
+        })
       })
     },
-
+    closePopup () {
+      this.payerNotEnoughBkr = false
+      this.payeeTooMuchBkr = false
+    },
     statusSwap (index, answer) {
       var tag = document.createElement('p')
       var text

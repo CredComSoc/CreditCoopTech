@@ -77,11 +77,6 @@ export default {
 
   methods: {
     triggerSearch (newSearchWord) {
-      console.log(newSearchWord)
-      console.log(this.destinationsArray)
-      console.log(this.categoryArray)
-      console.log(this.articleArray)
-      console.log(this.statusArray)
       this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
         return res
       })
@@ -146,7 +141,6 @@ export default {
         userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
         'end-date': listingObj['end-date'] // end date for the article
       }
-      console.log(cartItem)
       JSONdata.append('cartItem', JSON.stringify(cartItem))
 
       fetch(EXPRESS_URL + '/cart', { // POST endpoint

@@ -603,8 +603,48 @@ export async function getUserAvailableBalance (user) {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  console.log(saldo - promise)
   return saldo - promise
+}
+
+export async function getLimits () {
+  return await fetch(EXPRESS_URL + '/limits', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
+}
+
+export async function getUserLimits (user) {
+  return await fetch(EXPRESS_URL + '/limits', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'profile.accountName': user }),
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    })
+    .catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    })
 }
 
 /*****************************************************************************

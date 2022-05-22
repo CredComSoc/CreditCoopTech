@@ -795,6 +795,25 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  router.get("/limits", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then(user => {
+      if (user != null) {
+        res.status(200).json({min: user.min_limit, max: user.max_limit})
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
+  router.post("/limits", (req, res) => {
+    getUser(req.body).then(user => {
+      if (user != null) {
+        res.status(200).json({min: user.min_limit, max: user.max_limit})
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
   /*****************************************************************************
    * 
    *                                Home

@@ -5,6 +5,7 @@
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
     <PopupCard v-if="this.insufficientBalance" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra köpet.`" />
+    <PopupCard v-if="this.sellerLimitError" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="'Säljaren ' + this.seller + ` har nått sin övre gräns för barterkronor.`" />
   </div>
 </template>
 
@@ -12,7 +13,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '../CreateArticle/PopupCard.vue'
-import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance } from '../../serverFetch'
+import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -36,7 +37,9 @@ export default {
       total: 0,
       gotCartRes: false,
       confirmPress: false,
-      insufficientBalance: false
+      insufficientBalance: false,
+      sellerLimitError: false,
+      seller: ''
     }
   },
   methods: {
@@ -73,8 +76,26 @@ export default {
       this.total = total
     },
     completePurchase () {
-      getAvailableBalance().then((res) => {
+      getAvailableBalance().then(async (res) => {
         if (res >= this.total) {
+          const totalCosts = {}
+          for (let i = 0; i < this.cart.length; i++) {
+            if (!(this.cart[i].userUploader in totalCosts)) {
+              totalCosts[this.cart[i].userUploader] = 0
+            }
+            totalCosts[this.cart[i].userUploader] += Number(this.cart[i].price) * this.cart[i].quantity
+          }
+
+          for (const [key, value] of Object.entries(totalCosts)) {
+            const userSaldo = await getUserAvailableBalance(key)
+            const userLimits = await getUserLimits(key)
+            if (userSaldo + userLimits.min + value > userLimits.max) {
+              this.seller = key
+              this.sellerLimitError = true
+              return
+            }
+          }
+
           this.confirmPress = true
           createTransactions(this.cart)
           this.cart = []

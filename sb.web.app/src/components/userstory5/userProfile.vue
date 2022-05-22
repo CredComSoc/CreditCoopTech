@@ -49,12 +49,13 @@
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.name + ' har mottagits.'" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.name + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
   </div>
 </template>
 
 <script>
-import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney, postNotification } from './../../serverFetch'
+import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
 import PopupCard from '../CreateArticle/PopupCard.vue'
 
 export default {
@@ -71,6 +72,7 @@ export default {
       comment: '',
       bkrSentMsg: false,
       notEnoughBkrMsg: false,
+      tooMuchBkrMsg: false,
       chatError: false,
       show_optional: false
     }
@@ -91,15 +93,22 @@ export default {
         if (saldo < this.bkr) {
           this.notEnoughBkrMsg = true
         } else {
-          await sendMoney(this.bkr, this.comment, this.profileData.name)
-          postNotification('sendRequest', this.profileData.name, this.bkr)
-          this.bkrSentMsg = true
+          const userSaldo = await getUserAvailableBalance(this.profileData.name)
+          const userLimits = await getUserLimits(this.profileData.name)
+          if (userSaldo + userLimits.min + Number(this.bkr) > userLimits.max) {
+            this.tooMuchBkrMsg = true
+          } else {
+            await sendMoney(this.bkr, this.comment, this.profileData.name)
+            postNotification('sendRequest', this.profileData.name, this.bkr)
+            this.bkrSentMsg = true
+          }
         }
       }
     },
     closePopup () {
       this.bkrSentMsh = false
       this.notEnoughBkrMsg = false
+      this.tooMuchBkrMsg = false
       this.bkr = 0
       this.comment = ''
     },
