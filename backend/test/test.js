@@ -9,13 +9,13 @@ fetch = fetchCookie(fetch)
 const FormData = require('form-data')
 const fastJson = require('fast-json-stringify')
 
-const test_port = 3001
+const test_port = 3002
 const express_url = 'http://localhost:' + test_port
 const app = express()
 let server_instance;
 
-const member = 'TestUser'
-const admin = 'TestAdmin'
+const member = 'testuser'
+const admin = 'testadmin'
 const password = '123'
 
 async function deleteCollection(name) {
@@ -657,7 +657,8 @@ describe('index routes', function () {
             article: articles[i], 
             category: categories[i],
             shortDesc: shortDescs[i],
-            destination: destinations[i]
+            destination: destinations[i],
+            status: "selling"
           }))
         const result = await createArticle(data)
       }
@@ -670,7 +671,7 @@ describe('index routes', function () {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray })
+        body: JSON.stringify({ searchword: searchword, destinations: destinationsArray, categories: categoryArray, articles: articleArray, status: [] })
       })
     }
 
