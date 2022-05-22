@@ -43,7 +43,7 @@
             <th>Summa</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item">
+          <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item" ref="reqRefs">
             <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
             <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
@@ -51,7 +51,9 @@
             <td>{{item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
-            <td style="color: silver;">{{item.state}}</td>
+            <td id="buttons">
+              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
+            </td>
           </tr>
         </table>
       </div>
@@ -83,13 +85,13 @@ export default {
   methods: {
     invoice (filename, item) {
       console.log(item.entries[0])
-      var pom = document.createElement('a')
+      const pom = document.createElement('a')
       const text = 'hello'
       pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
       pom.setAttribute('download', filename)
 
       if (document.createEvent) {
-        var event = document.createEvent('MouseEvents')
+        const event = document.createEvent('MouseEvents')
         event.initEvent('click', true, true)
         pom.dispatchEvent(event)
       } else {
@@ -102,8 +104,22 @@ export default {
     },
     cancel (id, index) {
       console.log('Canceling order: ' + id)
-      //this.statusSwap(index, 'cancel')
+      this.statusSwap(index)
       cancelRequest(id)
+    },
+    statusSwap (index) {
+      const tag = document.createElement('p')
+      const text = document.createTextNode('AVBRUTEN')
+      tag.style.color = 'red'
+      tag.appendChild(text)
+      const element = this.$refs.reqRefs[index]
+      const child = element.lastElementChild
+      let grandChild = child.lastElementChild
+      while (grandChild) {
+        child.removeChild(grandChild)
+        grandChild = child.lastElementChild
+      }
+      child.appendChild(tag)
     }
   }
 }
@@ -151,6 +167,14 @@ p {
   align-content: center;
   display: flex;
   justify-content: center;
+}
+
+button {
+  color: white;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 2px 15px 2px 15px;
 }
 
 </style>
