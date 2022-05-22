@@ -40,7 +40,7 @@ Follow the instructions in cc-node/INSTALL.md
 
 ## cc-node details
 
-The included cc-node is [This](https://gitlab.com/credit-commons-software-stack/cc-node/-/tree/d6722adf58940990ebdb6c6fdfaf0afeaeccb1ac) cc-node commit, with the workflows adjusted to allow both the payer and the payee to erase a pending transaction.
+The included cc-node is [This](https://gitlab.com/credit-commons-software-stack/cc-node/-/tree/bfb5bafe0c840aa32b1124adfbb5b4bea094ee4e) cc-node commit, with the workflows adjusted to allow both the payer and the payee to erase a pending transaction.
 
 ## License
 
