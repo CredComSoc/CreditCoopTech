@@ -26,12 +26,12 @@
       </div>
       <button id="login-button" >Logga in</button>
     </form>
-    <div class="box-error" v-if="this.error">
-      Fel epost eller lösenord ({{ loginCount }})
-    </div>
     <div class="box-link">
       <a href="/forgot">Återställ lösenord</a>
     </div> 
+    <div class="box-error" v-if="this.error">
+      Fel epost eller lösenord ({{ loginCount }})
+    </div>
   </div>
 </div>
 

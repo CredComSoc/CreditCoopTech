@@ -35,7 +35,7 @@
       </tr>
     </table>
     <div v-if="!requests">
-      <h1> Du har inte fått några köpförfrågningar än. </h1>
+      <h4> Du har inte fått några köpförfrågningar än. </h4>
     </div>
   </div>
 </template>

@@ -9,12 +9,36 @@ const ObjectId = require('mongodb').ObjectId
 module.exports = function(dbUrl, dbFolder) {
   const router = express.Router();
 
+  router.head("/:acc_id",  (req, res) => {
+    let myquery = { '_id': ObjectId(req.params.acc_id)}
+  
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection("users").findOne(myquery, function(err, result) {
+        if (err) {
+          res.status(404).send()
+          db.close();
+        }
+        else if (result != null) {
+          res.status(200).send()
+          db.close();
+        }
+        else {
+          // If we dont find a result
+          res.status(404).send()
+          db.close();      
+        } 
+      })
+    })
+  })
+
+
   router.get("/filter/full", (req, res) => { 
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
       dbo.collection("users").find({}).toArray(function(err, result) {
         if (err) {
-          res.sendStatus(500)
+          res.status(404).send()
           db.close();
         }
         else  {
@@ -23,7 +47,6 @@ module.exports = function(dbUrl, dbFolder) {
             for (user of result) {
               let userData = {
               "id"      : user._id.toString(),
-              "status"  : user.is_active,
               "min"     : user.min_limit,
               "max"     : user.max_limit,
               "admin"   : user.is_admin
@@ -45,7 +68,7 @@ module.exports = function(dbUrl, dbFolder) {
       let dbo = db.db(dbFolder);
       dbo.collection('users').find({}).toArray(function(err, result) {
         if (err) {
-          res.sendStatus(500)
+          res.status(404).send()
           db.close();
         }
         else  {
@@ -61,7 +84,7 @@ module.exports = function(dbUrl, dbFolder) {
   })
   
   router.get("/creds/:name/:auth", (req, res) => {
-    res.sendStatus(200)
+    res.status(200).send()
     /* let myquery = { userID : req.params.name, sessionID : req.params.auth}
     MongoClient.connect(url, (err, db) => {
       let dbo = db.db("tvitter");
@@ -91,7 +114,7 @@ module.exports = function(dbUrl, dbFolder) {
       let dbo = db.db(dbFolder);
       dbo.collection("users").findOne(myquery, function(err, result) {
         if (err) {
-          res.sendStatus(500)
+          res.status(404).send()
           db.close();
         }
         else if (result != null) {
@@ -107,7 +130,7 @@ module.exports = function(dbUrl, dbFolder) {
         }
         else {
           // If we dont find a result
-          res.status(404).send("The account doesn't exist.")
+          res.status(404).send()
           db.close();      
         } 
       })

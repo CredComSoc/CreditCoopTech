@@ -25,7 +25,7 @@ module.exports = async function(dbUrl, dbFolder) {
     const user = await getUser({'profile.accountName': req.user})
     console.log(user._id.toString()) 
     try {
-      const response = await axios.get(CC_NODE_URL + '/transaction/full', { 
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
       headers: {
       'cc-user': user._id.toString(),
       'cc-auth': '1'
@@ -53,6 +53,7 @@ module.exports = async function(dbUrl, dbFolder) {
       }
       res.status(200).send(response.data)
     } catch (error) {
+      console.log(error)
       res.sendStatus(500)
     }
   })
@@ -60,7 +61,7 @@ module.exports = async function(dbUrl, dbFolder) {
   router.get("/requests", async (req, res) => { 
     const user = await getUser({'profile.accountName': req.user})
     try {
-      const response = await axios.get(CC_NODE_URL + '/transaction/full', { 
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
       headers: {
        'cc-user': user._id.toString(),
        'cc-auth': '1'
@@ -171,12 +172,12 @@ module.exports = async function(dbUrl, dbFolder) {
   router.get("/saldo", async (req, res) => {
     const user = await getUser({'profile.accountName': req.user}) 
     try {
-      const response = await axios.get(CC_NODE_URL + '/account/summary/' + user._id.toString(), { 
+      const response = await axios.get(CC_NODE_URL + '/account/summary', { 
       headers: {
        'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
-      res.status(200).send(response.data)
+      res.status(200).send(response.data[user._id.toString()])
     } catch (error) {
       res.status(200).send({
         completed: {
@@ -204,14 +205,33 @@ module.exports = async function(dbUrl, dbFolder) {
   router.post("/saldo", async (req, res) => {
     const user = await getUser({'profile.accountName': req.body.user}) 
     try {
-      const response = await axios.get(CC_NODE_URL + '/account/summary/' + user._id.toString(), { 
+      const response = await axios.get(CC_NODE_URL + '/account/summary', { 
       headers: {
        'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
-      res.status(200).send(response.data)
+      res.status(200).send(response.data[user._id.toString()])
     } catch (error) {
-      res.sendStatus(500)
+      res.status(200).send({
+        completed: {
+          balance: 0,
+          trades: 0,
+          entries: 0,
+          gross_in: 0,
+          gross_out: 0,
+          partners: 0,
+          volume: 0
+        },
+        pending: {
+          balance: 0,
+          trades: 0,
+          entries: 0,
+          gross_in: 0,
+          gross_out: 0,
+          partners: 0,
+          volume: 0
+        }
+      })
     }
   })
     

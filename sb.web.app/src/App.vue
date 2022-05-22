@@ -75,15 +75,11 @@ export default {
       }
     })
     getSaldo().then((res) => {
-      if (res) {
-        this.saldo = res
-      }  
+      this.saldo = res
     })
 
     setInterval(() => getSaldo().then((res) => {
-      if (res) {
-        this.saldo = res
-      }  
+      this.saldo = res
     }), 10000)
   }
   

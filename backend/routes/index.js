@@ -13,6 +13,8 @@ const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 
+FRONTEND_URL = 'http://155.4.159.231:8080'
+
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
   auth: {
@@ -826,7 +828,7 @@ module.exports = async function(dbUrl, dbFolder) {
       Du får det här mailet för att du (eller någon annan) har begärt att ditt lösenord hos Svensk Barter ska återställas.
       Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
       
-      http://localhost:8080/reset/${token}
+      ${FRONTEND_URL}/reset/${token}
 
       Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
     `
