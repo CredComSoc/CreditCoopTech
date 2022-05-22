@@ -18,6 +18,7 @@ a.cover-link {
     bottom: 0;
     left: 0;
     right: 0;
+    text-decoration: none;
 }
 
 </style>

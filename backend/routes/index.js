@@ -85,15 +85,19 @@ module.exports = async function(dbUrl, dbFolder) {
   const upload = multer({ storage });
 
   router.get('/image/:filename', (req, res) => {
-    gfs.find({ filename: req.params.filename }).toArray((err, files) => {
-      if (!files[0] || files.length === 0) {
-        res.status(404).send('No file exists');
-      } else {
-        if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/gif') {
-          gfs.openDownloadStreamByName(files[0].filename).pipe(res)
+    try {
+      gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+        if (!files[0] || files.length === 0) {
+          res.status(404).send('No file exists');
+        } else {
+          if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/gif') {
+            gfs.openDownloadStreamByName(files[0].filename).pipe(res)
+          }
         }
-      }
-    })
+      })
+    } catch (error) {
+      res.status(404).send('No file exists');
+    }
   });
 
   /*****************************************************************************
@@ -134,7 +138,6 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.post("/register", (req, res) => {
-
     getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
         const newUser = {
@@ -520,7 +523,7 @@ module.exports = async function(dbUrl, dbFolder) {
             servicesAllListingsArray.push(listing)
           }
         })
-        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray})
+        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray, username: req.user})
         db.close();
       }
     })
@@ -656,7 +659,7 @@ module.exports = async function(dbUrl, dbFolder) {
         else {
           // If we dont find a result
           db.close();
-          res.sendStatus(204).json(null);
+          res.sendStatus(404).json(null);
         }
       });
     });
@@ -713,7 +716,7 @@ module.exports = async function(dbUrl, dbFolder) {
         else {
           // If we dont find a result
           db.close();
-          res.status(204).send("No cart found");
+          res.status(404).send("No cart found");
         }
       })
     })
@@ -737,7 +740,7 @@ module.exports = async function(dbUrl, dbFolder) {
         else {
           // If we dont find a result
           db.close();
-          res.status(204).send("No item found");
+          res.status(404).send("No item found");
         }
       })
     })
@@ -759,7 +762,7 @@ module.exports = async function(dbUrl, dbFolder) {
         else {
           // If we dont find a result
           db.close();
-          res.sendStatus(204);
+          res.sendStatus(404);
         }
       })
     })
@@ -792,7 +795,68 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  /*****************************************************************************
+   * 
+   *                                Home
+   *                 
+   *****************************************************************************/
 
+  router.get("/home", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then(user => {
+      if (user != null) {
+        const homeData = {
+          companyName: user.profile.accountName,
+          shop: [],
+          members: []
+        };
+        MongoClient.connect(dbUrl, (err, db) => {
+          let dbo = db.db(dbFolder);
+          dbo.collection("posts").find().sort({uploadDate: -1}).limit(10).toArray(function (err, res1) {
+            if (err) {
+              db.close();
+              res.sendStatus(500)
+            }
+            else if (res1 != null) {
+              for (const post of res1) {
+                const postInfo = { id: post.id, title: post.title, desc:post.shortDesc, theme: 'regular', img_path: post.coverImg };
+                homeData.shop.push(postInfo);
+              }
+              // TODO not sorted based on newest member
+              dbo.collection("users").find().limit(10).toArray(function (err, res2) {
+                if (err) {
+                  db.close();
+                  res.sendStatus(500)
+                }
+                else if (res2 != null) {
+                  db.close();
+                  let index = 0;
+                  for (const member of res2) {
+                    const memberInfo = {id: index, img_path: member.profile.logo, title: member.profile.accountName, theme: 'ellipse'}
+                    homeData.members.push(memberInfo);
+                    index++;
+                  }
+                  res.status(200).json(homeData);
+                  //TODO ADD MONGO QUERY FOR EVENTS NEXT
+                }
+                else {
+                  // If we dont find a result
+                  db.close();
+                  res.sendStatus(204)
+                }
+              });
+            }
+            else {
+              // If we dont find a result
+              db.close();
+              res.sendStatus(204)
+            }
+          });
+        });
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
 
 
   /*****************************************************************************
@@ -837,11 +901,8 @@ module.exports = async function(dbUrl, dbFolder) {
   }) 
 
   router.post('/reset/:token', async (req, res) => {
-    console.log(req.params.token)
 
     const user = await getUser({ "resetPasswordToken": req.params.token })
-
-    console.log(user)
   
     if (!user || !user.resetPasswordExpires > Date.now() || !crypto.timingSafeEqual(Buffer.from(user.resetPasswordToken), Buffer.from(req.params.token))) {
       return res.status(404).send("Password reset token is invalid or has expired.")

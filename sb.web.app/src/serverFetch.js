@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
 const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
-//const urlBase = 'http://localhost'       // USE LOCAL EXPRESS
+// const urlBase = 'http://localhost' // USE LOCAL EXPRESS
 
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
@@ -403,7 +403,7 @@ export async function getNotifications () {
     credentials: 'include'
   })
     .then((response) => {
-      console.log(response)
+      //console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok')
       } else {
@@ -727,6 +727,45 @@ export async function resetToken (token, newpass) {
   })
     .then((res) => {
       return res.ok
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+/*****************************************************************************
+* 
+*                                  Chat
+*                 
+*****************************************************************************/
+
+export async function getChatHistory (chatID) {
+  const promise = fetch(EXPRESS_URL + '/chat/history/' + chatID, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((res) => {
+      return res
+    })
+    .catch(() => {
+      return false
+    })
+  return promise
+}
+
+export async function getChatHistories () {
+  const promise = fetch(EXPRESS_URL + '/chat/histories', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  })
+    .then((res) => {
+      return res
     })
     .catch(() => {
       return false

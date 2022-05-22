@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div v-if="listingObj" class="element-container" @click="togglePopup">
+      <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
           <img :src='getImgURL()' />
           <h4 class="element-title"> {{ listingObj.title }} </h4>
           <p class="element-desc"> {{ listingObj.shortDesc }}  </p>

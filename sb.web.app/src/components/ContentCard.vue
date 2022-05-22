@@ -4,8 +4,9 @@
         <h4> {{ description }} </h4>
         <ContentList :data=data :screenWidth=screenWidth :name=name />
         <div :class="[`outer-btn`, theme_btn]">
-            <NestedAtagInDiv />
-            <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
+            <router-link style="text-decoration:none;" :to="{name: this.name}">
+                <button :class="[`all-action`, theme_btn]" >{{ btn_txt }}</button>
+            </router-link>
         </div>
     </div>
 </template>
@@ -14,13 +15,11 @@
 // Component that represent the outer container that hold ContentList
 
 import ContentList from './ContentList.vue'
-import NestedAtagInDiv from './NestedAtagInDiv.vue'
 
 export default {
   name: 'ContentCard',
   components: {
-    ContentList,
-    NestedAtagInDiv
+    ContentList
   },
   props: ['title', 'description', 'theme', 'theme_btn', 'btn_txt', 'data', 'screenWidth', 'name']
 }

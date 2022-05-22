@@ -3,7 +3,7 @@
     <div className="flexbox-container2 flexbox-item">
       
       <div className="image container-item">
-        <img :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
         <button v-if="show_optional && profileData.name !== currentUser" id="chat-btn" @click="goToChat" > Starta chatt </button>
       </div>
       <div className="right container-item">
@@ -26,7 +26,7 @@
         <div>
           <h1> Kontaktuppgifter </h1>
           <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
-        </div>
+        </div> 
       </div>
     </div>
     <div class="sendmoney-box" v-if="show_optional && profileData.name !== currentUser">
@@ -159,6 +159,7 @@ img {
   margin: 10px;
   max-width: 1100px;
   width: 100%;
+  margin: 0 auto;
 }
 
 h1 {
@@ -187,6 +188,11 @@ h1 {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
+}
+
+#profile-img {
+  text-align: center;
 }
 
 @media screen and (min-width: 860px) {
@@ -256,6 +262,23 @@ select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+@media screen and (max-width: 860px) {
+  .flexbox-container2 {
+    display: flex;
+    margin-top: 30px;
+    flex-direction: column;
+  }
+  .right, .container-item {
+  }
+  .image {
+    width: 50%;
+  }
+  .sendmoney-box {
+    font-size: 14px;
+    height: fit-content;
+  }
 }
 
 </style>

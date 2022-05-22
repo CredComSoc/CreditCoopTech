@@ -5,7 +5,7 @@
         <div class="left-logos" v-if="this.desc">
           <div class="navlogo" v-if="!this.isActive">
             <figure >
-                <img src="../assets/empty.png" style="width:40px;"/> <!-- Fulfix =( -->
+                <img src="../assets/empty.png" style="width:40px;"/> 
                 <figcaption class="l-text"> </figcaption>
             </figure>
           </div>
