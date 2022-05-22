@@ -14,7 +14,7 @@
     </header>
   </div>
   <div class="login-box">
-    <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
+    <form @submit.prevent="handleSubmit">
       <div class="box-text">Logga in på Svensk Barter</div>
       <div>
         <label class="box-label">E-postadress</label>
@@ -39,8 +39,6 @@
 
 <script>
 import { login } from '../serverFetch'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 
 export default {
   name: 'Login',
@@ -59,8 +57,8 @@ export default {
         if (response) {
           this.error = false  
           this.loginCount = 0   
-          //this.$router.push({ name: 'Home' })
           window.location.reload()
+          this.error = false 
         } else {
           this.error = true
           this.loginCount += 1
