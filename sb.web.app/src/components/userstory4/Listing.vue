@@ -1,7 +1,7 @@
 <template>
   <div>
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
-          <img :src='getImgURL()' />
+          <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
           <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
       </div>

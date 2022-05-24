@@ -4,7 +4,8 @@
     
   </div>
   <div class="popup-inner">
-    <img class="p-image" :src='getImgURL()' alt="Coffea">
+    <img class="p-image" :src='getImgURL()' alt="Coffea" style="object-fit:contain;max-width:240px;max-height:240px;">
+    
     <div class="content-right">
       <div class="flex-center-bottom">
         <button className="xBtn" @click="$emit('closePopup')">x</button>
@@ -31,6 +32,18 @@
         </div>
       </div>
     </div>
+        <!-- KOLLA OM DET FINNS FLER BILDER ÄN COVER IMAGE INNAN FÖLJANDE KOD KÖRS -->
+    <div class="p-image small-images-container">
+      <!-- OM 1 eller fler bilder -->
+      <img v-if="this.listingObj.img.length >= 1" class="small-images" :src='displayImage0' alt="img1" style="object-fit:contain;">
+      <!-- OM 2 eller fler bilder -->
+      <img v-if="this.listingObj.img.length >= 2" class="small-images" :src='displayImage1' alt="img2">
+      <!-- OM 3 eller fler bilder -->
+      <img v-if="this.listingObj.img.length >= 3" class="small-images" :src='displayImage2' alt="img3">
+      
+      <img v-if="this.listingObj.img.length >= 4" class="arrow" id="right-rotating-arrow" src="../../assets/list_images/right_arrow.png" alt="rotera shop" @click="rotateImages" />
+    </div>
+
   </div>
 </div>
 </template>
@@ -45,7 +58,10 @@ export default {
 
   data () {
     return {
-      amount: 1
+      amount: 1,
+      displayImage0: String,
+      displayImage1: String,
+      displayImage2: String
     }
   },
 
@@ -86,7 +102,35 @@ export default {
             this.chatError = true
           }
         }).catch(err => console.log(err))
+    },
+    getSmallerImages (imgArray) {
+      if (imgArray.length >= 1) {
+        this.displayImage0 = EXPRESS_URL + '/image/' + imgArray[0]
+      }
+      if (imgArray.length >= 2) {
+        this.displayImage1 = EXPRESS_URL + '/image/' + imgArray[1]
+      }
+      if (imgArray.length >= 3) {
+        this.displayImage2 = EXPRESS_URL + '/image/' + imgArray[2]
+      }
+    },
+    rotateImages () {
+      const dataCopy = this.listingObj.img
+      dataCopy.push(dataCopy.shift())
+      // this.listingObj.img = dataCopy
+      if (dataCopy.length >= 1) {
+        this.displayImage0 = EXPRESS_URL + '/image/' + dataCopy[0]
+      }
+      if (dataCopy.length >= 2) {
+        this.displayImage1 = EXPRESS_URL + '/image/' + dataCopy[1]
+      }
+      if (dataCopy.length >= 3) {
+        this.displayImage2 = EXPRESS_URL + '/image/' + dataCopy[2]
+      }
     }
+  },
+  created: function () {
+    this.getSmallerImages(this.listingObj.img)
   }
 }
 </script>
@@ -123,7 +167,6 @@ body {
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.05);
   display: flex;
-
   z-index: 2
 }
 
@@ -164,8 +207,45 @@ h5 {
 .p-image {
   object-fit: cover;
   width: 70%;
-  height: 70%;
+  height: 100%;
   /*max-height: 70vh;*/
+}
+
+.small-images-container {
+  /* box-sizing: border-box; */
+  position: fixed; 
+  bottom: 0;
+  padding:0;
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-evenly;
+  /* height: 150px; */
+
+  height: 200px;
+  vertical-align:middle;
+
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.small-image {
+  /*position: absolute;*/
+  /**object-fit: cover;*/
+  width: 20%;
+  height: 20%;
+  bottom:0;
+  height:0px;
+}
+
+.small-images-container {
+    display: none;
+    visibility: hidden;
+}
+
+.arrow {
+  margin-top: 6%;
+  height:50%;
+  
 }
 
 .xBtn {
