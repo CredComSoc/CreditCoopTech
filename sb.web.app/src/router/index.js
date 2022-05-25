@@ -13,6 +13,7 @@ import AdminHome from '../components/AdminSection/AdminHome.vue'
 import userProfile from '../components/userstory5/userProfile.vue'
 import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 import Chat from '../components/Chat/Chat.vue'
+import About from '../components/About.vue'
 
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat']
 const adminRoutes = ['AdminHome']
@@ -85,6 +86,11 @@ const routes = [
     name: 'Chat',
     component: Chat,
     props: true
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
   // ADMIN ROUTES
   {

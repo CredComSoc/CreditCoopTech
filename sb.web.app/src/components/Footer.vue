@@ -1,7 +1,7 @@
 <template>
     <footer>
         <div class="footer-container">
-            <p class="side-items" id="e"><a href="#">Om oss</a></p>
+            <p class="side-items" id="e"><router-link :to="{name:'About'}">Om sidan</router-link></p>
             <p id="middle-item"><a href="#">Om Barter</a></p>
             <p class="side-items"><a href="#">Kontakta oss</a></p>
         </div>
