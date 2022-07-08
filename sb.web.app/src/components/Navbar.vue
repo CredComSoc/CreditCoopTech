@@ -22,14 +22,14 @@
               </router-link>
             </div>
           <div class="navlogo">
-            <a href="#">
+            <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
-                  <img src="../assets/navbar_logos/events.png" alt="shop knapp" id="event-logo"/>
-                  <figcaption class="l-text"> Events </figcaption>
+                  <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+                  <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
-            </a >
-            <router-link :to="{}" v-if="this.isActive" > 
-              <span class="mob-cap"> Events </span>
+            </router-link>
+            <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Varukorg </span>
             </router-link>
           </div>
           <div class="navlogo">
@@ -83,17 +83,6 @@
             </router-link>
             <router-link :to="{name: 'Chat'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> Meddelanden </span>
-            </router-link>
-          </div>
-          <div class="navlogo">
-            <router-link :to="{name:'Cart'}">
-              <figure class="logo-click">
-                  <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
-                  <figcaption class="l-text"> Varukorg </figcaption>
-              </figure>
-            </router-link>
-            <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Varukorg </span>
             </router-link>
           </div>
           <div @mouseover="displayDropdown" class="navlogo">
