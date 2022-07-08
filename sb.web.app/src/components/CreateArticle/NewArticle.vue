@@ -80,7 +80,7 @@ export default {
     },
     fileSizeError () {
       this.error = true
-      this.changePopupText('Filen måste vara en bild med filändelse .png, .jpeg eller .gif\noch ha mindre storlek än maxgränsen på 1MB.\nVar god försök igen.')
+      this.changePopupText('Filen måste vara en bild med filändelse .png, .jpeg eller .gif\noch ha mindre storlek än maxgränsen på 2MB.\nVar god försök igen.')
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
