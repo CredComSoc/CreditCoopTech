@@ -33,20 +33,14 @@
             </router-link>
           </div>
           <div class="navlogo">
-            <div class="dropdown">
-              <a href="#">
+            <router-link :to="{name:'New_Article'}">
                 <figure id="add-logo" :class="[`logo-click`,`add`]">
                     <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
-                    <figcaption :class="[`l-text`,`add`]"> Lägg upp </figcaption>
+                    <figcaption :class="[`l-text`,`add`]"> Ny Artikel </figcaption>
                 </figure>
-              </a>
-              <div id="upload-dropdown" class="dropdown-content">
-                  <router-link :to="{name:'New_Article'}">Ny artikel </router-link>
-                  <a href="#">Nytt event </a>
-              </div>
-            </div>
+            </router-link>
             <router-link :to="{name:'New_Article'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Lägg upp </span>
+              <span class="mob-cap"> Ny Artikel </span>
             </router-link>
           </div>
           <div class="navlogo">
