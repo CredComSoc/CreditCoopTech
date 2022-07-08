@@ -28,7 +28,7 @@
       <button id="login-button" >Logga in</button>
     </form>
     <div class="box-link">
-      <a href="/forgot">Återställ lösenord</a>
+      <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link>
     </div> 
     <div class="box-error" v-if="this.error">
       Fel epost eller lösenord ({{ loginCount }})

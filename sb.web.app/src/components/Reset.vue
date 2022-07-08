@@ -23,6 +23,9 @@
       </div>
       <button id="reset-button" >Återställ</button>
     </form>
+    <router-link :to="{name:'Login'}">
+      <button id="login-button" ><p>&larr; Logga in</p></button>
+    </router-link>
     <div class="box-error" v-if="error">
       {{this.errorText}}
     </div>
@@ -143,6 +146,10 @@ input {
 input::placeholder {
   font-size:  14px;
   font-style: italic;
+}
+
+#login-button {
+  margin-top: 260px;
 }
 
 input:focus,
