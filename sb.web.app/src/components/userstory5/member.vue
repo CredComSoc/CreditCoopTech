@@ -7,7 +7,8 @@ do not match the equivalent of the database.
     <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
     <div class="element-container" @click="enterProfile"> 
       <div class="imgContainer">
-        <img :src='getImgURL()' />
+        <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
+        <img v-if="this.listingObj.logo == ''" src='../../assets/list_images/user.png' />
       </div>
       <h4 class="element-title"> {{ listingObj.accountName }} </h4>
     </div>
@@ -26,7 +27,6 @@ export default {
   },
   methods: {
     getImgURL () {
-      /** http://155.4.159.231:3000/image/' + this.listingObj.logo */
       return EXPRESS_URL + '/image/' + this.listingObj.logo
     }
   }

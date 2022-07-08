@@ -3,7 +3,8 @@
     <div className="flexbox-container2 flexbox-item">
       
       <div className="image container-item">
-        <img id="profile-img" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="this.logoURL !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="this.logoURL == ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
         <button v-if="show_optional && profileData.name !== currentUser" id="chat-btn" @click="goToChat" > Starta chatt </button>
       </div>
       <div className="right container-item">
@@ -68,7 +69,7 @@ export default {
   },
   data () {
     return {
-      logoURL: '',
+      logoURL: '../',
       profileData: [],
       getMember,
       currentUser: '',
@@ -89,7 +90,11 @@ export default {
       })
     },
     getImgURL () {
-      this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
+      if (this.profileData.logo !== '') {
+        this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
+      } else {
+        this.logoURL = ''
+      }
     },
     async sendBkr () {
       this.bkr = this.$refs.bkrInput.getInput()
