@@ -35,11 +35,11 @@
         <h1 class="box-text">Skicka Barterkronor</h1>
         <div>
           <label class="box-label">Antal</label>
-          <input class="box-input" type="text" v-model="bkr" name="" placeholder="Antal" id="bkr-input" pattern="\d*" required>
+          <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" required/>
         </div>
         <div>
           <label class="box-label">Kommentar</label>
-          <textarea class="box-textarea" type="password" v-model="comment" name="" placeholder="Text" id="comment-input"> </textarea>
+          <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
         <button id="login-button">Skicka</button>
       </form>
@@ -57,10 +57,14 @@
 <script>
 import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
 import PopupCard from '../CreateArticle/PopupCard.vue'
+import TextBox from '../CreateArticle/TextBox.vue'
+import TextArea from '../CreateArticle/TextArea.vue'
 
 export default {
   components: {
-    PopupCard
+    PopupCard,
+    TextBox,
+    TextArea
   },
   data () {
     return {
@@ -88,6 +92,8 @@ export default {
       this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
     },
     async sendBkr () {
+      this.bkr = this.$refs.bkrInput.getInput()
+      this.comment = this.$refs.commentInput.getInput()
       if (this.bkr !== 0) {
         const saldo = await getAvailableBalance()
         if (saldo < this.bkr) {
@@ -230,6 +236,7 @@ h1 {
 }
 
 button {
+  margin-top:40px;
   margin-right: 10px;
   border-radius: 5px;
   font-size: 1.2rem;
@@ -239,31 +246,26 @@ button {
 
 .box-text {
   padding-top: 20px;
-  padding-bottom: 18px;
 }
 
 .box-label {
-  padding-bottom: 8px;
+  padding-top: 20px;
 }
 
 .box-input {
+  margin-top: -30px;
   border: 0px;
   width: 340px;
   height: 34px;
-  background-color: #F3F3F3;
-  margin-left: 20px;
-  margin-bottom: 16px;
-  padding-left: 8px;
+  margin-bottom: 40px;
 }
 
 .box-textarea{
+  margin-top: -30px;
   border: 0px;
   width: 340px;
   height: 102px;
-  background-color: #F3F3F3;
-  margin-left: 20px;
   margin-bottom: 36px;
-  padding-left: 8px;
 }
 
 input:focus,
