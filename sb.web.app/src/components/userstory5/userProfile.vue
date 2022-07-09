@@ -99,7 +99,7 @@ export default {
     async sendBkr () {
       this.bkr = this.$refs.bkrInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
-      if (this.bkr !== 0) {
+      if (this.bkr && Number.isInteger(Number(this.bkr)) && Number(this.bkr) > 0) {
         const saldo = await getAvailableBalance()
         if (saldo < this.bkr) {
           this.notEnoughBkrMsg = true
