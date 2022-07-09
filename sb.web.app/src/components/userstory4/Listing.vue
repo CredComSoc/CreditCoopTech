@@ -3,17 +3,15 @@
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
           <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
+          <p v-if="listingObj.article === 'product'" class="element-seller">{{listingObj.userUploader}} - Produkt</p>
+          <p v-if="listingObj.article === 'service'" class="element-seller">{{listingObj.userUploader}} - Tjänst</p>
           <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
       </div>
       <div v-if="listingId && listingId !== '0'" class="element-container">
           <img :src='getImgURL()' />
           <h4 class="element-title"> {{ newListingObj.title }} </h4>
+          <p>TEST</p>
           <p class="element-desc"> {{ newListingObj.shortDesc }}  </p>
-      </div>
-      <div v-if="listingId && listingId === '0'" class="element-container">
-          <img src='../../assets/sb2.png' />
-          <h4 class="element-title"> Överföring </h4>
-          <p class="element-desc"> {{ comment }}  </p>
       </div>
     </div>
     
@@ -90,6 +88,12 @@ export default {
     .element-title {
         margin-left: 8px;
         font-size: 20px
+    }
+
+    .element-seller {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+      margin-left: 8px;
     }
 
     .element-desc {

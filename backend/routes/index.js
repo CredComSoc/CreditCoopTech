@@ -464,6 +464,8 @@ module.exports = async function(dbUrl, dbFolder) {
 
     let productsAllListingsArray = []
     let servicesAllListingsArray = []
+    let buyingAllListingsArray = []
+    let sellingAllListingsArray = []
 
     searchword = searchword.filter(function(value, index, arr) {
       return value !== "";
@@ -522,8 +524,19 @@ module.exports = async function(dbUrl, dbFolder) {
           } else if (listing.article === "service") {
             servicesAllListingsArray.push(listing)
           }
+
+          if (listing.status === 'buying') {
+            buyingAllListingsArray.push(listing)
+          } else if (listing.status === 'selling') {
+            sellingAllListingsArray.push(listing)
+          }
         })
-        res.send({allProducts: productsAllListingsArray, allServices: servicesAllListingsArray, username: req.user})
+        res.send({ allProducts: productsAllListingsArray, 
+                   allServices: servicesAllListingsArray, 
+                   allBuying: buyingAllListingsArray, 
+                   allSelling: sellingAllListingsArray,
+                   username: req.user
+                 })
         db.close();
       }
     })

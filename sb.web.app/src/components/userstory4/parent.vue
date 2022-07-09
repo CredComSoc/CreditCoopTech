@@ -9,8 +9,6 @@
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vad vill du söka efter idag?'" />
     </div>
 
-    <br>
-
     <div class="main">
 
     <div class="filterButton">
@@ -25,12 +23,12 @@
       <!-- KOLYMN FÖR PRODUKTER -->
       <div class="listings">
         <div v-if="this.productsSearchData.length !== 0">
-          <h3 >Produkter</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=productsSearchData />
+          <h3 >Säljes</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.servicesSearchData.length !== 0">
-          <h3>Tjänster</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=servicesSearchData />
+          <h3>Köpes</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=buyingSearchData />
         </div>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
       </div>
@@ -53,6 +51,8 @@ export default {
     return {
       productsSearchData: [],
       servicesSearchData: [],
+      buyingSearchData: [],
+      sellingSearchData: [],
       singleListingData: [],
       popupActive: false,
       filterActive: false,
@@ -83,6 +83,8 @@ export default {
         .then(data => {
           this.productsSearchData = data.allProducts
           this.servicesSearchData = data.allServices
+          this.buyingSearchData = data.allBuying
+          this.sellingSearchData = data.allSelling
           this.username = data.username
         })
     },
@@ -201,6 +203,7 @@ export default {
   flex-basis: 80%;
   width: auto;
   margin-left: 3rem;
+  margin-top: 1rem;
 }
 
 .center-text {

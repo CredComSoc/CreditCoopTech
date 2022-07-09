@@ -12,6 +12,8 @@
       </div>
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
+        <p v-if="listingObj.article === 'product'" >{{listingObj.userUploader}} - Produkt</p>
+        <p v-if="listingObj.article === 'service'" >{{listingObj.userUploader}} - Tjänst</p>
         <p>{{listingObj.longDesc}}</p>
         <p>{{listingObj.destination}}</p>
         <p>{{listingObj.price}} Barter Kr</p>
