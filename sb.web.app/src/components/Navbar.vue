@@ -91,9 +91,7 @@
                   <router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'products'}}">Mina artiklar</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: ''}}">Min statistik</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: ''}}">Inställningar</router-link>
                 </div>
               </div>
               <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">

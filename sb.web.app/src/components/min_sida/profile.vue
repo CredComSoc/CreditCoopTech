@@ -5,9 +5,7 @@
         <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='products' && this.tab!='requests' }" id='profile'>Profil</a>
         <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Köp</a>
         <a style="background-color:#b3ffb3" href='#' @click="this.tab='products'" :class="{ active: this.tab==='products' }" id='products'>Artiklar</a>
-        <a style="background-color:lavender" id='statistik'>Statistik</a>
         <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Behov</a>
-        <a style="background-color:#ffa366" id='settings'>Inställningar</a>
       </div>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
@@ -17,9 +15,7 @@
       <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='products' && this.tab!='requests' }" id='profile'>Min profil</a>
       <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
       <a href='#' @click="this.tab='products'" :class="{ active: this.tab==='products' }" id='products'>Mina artiklar</a>
-      <a id='statistik'>Min statistik</a>
       <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
-      <a id='settings'>Inställningar</a>
     </div>
     <div className="content flexbox-item">
       <MyPurchases v-if="this.tab==='purchases'"/>
@@ -85,10 +81,10 @@ export default {
 @media screen and (min-width: 860px) {
   .flexbox-container {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     min-width: 860px;
+    justify-content: center;
   }
 
   .flexbox-item {
@@ -107,8 +103,7 @@ export default {
 }
 
 .topnav {
-  overflow: hidden;
-  display: flex;
+  text-align: center;
 }
 
 .topnav a {
@@ -121,8 +116,8 @@ export default {
   border-color: gainsboro;
   border-radius: 5px;
   margin-top: -1px;
-  margin-bottom: -1px;
-  margin-left: -1px;
+  margin-bottom: 2px;
+  margin-left: 1px;
   margin-right: -1px;
   border-width: 2px;
   font-size: 1.24rem;
@@ -130,7 +125,6 @@ export default {
 
 .topnav a.active {
   color: dimgrey;
-  border-bottom: none;
 }
 
 .mobnav {
