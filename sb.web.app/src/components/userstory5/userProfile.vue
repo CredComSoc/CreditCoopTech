@@ -52,6 +52,7 @@
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.name + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />
   </div>
 </template>
 
@@ -79,7 +80,8 @@ export default {
       notEnoughBkrMsg: false,
       tooMuchBkrMsg: false,
       chatError: false,
-      show_optional: false
+      show_optional: false,
+      invalidNumberOfBkr: false
     }
   },
   methods: {
@@ -114,6 +116,8 @@ export default {
             this.bkrSentMsg = true
           }
         }
+      } else {
+        this.invalidNumberOfBkr = true
       }
     },
     closePopup () {

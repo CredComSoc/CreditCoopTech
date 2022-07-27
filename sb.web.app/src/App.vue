@@ -30,7 +30,7 @@ import Login from './components/Login.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { authenticate, checkAdminStatus, getSaldo } from './serverFetch'
+import { authenticate, checkAdminStatus, getSaldo, getAvailableBalance } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
  
 // import Home from '@/components/Home.vue'
