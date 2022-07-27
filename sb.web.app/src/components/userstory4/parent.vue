@@ -8,17 +8,17 @@
     <div class="center">
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vad vill du söka efter idag?'" />
     </div>
-
+  
     <div class="main">
 
     <div class="filterButton">
       <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
     </div>
 
-      <!-- KOLUMN FÖR KATERGORI-->
+      <!-- KOLUMN FÖR KATERGORI
       <div id="categories" class="categories">
         <Categories v-if="filterActive" @filterEvent="filteringMethod"/>
-      </div>
+      </div> -->
 
       <!-- KOLYMN FÖR PRODUKTER -->
       <div class="listings">
@@ -67,11 +67,10 @@ export default {
     }
   },
 
-  components: {
+  components: { // disabled components: Categories,
     Searchfield,
     Alllistings,
-    ListingPopup,
-    Categories,
+    ListingPopup,   
     FilterButton
   },
 
@@ -200,7 +199,7 @@ export default {
 }
 
 .listings {
-  flex-basis: 80%;
+  flex-basis: 100%;
   width: auto;
   margin-left: 3rem;
   margin-top: 1rem;
