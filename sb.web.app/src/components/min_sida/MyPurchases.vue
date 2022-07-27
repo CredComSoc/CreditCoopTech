@@ -73,11 +73,15 @@ export default {
     }
   },
   mounted () {
-    getPurchases()
-      .then(res => {
-        console.log(res)
+    getPurchases().then(res => {
+      this.purchases = res
+    })
+    
+    setInterval(() => getPurchases().then((res) => {
+      if (res && this.purchases.length !== res.length && !(this.purchases.every((val, index) => val.uuid === res[index].uuid))) {
         this.purchases = res
-      })
+      }
+    }), 10000)
   },
   components: {
     Listing

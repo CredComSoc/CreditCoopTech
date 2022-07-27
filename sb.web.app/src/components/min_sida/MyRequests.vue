@@ -61,11 +61,15 @@ export default {
     }
   },
   mounted () {
-    getRequests()
-      .then(res => {
-        console.log(res)
+    getRequests().then(res => {
+      this.requests = res
+    })
+
+    setInterval(() => getRequests().then((res) => {
+      if (res && this.requests.length !== res.length && !(this.requests.every((val, index) => val.uuid === res[index].uuid))) {
         this.requests = res
-      })
+      }
+    }), 10000)
   },
   methods: {
     cancel (id, payer, index) {
