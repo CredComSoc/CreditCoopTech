@@ -276,9 +276,11 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get("/articles", async (req, res) => {
+    console.log(req)
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
+      const user = await getUser({'profile.accountName': req.user})
       let products = [];
       const db = await MongoClient.connect(dbUrl)
       const dbo = db.db(dbFolder);
@@ -289,7 +291,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }
         else {
           posts.forEach(listing => {
-            if(listing.userUploader === req.user) {
+            if(listing.userId.toString() === user._id.toString()) {
               products.push(listing)
             }
           })
@@ -343,7 +345,11 @@ module.exports = async function(dbUrl, dbFolder) {
           newArticle.img = images;
         }
         newArticle.id = uuid.v4().toString();
-        newArticle.userUploader = req.user;
+        newArticle.userUploader = req.user
+
+        const user = await getUser({'profile.accountName': req.user})
+
+        newArticle.userId = user._id
         
         // for ttl index in posts
         if ('end-date' in newArticle) {
@@ -473,13 +479,13 @@ module.exports = async function(dbUrl, dbFolder) {
 
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
-    dbo.collection('posts').find({}).toArray(function (err, posts) {
+    dbo.collection('posts').find({}).toArray(async function (err, posts) {
       if (err) {
         res.sendStatus(500)
         db.close()
       }
       else {
-        posts.forEach(listing => {
+        for(listing of posts) {
           //Om ARTIKEL
           if (articles.length !== 0) {
             if (!articles.includes(listing.article)) {
@@ -518,6 +524,10 @@ module.exports = async function(dbUrl, dbFolder) {
               return
             }
           }
+
+          const user = await getUser({'_id': listing.userId})
+          listing.userUploader = user.profile.accountName
+
           //TILLDELA TJÄNST ELLER PRODUKT
           if(listing.article === "product") {
             productsAllListingsArray.push(listing)
@@ -530,7 +540,7 @@ module.exports = async function(dbUrl, dbFolder) {
           } else if (listing.status === 'selling') {
             sellingAllListingsArray.push(listing)
           }
-        })
+        }
         res.send({ allProducts: productsAllListingsArray, 
                    allServices: servicesAllListingsArray, 
                    allBuying: buyingAllListingsArray, 
