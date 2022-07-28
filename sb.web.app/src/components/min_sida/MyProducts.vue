@@ -10,7 +10,7 @@
           <th>Artikel</th>
           <th>Kategori</th>
           <th>Pris</th>
-          
+          <th>Skapad</th>
         </tr>
         <tr v-for="(item) in articles" :key="item">
           <td v-if="(new Date(item['end-date'])).getTime() > Date.now()"><Listing className='article' :listingObj="item"/></td>
@@ -37,8 +37,7 @@
         <tr v-for="(item) in articles" :key="item">
           <td v-if="(new Date(item['end-date'])).getTime() < Date.now()"><Listing className='article' :listingObj="item"/></td>
           <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.category}}</td>
-          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.price}}</td>
-          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()"> </td> 
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.price}}</td> 
           <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.uploadDate}} </td> 
           <td>   
             <div class="edit">

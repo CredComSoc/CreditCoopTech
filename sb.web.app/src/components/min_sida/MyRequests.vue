@@ -7,8 +7,8 @@
         <th>Antal</th>
         <th>Pris</th>
         <th>Summa</th>
-        <th>Status</th>
         <th>Datum</th>
+        <th>Status</th>
       </tr>
       <tr v-for="(item) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{item.entries[0].payer}}</td>
@@ -17,11 +17,12 @@
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
+        <th>{{item.written}}</th>
         <td id="buttons">
           <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
           <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
         </td>
-        <th>{{item.written}}</th>
+
       </tr>
       <tr v-for="(item) in requests.filter(request => request.state==='completed')" :key="item">
         <td>{{item.entries[0].payer}}</td>
@@ -30,8 +31,8 @@
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
-        <td><p style="color: green;">GODKÄND</p></td>
         <th>{{item.written}}</th>
+        <td><p style="color: green;">GODKÄND</p></td>
       </tr>
     </table>
     <div v-if="!requests">
