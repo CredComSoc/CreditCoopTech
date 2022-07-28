@@ -854,7 +854,9 @@ module.exports = async function(dbUrl, dbFolder) {
             else if (res1 != null) {
               for (const post of res1) {
                 const postInfo = { id: post.id, title: post.title, desc:post.shortDesc, theme: 'regular', img_path: post.coverImg };
-                homeData.shop.push(postInfo);
+                if ((new Date(post['end-date'])).getTime() > Date.now()) {
+                  homeData.shop.push(postInfo);
+                }
               }
               // TODO not sorted based on newest member
               dbo.collection("users").find().limit(10).toArray(function (err, res2) {
