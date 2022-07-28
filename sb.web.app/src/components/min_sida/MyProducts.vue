@@ -11,14 +11,17 @@
           <th>Kategori</th>
           <th>Pris</th>
           <th>Skapad</th>
+          <th>Status</th>
         </tr>
-        <tr v-for="(item) in articles" :key="item">
+        <tr v-for="(item, index) in articles" :key="item">
           <td v-if="(new Date(item['end-date'])).getTime() > Date.now()"><Listing className='article' :listingObj="item"/></td>
           <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.category}}</td>
           <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.price}}</td>
           <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.uploadDate}} </td>
           <td> 
             <div class="edit">
+              <button v-if="(new Date(item['end-date'])).getTime() > Date.now()" @click="remove(item, index)" 
+                style="background-color: red;"> Ta bort </button>
               <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
             </div> 
           </td> 
@@ -51,7 +54,7 @@
 </template>
 
 <script>
-import { getArticles } from '../../serverFetch'
+import { getArticles, deactivateArticle } from '../../serverFetch'
 import Listing from '@/components/userstory4/Listing.vue'
 
 export default {
@@ -69,6 +72,14 @@ export default {
   },
   components: {
     Listing
+  },
+  methods: {
+    remove (item, index) {
+      deactivateArticle(item.id)
+      getArticles().then(res => {
+        this.articles = res.products
+      })
+    }
   }
 }
 
@@ -108,6 +119,14 @@ td {
   align-content: center;
   display: flex;
   justify-content: center;
+}
+
+button {
+  color: white;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 2px 15px 2px 15px;
 }
 
 </style>

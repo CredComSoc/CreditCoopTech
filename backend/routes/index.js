@@ -376,32 +376,19 @@ module.exports = async function(dbUrl, dbFolder) {
     });
   
     router.post('/article/remove/:id', (req, res) => {
-  
-      // get all img id from request payload
-      const imgIDs = req.body.imgIDs; 
-  
-      // delete article from db
+      const now = new Date
+      const past = new Date(now.getFullYear() - 50, now.getMonth(), now.getDate())
       const query = { id: req.params.id };
       MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder);
-        dbo.collection('posts').deleteOne(query, function (err, result) {
+        dbo.collection('posts').updateOne(query, {$set: {'end-date': past}}, function (err, result) {
           if (err) {
             db.close();
             res.sendStatus(500);
           }
           else if (result.matchedCount != 0) {
-            // delete all img of existing article
-            for (const id of imgIDs) {
-              gfs.delete(ObjectId(id), function (err, r2) {
-                if (err) {
-                  console.log(err)
-                }
-                else {
-                  console.log("deleted")
-                  console.log("image:", id)
-                }
-              });
-            }
+            
+
             db.close();
             res.sendStatus(200);
           }

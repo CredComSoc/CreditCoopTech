@@ -243,10 +243,9 @@ export async function uploadArticle (data) {
   }) 
 }
 
-export async function deletePost (id, imgIDs) {
+export async function deactivateArticle (id) {
   return await fetch(EXPRESS_URL + '/article/remove/' + id, {
     method: 'POST',
-    body: JSON.stringify({ imgIDs: imgIDs }),
     headers: {
       'Content-Type': 'application/json'
     },
