@@ -7,17 +7,40 @@
     <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll;">
       <table>
         <tr>
-          <th></th>
           <th>Artikel</th>
           <th>Kategori</th>
           <th>Pris</th>
+          
         </tr>
-        <tr v-for="(item, index) in articles" :key="item">
-          <td>{{index + 1 + '.'}} </td>
-          <td><Listing className='article' :listingObj="item"/></td>
-          <td>{{item.category}}</td>
-          <td>{{item.price}}</td>
+        <tr v-for="(item) in articles" :key="item">
+          <td v-if="(new Date(item['end-date'])).getTime() > Date.now()"><Listing className='article' :listingObj="item"/></td>
+          <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.category}}</td>
+          <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.price}}</td>
+          <td v-if="(new Date(item['end-date'])).getTime() > Date.now()">{{item.uploadDate}} </td>
           <td> 
+            <div class="edit">
+              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
+            </div> 
+          </td> 
+        </tr>
+      </table>
+    </div>
+    <h1><b> Inaktiva Artiklar </b></h1>
+    <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll;">
+      <table>
+        <tr>
+          <th>Artikel</th>
+          <th>Kategori</th>
+          <th>Pris</th>
+          <th>Skapad</th>
+        </tr>
+        <tr v-for="(item) in articles" :key="item">
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()"><Listing className='article' :listingObj="item"/></td>
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.category}}</td>
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.price}}</td>
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()"> </td> 
+          <td v-if="(new Date(item['end-date'])).getTime() < Date.now()">{{item.uploadDate}} </td> 
+          <td>   
             <div class="edit">
               <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
             </div> 
@@ -25,8 +48,6 @@
         </tr>
       </table>
     </div>
-    <h1><b> Väntande Artiklar </b></h1>
-    <p> Du har en artikel som väntar på att bli godkänd av admin. Artikeln kommer bli granskad inom 24h. </p>
  </div>
 </template>
 
@@ -37,7 +58,8 @@ import Listing from '@/components/userstory4/Listing.vue'
 export default {
   data () {
     return {
-      articles: []
+      articles: [],
+      date: new Date()
     }
   },
   mounted () {

@@ -489,25 +489,25 @@ module.exports = async function(dbUrl, dbFolder) {
           //Om ARTIKEL
           if (articles.length !== 0) {
             if (!articles.includes(listing.article)) {
-              return
+              continue
             }
           }
           //OM DESTINATION
           if (destinations.length !== 0) {
             if (!destinations.includes(listing.destination)) {
-              return
+              continue
             }
           } 
           //OM CATEGORY
           if (categories.length !== 0) {
             if (!categories.includes(listing.category)) {
-              return
+              continue
             }
           }
           // OM STATUS
           if (status.length !== 0) {
             if (!status.includes(listing.status)) {
-              return
+              continue
             }
           } 
 
@@ -521,8 +521,14 @@ module.exports = async function(dbUrl, dbFolder) {
               } 
             }
             if (!foundSearchword) {
-              return
+              continue
             }
+          }
+
+          const now = new Date()
+          const chosenDate = listing["end-date"]
+          if (now.getTime() > chosenDate.getTime()) {
+            continue
           }
 
           const user = await getUser({'_id': listing.userId})

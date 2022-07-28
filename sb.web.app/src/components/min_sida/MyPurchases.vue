@@ -5,7 +5,6 @@
       <div style="max-height: 50em; overflow: scroll;">
       <table v-if="purchases">
         <tr>
-          <th></th>
           <th>Företag</th>
           <th>Artikel</th>
           <th>Antal</th>
@@ -13,9 +12,9 @@
           <th>Summa</th>
           <th>Status</th>
           <th>Faktura</th>
+          <th>Datum</th>
         </tr>
-        <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
-          <td>{{index + 1 + '.'}}</td>
+        <tr v-for="(item) in purchases.filter(purchase => purchase.state==='completed')" :key="item">
           <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
@@ -24,6 +23,7 @@
           <td>{{item.entries[0].quant}}</td>
           <td className="green">{{item.state}}</td>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+          <th>{{item.written}}</th>
         </tr>
       </table>
       </div>
@@ -35,16 +35,15 @@
       <div style="max-height: 50em; overflow: scroll;">
         <table>
           <tr>
-            <th></th>
             <th>Företag</th>
             <th>Artikel</th>
             <th>Antal</th>
             <th>Pris</th>
             <th>Summa</th>
             <th>Status</th>
+            <th>Datum</th>
           </tr>
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item" ref="reqRefs">
-            <td>{{index + 1 + '.'}}</td>
             <td>{{item.entries[0].payee}}</td>
             <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
             <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
@@ -54,6 +53,7 @@
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>
+            <th>{{item.written}}</th>
           </tr>
         </table>
       </div>

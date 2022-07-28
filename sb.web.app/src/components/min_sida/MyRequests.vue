@@ -2,16 +2,15 @@
   <div style="max-height: 50em; overflow: scroll;">
     <table v-if="requests">
       <tr>
-        <th></th>
         <th>Företag</th>
         <th>Artikel</th>
         <th>Antal</th>
         <th>Pris</th>
         <th>Summa</th>
         <th>Status</th>
+        <th>Datum</th>
       </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
-        <td>{{index + 1 + '.'}}</td>
+      <tr v-for="(item) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{item.entries[0].payer}}</td>
         <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
         <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
@@ -22,9 +21,9 @@
           <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
           <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
         </td>
+        <th>{{item.written}}</th>
       </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='completed')" :key="item">
-        <td>{{index + 1 + '.'}}</td>
+      <tr v-for="(item) in requests.filter(request => request.state==='completed')" :key="item">
         <td>{{item.entries[0].payer}}</td>
         <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
         <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
@@ -32,6 +31,7 @@
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <td><p style="color: green;">GODKÄND</p></td>
+        <th>{{item.written}}</th>
       </tr>
     </table>
     <div v-if="!requests">
