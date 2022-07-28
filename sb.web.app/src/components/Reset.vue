@@ -23,12 +23,12 @@
       </div>
       <button id="reset-button" >Återställ</button>
     </form>
-    <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
-    </router-link>
     <div class="box-error" v-if="error">
       {{this.errorText}}
     </div>
+    <router-link :to="{name:'Login'}">
+      <button id="login-button" ><p>&larr; Logga in</p></button>
+    </router-link>
   </div>
 </div>
 
@@ -131,6 +131,8 @@ button {
   font-size: 14px;
   text-align: center;
   color: red;
+  margin-top: 15px;
+  margin-bottom: -37px;
 }
 
 .box-link {

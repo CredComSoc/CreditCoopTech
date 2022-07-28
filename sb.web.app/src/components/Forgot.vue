@@ -22,16 +22,15 @@
       </div>
       <button id="reset-button" >Återställ</button>
     </form>
-    <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
-    </router-link>
     <div class="box-error" v-if="error">
       Det finns ingen användare med den e-postadressen
     </div>
     <div class="box-sent" v-if="sent">
       Ett e-post med instruktioner för lösenordsåterställning har skickats!
     </div>
-
+    <router-link :to="{name:'Login'}">
+      <button id="login-button" ><p>&larr; Logga in</p></button>
+    </router-link>
   </div>
 </div>
 
@@ -125,16 +124,20 @@ button {
   font-size: 14px;
   text-align: center;
   color: red;
+  margin-top: 15px;
+  margin-bottom: -58px
 }
 
 .box-sent{
   font-size: 14px;
   text-align: center;
   color: green;
+  margin-top: 15px;
+  margin-bottom: -58px
 }
 
 .box-link {
-  margin-top: 50px;
+  margin-top: 0px;
   text-align: center;
   font-size: 16px;
 }
@@ -150,6 +153,7 @@ input::placeholder {
 
 #login-button {
   margin-top: 280px;
+
 }
 
 input:focus,
