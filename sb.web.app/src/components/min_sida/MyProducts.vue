@@ -4,7 +4,7 @@
     <div v-if="articles.length==0">
       <p style="font-style: italic;"> Du har inga aktiva artiklar just nu. </p>
     </div>
-    <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll;">
+    <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
           <th>Artikel</th>
@@ -29,7 +29,7 @@
       </table>
     </div>
     <h1><b> Inaktiva Artiklar </b></h1>
-    <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll;">
+    <div v-if="articles.length!=0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
           <th>Artikel</th>

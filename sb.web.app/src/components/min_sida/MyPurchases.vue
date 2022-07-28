@@ -2,7 +2,7 @@
     <div >
       <h1><b> Bekräftade köp </b></h1>
       <p> Dina bekräftade köp. </p>
-      <div style="max-height: 50em; overflow: scroll;">
+      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="purchases">
         <tr>
           <th>Företag</th>
@@ -32,7 +32,7 @@
       <div>
       <p> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
-      <div style="max-height: 50em; overflow: scroll;">
+      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
           <tr>
             <th>Företag</th>

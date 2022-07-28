@@ -1,5 +1,5 @@
 <template>
-  <div style="max-height: 50em; overflow: scroll;">
+  <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
     <table v-if="requests">
       <tr>
         <th>Företag</th>
