@@ -22,11 +22,11 @@
 
       <!-- KOLYMN FÖR PRODUKTER -->
       <div class="listings">
-        <div v-if="this.productsSearchData.length !== 0">
+        <div v-if="this.sellingSearchData.length !== 0">
           <h3 >Säljes</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=sellingSearchData />
         </div>
-        <div v-if="this.servicesSearchData.length !== 0">
+        <div v-if="this.buyingSearchData.length !== 0">
           <h3>Köpes</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=buyingSearchData />
         </div>

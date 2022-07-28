@@ -234,14 +234,13 @@ export default {
           break
       } 
 
+      const now = new Date()
       switch (this.newArticle['end-date']) {
-        case null:
-          delete this.newArticle['end-date']
+        case null: 
+          this.newArticle['end-date'] = new Date(now.getFullYear() + 100, now.getMonth(), now.getDate())
           break
         default:
-          // this.newArticle['end-date'] = '2022-04-22'
           this.newArticle['end-date'] += ' 24:00:00'
-          //this.newArticle['end-date'] = new Date(this.newArticle['end-date'])
           break 
       }
 
