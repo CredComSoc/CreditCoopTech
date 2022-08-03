@@ -10,7 +10,7 @@
           <th>Antal</th>
           <th>Pris</th>
           <th>Summa</th>
-          <th>Datum</th>
+          <th>Tidstämpel</th>
           <th>Status</th>  
           <th>Faktura</th>      
         </tr>

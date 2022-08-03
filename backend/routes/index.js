@@ -464,6 +464,8 @@ module.exports = async function(dbUrl, dbFolder) {
       return value !== "";
     })
 
+    console.log(searchword)
+
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     dbo.collection('posts').find({}).toArray(async function (err, posts) {

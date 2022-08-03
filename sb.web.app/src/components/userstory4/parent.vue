@@ -5,15 +5,16 @@
       <h2 class="center-text">SHOP</h2>
     </div>
 
-    <div class="center">
+    <div class="center" id="searchfield">
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vad vill du söka efter idag?'" />
     </div>
   
     <div class="main">
 
+      <!--
     <div class="filterButton">
       <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
-    </div>
+    </div> -->
 
       <!-- KOLUMN FÖR KATERGORI
       <div id="categories" class="categories">
@@ -24,11 +25,11 @@
       <div class="listings">
         <div v-if="this.sellingSearchData.length !== 0">
           <h3 >Säljes</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=productsSearchData :search-data=sellingSearchData />
+          <Alllistings @togglePopupEvent="openPopUp" :key=sellingSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.buyingSearchData.length !== 0">
           <h3>Köpes</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=servicesSearchData :search-data=buyingSearchData />
+          <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
       </div>
@@ -63,29 +64,32 @@ export default {
       destinationsArray: [],
       articleArray: [],
       statusArray: [],
-      username: ''
+      username: '',
+      enableSearch: true
     }
   },
 
-  components: { // disabled components: Categories,
+  components: { // disabled components: Categories,FilterButton
     Searchfield,
     Alllistings,
-    ListingPopup,   
-    FilterButton
+    ListingPopup
   },
 
   methods: {
     triggerSearch (newSearchWord) {
-      this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
-        return res
-      })
-        .then(data => {
+      if (this.enableSearch) {
+        this.enableSearch = false
+        this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
+          return res
+        }).then(data => {
           this.productsSearchData = data.allProducts
           this.servicesSearchData = data.allServices
           this.buyingSearchData = data.allBuying
           this.sellingSearchData = data.allSelling
           this.username = data.username
+          this.enableSearch = true
         })
+      }
     },
     openPopUp (listingObj) {
       this.popupActive = true
