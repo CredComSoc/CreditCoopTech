@@ -1,7 +1,7 @@
 <template> 
 <div>
   <div id="title-field" class="input">
-    <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Hur länge ska din ` + this.chosenType.toLowerCase() + ` finnas tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+    <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Tills när kommer denna ` + this.chosenType.toLowerCase() + ` vara tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
     <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
     <label for="end-date"> På obestämd tid </label>
   </div>
