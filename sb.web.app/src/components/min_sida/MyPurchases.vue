@@ -40,7 +40,7 @@
             <th>Antal</th>
             <th>Pris</th>
             <th>Summa</th>
-            <th>Datum</th>
+            <th>Tidstämpel</th>
             <th>Status</th>
           </tr>
           <tr v-for="(item, index) in purchases.filter(purchase => purchase.state==='pending')" :key="item" ref="reqRefs">

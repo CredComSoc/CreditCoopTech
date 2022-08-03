@@ -7,10 +7,10 @@
         <th>Antal</th>
         <th>Pris</th>
         <th>Summa</th>
-        <th>Datum</th>
+        <th>Tidstämpel</th>
         <th>Status</th>
       </tr>
-      <tr v-for="(item) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
+      <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{item.entries[0].payer}}</td>
         <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
         <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>

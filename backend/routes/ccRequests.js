@@ -23,7 +23,6 @@ module.exports = async function(dbUrl, dbFolder) {
   // PAYER MUST ALSO BE AUTHOR OF TRANSACTION
   router.get("/purchases", async (req, res) => {
     const user = await getUser({'profile.accountName': req.user})
-    console.log(user._id.toString()) 
     try {
       const response = await axios.get(CC_NODE_URL + '/transactions', { 
       headers: {
@@ -95,7 +94,6 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/createrequest", async (req, res) => {
     const article = req.body
-    console.log(article)
     const payer = await getUser({'profile.accountName': req.user})
     const payee = await getUser({'profile.accountName': article.userUploader})
     if (req.user === article.userUploader) {
