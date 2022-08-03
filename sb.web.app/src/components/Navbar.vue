@@ -27,6 +27,12 @@
                   <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
+              <div v-if="this.cartItems > 0" id="cart-notice-container">
+                <img v-if="!this.isActive" id="cart-notice" class="cart-notice" src="../assets/navbar_logos/notice.png"/>
+                <p v-if="!this.isActive" id="cart-notice-text">{{this.cartItems}}</p>
+                <img v-if="this.isActive" id="cart-notice-mobile" class="cart-notice" src="../assets/navbar_logos/notice.png"/>
+                <p v-if="this.isActive" id="cart-notice-text-mobile">{{this.cartItems}}</p>
+              </div>
             </router-link>
             <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> Varukorg </span>
@@ -127,7 +133,7 @@
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter, useRoute } from 'vue-router'
-import { logout, setNotificationsToSeen } from '../serverFetch.js'
+import { logout, setNotificationsToSeen, getCart } from '../serverFetch.js'
 import Notifications from './Notifications.vue'
 const router = useRouter()
 
@@ -142,7 +148,8 @@ export default {
       dropdownActive: false, // if a dropdown menu is active
       newNotifications: [],
       oldNotifications: [],
-      componentKey: 0
+      componentKey: 0,
+      cartItems: 0
     }
   },
   name: 'Navbar',
@@ -156,6 +163,26 @@ export default {
     }
   },
   mounted () {
+    getCart().then((res) => {
+      if (res) {
+        let amount = 0
+        for (let i = 0; i < res.length; ++i) {
+          amount += res[i].quantity
+        }
+        this.cartItems = amount
+      }
+    })
+
+    setInterval(() => getCart().then((res) => {
+      if (res) {
+        let amount = 0
+        for (let i = 0; i < res.length; ++i) {
+          amount += res[i].quantity
+        }
+        this.cartItems = amount
+      }
+    }), 10000)
+
     this.handleScrWidth(this.screenWidth)
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
@@ -360,6 +387,45 @@ a:hover {
   height: 11px;
   width: 11px;
   margin-top: 4px;
+}
+
+#cart-notice-container {
+  position: absolute;
+  text-align: center;
+  margin-top: -58px;
+  margin-left: 14px;
+  font-size: 14px;
+}
+
+#cart-notice {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+
+}
+
+#cart-notice-text {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  margin-top: -2px;
+  margin-left: 19px;
+}
+
+#cart-notice-mobile {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  margin-left: 28px;
+  margin-top: 4px;
+}
+
+#cart-notice-text-mobile {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  margin-left: 75px;
+  margin-top: 3px;
 }
 
 figure {
