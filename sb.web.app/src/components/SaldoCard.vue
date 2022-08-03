@@ -13,13 +13,6 @@
               <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
             </a>
           </figure>
-          <div id="line"></div>
-          <figure>
-            <a href="#">
-              <img src="../assets/sidecard_logos/KundDots.png" id="kund"/>
-              <figcaption class="l-text" id='bottom-logo-text'> Kundtjänst </figcaption>
-            </a>
-          </figure>
       </div>
     </div>
 </template>
@@ -48,8 +41,8 @@ export default {
         } else if (scrWidth >= 1212 && this.opend) {
           this.isActive = true
           this.opend = false
-          outline.style.width = '150px'
-          outline.style.height = '100px'
+          outline.style.width = '130px'
+          outline.style.height = '70px'
         }
       }
     }
@@ -70,8 +63,8 @@ export default {
         this.opend = true
       }
       const outline = document.getElementById('saldo-card-outline')
-      outline.style.width = '150px'
-      outline.style.height = '100px'
+      outline.style.width = '130px'
+      outline.style.height = '70px'
     }
   }
 }
@@ -86,8 +79,8 @@ export default {
   }
 
   #saldo-card-outline{
-    width: 150px;
-    height: 100px;
+    width: 135px;
+    height: 80px;
     top:50%;
     bottom: 50%;
     position:fixed;
@@ -114,7 +107,7 @@ export default {
     .l-text{
         color:black;
         font-family: 'Ubuntu';
-        font-size: 70%;
+        font-size: 90%;
         text-align: center;
         font-weight: 500;
     }
