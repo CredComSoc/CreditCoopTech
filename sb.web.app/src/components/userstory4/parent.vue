@@ -32,6 +32,7 @@
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
+        <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" title="Succé!" btnText="Ok" :cardText="'Artikeln har lagts till i varukorgen.'" />
       </div>
     </div>
     
@@ -44,6 +45,7 @@ import Alllistings from '@/components/userstory4/all_listings.vue'
 import ListingPopup from '@/components/userstory4/ListingPopup.vue'
 import Categories from '@/components/userstory4/Categories.vue'
 import FilterButton from '@/components/userstory4/filterButton.vue'
+import PopupCard from '@/components/CreateArticle/PopupCard.vue'
 import { EXPRESS_URL, getAllListings } from './../../serverFetch.js'
 
 export default {
@@ -65,14 +67,16 @@ export default {
       articleArray: [],
       statusArray: [],
       username: '',
-      enableSearch: true
+      enableSearch: true,
+      putInCart: false
     }
   },
 
   components: { // disabled components: Categories,FilterButton
     Searchfield,
     Alllistings,
-    ListingPopup
+    ListingPopup,
+    PopupCard
   },
 
   methods: {
@@ -97,6 +101,7 @@ export default {
     },
     closePopup (listingObj) {
       this.popupActive = false
+      this.putInCart = false
     },
     filteringMethod (checked, type, value) {
       console.log(value)
@@ -148,6 +153,9 @@ export default {
       }
       JSONdata.append('cartItem', JSON.stringify(cartItem))
 
+      this.popupActive = false
+      this.putInCart = true
+
       fetch(EXPRESS_URL + '/cart', { // POST endpoint
         method: 'POST',
         headers: {
@@ -160,7 +168,6 @@ export default {
       ).then(
         success => {
           console.log(success)
-          this.popupActive = false
         } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object
