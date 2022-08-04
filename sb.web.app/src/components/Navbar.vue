@@ -9,7 +9,7 @@
                 <figcaption class="l-text"> </figcaption>
             </figure>
           </div>
-            <div class="navlogo">
+            <div id="navbar-shop" class="navlogo">
               <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
                   <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
@@ -21,7 +21,7 @@
                 <span class="mob-cap"> Shop </span>
               </router-link>
             </div>
-          <div class="navlogo">
+          <div id="navbar-cart" class="navlogo">
             <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
@@ -38,7 +38,7 @@
               <span class="mob-cap"> Varukorg </span>
             </router-link>
           </div>
-          <div class="navlogo">
+          <div id="navbar-article" class="navlogo">
             <router-link :to="{name:'New_Article'}">
                 <figure id="add-logo" :class="[`logo-click`,`add`]">
                     <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
@@ -49,7 +49,7 @@
               <span class="mob-cap"> Ny Artikel </span>
             </router-link>
           </div>
-          <div class="navlogo">
+          <div id="navbar-members" class="navlogo">
              <router-link :to="{name:'Members'}">
               <figure class="logo-click">              
                   <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
@@ -71,10 +71,10 @@
           </div>
         </div>
         <div class="right-logos" v-if="this.desc">
-          <div class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
+          <div id="navbar-notifications" class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
               <Notifications></Notifications>
           </div> 
-          <div class="navlogo">
+          <div id="navbar-chat" class="navlogo">
             <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
                   <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
@@ -85,7 +85,7 @@
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
-          <div @mouseover="displayDropdown" class="navlogo">
+          <div id="navbar-profile" @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
@@ -94,7 +94,7 @@
                   </figure>
                 </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link>
+                  <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link></div>
                   <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'products'}}">Mina artiklar</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
@@ -104,7 +104,7 @@
                 <span class="mob-cap"> Min Sida </span>
               </router-link>
           </div>
-          <div class="navlogo">
+          <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
                   <img src="../assets/link_arrow/popup_close.png" alt="logut knapp"/>
@@ -214,13 +214,7 @@ export default {
         }
         this.dropdownActive = false
       } else {
-        if ([...e.target.classList].includes('add')) {
-          const dropdown = document.getElementById('upload-dropdown')
-          dropdown.style.display = 'block'
-          this.dropdownActive = true
-          const logo = document.getElementById('add-logo')
-          logo.classList.add('active-dropdown')
-        } else if ([...e.target.classList].includes('notice')) {
+        if ([...e.target.classList].includes('notice')) {
           const dropdown = document.getElementById('bell-dropdown')
           dropdown.style.display = 'block'
           this.dropdownActive = true
