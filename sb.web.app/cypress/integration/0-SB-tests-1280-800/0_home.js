@@ -7,14 +7,7 @@ const url = "155.4.159.231:8080"
 beforeEach(function() {
   cy.viewport(1280, 800)
 }) 
-
-describe('My First Test', () => {
-    it('Does not do much!', () => {
-      expect(true).to.equal(true)
-    })
-})
   
-
 describe('Login', () => {
   it('Login to SB web app', () => {
     cy.visit(url)
@@ -32,7 +25,7 @@ describe('Login', () => {
 })
 
 
-describe('Visit all pages from home screen', () => {
+describe('Visit all pages from home screen using navbar', () => {
 
   beforeEach(() => {
 
@@ -76,6 +69,28 @@ describe('Visit all pages from home screen', () => {
 
   it('Logout', () => {
     cy.get('div[id="navbar-logout"]').click()
+  })
+
+})
+
+describe('Visit shop and member pages from home screen', () => {
+
+  beforeEach(() => {
+    cy.visit(url)
+
+    cy.get('input[id="email-input"]').click().type("User")
+
+    cy.get('input[id="password-input"]').click().type("123")
+
+    cy.get('Button').click() 
+  })
+
+  it('Shop', () => {
+    cy.get('div[id="home-content-card"]').get("Button").contains("shoppen").click()
+  })
+
+  it('Members', () => {
+    cy.get('div[id="home-content-card"]').get("Button").contains("medlemmar").click()
   })
 
 })

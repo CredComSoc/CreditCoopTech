@@ -1,5 +1,5 @@
 <template>
-    <div :class="[`card-themed`, theme]">
+    <div id="home-content-card" :class="[`card-themed`, theme]">
         <h3> {{ title }} </h3>
         <h4> {{ description }} </h4>
         <ContentList :data=data :screenWidth=screenWidth :name=name />

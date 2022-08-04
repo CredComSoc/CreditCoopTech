@@ -1,7 +1,7 @@
 <template>
   <div class="home"> 
     <Banner :companyName="companyName"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="blue-card" theme_btn="yellow-btn" btn_txt="Till shopen" :data="shop" :screenWidth="scrWidth" name="Shop" />
+    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="blue-card" theme_btn="yellow-btn" btn_txt="Till shoppen" :data="shop" :screenWidth="scrWidth" name="Shop" />
     <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="scrWidth" name="Members" />
   </div>
 </template>
