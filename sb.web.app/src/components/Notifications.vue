@@ -114,13 +114,15 @@ export default {
   },
   mounted () {
     getNotifications().then((res) => {
-      res.forEach(notification => {
-        if (notification.seen) {
-          this.oldNotifications.push(notification)
-        } else {
-          this.newNotifications.push(notification)
-        }
-      })
+      if (res) {
+        res.forEach(notification => {
+          if (notification.seen) {
+            this.oldNotifications.push(notification)
+          } else {
+            this.newNotifications.push(notification)
+          }
+        })
+      }
     })
 
     setInterval(() => getNotifications().then((res) => {

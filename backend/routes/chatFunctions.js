@@ -106,7 +106,7 @@ module.exports.getAllChatIDs = async (user) => {
                 console.log(err);
                 db.close();
                 resolve(false);
-            } else if (res.chats) {
+            } else if (res && res.chats) {
                 console.log(res.chats);
                 db.close();
                 resolve(res.chats);

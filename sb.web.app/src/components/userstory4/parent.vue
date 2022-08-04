@@ -86,11 +86,13 @@ export default {
         this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
           return res
         }).then(data => {
-          this.productsSearchData = data.allProducts
-          this.servicesSearchData = data.allServices
-          this.buyingSearchData = data.allBuying
-          this.sellingSearchData = data.allSelling
-          this.username = data.username
+          if (data) {
+            this.productsSearchData = data.allProducts
+            this.servicesSearchData = data.allServices
+            this.buyingSearchData = data.allBuying
+            this.sellingSearchData = data.allSelling
+            this.username = data.username
+          }
           this.enableSearch = true
         })
       }

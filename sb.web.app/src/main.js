@@ -16,8 +16,9 @@ app.use(router)
 app.use(BootstrapVue3)
 app.use(VueWindowSizePlugin)
 
+/*
 app.use(VueHotjar, {
   id: 3081354
-}) 
+}) */ 
 
 app.mount('#app')

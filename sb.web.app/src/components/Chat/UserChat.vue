@@ -19,7 +19,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.listIndex)
     if (this.chosenChat === this.userchat) {
       this.openChat()
     }
