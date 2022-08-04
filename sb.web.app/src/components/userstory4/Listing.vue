@@ -29,7 +29,7 @@ export default {
     }
   },
   mounted () {
-    if (this.listingId !== '0') {
+    if (this.listingId && this.listingId !== '0') {
       getArticleWithId(this.listingId)
         .then(res => {
           this.newListingObj = res

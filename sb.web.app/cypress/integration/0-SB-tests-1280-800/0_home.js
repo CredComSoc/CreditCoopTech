@@ -62,6 +62,10 @@ describe('Visit all pages from home screen', () => {
     cy.get('div[id="navbar-members"]').click()
   })
 
+  it('Home', () => {
+    cy.get('div[id="navbar-home"]').click()
+  })
+
   it('Chat', () => {
     cy.get('div[id="navbar-chat"]').click()
   })

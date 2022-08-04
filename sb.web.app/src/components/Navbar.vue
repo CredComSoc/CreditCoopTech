@@ -12,7 +12,7 @@
             <div id="navbar-shop" class="navlogo">
               <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
-                  <img src="../assets/navbar_logos/shop.png" alt="shop knapp"/>
+                  <img src="../assets/navbar_logos/shop.png" />
                   <figcaption class="l-text"> Shop </figcaption>
                 </figure>
               </router-link>
@@ -24,7 +24,7 @@
           <div id="navbar-cart" class="navlogo">
             <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
-                  <img src="../assets/navbar_logos/cart.png" alt="shop knapp"/>
+                  <img src="../assets/navbar_logos/cart.png" />
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
               <div v-if="this.cartItems > 0" id="cart-notice-container">
@@ -41,7 +41,7 @@
           <div id="navbar-article" class="navlogo">
             <router-link :to="{name:'New_Article'}">
                 <figure id="add-logo" :class="[`logo-click`,`add`]">
-                    <img class="add" src="../assets/navbar_logos/add.png" alt="shop knapp"/>
+                    <img class="add" src="../assets/navbar_logos/add.png" />
                     <figcaption :class="[`l-text`,`add`]"> Ny Artikel </figcaption>
                 </figure>
             </router-link>
@@ -52,7 +52,7 @@
           <div id="navbar-members" class="navlogo">
              <router-link :to="{name:'Members'}">
               <figure class="logo-click">              
-                  <img src="../assets/navbar_logos/members.png" alt="shop knapp"/>
+                  <img src="../assets/navbar_logos/members.png" />
                   <figcaption class="l-text"> Medlemmar </figcaption>
               </figure>
             </router-link>
@@ -62,10 +62,10 @@
           </div>
         </div>
         <div class="middle-logo">
-          <div class="navlogo">
+          <div id="navbar-home" class="navlogo">
             <figure>
               <router-link :to="{name:'Home'}" >
-                <img src="../assets/navbar_logos/sb.png" alt="shop knapp"/>
+                <img src="../assets/navbar_logos/sb.png" />
               </router-link>
             </figure>
           </div>
@@ -77,7 +77,7 @@
           <div id="navbar-chat" class="navlogo">
             <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
-                  <img src="../assets/navbar_logos/chat.png" alt="shop knapp"/>
+                  <img src="../assets/navbar_logos/chat.png" />
                   <figcaption class="l-text"> Meddelanden </figcaption>
               </figure>
             </router-link>
