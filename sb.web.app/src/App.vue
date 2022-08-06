@@ -23,18 +23,14 @@
 
 <script>
 // @ is an alias to /src
-import Navbar from './components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
+import Navbar from './components/Navbar/Navbar.vue'
+import Footer from '@/components/Footer/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
-import Login from './components/Login.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { authenticate, checkAdminStatus, getSaldo, getAvailableBalance } from './serverFetch'
+import { authenticate, checkAdminStatus, getSaldo } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
- 
-// import Home from '@/components/Home.vue'
-//import Parent from '@/components/userstory4/parent.vue'
 
 export default {
   name: 'Home',

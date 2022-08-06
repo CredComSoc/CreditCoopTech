@@ -1,31 +1,35 @@
 <template>
-<div id="input-form">
-  <CreateHeader :ButtonText="buttonText" :link="this.backLink" :imgURL="this.imgURL" @goBackStep="goBackStep" />
-  <div id="center">
-    <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-    <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett positivt heltal.\nVar god ändra detta och försök igen.`)" />
-    <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
-    <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
+  <div>
+    <h2 class="center-text">NY ARTIKEL</h2>
   </div>
-  <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
-  <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" title="Felaktig inmatning" :btnLink="null" :cardText="this.popupCardText" />
-</div>
+  <div id="input-form">
+    <div v-if="this.currentStep !== 1" id="create-header" >
+      <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
+      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>Tillbaka</a>
+    </div>
+    <div id="center">
+      <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
+      <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett positivt heltal.\nVar god ändra detta och försök igen.`)" />
+      <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
+      <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
+    </div>
+    <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
+    <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" title="Felaktig inmatning" :btnLink="null" :cardText="this.popupCardText" />
+  </div>
 </template>
 
 <script>
-import CreateHeader from './CreateHeader.vue'
 import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
 import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
-import PopupCard from './PopupCard.vue'
+import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { uploadArticle, deletePost, deleteCart, EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
   components: {
-    CreateHeader,
     StepOne,
     StepTwo,
     StepThree,
@@ -35,10 +39,9 @@ export default {
   },
   data () {
     return {
-      backLink: '/Shop',
+      backLink: '#',
       currentStep: 1,
       imgURL: 'one_three.png',
-      buttonText: 'Shop',
       nextBtnText: 'Nästa',
       newArticle: {},
       isPublished: false,
@@ -100,8 +103,6 @@ export default {
           this.saveFirstStep()
           this.currentStep = 2
           this.imgURL = 'two_three.png'
-          this.buttonText = 'Tillbaka'
-          this.backLink = '#'
         } else {
           this.error = true
         }       
@@ -110,8 +111,6 @@ export default {
           this.saveSecondStep()
           this.currentStep = 3
           this.imgURL = 'three_three.png'
-          this.buttonText = 'Tillbaka'
-          this.backLink = '#'
           this.nextBtnText = 'Förhandsgranska'
         } else {
           this.error = true
@@ -121,8 +120,6 @@ export default {
           this.saveThreeStep()
           this.currentStep = 4
           this.imgURL = null
-          this.buttonText = 'Tillbaka'
-          this.backLink = '#'
           this.nextBtnText = 'Publicera'
         } else {
           this.error = true
@@ -161,7 +158,7 @@ export default {
         this.saveSecondStep()
         this.currentStep = 1
         this.imgURL = 'one_three.png'
-        this.buttonText = 'Shop'
+        this.nextBtnText = 'Nästa'
       } else if (this.currentStep === 3) {
         this.saveThreeStep()
         this.currentStep = 2
@@ -171,8 +168,6 @@ export default {
         this.currentStep = 3
         this.imgURL = 'three_three.png'
         this.nextBtnText = 'Förhandsgranska'
-      } else if (this.currentStep === 1) {
-        this.backLink = '/Shop'
       }
     },
     uploadArticle () {
@@ -264,6 +259,22 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
+* {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  padding: 0;
+  margin:0;
+}
+.center-text {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 0rem;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;
+}
+
  #input-form {
      margin: 0 auto;
      margin-top: 30px;
@@ -279,6 +290,30 @@ export default {
     align-items: center;
     justify-content: flex-start;
     min-height: 450px;
+  }
+
+  #create-header {
+  width: 100%;
+}
+
+  .left-arrow{
+    width: 12px;
+    margin-left: 2px;
+  }
+
+  .step-indicator-img {
+    width: 80px;
+    float: right;
+  }
+
+  #create-header a{
+    float: left;
+    color: black;
+    font-size: 22px;
+  }
+
+  #create-header a:hover{
+    color: black;
   }
 
   @media (max-width: 1350px) {
@@ -304,4 +339,10 @@ export default {
       }
    }
 
+  @media (max-width: 400px) {
+    a{
+      font-size: 18px;
+    }
+
+  }
 </style>

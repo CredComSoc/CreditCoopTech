@@ -5,7 +5,7 @@
   </div>
   <div class="cart-col">
     <h3 v-if="ind === 1"> Produkt </h3> 
-    <img class="content-img" :src='this.getImgURL()' />
+    <img class="content-img" :src='this.getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
   </div>
   <div class="cart-col">  
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>

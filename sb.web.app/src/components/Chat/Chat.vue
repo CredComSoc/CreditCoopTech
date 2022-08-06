@@ -117,7 +117,7 @@ export default {
   #title {
     margin-top: 4rem;
     margin-bottom: 4rem;
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     letter-spacing: 0.3em;  
     text-align: center;
   }

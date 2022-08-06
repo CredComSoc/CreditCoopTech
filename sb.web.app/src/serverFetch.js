@@ -1,10 +1,9 @@
 import JsSHA from 'jssha'
 
 const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
-// const urlBase = 'http://localhost' // USE LOCAL EXPRESS
 
-export const EXPRESS_URL = urlBase + ':3000' 
-export const CHAT_URL = urlBase + ':3001'
+export const EXPRESS_URL = urlBase + ':3002' 
+export const CHAT_URL = urlBase + ':3003'
 
 /*****************************************************************************
  * 
@@ -400,18 +399,16 @@ export async function getNotifications () {
   const promise = await fetch(EXPRESS_URL + '/notification', {
     method: 'GET',
     credentials: 'include'
+  }).then((response) => {
+    //console.log(response)
+    if (!response.ok) {
+      return response
+    } else {
+      return response.json()
+    }
+  }).catch(() => {
+    return false
   })
-    .then((response) => {
-      //console.log(response)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        return response.json()
-      }
-    })
-    .catch(err => {
-      console.error('There has been a problem with your fetch operation:', err)
-    })
   return promise
 }
 

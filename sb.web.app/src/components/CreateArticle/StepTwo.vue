@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TextBox from './TextBox.vue'
+import TextBox from '@/components/SharedComponents/TextBox.vue'
 import DatePicker from './DatePicker.vue'
 import Combobox from './Combobox.vue'
 

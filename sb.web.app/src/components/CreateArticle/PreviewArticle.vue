@@ -21,7 +21,7 @@
 
 <script>
 import PreviewItem from './PreviewItem.vue'
-import PopupCard from './PopupCard.vue'
+import PopupCard from '../SharedComponents/PopupCard.vue'
 
 export default {
   name: 'PreviewArticle',

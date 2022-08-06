@@ -1,17 +1,19 @@
 <template>
   <div>
    <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
-    <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
-      <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
-      <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
-    <!-- <input :id="this.name + `-date-picker`" ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="date" @change=setDate> -->
-    </div>
-    <div v-if="!this.isDatePicker" class="dropdown-combo">
-      <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
-        <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
+    <div id="combo-box-field">
+      <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
+        <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
+        <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
+      <!-- <input :id="this.name + `-date-picker`" ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="date" @change=setDate> -->
       </div>
+      <div v-if="!this.isDatePicker" class="dropdown-combo">
+        <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
+          <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
+        </div>
+      </div>
+      <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
     </div>
-    <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
   </div>
 </template>
 

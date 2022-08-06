@@ -110,7 +110,7 @@ module.exports = async function(dbUrl, dbFolder) {
     if (req.isAuthenticated()) {
       res.status(200).send(true)
     } else {
-      res.status(400).send(false)
+      res.status(200).send(false)
     } 
   })
 
@@ -143,10 +143,10 @@ module.exports = async function(dbUrl, dbFolder) {
         const newUser = {
           email: req.body.email.toLowerCase(),
           password: req.body.password,
-          is_active: req.body.is_active,
-          min_limit: req.body.min_limit,
-          max_limit: req.body.max_limit,
-          is_admin: req.body.is_admin,
+          is_active: req.body.is_active === "false" ? false : true,
+          min_limit: parseInt(req.body.min_limit, 10),
+          max_limit: parseInt(req.body.max_limit, 10),
+          is_admin: req.body.is_admin === "false" ? false : true,
           pendingPosts: {},
           events: {},
           profile: {

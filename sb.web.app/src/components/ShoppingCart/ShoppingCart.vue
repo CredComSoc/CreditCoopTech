@@ -1,6 +1,6 @@
 <template>
   <div id="cart-container">
-    <h1> Varukorg </h1>
+    <h1> VARUKORG </h1>
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
@@ -12,7 +12,7 @@
 <script>
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
-import PopupCard from '../CreateArticle/PopupCard.vue'
+import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
@@ -124,8 +124,19 @@ export default {
 
   *{
     font-family: 'Ubuntu' ;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    padding: 0;
     box-sizing: border-box;
     margin: 0 auto;
+  }
+
+  h1 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    font-size: 2.2rem;
+    letter-spacing: 0.25em;
   }
 
   #cart-container{
@@ -133,6 +144,7 @@ export default {
     width: 60%;
     min-height: 200px;
     position: relative;
+    text-align: center;
   }
 
   @media (max-width: 1450px) {

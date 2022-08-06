@@ -1,10 +1,10 @@
 <template>
     <div id=saldo-card-outline>
       <div class="arrow-button" id="right-arrow-button" type="button" @click="closeCard" v-if="isActive">
-        <img src="../assets/sidecard_logos/right-arrow.png"/>
+        <img id="right-arrow-img" src="../assets/sidecard_logos/right-arrow.png"/>
       </div>
       <div class="arrow-button" id="left-arrow-button" type=button v-if="!isActive">
-         <img src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
+         <img id="left-arrow-img" src="../assets/sidecard_logos/left-arrow.png"  @click="openCard"/>
       </div>
       <div id='saldo-card' v-if="isActive">
           <figure id='top-log'>
