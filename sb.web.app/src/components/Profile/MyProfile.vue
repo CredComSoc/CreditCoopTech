@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, profile, updateProfile, mail } from '../../serverFetch'
+import { EXPRESS_URL, profile, updateProfile } from '../../serverFetch'
 
 export default {
   data () {
@@ -128,8 +128,6 @@ export default {
       this.profileData.logo = e.target.files[0]
       //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
-      console.log(this.localURL)
-      console.log(this.logoURL)
     },
     submit () {
       this.updateProfile(
@@ -145,13 +143,9 @@ export default {
         this.profileData.phone,
         this.profileData.logo
       )
-      console.log(this.localURL)
-      console.log(this.logoURL)
       if (this.localUrl) {
         this.logoURL = this.localURL
       }
-      console.log(this.localURL)
-      console.log(this.logoURL)
       this.edit = !this.edit
     },
     getImgURL () {

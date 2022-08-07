@@ -107,6 +107,26 @@ export async function checkAdminStatus () {
 
 /*****************************************************************************
  * 
+ *                                User Data
+ *                 
+ *****************************************************************************/
+
+export async function fetchData () {
+  return fetch(EXPRESS_URL + '/data', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+
+/*****************************************************************************
+ * 
  *                                Admin Page
  *                 
  *****************************************************************************/
@@ -309,68 +329,6 @@ export async function getMember (member) {
   })
 }
 
-export async function getAllMembers (searchWord) {
-  const promise = await fetch(EXPRESS_URL + '/getAllMembers2/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
-  })
-
-  let searchword = searchWord.split(' ')
-  searchword = searchword.filter(function (value, index, arr) {
-    return value !== ''
-  })
-
-  const allMembersArray = new Map()
-  const adminMembersArray = new Map()
-
-  promise.forEach(user => {
-    const name = user.profile.accountName
-    let foundSearchword = true
-    if (searchword.length !== 0) {
-      for (let i = 0; i < searchword.length; i++) {
-        if (!name.match(new RegExp(searchword[i], 'i'))) {
-          foundSearchword = false
-          break
-        } 
-      }
-      if (!foundSearchword) {
-        return
-      }
-    }
-    if (user.is_admin) {
-      if (!adminMembersArray.has('Admin')) {
-        adminMembersArray.set('Admin', [])
-      }
-      adminMembersArray.get('Admin').push(user.profile)
-    } else {
-      if (!allMembersArray.has(user.profile.city)) {
-        allMembersArray.set(user.profile.city, [])
-      }
-      allMembersArray.get(user.profile.city).push(user.profile)
-    }
-  })
-  
-  //Sort alphabetically by swedish.
-
-  for (const value of allMembersArray.values()) {
-    value.sort((a, b) => a.accountName.localeCompare(b.accountName))
-  }
-  const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
-  const finishMap = new Map([...adminMembersArray, ...sortedMap])
-
-  return { allMembers: finishMap }
-}
-
 export async function sendMoney (amount, comment, payee) {
   const data = {
     price: amount,
@@ -394,23 +352,6 @@ export async function sendMoney (amount, comment, payee) {
  *                                Notifications
  *                 
  *****************************************************************************/
-
-export async function getNotifications () {
-  const promise = await fetch(EXPRESS_URL + '/notification', {
-    method: 'GET',
-    credentials: 'include'
-  }).then((response) => {
-    //console.log(response)
-    if (!response.ok) {
-      return response
-    } else {
-      return response.json()
-    }
-  }).catch(() => {
-    return false
-  })
-  return promise
-}
 
 export async function postNotification (type, user, amount = 0) {
   const data = { 
@@ -463,23 +404,6 @@ export async function setNotificationsToSeen () {
  *                                Cart
  *                 
  *****************************************************************************/
-
-export async function getCart () {
-  const promise = await fetch(EXPRESS_URL + '/cart', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((res) => {
-    return res.json()
-  }).then((success) => {
-    return success
-  }).catch((error) => {
-    return error
-  })
-  return promise
-}
 
 export async function deleteCart (id) {
   const promise = await fetch(EXPRESS_URL + '/cart/remove/item/edit/' + id, {

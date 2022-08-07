@@ -1,21 +1,21 @@
 <template>
   <div>
     <a href="#">
-      <span v-if="elementInfo.theme === `regular`" class="element-container">
-          <img v-if="elementInfo.img_path.length === 0" :class="elementInfo.theme" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
-          <img v-else :class="elementInfo.theme" :src="getImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
+      <span v-if="elementInfo.title" class="element-container">
+          <img v-if="elementInfo.coverImg.length === 0" class="regular" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
+          <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
           <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
-          <p class="element-desc"> {{ formatText(elementInfo.desc) }}  </p>
+          <p class="element-desc"> {{ formatText(elementInfo.shortDesc) }}  </p>
       </span>
     </a>
-      <div v-if="elementInfo.theme === `ellipse`" class="ellipse-container">
+      <div v-if="elementInfo.accountName" class="ellipse-container">
         <figure>
-            <img v-if="elementInfo.img_path.length === 0" :class="elementInfo.theme" :src="require(`../../assets/list_images/user.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
-            <img v-else :class="elementInfo.theme" :src="getImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
+            <img v-if="elementInfo.logo.length === 0" class="ellipse" :src="require(`../../assets/list_images/user.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
+            <img v-else class="ellipse" :src="getUserImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
         </figure>
         <div class="chin-card">
           <a class="cover-link" href="/#"></a>
-          <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
+          <h4 class="element-title"> {{ formatTitle(elementInfo.accountName) }} </h4>
         </div>
       </div>
   </div>
@@ -49,8 +49,11 @@ export default {
         }
       }
     },
-    getImgURL () {
-      return EXPRESS_URL + '/image/' + this.elementInfo.img_path
+    getArticleImgURL () {
+      return EXPRESS_URL + '/image/' + this.elementInfo.coverImg
+    },
+    getUserImgURL () {
+      return EXPRESS_URL + '/image/' + this.elementInfo.logo
     },
     // Set limits for number of chars depending on Upper or lower case for the title in list element
     formatTitle (str) {

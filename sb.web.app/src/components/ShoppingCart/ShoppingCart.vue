@@ -13,7 +13,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL, getCart, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits } from '../../serverFetch'
+import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -23,13 +23,11 @@ export default {
     PopupCard
   },
   mounted () {
-    getCart().then((res) => { 
-      if (res) {
-        this.cart = res
-        this.calcTotal()
-      }
-      this.gotCartRes = true
-    })
+    if (this.$store.state.myCart) {
+      this.cart = this.$store.state.myCart
+      this.calcTotal()
+    }
+    this.gotCartRes = true
   },
   data () {
     return {

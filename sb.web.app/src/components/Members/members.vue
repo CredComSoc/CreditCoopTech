@@ -10,9 +10,6 @@
     </div>
     <br>
     <div class="main">
-      <!-- KOLYMN FÖR PRODUKTER -->
-      <!-- <div><h3>Admin</h3></div> -->
-
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
           <AllMembers :key=SearchData :search-data=SearchData />
@@ -47,20 +44,58 @@ export default {
 
   methods: {
     triggerSearch (newSearchWord) {
-      this.getAllMembers(newSearchWord).then(res => {
-        return res
+      let searchWord = newSearchWord.split(' ')
+      searchWord = searchWord.filter(function (value) {
+        return value !== ''
       })
-        .then(data => {
-          console.log(data.allMembers)
-          console.log(typeof (data.allMembers))
-          this.SearchData = data.allMembers
-        })
+
+      const allMembersArray = new Map()
+      const adminMembersArray = new Map()
+
+      for (const member of this.$store.state.allMembers) {
+        const name = member.accountName
+    
+        let foundSearchword = true
+        if (searchWord.length !== 0) {
+          for (let i = 0; i < searchWord.length; i++) {
+            if (!name.match(new RegExp(searchWord[i], 'i'))) {
+              foundSearchword = false
+              break
+            } 
+          }
+          if (!foundSearchword) {
+            continue
+          }
+        }
+
+        if (member.is_admin) {
+          if (!adminMembersArray.has('Admin')) {
+            adminMembersArray.set('Admin', [])
+          }
+          adminMembersArray.get('Admin').push(member)
+        } else {
+          console.log(member)
+          if (!allMembersArray.has(member.city)) {
+            allMembersArray.set(member.city, [])
+          }
+          allMembersArray.get(member.city).push(member)
+        }
+      }
+
+      //Sort alphabetically by swedish.
+      for (const value of allMembersArray.values()) {
+        value.sort((a, b) => a.accountName.localeCompare(b.accountName))
+      }
+      const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+      const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+      this.SearchData = finishMap
     }
   },
-  
-  created: function () {
+  mounted: function () {
     this.triggerSearch('')
   }
+  
 }
 </script>
 

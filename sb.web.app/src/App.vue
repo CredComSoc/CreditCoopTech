@@ -29,7 +29,7 @@ import SaldoCard from '@/components/SaldoCard.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { authenticate, checkAdminStatus, getSaldo } from './serverFetch'
+import { authenticate, checkAdminStatus, getSaldo, fetchData } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
 
 export default {
@@ -55,10 +55,67 @@ export default {
       admin: false
     }
   },
+  methods: {
+    async setStoreData () {
+      if (this.auth && !document.hidden) {
+        const data = await fetchData().then((res) => {
+          if (res) {
+            return res
+          }
+        })
+        if (data) { 
+          if (data.user) {
+            this.$store.commit('replaceUser', data.user)
+
+            const oldNotifications = []
+            const newNotifications = []
+
+            for (const notification of data.user.notifications) {
+              if (notification.seen) {
+                oldNotifications.push(notification)
+              } else {
+                newNotifications.push(notification)
+              }
+            }
+
+            oldNotifications.sort(function (a, b) {
+              return new Date(b.date) - new Date(a.date)
+            })
+
+            newNotifications.sort(function (a, b) {
+              return new Date(b.date) - new Date(a.date)
+            })
+
+            this.$store.commit('replaceOldNotifications', oldNotifications)
+            this.$store.commit('replaceNewNotifications', newNotifications)
+          }
+
+          if (data.allArticles) {
+            this.$store.commit('replaceAllArticles', data.allArticles)
+          }
+
+          if (data.allMembers) {       
+            this.$store.commit('replaceAllMembers', data.allMembers)
+          }
+
+          if (data.myCart) {
+            this.$store.commit('replaceMyCart', data.myCart)
+
+            let cartSize = 0
+            for (const item of data.myCart) {
+              cartSize += item.quantity
+            }
+            this.$store.commit('replaceMyCartSize', cartSize)
+          }
+          // console.log(this.$store.state.user.email)
+        }
+      }
+    }
+  },
   mounted () {
     const router = useRouter()
     authenticate().then((res) => {
-      if (res) {
+      if (res) {    
         checkAdminStatus().then((res2) => {
           this.auth = res
           this.admin = res2
@@ -66,19 +123,23 @@ export default {
             router.push({ name: 'AdminHome' })
           }
         })
-      } else {
-        this.auth = res
-      }
+      } 
     })
+
     getSaldo().then((res) => {
       this.saldo = res
     })
 
+    this.setStoreData()
+
     setInterval(() => getSaldo().then((res) => {
       this.saldo = res
     }), 10000)
+
+    setInterval(async () => {
+      this.setStoreData()
+    }, 2000)
   }
-  
 }
 </script>
 

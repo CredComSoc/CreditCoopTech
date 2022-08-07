@@ -2,17 +2,17 @@
     <div id="click-dropdown" class="dropdown">
         <a href="#">
         <figure id="bell-logo" :class="[`logo-click`,`notice`]" @click="setNotificationsToSeen">
-            <img id="notice" class="notice" src="../../assets/navbar_logos/notice.png" v-if="newNotifications.length > 0"/>
+            <img id="notice" class="notice" src="../../assets/navbar_logos/notice.png" v-if="this.$store.state.newNotifications.length > 0"/>
             <img id="bell" class="notice" src="../../assets/navbar_logos/bell.png" alt="shop knapp"/>
             <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
         </figure>
         </a>
         <div id="bell-dropdown" class="dropdown-content">
-            <div id="new-notice-list" v-if="newNotifications.length > 0">
+            <div id="new-notice-list" v-if="this.$store.state.newNotifications.length > 0">
                 <p class="notice-title">Nya</p>
-                <div v-for="item in newNotifications" :key="item">
+                <div v-for="item in this.$store.state.newNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
-                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
@@ -21,7 +21,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'sendRequest'">
-                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">{{ item.fromUser }} har skickat {{ item.amount }} barterkronor. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
@@ -30,7 +30,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'saleRequestAccepted'">
-                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">{{ item.fromUser }} har godkänt din köpförfrågan. Gå till <u>Min sida</u> för att ladda ner fakturan.</p>
@@ -39,7 +39,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'saleRequestDenied'">
-                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">{{ item.fromUser }} har nekat din köpförfrågan.</p>
@@ -48,7 +48,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'chatMessage'">
-                    <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" @click.prevent="moveNotification(item)">
+                    <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">{{ item.fromUser }} har skickat ett chatt-meddelande.</p>
@@ -58,9 +58,9 @@
                     </div>
                 </div>
             </div>
-            <div id="previous-notice-list" v-if="oldNotifications.length > 0">
+            <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length > 0">
                 <p class="notice-title">Tidigare</p>
-                <div v-for="item in oldNotifications" :key="item">
+                <div v-for="item in this.$store.state.oldNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'requests'}}" >
                         <div id="new-list-content">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
             </div>
-            <div id="previous-notice-list" v-if="oldNotifications.length === 0 && newNotifications.length === 0">
+            <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length === 0 && this.$store.state.newNotifications.length === 0">
                 <p class="notice-title">Inga notiser</p>
             </div> 
         </div>
@@ -103,49 +103,7 @@
 </template>
 
 <script>
-import { getNotifications, setNotificationsToSeen } from '../../serverFetch.js'
 
-export default {
-  data () {
-    return {
-      oldNotifications: [],
-      newNotifications: []
-    }
-  },
-  mounted () {
-    getNotifications().then((res) => {
-      if (res) {
-        res.forEach(notification => {
-          if (notification.seen) {
-            this.oldNotifications.push(notification)
-          } else {
-            this.newNotifications.push(notification)
-          }
-        })
-      }
-    })
-
-    setInterval(() => getNotifications().then((res) => {
-      if (res) {
-        this.oldNotifications = []
-        this.newNotifications = []
-        res.forEach(notification => {
-          if (notification.seen) {
-            this.oldNotifications.push(notification)
-          } else {
-            this.newNotifications.push(notification)
-          }
-        })
-      }
-    }), 10000)
-  },
-  methods: {
-    moveNotification (notification) {
-      this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
-      this.oldNotifications.unshift(notification)
-    }
-  }
-}
 </script>
 
 <style scoped>

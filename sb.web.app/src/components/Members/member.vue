@@ -17,7 +17,6 @@ do not match the equivalent of the database.
 </template>
 
 <script>
-import userProfileVue from './userProfile.vue'
 import { EXPRESS_URL } from '../../serverFetch'
 
 export default {

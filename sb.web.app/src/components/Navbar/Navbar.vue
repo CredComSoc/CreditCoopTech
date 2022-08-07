@@ -21,11 +21,11 @@
                   <img src="../../assets/navbar_logos/cart.png" />
                   <figcaption class="l-text"> Varukorg </figcaption>
               </figure>
-              <div v-if="this.cartItems > 0" id="cart-notice-container">
+              <div v-if="this.$store.state.myCartSize > 0" id="cart-notice-container">
                 <img v-if="!this.isActive" id="cart-notice" class="cart-notice" src="../../assets/navbar_logos/notice.png"/>
-                <p v-if="!this.isActive" id="cart-notice-text">{{this.cartItems}}</p>
+                <p v-if="!this.isActive" id="cart-notice-text">{{this.$store.state.myCartSize}}</p>
                 <img v-if="this.isActive" id="cart-notice-mobile" class="cart-notice" src="../../assets/navbar_logos/notice.png"/>
-                <p v-if="this.isActive" id="cart-notice-text-mobile">{{this.cartItems}}</p>
+                <p v-if="this.isActive" id="cart-notice-text-mobile">{{this.$store.state.myCartSize}}</p>
               </div>
             </router-link>
             <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
@@ -142,8 +142,7 @@ export default {
       dropdownActive: false, // if a dropdown menu is active
       newNotifications: [],
       oldNotifications: [],
-      componentKey: 0,
-      cartItems: 0
+      componentKey: 0
     }
   },
   name: 'Navbar',
@@ -157,26 +156,6 @@ export default {
     }
   },
   mounted () {
-    getCart().then((res) => {
-      if (res) {
-        let amount = 0
-        for (let i = 0; i < res.length; ++i) {
-          amount += res[i].quantity
-        }
-        this.cartItems = amount
-      }
-    })
-
-    setInterval(() => getCart().then((res) => {
-      if (res) {
-        let amount = 0
-        for (let i = 0; i < res.length; ++i) {
-          amount += res[i].quantity
-        }
-        this.cartItems = amount
-      }
-    }), 10000)
-
     this.handleScrWidth(this.screenWidth)
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)

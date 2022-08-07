@@ -13,7 +13,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 
-FRONTEND_URL = 'http://155.4.159.231:8080'
+FRONTEND_URL = 'http://155.4.159.231:8081'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
@@ -133,6 +133,75 @@ module.exports = async function(dbUrl, dbFolder) {
 
   /*****************************************************************************
    * 
+   *                                User Data
+   *                 
+   *****************************************************************************/
+
+  router.get("/data", async (req, res) => {
+    let data = {
+      user: {},
+      myArticles: [],
+      myCart: [],
+
+      allMembers: [],
+      allArticles: []
+    }
+
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+
+    // get current user data
+    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+    const userId = user._id
+    delete user._id
+    delete user.password
+    data.user = user
+
+    // get article data
+    let articles = await dbo.collection("posts").find({}).toArray()
+    const myArticles = []
+    const allArticles = []
+    for (const article of articles) {
+      if(article.userId.toString() === userId.toString()) {
+        myArticles.push(article)
+      }
+
+      const now = new Date()
+      const chosenDate = article["end-date"]
+      if (now.getTime() < chosenDate.getTime()) {
+        allArticles.push(article)
+      }
+    }
+    data.myArticles = myArticles
+    data.allArticles = allArticles
+
+    // get all members profile data
+    const users = await dbo.collection("users").find({}).toArray()
+    const allMembers = []
+    for (const user of users) {
+      let userData = user.profile
+      userData.is_admin = user.is_admin
+      allMembers.push(userData)
+    }
+    data.allMembers = allMembers
+
+    // get cart data
+    const carts = await dbo.collection("carts").find({}).toArray()
+    const myCart = []
+    for (const cart of carts) {
+      if (cart.cartOwner === user.profile.accountName) {
+        myCart.push(cart)
+      }
+    }
+    data.myCart = myCart
+
+    db.close()
+
+    res.status(200).send(data)
+  })
+
+  /*****************************************************************************
+   * 
    *                                Admin Page
    *                 
    *****************************************************************************/
@@ -147,8 +216,6 @@ module.exports = async function(dbUrl, dbFolder) {
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),
           is_admin: req.body.is_admin === "false" ? false : true,
-          pendingPosts: {},
-          events: {},
           profile: {
             website: "",
             accountName: req.body.email,
@@ -578,23 +645,6 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   });
 
-   router.get('/getAllMembers2/', async (req, res) => {
-    // fetch all metadata about listing from mongoDB
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    dbo.collection('users').find({}).toArray(function (err, users) { 
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      }
-      else {
-        users.forEach(user => user.password = null)
-        res.send(users)
-        db.close()
-      }
-    })
-  })
-
   /*****************************************************************************
    * 
    *                                Notifications
@@ -660,29 +710,6 @@ module.exports = async function(dbUrl, dbFolder) {
    *                                Cart
    *                 
    *****************************************************************************/
-
-   router.get('/cart', (req, res) => {
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
-      dbo.collection("carts").find({ cartOwner: req.user }).toArray(function (err, result) {
-        if (err) {
-          db.close();
-          res.sendStatus(500)
-        }
-        else if (result != null) {
-          const cart = result;
-          db.close();
-          res.status(200).json(cart);
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.sendStatus(404).json(null);
-        }
-      });
-    });
-  });
-
 
   router.post('/cart', (req, res) => {
     const cartItem = req.body;
@@ -832,71 +859,6 @@ module.exports = async function(dbUrl, dbFolder) {
       }
     })
   })
-  /*****************************************************************************
-   * 
-   *                                Home
-   *                 
-   *****************************************************************************/
-
-  router.get("/home", (req, res) => {
-    getUser({ "profile.accountName": req.user }).then(user => {
-      if (user != null) {
-        const homeData = {
-          companyName: user.profile.accountName,
-          shop: [],
-          members: []
-        };
-        MongoClient.connect(dbUrl, (err, db) => {
-          let dbo = db.db(dbFolder);
-          dbo.collection("posts").find().sort({uploadDate: -1}).limit(10).toArray(function (err, res1) {
-            if (err) {
-              db.close();
-              res.sendStatus(500)
-            }
-            else if (res1 != null) {
-              for (const post of res1) {
-                const postInfo = { id: post.id, title: post.title, desc:post.shortDesc, theme: 'regular', img_path: post.coverImg };
-                if ((new Date(post['end-date'])).getTime() > Date.now()) {
-                  homeData.shop.push(postInfo);
-                }
-              }
-              // TODO not sorted based on newest member
-              dbo.collection("users").find().limit(10).toArray(function (err, res2) {
-                if (err) {
-                  db.close();
-                  res.sendStatus(500)
-                }
-                else if (res2 != null) {
-                  db.close();
-                  let index = 0;
-                  for (const member of res2) {
-                    const memberInfo = {id: index, img_path: member.profile.logo, title: member.profile.accountName, theme: 'ellipse'}
-                    homeData.members.push(memberInfo);
-                    index++;
-                  }
-                  res.status(200).json(homeData);
-                  //TODO ADD MONGO QUERY FOR EVENTS NEXT
-                }
-                else {
-                  // If we dont find a result
-                  db.close();
-                  res.sendStatus(204)
-                }
-              });
-            }
-            else {
-              // If we dont find a result
-              db.close();
-              res.sendStatus(204)
-            }
-          });
-        });
-      } else {
-        res.status(404).send("The profile doesn't exist.")
-      }
-    })
-  })
-
 
   /*****************************************************************************
    * 

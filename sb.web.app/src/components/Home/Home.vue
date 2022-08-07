@@ -1,8 +1,8 @@
 <template>
   <div class="home"> 
-    <Banner :companyName="companyName"/>
-    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="blue-card" theme_btn="yellow-btn" btn_txt="Till shoppen" :data="shop" :screenWidth="scrWidth" name="Shop" />
-    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="members" :screenWidth="scrWidth" name="Members" />
+    <Banner :companyName="this.$store.state.user.profile.accountName"/>
+    <ContentCard title="SHOP" description="Bläddra bland senast upplagda produkter och tjänster." theme="blue-card" theme_btn="yellow-btn" btn_txt="Till shoppen" :data="this.shop" :screenWidth="scrWidth" name="Shop" />
+    <ContentCard title="MEDLEMMAR" description="Bläddra bland nya medlemmar i nätverket." theme="yellow-card" theme_btn="yellow-btn" btn_txt="Till medlemmar" :data="this.members" :screenWidth="scrWidth" name="Members" />
   </div>
 </template>
 
@@ -10,7 +10,6 @@
 
 import Banner from './ContentBanner.vue'
 import ContentCard from './ContentCard.vue'
-import { EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'Home',
@@ -22,23 +21,12 @@ export default {
   data () {
     return {
       shop: [],
-      members: [],
-      companyName: ''
+      members: []
     }
   },
-  created () {
-    fetch(EXPRESS_URL + '/home', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    }).then(res => res.json())
-      .then(data => {
-        this.shop = data.shop
-        this.members = data.members
-        this.companyName = data.companyName
-      })
+  mounted: function () {
+    this.shop = this.$store.state.allArticles
+    this.members = this.$store.state.allMembers
   }
 }
 
