@@ -58,12 +58,40 @@ export default {
     },
     addItem (ind) {
       this.cart[ind - 1].quantity++
-      this.calcTotal()
+      fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
+        credentials: 'include'
+      }).then(
+        success => {
+          console.log(success)
+          this.calcTotal()
+        }
+      ).catch(
+        error => console.log(error)
+      )
     },
     minItem (ind) {
       if (this.cart[ind - 1].quantity > 1) {
         this.cart[ind - 1].quantity--
-        this.calcTotal()
+        fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
+          credentials: 'include'
+        }).then(
+          success => {
+            console.log(success)
+            this.calcTotal()
+          }
+        ).catch(
+          error => console.log(error)
+        )
       }
     },
     calcTotal () {

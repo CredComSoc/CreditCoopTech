@@ -688,6 +688,29 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   });
 
+  router.post('/cart/set/item/:id', (req, res) => {
+    const id = req.params.id;
+    const query = { cartOwner: req.user, id: id };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('carts').updateOne(query, { $set: {quantity: req.body.quantity}}, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result != null) {
+          db.close();
+          res.status(200).send("Updated cart");
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(404).send("No item found");
+        }
+      })
+    })
+  });
+
   router.post('/cart/remove/item/edit/:id', (req, res) => {
     const query = { id: req.params.id };
     MongoClient.connect(dbUrl, (err, db) => {
