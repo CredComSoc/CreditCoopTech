@@ -132,7 +132,7 @@ export default {
     }
   },
   created: function () {
-    this.getSmallerImages(this.listingObj.img)
+    // this.getSmallerImages(this.listingObj.img)
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
-          <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
+          <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:140px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
           <p v-if="listingObj.article === 'product'" class="element-seller">{{listingObj.userUploader}} - Produkt</p>
           <p v-if="listingObj.article === 'service'" class="element-seller">{{listingObj.userUploader}} - Tjänst</p>
@@ -39,7 +39,8 @@ export default {
   props: {
     listingObj: Object,
     listingId: String,
-    comment: String
+    comment: String,
+    small: Boolean
   },
   methods: {
     togglePopup () {
@@ -70,7 +71,7 @@ export default {
 
     .element-container {
         width: 200px;
-        height:265px;
+        height: 165px;
         background: #FFFFFF;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         margin: 1rem;

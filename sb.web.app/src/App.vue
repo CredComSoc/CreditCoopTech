@@ -64,7 +64,7 @@ export default {
           }
         })
         if (data) { 
-          //window.localStorage.removeItem('vuex')
+          window.localStorage.removeItem('vuex')
           if (data.user) {
             this.$store.commit('replaceUser', data.user)
 

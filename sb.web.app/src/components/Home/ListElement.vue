@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="#">
+    <a href="Javascript:void(0)" @click="openPopup">
       <span v-if="elementInfo.title" class="element-container">
           <img v-if="elementInfo.coverImg.length === 0" class="regular" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
           <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
@@ -20,16 +20,64 @@
       </div>
     </router-link>
   </div>
+  <ListingPopup v-if="this.displayPopup" @closePopup="closePopup" @placeInCart="this.placeInCart" :listingObj="elementInfo" :username="''"></ListingPopup>
 </template>
 
 <script>
 
 import { EXPRESS_URL } from '../../serverFetch'
+import ListingPopup from '../Shop/ListingPopup.vue'
 
 export default {
   name: 'ListElement',
   props: ['elementInfo'],
+  data () {
+    return {
+      displayPopup: false
+    }
+  },
   methods: {
+    openPopup () {
+      this.displayPopup = true
+    },
+    closePopup () {
+      this.displayPopup = false
+    },
+    placeInCart (amount, listingObj) {
+      const JSONdata = new FormData()
+      const cartItem = {
+        title: listingObj.title,
+        coverImg: listingObj.coverImg,
+        price: listingObj.price,
+        quantity: amount, // number of items
+        article: listingObj.article, // produkt eller tjänst
+        id: listingObj.id, // Id for the article
+        status: listingObj.status, // köpes eller säljes
+        userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
+        'end-date': listingObj['end-date'] // end date for the article
+      }
+      JSONdata.append('cartItem', JSON.stringify(cartItem))
+
+      this.popupActive = false
+      this.putInCart = true
+
+      fetch(EXPRESS_URL + '/cart', { // POST endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(cartItem) // This is your file object
+      }).then(
+        response => response
+      ).then(
+        success => {
+          console.log(success)
+        } // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      )
+    },
     // Set limits for number of chars depending on Upper or lower case for the description in list element
     formatText (str) {
       if (str.length > 35) {
@@ -76,7 +124,8 @@ export default {
         }
       }
     }
-  }
+  },
+  components: { ListingPopup }
 }
 </script>
 
