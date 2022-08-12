@@ -31,7 +31,7 @@
           <h3>Köpes</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
-        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">Inga produkter funna !</h3>
+        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">Inga produkter funna!</h3>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
         <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" title="Succé!" btnText="Ok" :cardText="'Artikeln har lagts till i varukorgen.'" />
       </div>
@@ -98,18 +98,14 @@ export default {
 
           let foundSearchword = true
           if (searchWord.length !== 0) {
-            for (let i = 0; i < searchWord.length; i++) {
-              if (!article.title.match(new RegExp(searchWord[i], 'i')) && 
-                  !article.shortDesc.match(new RegExp(searchWord[i], 'i')) &&
-                  !article.longDesc.match(new RegExp(searchWord[i], 'i')) 
-              ) {
-                foundSearchword = false
-                break
-              } 
-            }
-            if (!foundSearchword) {
+            if (!article.title.match(new RegExp(searchWord, 'i')) && 
+                !article.shortDesc.match(new RegExp(searchWord, 'i')) &&
+                !article.longDesc.match(new RegExp(searchWord, 'i')) &&
+                !article.userUploader.match(new RegExp(searchWord, 'i'))
+            ) {
+              foundSearchword = false
               continue
-            }
+            } 
           }
 
           // IMPLEMENT FILTERING HERE

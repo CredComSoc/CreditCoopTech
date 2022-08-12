@@ -3,15 +3,16 @@
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
           <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:140px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
-          <p v-if="listingObj.article === 'product'" class="element-seller">{{listingObj.userUploader}} - Produkt</p>
-          <p v-if="listingObj.article === 'service'" class="element-seller">{{listingObj.userUploader}} - Tjänst</p>
+          <p v-if="listingObj.article === 'product' && !hideSeller" class="element-seller">{{listingObj.userUploader}} - Produkt</p>
+          <p v-if="listingObj.article === 'service' && !hideSeller" class="element-seller">{{listingObj.userUploader}} - Tjänst</p>
+          <p v-if="listingObj.article === 'product' && hideSeller" class="element-seller">Produkt</p>
+          <p v-if="listingObj.article === 'service' && hideSeller" class="element-seller">Tjänst</p>
           <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
       </div>
-      <div v-if="listingId && listingId !== '0'" class="element-container">
-          <img :src='getImgURL()' />
-          <h4 class="element-title"> {{ newListingObj.title }} </h4>
-          <p>TEST</p>
-          <p class="element-desc"> {{ newListingObj.shortDesc }}  </p>
+      <div v-if="listingId && listingId === '0'" class="element-container">
+          <img src='../../assets/icons/transaction.png' style="object-fit:contain;max-width:240px;max-height:140px;"/>
+          <h4 class="element-title"> Överföring</h4>
+          <p class="element-desc"> {{ comment }}  </p>
       </div>
     </div>
     
@@ -40,7 +41,8 @@ export default {
     listingObj: Object,
     listingId: String,
     comment: String,
-    small: Boolean
+    small: Boolean,
+    hideSeller: Boolean
   },
   methods: {
     togglePopup () {
@@ -75,6 +77,7 @@ export default {
         background: #FFFFFF;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         margin: 1rem;
+        text-align: center;
     }
 
     .element-container:hover {

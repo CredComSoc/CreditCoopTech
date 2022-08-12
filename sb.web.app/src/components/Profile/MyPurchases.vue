@@ -88,9 +88,9 @@ export default {
         const pendingPurchasesTemp = []
         for (const purchase of res) {
           if (purchase.state === 'pending') {
-            this.pendingPurchasesTemp.push(purchase)
+            pendingPurchasesTemp.push(purchase)
           } else {
-            this.completedPurchasesTemp.push(purchase)
+            completedPurchasesTemp.push(purchase)
           }
         }
         if (completedPurchasesTemp.length !== this.completedPurchases.length) {

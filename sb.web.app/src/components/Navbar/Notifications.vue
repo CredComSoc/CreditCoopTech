@@ -69,6 +69,14 @@
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'sendRequest'">
+                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
+                        <div id="new-list-content">
+                        <p class="notice-desc">{{ item.fromUser }} har skickat {{ item.amount }} barterkronor. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
                     <div v-if="item.type == 'saleRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">

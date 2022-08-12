@@ -14,7 +14,7 @@
           <th>Status</th>
         </tr>
         <tr v-for="(item, index) in activeArticles" :key="item">
-          <td><Listing className='article' :listingObj="item"/></td>
+          <td><Listing className='article' :listingObj="item" :hideSeller="true" /></td>
           <td>{{item.category}}</td>
           <td>{{item.price}}</td>
           <td>{{item.uploadDate}} </td>
