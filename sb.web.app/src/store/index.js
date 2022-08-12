@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import * as Cookies from 'js-cookie'
 
 export default createStore({
   state: {
@@ -58,9 +57,6 @@ export default createStore({
   modules: {
   },
   plugins: [
-    createPersistedState({
-      getState: (key) => Cookies.getJSON(key),
-      setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: false, sameSite: 'Lax' })
-    })
+    createPersistedState()
   ]
 })

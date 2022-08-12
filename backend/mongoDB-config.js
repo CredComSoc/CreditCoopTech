@@ -1,7 +1,7 @@
 
 // const mongoURL = "mongodb://localhost:27017/"
 
-const dbFolder = "sb-web-app"
+const dbFolder = "tvitter"
 const mongoURL = function(folder, localUrl = false) {
     if (localUrl) {
         return "mongodb://localhost:27017/"

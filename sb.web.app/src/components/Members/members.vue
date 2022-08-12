@@ -93,6 +93,7 @@ export default {
     }
   },
   mounted: function () {
+    console.log(this.$store.state.allMembers)
     this.triggerSearch('')
   }
   
