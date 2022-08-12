@@ -184,6 +184,7 @@ module.exports = async function(dbUrl, dbFolder) {
     for (const user of users) {
       let userData = user.profile
       userData.is_admin = user.is_admin
+      userData.email = user.email
       allMembers.push(userData)
     }
     data.allMembers = allMembers

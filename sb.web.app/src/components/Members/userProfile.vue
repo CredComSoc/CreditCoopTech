@@ -3,13 +3,16 @@
     <div className="flexbox-container2 flexbox-item">
       
       <div className="image container-item">
-        <img id="profile-img" v-if="this.logoURL !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="this.logoURL == ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <button v-if="show_optional && profileData.name !== currentUser" id="chat-btn" @click="goToChat" > Starta chatt </button>
+        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <h5 >Senast Online:</h5>
+        <h5 >{{ getOnlineStatus() }}</h5>
+        <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
+        
       </div>
       <div className="right container-item">
         <h1> Företagsnamn </h1>
-        <p> {{profileData.name}} </p>
+        <p> {{profileData.accountName}} </p>
 
         <h1> Beskrivning </h1>
         <p> {{profileData.description}} </p>
@@ -30,7 +33,7 @@
         </div> 
       </div>
     </div>
-    <div class="sendmoney-box" v-if="show_optional && profileData.name !== currentUser">
+    <div class="sendmoney-box" v-if="show_optional && profileData.accountName !== this.$route.params.userprofile ">
       
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
         <h1 class="box-text">Skicka Barterkronor</h1>
@@ -44,9 +47,6 @@
         </div>
         <button id="login-button">Skicka</button>
       </form>
-      <div class="box-error" v-if="error">
-        Fel epost eller lösenord ({{ loginCount }})
-      </div>
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.name + ' har mottagits.'" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getMember, profile, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -70,10 +70,8 @@ export default {
   },
   data () {
     return {
-      logoURL: '../',
+      logoURL: '',
       profileData: [],
-      getMember,
-      currentUser: '',
       bkr: 0,
       comment: '',
       bkrSentMsg: false,
@@ -85,12 +83,6 @@ export default {
     }
   },
   methods: {
-    getProfile (member) {
-      this.getMember(member).then(res => {
-        this.profileData = res
-        this.getImgURL()
-      })
-    },
     getImgURL () {
       if (this.profileData.logo !== '') {
         this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
@@ -106,13 +98,13 @@ export default {
         if (saldo < this.bkr) {
           this.notEnoughBkrMsg = true
         } else {
-          const userSaldo = await getUserAvailableBalance(this.profileData.name)
-          const userLimits = await getUserLimits(this.profileData.name)
+          const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
+          const userLimits = await getUserLimits(this.profileData.accountName)
           if (userSaldo + userLimits.min + Number(this.bkr) > userLimits.max) {
             this.tooMuchBkrMsg = true
           } else {
             await sendMoney(this.bkr, this.comment, this.profileData.name)
-            postNotification('sendRequest', this.profileData.name, this.bkr)
+            postNotification('sendRequest', this.profileData.accountName, this.bkr)
             this.bkrSentMsg = true
           }
         }
@@ -128,7 +120,7 @@ export default {
       this.comment = ''
     },
     goToChat () {
-      fetch(EXPRESS_URL + '/chat/' + this.profileData.name, {
+      fetch(EXPRESS_URL + '/chat/' + this.profileData.accountName, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -143,16 +135,38 @@ export default {
             this.chatError = true
           }
         }).catch(err => console.log(err))
+    },
+    getOnlineStatus () {
+      if (this.profileData.last_online) {
+        const lastOnline = new Date(this.profileData.last_online)
+        if (Date.now() - lastOnline < 1000 * 60) { // 1 min
+          return 'Nu'
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * 24) { // 1 day
+          return 'Idag'
+        } else {
+          let days = (Date.now() - lastOnline) / (1000 * 60 * 60 * 24)
+          days = Math.round(days * 10) / 10
+          if (days === 1) {
+            return '1 dag sedan'
+          } else {
+            return days + ' dagar sedan'
+          } 
+        }
+      } else {
+        return 'Aldrig'
+      } 
     }
   },
   created: function () {
-    this.getProfile(this.$route.params.userprofile)
-    profile().then((res) => {
-      this.currentUser = res.name
-      if (this.profileData.name !== this.currentUser) {
-        this.show_optional = true
+    for (const member of this.$store.state.allMembers) {
+      if (member.accountName === this.$route.params.userprofile) {
+        this.profileData = member
       }
-    })
+    }
+    this.getImgURL()
+    if (this.$route.params.userprofile !== this.$store.state.user.profile.accountName) {
+      this.show_optional = true
+    }
   }
 }
 
@@ -171,6 +185,7 @@ img {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .right {
@@ -194,6 +209,7 @@ h1 {
   /**margin-left: auto;
   margin-right: auto;*/
   width: 50%;
+  text-align: center;
 }
 
 #chat-btn {
