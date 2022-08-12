@@ -11,8 +11,10 @@ do not match the equivalent of the database.
         <img v-if="this.listingObj.logo == ''" src='../../assets/list_images/user.png' />
       </div>
       <h4 class="element-title"> {{ listingObj.accountName }} </h4>
+      
     </div>
     </router-link>
+    <h5>Senast Online: {{ getOnlineStatus() }}</h5>
   </div>
 </template>
 
@@ -27,6 +29,26 @@ export default {
   methods: {
     getImgURL () {
       return EXPRESS_URL + '/image/' + this.listingObj.logo
+    },
+    getOnlineStatus () {
+      if (this.listingObj.last_online) {
+        const lastOnline = new Date(this.listingObj.last_online)
+        if (Date.now() - lastOnline < 1000 * 60) { // 1 min
+          return 'Nu'
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * 24) { // 1 day
+          return 'Idag'
+        } else {
+          let days = (Date.now() - lastOnline) / (1000 * 60 * 60 * 24)
+          days = Math.round(days * 10) / 10
+          if (days === 1) {
+            return '1 dag sedan'
+          } else {
+            return days + ' dagar sedan'
+          } 
+        }
+      } else {
+        return 'Aldrig'
+      } 
     }
   }
 }
@@ -77,6 +99,10 @@ export default {
     h4 {
       margin-left: 0.5rem;
       align-self: flex-end;
+    }
+
+    h5 {
+      font-size: medium;
     }
 
     a { 

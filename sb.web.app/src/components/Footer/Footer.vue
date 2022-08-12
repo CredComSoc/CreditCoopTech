@@ -3,7 +3,7 @@
         <div class="footer-container">
             <p class="side-items" id="om-sidan"><router-link :to="{name:'About'}">Om sidan</router-link></p>
             <p id="middle-item"><a href="#">Om Barter</a></p>
-            <p class="side-items"><a href="#">Kontakta oss</a></p>
+            <p class="side-items"><a href="mailto:jonas.lagander@coompanion.se">Kontakta oss</a></p>
         </div>
     </footer>
 </template>

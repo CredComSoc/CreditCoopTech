@@ -1,7 +1,7 @@
-import { createStore } from 'vuex'
+import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-export default createStore({
+const store = new Vuex.Store ({
   state: {
     user: {},
 
@@ -60,3 +60,5 @@ export default createStore({
     createPersistedState()
   ]
 })
+
+export default store

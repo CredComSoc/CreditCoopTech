@@ -150,6 +150,9 @@ module.exports = async function(dbUrl, dbFolder) {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
 
+    // update user online status
+    await dbo.collection("users").updateOne({"profile.accountName": req.user }, { $set: { 'profile.last_online': Date.now() }})
+
     // get current user data
     let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
     const userId = user._id

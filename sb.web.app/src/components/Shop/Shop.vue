@@ -31,6 +31,7 @@
           <h3>Köpes</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
+        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">Inga produkter funna !</h3>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
         <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" title="Succé!" btnText="Ok" :cardText="'Artikeln har lagts till i varukorgen.'" />
       </div>

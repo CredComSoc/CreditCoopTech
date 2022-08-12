@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { authenticate, checkAdminStatus } from '../serverFetch'
+import store from '../store'
 import Home from '../components/Home/Home.vue'
 import Login from '../components/Login/Login.vue'
 import Forgot from '../components/Login/Forgot.vue'
@@ -45,11 +46,6 @@ const routes = [
     path: '/shop',
     name: 'Shop',
     component: Shop
-  },
-  {
-    path: '/events',
-    name: 'Events',
-    component: Home // SKA BYTAS UT
   },
   {
     path: '/add/article',
@@ -122,6 +118,8 @@ router.beforeEach(async (to, from) => {
         }
       }
     }
+  } else if (to.name === 'Forgot' || to.name === 'Reset') {
+    return { name: to.name }
   } else if (auth) {
     const admin = await checkAdminStatus()
     if (admin) {
