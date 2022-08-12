@@ -164,7 +164,10 @@ module.exports = async function(dbUrl, dbFolder) {
     let articles = await dbo.collection("posts").find({}).toArray()
     const myArticles = []
     const allArticles = []
-    for (const article of articles) {
+    for (let article of articles) {
+      const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
+      article.userUploader = articleUser.profile.accountName
+
       if(article.userId.toString() === userId.toString()) {
         myArticles.push(article)
       }
@@ -507,116 +510,6 @@ module.exports = async function(dbUrl, dbFolder) {
     chatExists(req.user, chatter).then((exists) => {
       res.json(exists);
     });
-  })
-
-  /*****************************************************************************
-   * 
-   *                                Shop
-   *                 
-   *****************************************************************************/
-
-  router.post('/getAllListings', async (req, res) => {
-    if (!req.isAuthenticated()) {
-      res.sendStatus(401)
-    } else {
-          // fetch all metadata about listing from mongoDB
-    let searchword = req.body.searchword.split(' ')
-    let destinations = req.body.destinations;
-    let categories = req.body.categories;
-    let articles = req.body.articles;
-    let status = req.body.status;
-
-    let productsAllListingsArray = []
-    let servicesAllListingsArray = []
-    let buyingAllListingsArray = []
-    let sellingAllListingsArray = []
-
-    searchword = searchword.filter(function(value, index, arr) {
-      return value !== "";
-    })
-
-    console.log(searchword)
-
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    dbo.collection('posts').find({}).toArray(async function (err, posts) {
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      }
-      else {
-        for(listing of posts) {
-          //Om ARTIKEL
-          if (articles.length !== 0) {
-            if (!articles.includes(listing.article)) {
-              continue
-            }
-          }
-          //OM DESTINATION
-          if (destinations.length !== 0) {
-            if (!destinations.includes(listing.destination)) {
-              continue
-            }
-          } 
-          //OM CATEGORY
-          if (categories.length !== 0) {
-            if (!categories.includes(listing.category)) {
-              continue
-            }
-          }
-          // OM STATUS
-          if (status.length !== 0) {
-            if (!status.includes(listing.status)) {
-              continue
-            }
-          } 
-
-
-          foundSearchword = true
-          if( searchword.length !== 0 ) {
-            for (let i = 0; i < searchword.length; i++) {
-              if (!listing.title.match(new RegExp(searchword[i], "i"))) {
-                foundSearchword = false
-                break
-              } 
-            }
-            if (!foundSearchword) {
-              continue
-            }
-          }
-
-          const now = new Date()
-          const chosenDate = listing["end-date"]
-          if (now.getTime() > chosenDate.getTime()) {
-            continue
-          }
-
-          const user = await getUser({'_id': listing.userId})
-          listing.userUploader = user.profile.accountName
-
-          //TILLDELA TJÄNST ELLER PRODUKT
-          if(listing.article === "product") {
-            productsAllListingsArray.push(listing)
-          } else if (listing.article === "service") {
-            servicesAllListingsArray.push(listing)
-          }
-
-          if (listing.status === 'buying') {
-            buyingAllListingsArray.push(listing)
-          } else if (listing.status === 'selling') {
-            sellingAllListingsArray.push(listing)
-          }
-        }
-        res.send({ allProducts: productsAllListingsArray, 
-                   allServices: servicesAllListingsArray, 
-                   allBuying: buyingAllListingsArray, 
-                   allSelling: sellingAllListingsArray,
-                   username: req.user
-                 })
-        db.close();
-      }
-    })
-    }
   })
 
 

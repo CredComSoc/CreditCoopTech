@@ -177,15 +177,6 @@ export default {
       this.newArticle.uploadDate = new Date().toLocaleString('sv-SE', options)
     },
     sanitizeArticle () {
-      // Frontend printing format for these fields to store in db
-      const printFormat = {}
-      printFormat.article = this.newArticle.article
-      printFormat.destination = this.newArticle.destination
-      printFormat.category = this.newArticle.category
-      printFormat.status = this.newArticle.status
-      printFormat['end-date'] = this.newArticle['end-date']
-      this.newArticle.printFormat = printFormat 
-
       // sanitize the article field
       switch (this.newArticle.article) {
         case 'Produkt':
@@ -215,18 +206,6 @@ export default {
           this.newArticle['end-date'] += ' 24:00:00'
           break 
       }
-
-      this.newArticle.destination = this.setDbFormat(this.newArticle.destination)
-      this.newArticle.category = this.setDbFormat(this.newArticle.category)
-    },
-    setDbFormat (field) {
-      field = field.toLowerCase()
-
-      field = field.replace(/\s/g, '')
-      field = field.replace(/[åä]/g, 'a')
-      field = field.replace(/ö/g, 'o')
-    
-      return field
     }
   }
 }

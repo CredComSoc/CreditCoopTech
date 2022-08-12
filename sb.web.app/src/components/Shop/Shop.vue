@@ -47,7 +47,7 @@ import ListingPopup from '@/components/Shop/ListingPopup.vue'
 import Categories from '@/components/Shop/Categories.vue'
 import FilterButton from '@/components/Shop/filterButton.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL, getAllListings } from './../../serverFetch.js'
+import { EXPRESS_URL } from './../../serverFetch.js'
 
 export default {
 
@@ -62,7 +62,6 @@ export default {
       filterActive: false,
       filterButtonActive: false,
       listingObjPopup: Object,
-      getAllListings,
       categoryArray: [],
       destinationsArray: [],
       articleArray: [],
@@ -81,21 +80,54 @@ export default {
   },
 
   methods: {
-    triggerSearch (newSearchWord) {
+    triggerSearch (searchWord) {
       if (this.enableSearch) {
+        this.productsSearchData = []
+        this.servicesSearchData = []
+        this.buyingSearchData = []
+        this.sellingSearchData = []
+
         this.enableSearch = false
-        this.getAllListings(newSearchWord, this.destinationsArray, this.categoryArray, this.articleArray, this.statusArray).then(res => {
-          return res
-        }).then(data => {
-          if (data) {
-            this.productsSearchData = data.allProducts
-            this.servicesSearchData = data.allServices
-            this.buyingSearchData = data.allBuying
-            this.sellingSearchData = data.allSelling
-            this.username = data.username
+
+        for (const article of this.$store.state.allArticles) {
+          const now = new Date()
+          const chosenDate = new Date(article['end-date'])
+          if (now.getTime() > chosenDate.getTime()) {
+            continue
           }
-          this.enableSearch = true
-        })
+
+          let foundSearchword = true
+          if (searchWord.length !== 0) {
+            for (let i = 0; i < searchWord.length; i++) {
+              if (!article.title.match(new RegExp(searchWord[i], 'i')) && 
+                  !article.shortDesc.match(new RegExp(searchWord[i], 'i')) &&
+                  !article.longDesc.match(new RegExp(searchWord[i], 'i')) 
+              ) {
+                foundSearchword = false
+                break
+              } 
+            }
+            if (!foundSearchword) {
+              continue
+            }
+          }
+
+          // IMPLEMENT FILTERING HERE
+
+          if (article.article === 'product') {
+            this.productsSearchData.push(article)
+          } else if (article.article === 'service') {
+            this.servicesSearchData.push(article)
+          }
+
+          if (article.status === 'buying') {
+            this.buyingSearchData.push(article)
+          } else if (article.status === 'selling') {
+            this.sellingSearchData.push(article)
+          }
+        }
+
+        this.enableSearch = true
       }
     },
     openPopUp (listingObj) {
