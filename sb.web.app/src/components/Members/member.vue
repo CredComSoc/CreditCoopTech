@@ -13,8 +13,9 @@ do not match the equivalent of the database.
       <h4 class="element-title"> {{ listingObj.accountName }} </h4>
       
     </div>
-    </router-link>
     <h5>Senast Online: {{ getOnlineStatus() }}</h5>
+    </router-link>
+
   </div>
 </template>
 
@@ -33,18 +34,16 @@ export default {
     getOnlineStatus () {
       if (this.listingObj.last_online) {
         const lastOnline = new Date(this.listingObj.last_online)
-        if (Date.now() - lastOnline < 1000 * 60) { // 1 min
+        if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
           return 'Nu'
-        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * 24) { // 1 day
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
           return 'Idag'
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
+          return 'Igår'
         } else {
-          let days = (Date.now() - lastOnline) / (1000 * 60 * 60 * 24)
-          days = Math.round(days * 10) / 10
-          if (days === 1) {
-            return '1 dag sedan'
-          } else {
-            return days + ' dagar sedan'
-          } 
+          let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
+          days = Math.floor(days * 10) / 10
+          return days + ' dagar sedan'
         }
       } else {
         return 'Aldrig'
@@ -69,15 +68,13 @@ export default {
         width: 100%;
         height:auto;
         background: #FFFFFF;
-        outline: 0.1rem solid grey;
+        white-space: nowrap; 
         /* margin: 1rem;*/
     }
     
      .element-container h4 {
         /* margin-top: 4px;*/
         width: 100%; 
-        float: right;
-
         font-weight: bold;
      }
 
@@ -102,11 +99,29 @@ export default {
     }
 
     h5 {
+      margin-top: 5px;
+      margin-bottom: 2px;
+      margin-left: 3px;
       font-size: medium;
     }
 
     a { 
+      display:flex;
+      flex-direction: column;
       color: inherit; 
-    } 
+      text-decoration: none;
+      outline: 0.1rem solid grey;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+    
+    a:hover {
+      color: black;
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    a:hover h4{
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
 
 </style>

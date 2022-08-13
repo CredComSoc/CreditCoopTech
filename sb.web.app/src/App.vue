@@ -12,7 +12,7 @@
       <div className='body'>
         <router-view :scrWidth="windowWidth"/>
       </div>
-    <SaldoCard :saldo="saldo" :screenWidth="windowWidth"/>
+    <SaldoCard :screenWidth="windowWidth"/>
     <Footer id="footer" />
   </div>
   <!-- < Login page /> -->
@@ -108,6 +108,22 @@ export default {
             }
             this.$store.commit('replaceMyCartSize', cartSize)
           }
+
+          if (data.saldo) {
+            this.$store.commit('replaceSaldo', data.saldo)
+          }
+
+          if (data.requests) {
+            this.$store.commit('replaceRequests', data.requests)            
+          }
+
+          if (data.pendingPurchases) {
+            this.$store.commit('replacePendingPurchases', data.pendingPurchases)            
+          }   
+
+          if (data.completedPurchases) {
+            this.$store.commit('replaceCompletedPurchases', data.completedPurchases)            
+          }           
           // console.log(this.$store.state.user.email)
         }
       }
@@ -127,15 +143,7 @@ export default {
       } 
     })
 
-    getSaldo().then((res) => {
-      this.saldo = res
-    })
-
     this.setStoreData()
-
-    setInterval(() => getSaldo().then((res) => {
-      this.saldo = res
-    }), 10000)
 
     setInterval(async () => {
       this.setStoreData()

@@ -13,10 +13,10 @@
           <th>Tidstämpel</th>
           <th>Faktura</th>      
         </tr>
-        <tr v-for="(item) in completedPurchases" :key="item">
+        <tr v-for="(item) in this.$store.state.completedPurchases" :key="item">
           <td>{{item.entries[0].payee}}</td>
-          <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
-          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
+          <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
+          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
@@ -41,10 +41,10 @@
             <th>Tidstämpel</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in pendingPurchases" :key="item" ref="reqRefs">
+          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
             <td>{{item.entries[0].payee}}</td>
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
+            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
+            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
             <td>{{item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
             <td>{{item.entries[0].quant}}</td>
@@ -71,37 +71,6 @@ export default {
       componentKey: 0
     }
   },
-  mounted () {
-    getPurchases().then(res => {
-      for (const purchase of res) {
-        if (purchase.state === 'pending') {
-          this.pendingPurchases.push(purchase)
-        } else {
-          this.completedPurchases.push(purchase)
-        }
-      }
-    })
-    
-    setInterval(() => getPurchases().then((res) => {
-      if (res) {
-        const completedPurchasesTemp = []
-        const pendingPurchasesTemp = []
-        for (const purchase of res) {
-          if (purchase.state === 'pending') {
-            pendingPurchasesTemp.push(purchase)
-          } else {
-            completedPurchasesTemp.push(purchase)
-          }
-        }
-        if (completedPurchasesTemp.length !== this.completedPurchases.length) {
-          this.completedPurchases = completedPurchasesTemp
-        }
-        if (pendingPurchasesTemp.length !== this.pendingPurchases) {
-          this.pendingPurchases = pendingPurchasesTemp
-        }
-      }
-    }), 10000)
-  },
   components: {
     Listing
   },
@@ -121,10 +90,6 @@ export default {
         pom.click()
       }
     },
-    getListing (item) {
-      console.log(item.metadata.id)
-      return item.metadata.id
-    },
     cancel (id, index) {
       console.log('Canceling order: ' + id)
       this.statusSwap(index)
@@ -143,6 +108,13 @@ export default {
         grandChild = child.lastElementChild
       }
       child.appendChild(tag)
+    },
+    getListing (item) {
+      for (const listing of this.$store.state.allArticles) {
+        if (listing.id === item.metadata.id) {
+          return listing
+        }
+      }
     }
   }
 }

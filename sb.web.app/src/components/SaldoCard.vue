@@ -10,7 +10,7 @@
           <figure id='top-log'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
-              <figcaption class="l-text" id='top-logo-text'> Saldo: {{ saldo }} bKr</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> Saldo: {{ this.$store.state.saldo }} bKr</figcaption>
             </a>
           </figure>
       </div>

@@ -12,8 +12,10 @@ const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
+const axios = require('axios').default;
 
 FRONTEND_URL = 'http://155.4.159.231:8080'
+CC_NODE_URL = 'http://127.0.0.1/cc-node'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
@@ -144,7 +146,13 @@ module.exports = async function(dbUrl, dbFolder) {
       myCart: [],
 
       allMembers: [],
-      allArticles: []
+      allArticles: [],
+
+      saldo: 0,
+
+      requests: [],
+      pendingPurchases: [],
+      completedPurchases: []
     }
 
     const db = await MongoClient.connect(dbUrl)
@@ -155,7 +163,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
     // get current user data
     let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-    const userId = user._id
+    const userId = user._id.toString()
     delete user._id
     delete user.password
     data.user = user
@@ -201,6 +209,89 @@ module.exports = async function(dbUrl, dbFolder) {
       }
     }
     data.myCart = myCart
+
+    // get saldo
+    try {
+      const response = await axios.get(CC_NODE_URL + '/account/summary', { 
+      headers: {
+       'cc-user': userId,
+       'cc-auth': '1'
+      }})
+      data.saldo = response.data[userId].completed.balance
+    } catch (error) {
+      console.log(error)
+    }
+
+    // get requests
+    try {
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
+      headers: {
+       'cc-user': userId,
+       'cc-auth': '1'
+      },
+      params: {
+        'payee': userId
+      }})
+      let userNames = {}
+      for (const entry of response.data) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]
+      }
+      data.requests = response.data
+    } catch (error) {
+      console.log(error)
+    }
+
+    // get purchases
+    try {
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
+      headers: {
+      'cc-user': userId,
+      'cc-auth': '1'
+      },
+      params: {
+        'payer': userId
+      }})
+      let userNames = {}
+      for (const entry of response.data) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]
+
+        if (entry.state === 'completed') {
+          data.completedPurchases.push(entry)
+        } else if (entry.state === 'pending') {
+          data.pendingPurchases.push(entry)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
 
     db.close()
 
@@ -512,51 +603,11 @@ module.exports = async function(dbUrl, dbFolder) {
     });
   })
 
-
-  /*****************************************************************************
-   * 
-   *                                Members
-   *                 
-   *****************************************************************************/
-
-  router.post('/member', (req, res) => {
-    getUser(req.body).then((user) => {
-      if (user != null) {
-        const userData = {
-          "name": user.profile.accountName,
-          "description": user.profile.description,
-          "adress": user.profile.adress,
-          "city": user.profile.city,
-          "billingName": user.profile.billing.name,
-          "billingBox": user.profile.billing.box,
-          "billingAdress": user.profile.billing.adress,
-          "orgNumber": user.profile.billing.orgNumber,
-          "email": user.email,
-          "phone": user.profile.phone,
-          "logo": user.profile.logo
-        }
-        res.status(200).send(userData)
-      } else {
-        res.status(404).send("The profile doesn't exist.")
-      }
-    })
-  });
-
   /*****************************************************************************
    * 
    *                                Notifications
    *                 
    *****************************************************************************/
-
-  router.get("/notification", (req, res) => {
-    getUser({ "profile.accountName": req.user }).then((user) => {
-      if (user != null) {
-        res.status(200).json(user.notifications)
-      } else {
-        res.status(404).send("User not found.")
-      }
-    })
-  })
 
   router.post("/notification", (req, res) => {
     let notification = req.body

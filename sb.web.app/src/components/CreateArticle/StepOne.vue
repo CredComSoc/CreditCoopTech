@@ -7,9 +7,6 @@
     <div id="title-field" class="input">
       <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
     </div>
-    <div id="short-desc" class="input">
-      <TextArea ref="shortDescInput" name="short-description" label="Kort beskrivning" length="50" placeholder="Gör en kort beskriv av vad som ingår i din artikel"/>
-    </div>
     <div id="desc" class="input" >
       <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
     </div>
@@ -106,7 +103,6 @@ export default {
         longDesc: this.$refs.descInput.getInput(),
         article: this.$refs.typeInput.getInput(), 
         category: this.$refs.categoryInput.getInput(),
-        shortDesc: this.$refs.shortDescInput.getInput(),
         status: this.$refs.buyOrSellInput.getInput()
       }
     },
@@ -115,7 +111,6 @@ export default {
       const description = this.$refs.descInput.getInput()
       const type = this.$refs.typeInput.getInput()
       const category = this.$refs.categoryInput.getInput()
-      const shortDesc = this.$refs.shortDescInput.getInput()
       const status = this.$refs.buyOrSellInput.getInput()
       if (title.length === 0) {
         return false
@@ -127,9 +122,6 @@ export default {
         return false
       }
       if (category === null) {
-        return false
-      }
-      if (shortDesc.length === 0) {
         return false
       }
       if (status === null) {
@@ -151,9 +143,6 @@ export default {
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
     }
-    if ('shortDesc' in this.savedProgress) {
-      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
-    }
     if ('status' in this.savedProgress) {
       this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
@@ -170,9 +159,6 @@ export default {
     } 
     if ('category' in this.savedProgress) {
       this.$refs.categoryInput.setValue(this.savedProgress.category)
-    }
-    if ('shortDesc' in this.savedProgress) {
-      this.$refs.shortDescInput.setValue(this.savedProgress.shortDesc)
     }
     if ('status' in this.savedProgress) {
       this.$refs.buyOrSellInput.setValue(this.savedProgress.status)

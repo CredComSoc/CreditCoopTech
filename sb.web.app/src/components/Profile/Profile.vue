@@ -2,17 +2,17 @@
   <div className="flexbox-container">
     <div v-if="isMobile()">
       <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
-        <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' }" id='profile'>Profil</a>
-        <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Köp</a>
-        <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Artiklar</a>
-        <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Behov</a>
+        <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>Profil</a>
+        <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>Köp</a>
+        <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>Artiklar</a>
+        <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>Behov</a>
       </div>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
       <h1 className="title" > MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='products' && this.tab!='requests' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' }" id='profile'>Min profil</a>
       <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
       <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Mina artiklar</a>
       <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
@@ -124,8 +124,13 @@ export default {
   font-size: 1.24rem;
 }
 
+.topnav a:hover {
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);  
+}
+
 .topnav a.active {
   color: dimgrey;
+  font-weight: bold;
 }
 
 .mobnav {

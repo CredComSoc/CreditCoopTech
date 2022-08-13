@@ -1,8 +1,16 @@
 <template>
   <div>
+    <div class="saldo">
+      <span id="total-text">Nuvarande Saldo: </span>
+      <span >{{ this.$store.state.saldo }} bKr</span>
+    </div>
     <div class="total">
-      <span id="total-text">Totalt: </span>
+      <span id="total-text">Kostnad: </span>
       <span >{{ total }} bKr</span>
+    </div>
+    <div class="after">
+      <span id="total-text">Saldo efter Köp: </span>
+      <span >{{ this.$store.state.saldo - total }} bKr</span>
     </div>
     <button @click="completePurchase" id="confirm">Slutför köp</button>
   </div>
@@ -24,7 +32,7 @@ export default {
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
     #confirm{
         right: 0;
-        bottom:0;
+        bottom: 0;
         position:absolute;
         background-color:#4690CD;
         color: white;
@@ -39,7 +47,7 @@ export default {
 
     .total{
       right: 0;
-      top: 0%;
+      top: 20%;
       position:absolute;
       font-size: 18px;
     }
@@ -47,6 +55,20 @@ export default {
     #total-text{
       font-family: 'Ubuntu', sans-serif;
       font-weight: 700;
+    }
+    .saldo {
+      right: 0;
+      top: 0;
+      position:absolute;
+      font-size: 18px;
+    }
+
+    .after {
+      right: 0;
+      top: 40%;
+      position:absolute;
+      font-size: 18px;
+      margin-bottom: 150px;     
     }
 
 </style>

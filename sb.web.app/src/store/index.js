@@ -14,7 +14,16 @@ const store = new Vuex.Store ({
     allMembers: [],
 
     myCart: [],
-    myCartSize: 0
+    myCartSize: 0,
+
+    saldo: 0,
+
+    requests: [],
+    pendingPurchases: [],
+    completedPurchases: [],
+
+    activeArticles: [],
+    inactiveArticles: []
 
   },
   mutations: {
@@ -49,8 +58,31 @@ const store = new Vuex.Store ({
 
     replaceMyCartSize (state, payload) {
       state.myCartSize = payload
-    }
+    },
 
+    replaceSaldo (state, payload) {
+      state.saldo = payload
+    },
+
+    replaceRequests (state, payload) {
+      state.requests = payload
+    },
+
+    replacePendingPurchases (state, payload) {
+      state.pendingPurchases = payload
+    },
+
+    replaceCompletedPurchases (state, payload) {
+      state.completedPurchases = payload
+    },
+
+    replaceActiveArticles (state, payload) {
+      state.activeArticles = payload
+    },
+
+    replaceInactiveArticles (state, payload) {
+      state.inactiveArticles = payload
+    }
   },
   actions: {
   },

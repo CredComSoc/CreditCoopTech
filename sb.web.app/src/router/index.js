@@ -97,7 +97,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior: (to, from, savedPosition) => {
+    window.scrollTo(0, 0)
+  }
 })
 
 router.beforeEach(async (to, from) => {
@@ -128,6 +131,6 @@ router.beforeEach(async (to, from) => {
       return { name: 'Home' }
     }  
   }
-}) 
+})
 
 export default router

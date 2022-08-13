@@ -10,10 +10,10 @@
         <th>Tidstämpel</th>
         <th>Status</th>
       </tr>
-      <tr v-for="(item, index) in requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
+      <tr v-for="(item, index) in this.$store.state.requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{item.entries[0].payer}}</td>
-        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
-        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
+        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
@@ -24,15 +24,15 @@
         </td>
 
       </tr>
-      <tr v-for="(item) in requests.filter(request => request.state==='completed')" :key="item">
+      <tr v-for="(item) in this.$store.state.requests.filter(request => request.state==='completed')" :key="item">
         <td>{{item.entries[0].payer}}</td>
-        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingId="getListing(item.entries[0])" /></td>
-        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="getListing(item.entries[0])" :comment="item.entries[0].description"/></td>
+        <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
+        <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
         <td>{{item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
-        <td><p style="color: green;">GODKÄND</p></td>
+        <td style="color: green;">GODKÄND</td>
       </tr>
     </table>
     <div v-if="!requests">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getRequests, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
+import { cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 
@@ -61,21 +61,8 @@ export default {
       max_limit: 0
     }
   },
-  mounted () {
-    getRequests().then(res => {
-      this.requests = res
-    })
-
-    setInterval(() => getRequests().then((res) => {
-      if (res && this.requests.length !== res.length && !(this.requests.every((val, index) => val.uuid === res[index].uuid))) {
-        this.requests = res
-      }
-    }), 10000)
-  },
   methods: {
     cancel (id, payer, index) {
-      //const element = this.$refs.reqRefs[index]
-      //element.parentNode.removeChild(element)
       this.statusSwap(index, 'cancel')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
@@ -126,7 +113,11 @@ export default {
       child.appendChild(tag)
     },
     getListing (item) {
-      return item.metadata.id
+      for (const listing of this.$store.state.allArticles) {
+        if (listing.id === item.metadata.id) {
+          return listing
+        }
+      }
     }
   }
 }

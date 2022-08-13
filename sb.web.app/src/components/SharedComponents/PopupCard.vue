@@ -69,6 +69,7 @@ export default {
   position: fixed;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  text-align: left;
 }
 
 #popup-head {

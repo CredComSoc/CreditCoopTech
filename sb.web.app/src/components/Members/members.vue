@@ -23,7 +23,6 @@
 <script>
 import Searchfield from '@/components/SharedComponents/searchfield.vue'
 import AllMembers from '@/components/Members/all_members.vue'
-import { getAllMembers } from './../../serverFetch.js'
 
 export default {
 
@@ -32,8 +31,7 @@ export default {
       SearchData: [],
       singleListingData: [],
       popupActive: false,
-      listingObjPopup: Object,
-      getAllMembers
+      listingObjPopup: Object
     }
   },
 
@@ -115,6 +113,7 @@ export default {
 
 .center {
   justify-content: center;
+  margin-bottom: 40px;
 }
 
 .main {

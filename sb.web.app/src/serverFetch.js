@@ -284,25 +284,6 @@ export async function deactivateArticle (id) {
  *                 
  *****************************************************************************/
 
-export async function getMember (member) {
-  return await fetch(EXPRESS_URL + '/member', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ 'profile.accountName': member }),
-    credentials: 'include'
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    } else {
-      return response.json()
-    }
-  }).catch(err => {
-    console.error('There has been a problem with your fetch operation:', err)
-  })
-}
-
 export async function sendMoney (amount, comment, payee) {
   const data = {
     price: amount,
@@ -549,23 +530,6 @@ export async function getUserLimits (user) {
 
 export function getPurchases () {
   const promise = fetch(EXPRESS_URL + '/purchases', {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
-
-export function getRequests () {
-  const promise = fetch(EXPRESS_URL + '/requests', {
     method: 'GET',
     credentials: 'include'
   })

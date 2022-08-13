@@ -6,13 +6,19 @@
   <div class="popup-inner">
     <splide :options="options">
       <splide-slide>
-        <img :src='getImgURL(this.listingObj.coverImg)' style="object-fit:contain;max-width:400px;max-height:400px;">
+        <img :src='getImgURL(this.listingObj.coverImg)' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
       <splide-slide v-if="this.listingObj.img.length >= 1">
-        <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:400px;max-height:400px;">
+        <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
       <splide-slide  v-if="this.listingObj.img.length >= 2">
-        <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:400px;max-height:400px;">
+        <img :src='getImgURL(this.listingObj.img[1])' style="object-fit:contain;max-width:280px;max-height:280px;">
+      </splide-slide>
+      <splide-slide  v-if="this.listingObj.img.length >= 3">
+        <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
+      </splide-slide>
+      <splide-slide  v-if="this.listingObj.img.length >= 4">
+        <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
     </splide>
     
@@ -30,13 +36,16 @@
           <p v-if="listingObj.article === 'product'">Produkt</p>
           <p v-if="listingObj.article === 'service'">Service</p>
 
+          <h5>Kategori</h5> 
+          <p>{{listingObj.category}}</p>
+
           <h5>Beskrivning</h5> 
           <p>{{listingObj.longDesc}}</p>
           
           <h5>Styckpris</h5> 
           <p>{{listingObj.price}} Barter Kronor</p>
 
-          <div v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
+          <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
             <h5>Antal</h5> 
             <div class="quant">
               <div @click="decreaseAmount">
@@ -47,20 +56,21 @@
                 <img src="../../assets/cart_images/add.png" >
               </div>
             </div>
-          </div>
 
-          <h5>Totalpris</h5> 
-          <p>{{amount * listingObj.price}} Barter Kronor</p>          
-          
+            <h5>Totalpris</h5> 
+            <p>{{amount * listingObj.price}} Barter Kronor</p>          
+          </div>
         </div>
 
+        <div class="spacing"></div>
+
       <button class="closeBtn" @click="$emit('closePopup')">Stäng</button>
-      <div class="interactContent" v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'">
+      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'">
         <div>
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">Lägg i varukorg</button>
         </div>
       </div>
-      <div class="interactContent" v-if="this.username.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">
+      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">
         <div>
           <button class="chattBtn" @click="goToChat">Starta chatt</button>
         </div>
@@ -139,6 +149,9 @@ export default {
 
 <style scoped>
 
+.spacing {
+  height: 50px;
+}
 .quant {
   display: flex;
   flex-direction: row;
@@ -155,7 +168,7 @@ export default {
   align-items: center;  
 }
 .quant div:hover {
-  transform: scale(1.07);
+  transform: scale(1.10);
 }
 
 .amountText {
@@ -173,12 +186,12 @@ export default {
 }
 
 .article-info h5 {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
 }
 
 .article-info p {
-  font-size: 13px;
+  font-size: 11px;
   font-style: italic;
 }
 
@@ -202,8 +215,7 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  width: 580px;
-  height: max(80%, 20rem);
+  width: 520px;
   font-size-adjust: 0.58;
   top: 50%;
   left: 50%;
@@ -215,7 +227,7 @@ export default {
 }
 
 h5 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 
 .textContent {
@@ -253,7 +265,7 @@ h5 {
 .cartBtn, .chattBtn, .closeBtn{
     background-color:#4690CD;
     color: white;
-    border-radius: 4px;
+    border-radius: 10px;
     border: none;
     white-space: nowrap;   
 }
@@ -273,7 +285,7 @@ h5 {
     left: 1rem;
     bottom:0;
     margin-bottom: 0.5rem; 
-    display: inline-block;   
+    display: inline-block;  
 }
 
 .cartBtn:hover, .chattBtn:hover, .closeBtn:hover{

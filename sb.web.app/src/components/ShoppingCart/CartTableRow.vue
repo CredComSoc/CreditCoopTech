@@ -6,8 +6,6 @@
   <div class="cart-col">
     <h3 v-if="ind === 1"> Produkt </h3> 
     <img class="content-img" :src='this.getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
-  </div>
-  <div class="cart-col">  
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
   </div>
   <div class="cart-col">
@@ -158,6 +156,7 @@ h3 {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     width: 102px;
     height: 80px;
+    margin-bottom: 5px;
 }
 
 .title-text{

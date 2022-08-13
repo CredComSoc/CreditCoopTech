@@ -45,7 +45,7 @@
           <label class="box-label">Kommentar</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="login-button">Skicka</button>
+        <button id="send-btn">Skicka</button>
       </form>
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />
@@ -139,18 +139,16 @@ export default {
     getOnlineStatus () {
       if (this.profileData.last_online) {
         const lastOnline = new Date(this.profileData.last_online)
-        if (Date.now() - lastOnline < 1000 * 60) { // 1 min
+        if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
           return 'Nu'
-        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * 24) { // 1 day
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
           return 'Idag'
+        } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
+          return 'Igår'
         } else {
-          let days = (Date.now() - lastOnline) / (1000 * 60 * 60 * 24)
-          days = Math.round(days * 10) / 10
-          if (days === 1) {
-            return '1 dag sedan'
-          } else {
-            return days + ' dagar sedan'
-          } 
+          let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
+          days = Math.floor(days * 10) / 10
+          return days + ' dagar sedan'
         }
       } else {
         return 'Aldrig'
@@ -213,22 +211,19 @@ h1 {
 }
 
 #chat-btn {
-  font-size: 17px;
-  line-height: 23px;
-  letter-spacing: 0.06em;
-  color: #FFF;
-  border: none;
-  width: 150px;
-  height:50px;
-  border-radius: 10px;
-  background: #4690CD;
-  border: 1px solid #4690CD;
+  width: 135px;
+  height: 45px;
   margin-left: 30%;
   margin-bottom: 50px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+}
+
+#send-btn {
+  width: 90px;
+  height: 45px;  
 }
 
 #profile-img {
@@ -266,7 +261,17 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 12px 2px 12px;
-  background-color: #F3F3F3;
+  background: #4690CD;
+  border: 1px solid #4690CD;
+  color: #FFF;
+  font-size: 17px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: #457EAD; 
 }
 
 .box-text {
@@ -297,7 +302,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+  outline: none;
 }
 
 @media screen and (max-width: 860px) {

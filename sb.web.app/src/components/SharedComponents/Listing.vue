@@ -3,11 +3,7 @@
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
           <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:140px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
-          <p v-if="listingObj.article === 'product' && !hideSeller" class="element-seller">{{listingObj.userUploader}} - Produkt</p>
-          <p v-if="listingObj.article === 'service' && !hideSeller" class="element-seller">{{listingObj.userUploader}} - Tjänst</p>
-          <p v-if="listingObj.article === 'product' && hideSeller" class="element-seller">Produkt</p>
-          <p v-if="listingObj.article === 'service' && hideSeller" class="element-seller">Tjänst</p>
-          <p class="element-desc"> {{ listingObj.shortDesc }}  </p>
+          <p class="element-desc"> {{ listingObj.longDesc }}  </p>
       </div>
       <div v-if="listingId && listingId === '0'" class="element-container">
           <img src='../../assets/icons/transaction.png' style="object-fit:contain;max-width:240px;max-height:140px;"/>
@@ -90,8 +86,8 @@ export default {
      }
 
     .element-title {
-        margin-left: 8px;
-        font-size: 20px
+      margin-left: 8px;
+      font-size: 20px
     }
 
     .element-seller {
@@ -101,9 +97,8 @@ export default {
     }
 
     .element-desc {
-        color: grey;
-        margin-left: 9px;
-        margin-right: 30px;
+      color: grey;
+      font-size: 14px;
     }
 
     img {

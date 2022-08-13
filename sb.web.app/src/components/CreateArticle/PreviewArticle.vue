@@ -6,7 +6,6 @@
     </div>
     <div id="items-container">
       <PreviewItem title='Rubrik' :text='this.savedProgress.title' :images="null" />
-      <PreviewItem title='Kort beskrivning' :text='this.savedProgress.shortDesc' :images="null" />
       <PreviewItem title='Beskrivning' :text='this.savedProgress.longDesc' :images="null" />
       <PreviewItem title='Typ av artikel' :text='this.savedProgress.article' :images="null" />
       <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />

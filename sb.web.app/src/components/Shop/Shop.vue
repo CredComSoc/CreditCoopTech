@@ -230,6 +230,7 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 .center {
@@ -252,7 +253,6 @@ export default {
 .listings {
   flex-basis: 100%;
   width: auto;
-  margin-left: 3rem;
   margin-top: 1rem;
 }
 
@@ -271,6 +271,7 @@ h2 {
 
 h3 {
   margin-left: 1rem;
+  margin-top: 2rem;
 }
 
 @media screen and (max-width: 860px) {

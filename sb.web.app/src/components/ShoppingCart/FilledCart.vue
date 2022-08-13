@@ -123,7 +123,7 @@ export default {
 
   #bottom{
     width: 100%;
-    height: 100px;
+    height: 140px;
     position: relative;
     margin-top: 40px;
   }

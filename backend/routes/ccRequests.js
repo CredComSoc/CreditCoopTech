@@ -57,41 +57,6 @@ module.exports = async function(dbUrl, dbFolder) {
     }
   })
 
-  router.get("/requests", async (req, res) => { 
-    const user = await getUser({'profile.accountName': req.user})
-    try {
-      const response = await axios.get(CC_NODE_URL + '/transactions', { 
-      headers: {
-       'cc-user': user._id.toString(),
-       'cc-auth': '1'
-      },
-      params: {
-        'payee': user._id.toString()
-      }})
-      let userNames = {}
-      for (const entry of response.data) {
-        if(!(entry.entries[0].payee in userNames)) {
-          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-          userNames[entry.entries[0].payee] = payee.profile.accountName   
-        }
-        if(!(entry.entries[0].payer in userNames)) {
-          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-          userNames[entry.entries[0].payer] = payer.profile.accountName   
-        }
-        if(!(entry.entries[0].author in userNames)) {
-          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-          userNames[entry.entries[0].author] = author.profile.accountName   
-        }
-        entry.entries[0].payee = userNames[entry.entries[0].payee]
-        entry.entries[0].payer = userNames[entry.entries[0].payer]
-        entry.entries[0].author = userNames[entry.entries[0].author]
-      }
-      res.status(200).send(response.data)
-    } catch (error) {
-      res.sendStatus(500)
-    }
-  })
-
   router.post("/createrequest", async (req, res) => {
     const article = req.body
     const payer = await getUser({'profile.accountName': req.user})
