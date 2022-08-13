@@ -5,18 +5,15 @@
           <img v-if="elementInfo.coverImg.length === 0" class="regular" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
           <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
           <h4 class="element-title"> {{ formatTitle(elementInfo.title) }} </h4>
-          <p class="element-desc"> {{ formatText(elementInfo.shortDesc) }}  </p>
+          <p v-if="elementInfo.status === 'selling'" class="element-desc"> Säljes  </p>
+          <p v-if="elementInfo.status === 'buying'" class="element-desc"> Köpes  </p>
       </span>
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">
       <div v-if="elementInfo.accountName" class="ellipse-container">
-        <figure>
             <img v-if="elementInfo.logo.length === 0" class="ellipse" :src="require(`../../assets/list_images/user.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
             <img v-else class="ellipse" :src="getUserImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
-        </figure>
-        <div class="chin-card">
-          <h4 class="element-title"> {{ formatTitle(elementInfo.accountName) }} </h4>
-        </div>
+            <h4 class="element-title"> {{ formatTitle(elementInfo.accountName) }} </h4>
       </div>
     </router-link>
   </div>
@@ -26,7 +23,7 @@
 <script>
 
 import { EXPRESS_URL } from '../../serverFetch'
-import ListingPopup from '../Shop/ListingPopup.vue'
+import ListingPopup from '../SharedComponents/ListingPopup.vue'
 
 export default {
   name: 'ListElement',
@@ -147,9 +144,9 @@ export default {
     }
 
     .ellipse {
-        height: 120px;
-        width: 133px;
-        border-radius: 50%;
+        width: 100%;
+        height: 70%;
+        margin-top: 20px;
     }
 
     a {
@@ -168,42 +165,17 @@ export default {
         background: #FFFFFF;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         word-break: break-all;
+        text-align: center;
     }
 
-    .ellipse-container {
-        width: 150px;
-        height: 205px;
-        display: flex;
-        flex-direction: column;
-        background: transparent;
-        border: none;
+    .element-container:hover { 
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
     }
 
-     .element-container h4 {
+    .element-container h4 {
         margin-top: 4px;
         font-weight: bold;
-     }
-
-    figure {
-        background-color: transparent;
-        margin: 0 auto;
-        z-index: 1;
-    }
-
-    .chin-card {
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        height:100%;
-        text-align: center;
-        background-color: #FFFFFF;
-        transform: translateY(-60%);
-        width: 100%;
-        overflow-wrap: break-word;
-    }
-
-    .chin-card h4 {
-        margin-top: 60px;
-        width: 90%;
-        font-weight: bold;
+        font-size: 14px;
     }
 
     .element-title {
@@ -212,8 +184,27 @@ export default {
 
     .element-desc {
         color: grey;
-        margin-left: 9px;
-        margin-right: 30px;
+        font-size: 12px;
+    }
+
+    .ellipse-container {
+        display: block;
+        width: 160px;
+        height: 160px;
+        background: #FFFFFF;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        word-break: break-all;
+        text-align: center;
+    }
+
+    .ellipse-container:hover { 
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .ellipse-container h4 {
+        margin-top: 4px;
+        font-weight: bold;
+        font-size: 14px;
     }
 
     a.cover-link {

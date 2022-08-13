@@ -8,6 +8,7 @@ import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 import { VueWindowSizePlugin } from 'vue-window-size/option-api'
+import VueSplide from '@splidejs/vue-splide'
 import VueHotjar from 'vue-hotjar-next'
 
 const app = createApp(App)
@@ -15,6 +16,7 @@ app.use(store)
 app.use(router)
 app.use(BootstrapVue3)
 app.use(VueWindowSizePlugin)
+app.use(VueSplide)
 
 /*
 app.use(VueHotjar, {

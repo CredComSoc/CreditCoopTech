@@ -146,4 +146,8 @@ export default {
         width: 25px;
     }
 
+    .arrow-button img:hover {
+      transform: scale(1.2);
+    }
+
 </style>

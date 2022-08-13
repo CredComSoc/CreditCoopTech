@@ -349,6 +349,10 @@ a:hover {
   height: 100%;
 }
 
+.middle-logo:hover {
+  transform: scale(1.05);
+}
+
 #notice {
   position: absolute;
   height: 11px;

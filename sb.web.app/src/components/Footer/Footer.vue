@@ -52,8 +52,13 @@ export default {
         flex-shrink: 0;
     }
 
-    a{
+    a {
         color:black;
         text-decoration: none;
+    }
+
+    a:hover {
+        color:black;
+        text-decoration-line: underline;
     }
 </style>

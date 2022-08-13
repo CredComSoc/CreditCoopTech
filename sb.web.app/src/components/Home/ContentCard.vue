@@ -79,6 +79,10 @@ export default {
         right:5%;
     }
 
+    .outer-btn:hover {
+        box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
+    }
+
     .all-action {
         font-size: 17px;
         line-height: 23px;

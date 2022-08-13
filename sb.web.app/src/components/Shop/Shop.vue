@@ -43,7 +43,7 @@
 <script>
 import Searchfield from '@/components/SharedComponents/searchfield.vue'
 import Alllistings from '@/components/Shop/all_listings.vue'
-import ListingPopup from '@/components/Shop/ListingPopup.vue'
+import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 import Categories from '@/components/Shop/Categories.vue'
 import FilterButton from '@/components/Shop/filterButton.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
