@@ -285,10 +285,15 @@ h5 {
     left: 1rem;
     bottom:0;
     margin-bottom: 0.5rem; 
-    display: inline-block;  
+    display: inline-block;
+    background-color: #CD9046;  
 }
 
-.cartBtn:hover, .chattBtn:hover, .closeBtn:hover{
+.closeBtn:hover {
+  background-color: #AD7E45;;
+}
+
+.cartBtn:hover, .chattBtn:hover {
   background: #457EAD;
 }
 
