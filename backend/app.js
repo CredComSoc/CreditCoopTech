@@ -2,7 +2,7 @@ const express = require('express');
 const server = require('./server');
 const dbConfig = require('./mongoDB-config')
 
-const port = 3002
+const port = 3000
 
 let app = express()
 

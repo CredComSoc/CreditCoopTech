@@ -2,8 +2,8 @@ import JsSHA from 'jssha'
 
 const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
 
-export const EXPRESS_URL = urlBase + ':3002' 
-export const CHAT_URL = urlBase + ':3003'
+export const EXPRESS_URL = urlBase + ':3000' 
+export const CHAT_URL = urlBase + ':3001'
 
 /*****************************************************************************
  * 

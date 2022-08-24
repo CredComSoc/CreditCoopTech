@@ -99,7 +99,6 @@ export default {
           let foundSearchword = true
           if (searchWord.length !== 0) {
             if (!article.title.match(new RegExp(searchWord, 'i')) && 
-                !article.shortDesc.match(new RegExp(searchWord, 'i')) &&
                 !article.longDesc.match(new RegExp(searchWord, 'i')) &&
                 !article.userUploader.match(new RegExp(searchWord, 'i'))
             ) {

@@ -158,144 +158,149 @@ module.exports = async function(dbUrl, dbFolder) {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
 
-    // update user online status
-    await dbo.collection("users").updateOne({"profile.accountName": req.user }, { $set: { 'profile.last_online': Date.now() }})
-
-    // get current user data
-    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-    const userId = user._id.toString()
-    delete user._id
-    delete user.password
-    data.user = user
-
-    // get article data
-    let articles = await dbo.collection("posts").find({}).toArray()
-    const myArticles = []
-    const allArticles = []
-    for (let article of articles) {
-      const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
-      article.userUploader = articleUser.profile.accountName
-
-      if(article.userId.toString() === userId.toString()) {
-        myArticles.push(article)
-      }
-
-      const now = new Date()
-      const chosenDate = article["end-date"]
-      if (now.getTime() < chosenDate.getTime()) {
-        allArticles.push(article)
-      }
-    }
-    data.myArticles = myArticles
-    data.allArticles = allArticles
-
-    // get all members profile data
-    const users = await dbo.collection("users").find({}).toArray()
-    const allMembers = []
-    for (const user of users) {
-      let userData = user.profile
-      userData.is_admin = user.is_admin
-      userData.email = user.email
-      allMembers.push(userData)
-    }
-    data.allMembers = allMembers
-
-    // get cart data
-    const carts = await dbo.collection("carts").find({}).toArray()
-    const myCart = []
-    for (const cart of carts) {
-      if (cart.cartOwner === user.profile.accountName) {
-        myCart.push(cart)
-      }
-    }
-    data.myCart = myCart
-
-    // get saldo
     try {
-      const response = await axios.get(CC_NODE_URL + '/account/summary', { 
-      headers: {
-       'cc-user': userId,
-       'cc-auth': '1'
-      }})
-      data.saldo = response.data[userId].completed.balance
-    } catch (error) {
-      console.log(error)
-    }
+      // update user online status
+      await dbo.collection("users").updateOne({"profile.accountName": req.user }, { $set: { 'profile.last_online': Date.now() }})
 
-    // get requests
-    try {
-      const response = await axios.get(CC_NODE_URL + '/transactions', { 
-      headers: {
-       'cc-user': userId,
-       'cc-auth': '1'
-      },
-      params: {
-        'payee': userId
-      }})
-      let userNames = {}
-      for (const entry of response.data) {
-        if(!(entry.entries[0].payee in userNames)) {
-          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-          userNames[entry.entries[0].payee] = payee.profile.accountName   
-        }
-        if(!(entry.entries[0].payer in userNames)) {
-          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-          userNames[entry.entries[0].payer] = payer.profile.accountName   
-        }
-        if(!(entry.entries[0].author in userNames)) {
-          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-          userNames[entry.entries[0].author] = author.profile.accountName   
-        }
-        entry.entries[0].payee = userNames[entry.entries[0].payee]
-        entry.entries[0].payer = userNames[entry.entries[0].payer]
-        entry.entries[0].author = userNames[entry.entries[0].author]
-      }
-      data.requests = response.data
-    } catch (error) {
-      console.log(error)
-    }
+      // get current user data
+      let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+      const userId = user._id.toString()
+      delete user._id
+      delete user.password
+      data.user = user
 
-    // get purchases
-    try {
-      const response = await axios.get(CC_NODE_URL + '/transactions', { 
-      headers: {
-      'cc-user': userId,
-      'cc-auth': '1'
-      },
-      params: {
-        'payer': userId
-      }})
-      let userNames = {}
-      for (const entry of response.data) {
-        if(!(entry.entries[0].payee in userNames)) {
-          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-          userNames[entry.entries[0].payee] = payee.profile.accountName   
-        }
-        if(!(entry.entries[0].payer in userNames)) {
-          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-          userNames[entry.entries[0].payer] = payer.profile.accountName   
-        }
-        if(!(entry.entries[0].author in userNames)) {
-          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-          userNames[entry.entries[0].author] = author.profile.accountName   
-        }
-        entry.entries[0].payee = userNames[entry.entries[0].payee]
-        entry.entries[0].payer = userNames[entry.entries[0].payer]
-        entry.entries[0].author = userNames[entry.entries[0].author]
+      // get article data
+      let articles = await dbo.collection("posts").find({}).toArray()
+      const myArticles = []
+      const allArticles = []
+      for (let article of articles) {
+        const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
+        article.userUploader = articleUser.profile.accountName
 
-        if (entry.state === 'completed') {
-          data.completedPurchases.push(entry)
-        } else if (entry.state === 'pending') {
-          data.pendingPurchases.push(entry)
+        if(article.userId.toString() === userId.toString()) {
+          myArticles.push(article)
+        }
+
+        const now = new Date()
+        const chosenDate = article["end-date"]
+        if (now.getTime() < chosenDate.getTime()) {
+          allArticles.push(article)
         }
       }
-    } catch (error) {
-      console.log(error)
+      data.myArticles = myArticles
+      data.allArticles = allArticles
+
+      // get all members profile data
+      const users = await dbo.collection("users").find({}).toArray()
+      const allMembers = []
+      for (const user of users) {
+        let userData = user.profile
+        userData.is_admin = user.is_admin
+        userData.email = user.email
+        allMembers.push(userData)
+      }
+      data.allMembers = allMembers
+
+      // get cart data
+      const carts = await dbo.collection("carts").find({}).toArray()
+      const myCart = []
+      for (const cart of carts) {
+        if (cart.cartOwner === user.profile.accountName) {
+          myCart.push(cart)
+        }
+      }
+      data.myCart = myCart
+
+      // get saldo
+      try {
+        const response = await axios.get(CC_NODE_URL + '/account/summary', { 
+        headers: {
+        'cc-user': userId,
+        'cc-auth': '1'
+        }})
+        data.saldo = response.data[userId].completed.balance
+      } catch (error) {
+        console.log(error)
+      }
+
+      // get requests
+      try {
+        const response = await axios.get(CC_NODE_URL + '/transactions', { 
+        headers: {
+        'cc-user': userId,
+        'cc-auth': '1'
+        },
+        params: {
+          'payee': userId
+        }})
+        let userNames = {}
+        for (const entry of response.data) {
+          if(!(entry.entries[0].payee in userNames)) {
+            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+            userNames[entry.entries[0].payee] = payee.profile.accountName   
+          }
+          if(!(entry.entries[0].payer in userNames)) {
+            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+            userNames[entry.entries[0].payer] = payer.profile.accountName   
+          }
+          if(!(entry.entries[0].author in userNames)) {
+            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+            userNames[entry.entries[0].author] = author.profile.accountName   
+          }
+          entry.entries[0].payee = userNames[entry.entries[0].payee]
+          entry.entries[0].payer = userNames[entry.entries[0].payer]
+          entry.entries[0].author = userNames[entry.entries[0].author]
+        }
+        data.requests = response.data
+      } catch (error) {
+        console.log(error)
+      }
+
+      // get purchases
+      try {
+        const response = await axios.get(CC_NODE_URL + '/transactions', { 
+        headers: {
+        'cc-user': userId,
+        'cc-auth': '1'
+        },
+        params: {
+          'payer': userId
+        }})
+        let userNames = {}
+        for (const entry of response.data) {
+          if(!(entry.entries[0].payee in userNames)) {
+            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+            userNames[entry.entries[0].payee] = payee.profile.accountName   
+          }
+          if(!(entry.entries[0].payer in userNames)) {
+            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+            userNames[entry.entries[0].payer] = payer.profile.accountName   
+          }
+          if(!(entry.entries[0].author in userNames)) {
+            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+            userNames[entry.entries[0].author] = author.profile.accountName   
+          }
+          entry.entries[0].payee = userNames[entry.entries[0].payee]
+          entry.entries[0].payer = userNames[entry.entries[0].payer]
+          entry.entries[0].author = userNames[entry.entries[0].author]
+
+          if (entry.state === 'completed') {
+            data.completedPurchases.push(entry)
+          } else if (entry.state === 'pending') {
+            data.pendingPurchases.push(entry)
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+
+      db.close()
+
+      res.status(200).send(data)
+    } catch {
+      db.close()
+      res.status(200).send(data)
     }
-
-    db.close()
-
-    res.status(200).send(data)
   })
 
   /*****************************************************************************

@@ -13,6 +13,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.2",
     "@react-leaflet/core": ">=1.0.0 <1.1.0 || ^1.1.1",
+    "@splidejs/splide": "^4.0.7",
     "@splidejs/vue-splide": "^0.6.7",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.1.3",
