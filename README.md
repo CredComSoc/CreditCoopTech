@@ -16,7 +16,6 @@ Cooperative Barter Software is an online trading post for entrepreneurs. Created
 Follow the instructions in cc-node/INSTALL.md
 
 __Note:__
-
 The above instructions will probably result in a non-functional cc-node, as the latest (2022-08-29) version of cc-php-lib is not compatible with the cc-node version used in this project. The included cc-node.zip contains a pre-installed cc-node that can be used instead (PHP, MySQL, etc still needs to be installed).
 
 ### Install Express.js backend
