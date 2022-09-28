@@ -79,6 +79,17 @@
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
+          <div id="navbar-FAQ" class="navlogo">
+            <router-link :to="{name:'FAQ'}">
+              <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/notice.png" />
+                  <figcaption class="l-text"> FAQ </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> FAQ </span>
+            </router-link>
+          </div>
           <div id="navbar-profile" @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
