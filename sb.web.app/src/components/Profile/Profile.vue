@@ -22,12 +22,15 @@
       <MyArticles v-else-if="this.tab==='articles'"/>
       <MyRequests v-else-if="this.tab==='requests'"/>
       <MyProfile v-else/>
-    </div>
+    </div> 
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+// @ is an alias to /src 
+
+
+// tesar
 import MyProfile from '@/components/Profile/MyProfile.vue'
 import MyPurchases from '@/components/Profile/MyPurchases.vue'
 import MyArticles from '@/components/Profile/MyArticles.vue'
