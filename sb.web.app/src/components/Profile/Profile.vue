@@ -12,15 +12,17 @@
       <h1 className="title" > MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='transactions' }" id='profile'>Min profil</a>
       <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
       <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Mina artiklar</a>
       <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
+      <a href='#' @click="this.tab='transactions'" :class="{ active: this.tab==='transactions' }" id='transactions'> Transaktionshistorik</a>
     </div>
     <div className="content flexbox-item">
       <MyPurchases v-if="this.tab==='purchases'"/>
       <MyArticles v-else-if="this.tab==='articles'"/>
       <MyRequests v-else-if="this.tab==='requests'"/>
+      <MyTransactions v-else-if="this.tab==='transactions'"/>
       <MyProfile v-else/>
     </div> 
   </div>
@@ -28,13 +30,11 @@
 
 <script>
 // @ is an alias to /src 
-
-
-// tesar
 import MyProfile from '@/components/Profile/MyProfile.vue'
 import MyPurchases from '@/components/Profile/MyPurchases.vue'
 import MyArticles from '@/components/Profile/MyArticles.vue'
 import MyRequests from '@/components/Profile/MyRequests.vue'
+import MyTransactions from '@/components/Profile/MyTransactions.vue'
 
 export default {
   data () {
@@ -45,7 +45,8 @@ export default {
     MyProfile,
     MyPurchases,
     MyArticles,
-    MyRequests
+    MyRequests,
+    MyTransactions
   },
   created () {
     if (this.$route.params.tab) {
