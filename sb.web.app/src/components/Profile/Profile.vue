@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div className="flexbox-container">
     <div v-if="isMobile()">
       <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
