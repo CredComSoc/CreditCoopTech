@@ -1,16 +1,16 @@
 <template >
     <div >
         <div>
-            <table class="">
+            <table>
                 <tr>
-                    <th style="border: 1px solid black"><h1 style="border: 1px solid black; width: 50%;">Saldo</h1></th>
-                    <th style="border: 1px solid black"><h1 style="border: 1px solid black; width: 50%;">Kreditgräns</h1></th>
-                    <th style="border: 1px solid black"><h1 style="border: 1px solid black; width: 50%;">Tillgängligt belopp</h1></th>     
+                    <th style="width: 33%"><h1>Saldo</h1></th>
+                    <th style="width: 33%"><h1>Kreditgräns</h1></th>
+                    <th style="width: 33%"><h1>Tillgängligt belopp</h1></th>     
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>100kr</td>
+                    <td>50kr</td>
+                    <td>50kr</td>
                     
                 </tr>
             </table>
@@ -20,10 +20,9 @@
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
-          <th>Företag</th>
-          <th>Artikel</th>
-          <th>Antal</th>
-          <th>Pris</th>
+          <th>Datum</th>
+          <th>Betalare</th>
+          <th>Mottagare</th>
           <th>Summa</th>
           <th>Tidstämpel</th>
           <th>Faktura</th>      
@@ -39,36 +38,6 @@
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
       </table>
-      </div>
-
-      <h1><b> Väntande köp </b></h1>
-      <div>
-        <p v-if="pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
-      </div>
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
-        <table>
-          <tr>
-            <th>Företag</th>
-            <th>Artikel</th>
-            <th>Antal</th>
-            <th>Pris</th>
-            <th>Summa</th>
-            <th>Tidstämpel</th>
-            <th>Status</th>
-          </tr>
-          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
-            <td>{{item.entries[0].payee}}</td>
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <th>{{item.written}}</th>
-            <td id="buttons">
-              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
-            </td>
-          </tr>
-        </table>
       </div>
     </div>
 </template>
