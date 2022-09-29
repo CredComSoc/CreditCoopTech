@@ -1,7 +1,7 @@
-<template>
+<template> 
   <div id="header-box" class="header-container">
     <header>
-      <nav>
+      <nav> 
         <div class="left-logos" v-if="this.desc">
             <div id="navbar-shop" class="navlogo">
               <router-link :to="{name:'Shop'}">
