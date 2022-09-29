@@ -131,7 +131,7 @@ module.exports = async function(dbUrl, dbFolder) {
     }
   })
   
-  
+  //uses axios.get with data cc-user set to current user and cc-auth =1 to get the saldo of the user from the cc-node.
   router.get("/saldo", async (req, res) => {
     const user = await getUser({'profile.accountName': req.user}) 
     try {

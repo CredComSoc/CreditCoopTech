@@ -394,7 +394,7 @@ export async function createTransactions (cart) {
  *                                Saldo
  *                 
  *****************************************************************************/
-
+//calls the backend router for the router.get(/saldo located in file ccRequests.js 
 export async function getSaldo () {
   const promise = await fetch(EXPRESS_URL + '/saldo', {
     method: 'GET',
