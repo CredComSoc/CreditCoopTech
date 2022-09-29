@@ -108,9 +108,10 @@ export default {
             }
             this.$store.commit('replaceMyCartSize', cartSize)
           }
+          
+          if (data.user.saldo) {
+            this.$store.commit('replaceSaldo', data.user.saldo)
 
-          if (data.saldo) {
-            this.$store.commit('replaceSaldo', data.saldo)
           }
 
           if (data.requests) {
