@@ -79,17 +79,26 @@
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
-          <div id="navbar-FAQ" class="navlogo">
-            <router-link :to="{name:'FAQ'}">
-              <figure class="logo-click">
+
+          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
+            <div id="faq-dropdown" class="dropdown"></div>
+            <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
+              <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
                   <img src="../../assets/navbar_logos/notice.png" />
                   <figcaption class="l-text"> FAQ </figcaption>
               </figure>
             </router-link>
+            <div id="faq-content" @mouseover="highlightLogo" class="dropdown-content">
+                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">FAQ</router-link></div>
+                  <router-link :to="{name:'FAQ', params:{tab: 'questions'}}">Vanliga frågor</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'background'}}">Bakgrund</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'traderules'}}">Handlingsregler</router-link>
+                </div>
             <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> FAQ </span>
             </router-link>
           </div>
+
           <div id="navbar-profile" @mouseover="displayDropdown" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
@@ -264,6 +273,20 @@ export default {
         content.style.display = 'block'
       }
     },
+
+    highlightFAQLogo () {
+      if (!this.isActive) {
+        const logo = document.getElementById('faq-logo')
+        logo.classList.add('active-dropdown')
+      }
+    },
+    displayFAQDropdown () {
+      if (!this.dropdownActive && !this.isActive) {
+        const content = document.getElementById('faq-content')
+        content.style.display = 'block'
+      }
+    },
+
     logOut () {
       logout().then(() => {
         window.location.reload()
