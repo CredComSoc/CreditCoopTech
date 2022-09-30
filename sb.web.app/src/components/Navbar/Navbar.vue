@@ -68,6 +68,25 @@
           <div id="navbar-notifications" class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
               <Notifications></Notifications>
           </div> 
+          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
+            <div id="faq-dropdown" class="dropdown"></div>
+            <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
+              <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
+                  <img src="../../assets/navbar_logos/notice.png" />
+                  <figcaption class="l-text"> FAQ </figcaption>
+              </figure>
+            </router-link>
+            <div id="faq-content" @mouseover="highlightFAQLogo" class="dropdown-content">
+                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">Vanliga frågor</router-link></div>
+                  <router-link :to="{name:'FAQ', params:{tab: 'background'}}">Bakgrund</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'usefulcontacts'}}">Användbara kontakter</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'traderules'}}">Handlingsregler</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'statues'}}">Stadgar</router-link>
+                </div>
+            <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> FAQ </span>
+            </router-link>
+          </div>
           <div id="navbar-chat" class="navlogo">
             <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
@@ -77,25 +96,6 @@
             </router-link>
             <router-link :to="{name: 'Chat'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> Meddelanden </span>
-            </router-link>
-          </div>
-
-          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
-            <div id="faq-dropdown" class="dropdown"></div>
-            <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
-              <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
-                  <img src="../../assets/navbar_logos/notice.png" />
-                  <figcaption class="l-text"> FAQ </figcaption>
-              </figure>
-            </router-link>
-            <div id="faq-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">FAQ</router-link></div>
-                  <router-link :to="{name:'FAQ', params:{tab: 'questions'}}">Vanliga frågor</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'background'}}">Bakgrund</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'traderules'}}">Handlingsregler</router-link>
-                </div>
-            <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> FAQ </span>
             </router-link>
           </div>
 
@@ -185,6 +185,12 @@ export default {
         profileDrop.style.display = 'none'
         const profileLogo = document.getElementById('profile-logo')
         profileLogo.classList.remove('active-dropdown')
+      }
+      const faqDrop = document.getElementById('faq-content')
+      if (faqDrop != null) {
+        faqDrop.style.display = 'none'
+        const faqLogo = document.getElementById('faq-logo')
+        faqLogo.classList.remove('active-dropdown')
       }
       
       if (this.dropdownActive) {
