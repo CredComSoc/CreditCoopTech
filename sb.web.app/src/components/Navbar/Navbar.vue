@@ -72,7 +72,8 @@
             <div id="faq-dropdown" class="dropdown"></div>
             <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
               <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
-                  <img src="../../assets/navbar_logos/notice.png" />
+                  <img src="../../assets/navbar_logos/question.png" style="height:24px; width:24px" />
+              
                   <figcaption class="l-text"> FAQ </figcaption>
               </figure>
             </router-link>
@@ -593,7 +594,7 @@ figcaption {
     background: #fff;
     cursor: pointer;
   }
-
+ 
   nav a:hover {
     color: grey;
   }
