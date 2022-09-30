@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const {MongoClient} = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
 
-const CC_NODE_URL = 'http://127.0.0.1/cc-node'
+const CC_NODE_URL = 'http://sb-ledger.mutualcredit.services'
 
 
 // Routes that make requests to the Credits Common Node on behalf of the user,
