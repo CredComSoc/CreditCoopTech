@@ -14,8 +14,9 @@ import userProfile from '../components/Members/userProfile.vue'
 import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 import Chat from '../components/Chat/Chat.vue'
 import About from '../components/Footer/About.vue'
+import Event from '../components/Event/Event.vue'
 
-const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat']
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
 const adminRoutes = ['AdminHome']
 
 const routes = [
@@ -80,6 +81,13 @@ const routes = [
     path: '/chat',
     name: 'Chat',
     component: Chat,
+    props: true
+  },
+
+  {
+    path: '/Event',
+    name: 'Event',
+    component: Event,
     props: true
   },
   {
