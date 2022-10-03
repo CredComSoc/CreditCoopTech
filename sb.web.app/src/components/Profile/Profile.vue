@@ -12,17 +12,17 @@
       <h1 className="title" > MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='transactions' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'>Min profil</a>
       <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
       <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Mina artiklar</a>
       <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
-      <a href='#' @click="this.tab='transactions'" :class="{ active: this.tab==='transactions' }" id='transactions'> Transaktionshistorik</a>
+      <a href='#' @click="this.tab='economy'" :class="{ active: this.tab==='economy' }" id='economy'>Min Ekonomi</a>
     </div>
     <div className="content flexbox-item">
       <MyPurchases v-if="this.tab==='purchases'"/>
       <MyArticles v-else-if="this.tab==='articles'"/>
       <MyRequests v-else-if="this.tab==='requests'"/>
-      <MyTransactions v-else-if="this.tab==='transactions'"/>
+      <MyEconomy v-else-if="this.tab==='economy'"/>
       <MyProfile v-else/>
     </div> 
   </div>
@@ -34,7 +34,7 @@ import MyProfile from '@/components/Profile/MyProfile.vue'
 import MyPurchases from '@/components/Profile/MyPurchases.vue'
 import MyArticles from '@/components/Profile/MyArticles.vue'
 import MyRequests from '@/components/Profile/MyRequests.vue'
-import MyTransactions from '@/components/Profile/MyTransactions.vue'
+import MyEconomy from '@/components/Profile/MyEconomy.vue'
 
 export default {
   data () {
@@ -46,7 +46,7 @@ export default {
     MyPurchases,
     MyArticles,
     MyRequests,
-    MyTransactions
+    MyEconomy
   },
   created () {
     if (this.$route.params.tab) {

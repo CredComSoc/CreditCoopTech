@@ -92,7 +92,7 @@
                   <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'articles'}}">Mina artiklar</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: 'transactions'}}">Min Transaktionshistorik</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'economy'}}">Min Ekonomi</router-link>
                 </div>
               </div>
               <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">

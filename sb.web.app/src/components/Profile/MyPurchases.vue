@@ -75,6 +75,7 @@ export default {
     Listing
   },
   methods: {
+    
     invoice (filename, item) {
       console.log(item.entries[0])
       const pom = document.createElement('a')
