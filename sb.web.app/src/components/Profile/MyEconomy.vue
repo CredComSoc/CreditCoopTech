@@ -12,7 +12,7 @@
                     <td>100kr</td>
                     <td>50kr</td>
                     <td>50kr</td>
-                    <td>50kr</td>
+                    <td>5000kr</td>
                     
                 </tr>
             </table>
