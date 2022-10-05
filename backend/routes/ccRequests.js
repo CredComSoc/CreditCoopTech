@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const {MongoClient} = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
 
-const CC_NODE_URL = 'http://127.0.0.1/cc-node'
+const CC_NODE_URL = 'http://sb-ledger.mutualcredit.services'
 
 
 // Routes that make requests to the Credits Common Node on behalf of the user,
@@ -131,7 +131,7 @@ module.exports = async function(dbUrl, dbFolder) {
     }
   })
   
-  
+  //uses axios.get with data cc-user set to current user and cc-auth =1 to get the saldo of the user from the cc-node.
   router.get("/saldo", async (req, res) => {
     const user = await getUser({'profile.accountName': req.user}) 
     try {

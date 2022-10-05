@@ -1,7 +1,7 @@
 import JsSHA from 'jssha'
 
 //const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
-const urlBase = 'http://localhost'
+const urlBase = 'http://sb.mutualcredit.services'
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
 
@@ -394,7 +394,7 @@ export async function createTransactions (cart) {
  *                                Saldo
  *                 
  *****************************************************************************/
-
+//calls the backend router for the router.get(/saldo located in file ccRequests.js 
 export async function getSaldo () {
   const promise = await fetch(EXPRESS_URL + '/saldo', {
     method: 'GET',
