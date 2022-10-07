@@ -212,6 +212,7 @@ module.exports = async function(dbUrl, dbFolder) {
       data.myCart = myCart
 
       // get saldo
+      /*
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
         headers: {
@@ -290,10 +291,11 @@ module.exports = async function(dbUrl, dbFolder) {
             data.pendingPurchases.push(entry)
           }
         }
+      
       } catch (error) {
         console.log(error)
       }
-
+      */
       db.close()
 
       res.status(200).send(data)
@@ -907,7 +909,7 @@ module.exports = async function(dbUrl, dbFolder) {
     return res.status(200).send("Email successfully sent")
   })
 
-  return { 'router': router, 'conn': conn }
+  
 
 
 /*****************************************************************************
@@ -920,14 +922,18 @@ router.post('/upload/event', async (req, res) => {
   if (!req.isAuthenticated()) {
     res.sendStatus(401)
   } else {
-    const tmpevent = JSON.parse(req.body.event);
+    console.log("........................trying to read JSNO................")
+    console.log("här kommer data till backend: " + req.body.eventdata)
     
+    const tmpevent = JSON.parse(req.body.eventdata);
+    //const tmpevent = JSON.parse(req.body); 
     let newEvent = {
-      id: tmpevent.id,
-      title: tmpevent.title,
-      start: tmpevent.start,
-      end: tmpevent.end,
-      allDay: tmpevent.allDay
+      "id": tmpevent.id,
+      "title": tmpevent.title,
+      "start": tmpevent.start,
+      "end": tmpevent.end,
+      "allDay": tmpevent.allDay,
+      "test" : 'test'
     }
 
     const user = await getUser({'profile.accountName': req.user})
@@ -955,4 +961,5 @@ router.post('/upload/event', async (req, res) => {
     })
   }
 })
+return { 'router': router, 'conn': conn }
 };

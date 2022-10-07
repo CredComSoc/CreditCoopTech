@@ -677,11 +677,12 @@ export async function getChatHistories () {
 *                 
 *****************************************************************************/
 
-export async function uploadEvent (data) {
+export async function uploadEvent (edata) {
+  console.log('hä är data i frontend: ' + edata) //Skrivs ut som fFOmrdata
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
     credentials: 'include',
-    body: data // This is your file object
+    body: edata // This is your file object
   }).then((res) => {
     return res
   }).then((success) => {

@@ -59,17 +59,17 @@ export default {
           allDay: selectInfo.allDay
         })
         //Lägg till ovanstående i databasen
-
+        
         const newEvent = {
           id: eventId,
-          title,
+          title: title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay
         }
         this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
         const data = new FormData()
-        data.append('event', JSON.stringify(this.newEvent))
+        data.append('eventdata', JSON.stringify(newEvent))
         uploadEvent(data).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
@@ -78,7 +78,7 @@ export default {
             this.error = true
             this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
           }
-        })
+        })        
       }
     },
     handleEventClick (clickInfo) {
@@ -89,8 +89,29 @@ export default {
     handleEvents (events) {
       this.currentEvents = events
     }
-    //   postEvent(){
-    // }
+    /*   
+    postEvent(){
+      const newEvent = {
+      id: eventId,
+      title,
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay
+    }
+        
+      const data = new FormData()
+      data.append('event', JSON.stringify(this.newEvent))
+      uploadEvent(data).then((res) => {
+        if (res.status === 200) {
+          this.isPublished = true // open popup with success message
+          this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
+        } else {
+          this.error = true
+          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
+        }
+        })
+    }
+    */
   }
 }
 </script>
