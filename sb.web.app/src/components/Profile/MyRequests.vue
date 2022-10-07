@@ -53,7 +53,7 @@ export default {
     Listing,
     PopupCard
   },
-  data () {
+  data () {  
     return {
       requests: [],
       payerNotEnoughBkr: false,
