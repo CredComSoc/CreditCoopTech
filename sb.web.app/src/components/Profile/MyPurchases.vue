@@ -78,11 +78,11 @@
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
         <p2>Filter:
-        <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'>Senaste Först</a>
-        <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Senaste Sist</a>
-        <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Företag</a>
-        <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Pris</a>
-        <a href='#' @click="this.tab='economy'" :class="{ active: this.tab==='economy' }" id='economy'>Summa</a>
+        <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Senaste Först</a>
+        <a href='#' @click="this.tab='latestlast'" :class="{ active: this.tab==='latestlast' }">Senaste Sist</a>
+        <a href='#' @click="this.tab='business'" :class="{ active: this.tab==='business' }">Företag</a>
+        <a href='#' @click="this.tab='price'" :class="{ active: this.tab==='price' }">Pris</a>
+        <a href='#' @click="this.tab='sum'" :class="{ active: this.tab==='sum' }">Summa</a>
         </p2>
     </div>
       
