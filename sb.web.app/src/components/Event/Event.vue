@@ -32,8 +32,8 @@ export default {
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents
+        //       eventAdd: this.postEvent
         /* you can update a remote database when these fire:
-        eventAdd:
         eventChange:
         eventRemove:
         */
@@ -49,35 +49,36 @@ export default {
       const title = prompt('Please enter a new title for your event')
       const calendarApi = selectInfo.view.calendar
       calendarApi.unselect() // clear date selection
-      eventId =  createEventId()
+      const eventId = createEventId()
       if (title) {
         calendarApi.addEvent({
           id: eventId,
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
+          allDay: selectInfo.allDay
         })
         //Lägg till ovanstående i databasen
 
-        let newEvent = {
+        const newEvent = {
           id: eventId,
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
+          allDay: selectInfo.allDay
         }
-        const data = new FormData();
+        this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
+        const data = new FormData()
         data.append('event', JSON.stringify(this.newEvent))
         uploadEvent(data).then((res) => {
-        if (res.status === 200) {
-          this.isPublished = true // open popup with success message
-        } else {
-          this.error = true
-          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
-        }
-      })
-
+          if (res.status === 200) {
+            this.isPublished = true // open popup with success message
+            this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
+          } else {
+            this.error = true
+            this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
+          }
+        })
       }
     },
     handleEventClick (clickInfo) {
@@ -88,6 +89,8 @@ export default {
     handleEvents (events) {
       this.currentEvents = events
     }
+    //   postEvent(){
+    // }
   }
 }
 </script>
