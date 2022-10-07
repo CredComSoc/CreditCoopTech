@@ -908,4 +908,51 @@ module.exports = async function(dbUrl, dbFolder) {
   })
 
   return { 'router': router, 'conn': conn }
-}
+
+
+/*****************************************************************************
+* 
+*                                Events
+*                 
+*****************************************************************************/
+
+router.post('/upload/event', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    res.sendStatus(401)
+  } else {
+    const tmpevent = JSON.parse(req.body.event);
+    
+    let newEvent = {
+      id: tmpevent.id,
+      title: tmpevent.title,
+      start: tmpevent.start,
+      end: tmpevent.end,
+      allDay: tmpevent.allDay
+    }
+
+    const user = await getUser({'profile.accountName': req.user})
+    
+    // for ttl index in posts
+    //if ('end-date' in newArticle) {
+      //newArticle['end-date'] = new Date(newArticle['end-date']);
+    //}
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    dbo.collection("events").insertOne(newEvent, (err, result)=>{
+      if (err) {
+        res.sendStatus(500)
+        db.close()
+      }
+      else if (result != null) {
+        res.sendStatus(200);
+        db.close()
+      }
+      else {
+        // If we dont find a result
+        db.close();
+        res.status(404).send("No posts found.")
+      }
+    })
+  }
+})
+};

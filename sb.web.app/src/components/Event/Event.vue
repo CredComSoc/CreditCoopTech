@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { uploadEvent } from '../../serverFetch'
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -48,14 +49,35 @@ export default {
       const title = prompt('Please enter a new title for your event')
       const calendarApi = selectInfo.view.calendar
       calendarApi.unselect() // clear date selection
+      eventId =  createEventId()
       if (title) {
         calendarApi.addEvent({
-          id: createEventId(),
+          id: eventId,
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay
+          allDay: selectInfo.allDay,
         })
+        //Lägg till ovanstående i databasen
+
+        let newEvent = {
+          id: eventId,
+          title,
+          start: selectInfo.startStr,
+          end: selectInfo.endStr,
+          allDay: selectInfo.allDay,
+        }
+        const data = new FormData();
+        data.append('event', JSON.stringify(this.newEvent))
+        uploadEvent(data).then((res) => {
+        if (res.status === 200) {
+          this.isPublished = true // open popup with success message
+        } else {
+          this.error = true
+          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
+        }
+      })
+
       }
     },
     handleEventClick (clickInfo) {

@@ -670,3 +670,23 @@ export async function getChatHistories () {
     })
   return promise
 }
+
+/*****************************************************************************
+* 
+*                                Event
+*                 
+*****************************************************************************/
+
+export async function uploadEvent (data) {
+  return await fetch(EXPRESS_URL + '/upload/event', { 
+    method: 'POST',
+    credentials: 'include',
+    body: data // This is your file object
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}
