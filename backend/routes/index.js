@@ -210,7 +210,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       }
       data.myCart = myCart
-
+      /*
       // get saldo
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
@@ -293,7 +293,7 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
-
+      */
       db.close()
 
       res.status(200).send(data)
@@ -907,7 +907,7 @@ module.exports = async function(dbUrl, dbFolder) {
     return res.status(200).send("Email successfully sent")
   })
 
-  return { 'router': router, 'conn': conn }
+  
 
 
 /*****************************************************************************
@@ -920,21 +920,23 @@ router.post('/upload/event', async (req, res) => {
   if (!req.isAuthenticated()) {
     res.sendStatus(401)
   } else {
-    const tmpevent = JSON.parse(req.body.event);
+    
+    console.log(req.body) //shows contents of body in terminal
     
     let newEvent = {
-      id: tmpevent.id,
-      title: tmpevent.title,
-      start: tmpevent.start,
-      end: tmpevent.end,
-      allDay: tmpevent.allDay
+      title: req.body.title,
+      start: new Date(req.body.eventstart),
+      end: new Date(req.body.eventend),
+      allDay: req.body.eventallDay
     }
-
+    
     const user = await getUser({'profile.accountName': req.user})
+    
+    newEvent.userId = user._id
     
     // for ttl index in posts
     //if ('end-date' in newArticle) {
-      //newArticle['end-date'] = new Date(newArticle['end-date']);
+    //newArticle['end-date'] = new Date(newArticle['end-date']);
     //}
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
@@ -955,4 +957,6 @@ router.post('/upload/event', async (req, res) => {
     })
   }
 })
+
+return { 'router': router, 'conn': conn }
 };

@@ -677,16 +677,37 @@ export async function getChatHistories () {
 *                 
 *****************************************************************************/
 
-export async function uploadEvent (data) {
+export async function uploadEvent (title, start, end, allDay) {
+  console.log(start)
+  console.log(title)
+  console.log(end)
+  console.log(allDay)
+  
+  /*const data = new FormData()
+  data.append('eventdata', JSON.stringify({
+    title: title,
+    start: start,
+    end: end,
+    allDay: allDay
+  }))*/
+
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
-    credentials: 'include',
-    body: data // This is your file object
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: title,
+      eventstart: start,
+      eventend: end,
+      eventallDay: allDay
+    }),
+    credentials: 'include'
   }).then((res) => {
     return res
   }).then((success) => {
     return success
   }).catch(error => {
     return error
-  }) 
+  })
 }

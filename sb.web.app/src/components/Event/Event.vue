@@ -59,18 +59,15 @@ export default {
           allDay: selectInfo.allDay
         })
         //Lägg till ovanstående i databasen
-
-        const newEvent = {
-          id: eventId,
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        }
-        this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
-        const data = new FormData()
-        data.append('event', JSON.stringify(this.newEvent))
-        uploadEvent(data).then((res) => {
+        /*
+        this.newEvent.id = eventId
+        this.newEvent.title = 
+        this.newEvent.start = selectInfo.startStr
+        this.newEvent.end = selectInfo.endStr
+        this.newEvent.allDay = selectInfo.allDay*/
+        //console.log(selectInfo.id)
+        
+        uploadEvent(title, selectInfo.start, selectInfo.end, selectInfo.allDay).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
             this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
