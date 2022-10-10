@@ -86,8 +86,29 @@ export default {
     handleEvents (events) {
       this.currentEvents = events
     }
-    //   postEvent(){
-    // }
+    /*   
+    postEvent(){
+      const newEvent = {
+      id: eventId,
+      title,
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay
+    }
+        
+      const data = new FormData()
+      data.append('event', JSON.stringify(this.newEvent))
+      uploadEvent(data).then((res) => {
+        if (res.status === 200) {
+          this.isPublished = true // open popup with success message
+          this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
+        } else {
+          this.error = true
+          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
+        }
+        })
+    }
+    */
   }
 }
 </script>

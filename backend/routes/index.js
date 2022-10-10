@@ -210,8 +210,9 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       }
       data.myCart = myCart
-      /*
+
       // get saldo
+      /*
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
         headers: {
@@ -290,6 +291,7 @@ module.exports = async function(dbUrl, dbFolder) {
             data.pendingPurchases.push(entry)
           }
         }
+      
       } catch (error) {
         console.log(error)
       }
