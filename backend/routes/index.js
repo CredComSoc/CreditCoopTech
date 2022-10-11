@@ -210,7 +210,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       }
       data.myCart = myCart
-
+/*
       // get saldo
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
@@ -222,9 +222,10 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
+      */
 
       // get requests
-      try {
+      /*try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
         'cc-user': userId,
@@ -254,10 +255,36 @@ module.exports = async function(dbUrl, dbFolder) {
         data.requests = response.data
       } catch (error) {
         console.log(error)
+      }*/
+      try{
+      const transaction = await dbo.collection("transaction").find({}).toArray()
+      /*
+      let userNames = {}
+      for (const entry of transaction) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]
       }
-
+      */
+      data.requests = transaction
+     }
+     catch (error) {
+      console.log(error)
+    }
       // get purchases
-      try {
+     /* try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
         'cc-user': userId,
@@ -292,7 +319,38 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       } catch (error) {
         console.log(error)
-      }
+      }*/
+      try{
+      const purchases = await dbo.collection("transaction").find({}).toArray()
+     
+     // userNames = {}
+      for (const entry of purchases) {/*
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author]*/
+        if (entry.state === 'completed') {
+          data.completedPurchases.push(entry)
+        } else if (entry.state === 'pending') {
+          data.pendingPurchases.push(entry)
+        }
+      }   
+    }
+    catch (error) {
+      console.log(error)
+    }
+
 
       db.close()
 

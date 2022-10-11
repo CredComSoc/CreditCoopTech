@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const {MongoClient} = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
 
-const CC_NODE_URL = 'http://127.0.0.1/cc-node'
+const CC_NODE_URL = 'http://sb-ledger.mutualcredit.services'
 
 
 // Routes that make requests to the Credits Common Node on behalf of the user,
@@ -65,6 +65,20 @@ module.exports = async function(dbUrl, dbFolder) {
       res.sendStatus(500)
       return
     }
+    //tesing temporary code----------------------
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    const article_data = {
+      "payee"       : payee._id.toString(), 
+      "payer"       : payer._id.toString(),
+      "quant"       : article.quantity * parseInt(article.price), //summa
+      "description" : article.article,
+      "type"        : "credit",
+      "metadata"    : {"id" : article.id, "quantity": article.quantity},
+      "state"       : "pending"}
+    const result = await dbo.collection("transaction").insertOne(article_data)
+    db.close()
+//-------------------------------------
     let response
     try {
       response = await axios.post(CC_NODE_URL + '/transaction', 
