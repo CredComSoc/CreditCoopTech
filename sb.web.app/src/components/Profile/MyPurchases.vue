@@ -13,6 +13,7 @@
           <th>Tidstämpel</th>
           <th>Faktura</th>      
         </tr>
+        <!--
         <tr v-for="(item) in this.$store.state.completedPurchases" :key="item">
           <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
@@ -22,10 +23,21 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
-        </tr>
+        </tr>-->
+        <tr v-for="(item) in this.$store.state.requests" :key="item">
+          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.payee}}</td>
+          <td v-if="item.metadata.id !== '0'"><Listing :listingObj="getListing(item)" /></td>
+          <!--  <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.metadata.quantity}}</td>
+          <td>{{item.quant / item.metadata.quantity}}</td>
+          <td>{{item.quant}}</td>
+          <th>{{item.written}}</th>
+          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+        --></tr>
       </table>
       </div>
-
+<!--
       <h1><b> Väntande köp </b></h1>
       <div>
         <p v-if="pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
@@ -55,7 +67,9 @@
           </tr>
         </table>
       </div>
+    -->
     </div>
+    
 </template>
 
 <script>

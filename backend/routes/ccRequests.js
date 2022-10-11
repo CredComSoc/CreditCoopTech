@@ -65,6 +65,20 @@ module.exports = async function(dbUrl, dbFolder) {
       res.sendStatus(500)
       return
     }
+    //tesing temporary code----------------------
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    const article_data = {
+      "payee"       : payee._id.toString(), 
+      "payer"       : payer._id.toString(),
+      "quant"       : article.quantity * parseInt(article.price), //summa
+      "description" : article.article,
+      "type"        : "credit",
+      "metadata"    : {"id" : article.id, "quantity": article.quantity},
+      "state"       : "pending"}
+    const result = await dbo.collection("transaction").insertOne(article_data)
+    db.close()
+//-------------------------------------
     let response
     try {
       response = await axios.post(CC_NODE_URL + '/transaction', 
