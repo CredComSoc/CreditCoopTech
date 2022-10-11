@@ -89,9 +89,9 @@
                 </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link></div>
-                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp & sälj</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'articles'}}">Mina artiklar</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
+                  <!--<router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>-->
                   <router-link :to="{name:'Profile', params:{tab: 'economy'}}">Min Ekonomi</router-link>
                 </div>
               </div>

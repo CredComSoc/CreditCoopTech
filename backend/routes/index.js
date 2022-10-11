@@ -152,7 +152,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
       requests: [],
       pendingPurchases: [],
-      completedPurchases: []
+      completedTransactions: []
     }
 
     const db = await MongoClient.connect(dbUrl)
@@ -256,9 +256,67 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }*/
-      try{
-      const transaction = await dbo.collection("transaction").find({}).toArray()
-      /*
+     try{
+      const transaction = await dbo.collection("transaction").find({$or: [{payee: userId}, {payer: userId}]}).toArray()
+
+      let userNames = {}
+      for (const entry of transaction) {
+        const payee = await getUser({'_id': ObjectId(entry.payee)})
+        const payer = await getUser({'_id': ObjectId(entry.payer)})
+        if(entry.state === "completed")
+        {
+          if(entry.payee === userId)
+          { 
+            entry.payee = payee.profile.accountName  
+            entry.payer = payer.profile.accountName  
+            data.completedTransactions.push(entry)
+          }
+
+          if(entry.payer === userId)
+          {
+            entry.quant = -entry.quant
+            entry.payee = payee.profile.accountName  
+            entry.payer = payer.profile.accountName   
+            data.completedTransactions.push(entry)
+          }
+        }
+        else
+        {
+          if(entry.payee === userId)
+          { 
+            entry.payee = payee.profile.accountName  
+            entry.payer = payer.profile.accountName  
+            data.requests.push(entry)
+          }
+          if(entry.payer === userId)
+          {
+            entry.payee = payee.profile.accountName  
+            entry.payer = payer.profile.accountName  
+            entry.quant = -entry.quant
+            data.pendingPurchases.push(entry)
+          }
+        }
+      }
+     /* let userNames = {}
+      for (const entry of transaction) {
+        if(!(entry.entries[0].payee in userNames)) {
+          const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+          userNames[entry.entries[0].payee] = payee.profile.accountName   
+        }
+        if(!(entry.entries[0].payer in userNames)) {
+          const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+          userNames[entry.entries[0].payer] = payer.profile.accountName   
+        }
+        if(!(entry.entries[0].author in userNames)) {
+          const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+          userNames[entry.entries[0].author] = author.profile.accountName   
+        }
+        entry.entries[0].payee = userNames[entry.entries[0].payee]
+        entry.entries[0].payer = userNames[entry.entries[0].payer]
+        entry.entries[0].author = userNames[entry.entries[0].author] 
+      }
+        */
+      /* CODE BELOW MIGHT NEED TO BE USED WHEN DEALING WITH TRANSACTIONS THROUGH THE CC-NODE INSTEAD OF MONGODB(ABOVE)
       let userNames = {}
       for (const entry of transaction) {
         if(!(entry.entries[0].payee in userNames)) {
@@ -278,7 +336,6 @@ module.exports = async function(dbUrl, dbFolder) {
         entry.entries[0].author = userNames[entry.entries[0].author]
       }
       */
-      data.requests = transaction
      }
      catch (error) {
       console.log(error)
@@ -319,12 +376,12 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       } catch (error) {
         console.log(error)
-      }*/
+      }
       try{
-      const purchases = await dbo.collection("transaction").find({}).toArray()
+      const pending = await dbo.collection("transaction").find({}).toArray()
      
      // userNames = {}
-      for (const entry of purchases) {/*
+      for (const entry of pending) {
         if(!(entry.entries[0].payee in userNames)) {
           const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
           userNames[entry.entries[0].payee] = payee.profile.accountName   
@@ -339,9 +396,9 @@ module.exports = async function(dbUrl, dbFolder) {
         }
         entry.entries[0].payee = userNames[entry.entries[0].payee]
         entry.entries[0].payer = userNames[entry.entries[0].payer]
-        entry.entries[0].author = userNames[entry.entries[0].author]*/
+        entry.entries[0].author = userNames[entry.entries[0].author]
         if (entry.state === 'completed') {
-          data.completedPurchases.push(entry)
+          data.completedTransactions.push(entry)
         } else if (entry.state === 'pending') {
           data.pendingPurchases.push(entry)
         }
@@ -350,7 +407,7 @@ module.exports = async function(dbUrl, dbFolder) {
     catch (error) {
       console.log(error)
     }
-
+*/
 
       db.close()
 

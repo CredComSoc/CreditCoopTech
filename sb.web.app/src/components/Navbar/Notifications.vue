@@ -12,7 +12,7 @@
                 <p class="notice-title">Nya</p>
                 <div v-for="item in this.$store.state.newNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
-                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">Du har fått en köpförfrågan från {{ item.fromUser }}. Gå till <u>Min sida</u> för att godkänna eller ej.</p>
@@ -21,7 +21,7 @@
                     </router-link> 
                     </div>
                     <div v-if="item.type == 'sendRequest'">
-                    <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="ny notis"/>
                         <p class="notice-desc">{{ item.fromUser }} har skickat {{ item.amount }} barterkronor. Gå till <u>Min sida</u> för att godkänna eller ej.</p>

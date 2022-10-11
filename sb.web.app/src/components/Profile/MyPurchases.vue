@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
     <h1><b> Köpförfrågningar </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
         <table v-if="requests">
@@ -12,29 +13,18 @@
             <th>Tidstämpel</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in this.$store.state.requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
-            <td>{{item.entries[0].payer}}</td>
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <th>{{item.written}}</th>
+          <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="reqRefs">
+            <td>{{item.payer}}</td>
+          <td v-if="item.metadata.id !== '0'"><Listing :listingObj="getListing(item)" /></td>
+          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.metadata.quantity}}</td>
+          <td>{{item.quant / item.metadata.quantity}}</td>
+          <td>{{item.quant}}</td>
+          <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
-              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
+              <button @click="cancel(item.uuid, item.payer, index)" style="background-color: red;"> Avbryt </button>
+              <button @click="accept(item.uuid, item.payer, index, item.quant)" style="background-color: green;"> Godkänn </button>
             </td>
-
-          </tr>
-          <tr v-for="(item) in this.$store.state.requests.filter(request => request.state==='completed')" :key="item">
-            <td>{{item.entries[0].payer}}</td>
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <th>{{item.written}}</th>
-            <td style="color: green;">GODKÄND</td>
           </tr>
         </table>
         <div v-if="!requests">
@@ -60,13 +50,13 @@
             <th>Status</th>
           </tr>
           <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
-            <td>{{item.entries[0].payee}}</td>
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <th>{{item.written}}</th>
+            <td>{{item.payee}}</td>
+          <td v-if="item.metadata.id !== '0'"><Listing :listingObj="getListing(item)" /></td>
+          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.metadata.quantity}}</td>
+          <td>{{item.quant / item.metadata.quantity}}</td>
+          <td>{{item.quant}}</td>
+          <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>
@@ -89,7 +79,8 @@
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
-          <th>Företag</th>
+          <th>Köpare</th>
+          <th>Säljare</th>
           <th>Artikel</th>
           <th>Antal</th>
           <th>Pris</th>
@@ -97,15 +88,17 @@
           <th>Tidstämpel</th>
           <th>Faktura</th>      
         </tr>
-        <tr v-for="(item) in this.$store.state.completedPurchases" :key="item">
-          <td>{{item.entries[0].payee}}</td>
-          <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-          <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
+        <tr v-for="(item) in this.$store.state.completedTransactions" :key="item">
+          <td>{{item.payer}}</td>
+          <td>{{item.payee}}</td>
+          <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
+          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.metadata.quantity}}</td>
+          <td>{{item.quant / item.metadata.quantity}}</td>
+          <td>{{item.quant}}</td>
           <th>{{item.written}}</th>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+
         </tr>
       </table>
       </div>
@@ -114,15 +107,17 @@
 </template>
 
 <script>
-import { getPurchases, cancelRequest } from '../../serverFetch'
+import { getPurchases, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 
 export default {
 
   data () {
     return {
-      completedPurchases: [],
+      completedTransactions: [],
+      //completedPurchases: [],
       pendingPurchases: [],
+      requests: [],
       componentKey: 0
     }
   },
@@ -151,6 +146,26 @@ export default {
       this.statusSwap(index)
       cancelRequest(id)
     },
+    accept (id, payer, index, cost) {
+      getAvailableBalance().then((balance) => {
+        getLimits().then((limits) => {
+          this.max_limit = limits.max
+          if (balance + limits.min + cost > limits.max) {
+            this.payeeTooMuchBkr = true
+          } else {
+            getUserAvailableBalance(payer).then((payerBalance) => {
+              if (cost <= payerBalance) {
+                this.statusSwap(index, 'accept')
+                acceptRequest(id)
+                postNotification('saleRequestAccepted', payer)
+              } else {
+                this.payerNotEnoughBkr = true
+              } 
+            })
+          }
+        })
+      })
+    },
     statusSwap (index) {
       const tag = document.createElement('p')
       const text = document.createTextNode('AVBRUTEN')
@@ -169,6 +184,13 @@ export default {
       for (const listing of this.$store.state.allArticles) {
         if (listing.id === item.metadata.id) {
           return listing
+        }
+      }
+    },
+    getListing_title (item) {
+      for (const listing of this.$store.state.allArticles) {
+        if (listing.id === item.metadata.id) {
+          return listing.title
         }
       }
     }
