@@ -68,14 +68,18 @@
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
         <p2>Filter:
-        <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Senaste Först</a>
-        <a href='#' @click="this.tab='latestlast'" :class="{ active: this.tab==='latestlast' }">Senaste Sist</a>
-        <a href='#' @click="this.tab='business'" :class="{ active: this.tab==='business' }">Företag</a>
-        <a href='#' @click="this.tab='price'" :class="{ active: this.tab==='price' }">Pris</a>
-        <a href='#' @click="this.tab='sum'" :class="{ active: this.tab==='sum' }">Summa</a>
+          <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Start datum</a>
+          <a href='#' @click="this.tab='latestlast'" :class="{ active: this.tab==='latestlast' }">Slut datum</a>
+          <a>
+            <!--<label class="box-label">Företag</label>-->
+            <input class="box-input" type="text" v-model="company" name="" placeholder="Företag" id="company-input" required>
+          </a>  
+        <a>
+            <!--<label class="box-label">Produkt</label>-->
+            <input class="box-input" type="text" v-model="product" name="" placeholder="Produkt" id="product-input" required>
+        </a>
         </p2>
     </div>
-      
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
@@ -98,7 +102,6 @@
           <td>{{item.quant}}</td>
           <th>{{item.written}}</th>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
-
         </tr>
       </table>
       </div>
@@ -114,10 +117,14 @@ export default {
 
   data () {
     return {
+      company: '',
+      product: '',
+      /* filterCompany: [],
+      filterProduct: [],*/
       completedTransactions: [],
-      //completedPurchases: [],
+      completedPurchases: [],
       pendingPurchases: [],
-      requests: [],
+      //requests: [],
       componentKey: 0
     }
   },
@@ -125,6 +132,35 @@ export default {
     Listing
   },
   methods: {
+    
+    /*arrayUnique (array) {
+      var a = array.concat()
+      for (var i = 0; i < a.length; ++i) {
+        for (var j = i + 1; j < a.length; ++j) {
+          if (a[i] === a[j]) {
+            a.splice(j--, 1)
+          }
+        }
+      }
+
+      return a
+    },*/
+    
+    /* filer_helper (item, company, product) {
+      if (item.payee.toLowerCase.includes(company.toLowerCase) || item.payer.toLowerCase.includes(company.toLowerCase)) {
+        return true
+      }
+      if (this.getListing_title(item).toLowerCase.includes(product.toLowerCase)) {
+        return true
+      }
+      return false
+    },*/
+    /*
+    filteredTransactions () {
+      const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase()))
+      const filterProduct = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.product.value.toLowerCase()))
+      return this.arrayUnique(filterCompany.concat(filterProduct))
+    },*/
     
     invoice (filename, item) {
       console.log(item.entries[0])
@@ -277,7 +313,7 @@ button {
 .filter a.active {
   color: dimgrey;
   font-weight: bold;
-  background-color: brown;
+  
 }
 
 </style>
