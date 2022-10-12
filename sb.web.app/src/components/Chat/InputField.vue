@@ -3,6 +3,7 @@
   <div id='container-input'>
     <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
     <button id="send-message" @click="send()">Skicka</button>
+    <input ref="fileValue" type="file" class="file-input" accept=".jpg, .png, .jpeg"/>
   </div>
 </div>
 </template>
@@ -15,6 +16,10 @@ export default {
       if (this.$refs.textValue.value !== '') {
         this.$emit('sendMessage', this.$refs.textValue.value)
         this.$refs.textValue.value = ''
+      }
+      if (this.$refs.fileValue.value !== '') {
+        this.$emit('sendMessage', this.$refs.fileValue.value)
+        this.$refs.fileValue.value = ''
       }
     }
   }

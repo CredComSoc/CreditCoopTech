@@ -1,7 +1,8 @@
 <template>
     <div class="fill">
         <div v-if='sender === user' class="speech-bubble" id="blue-speech-bubble">
-            <div v-if= 'filetype === "image/jpeg"'> <img :src= 'getImgURL("0435347e356926fca36964579c1912e8.png")' class= "image" alt="Picture"></div>
+            <div v-if= 'messagetype === "image/jpeg"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
+            <div v-else-if= 'messagetype === "file"'><a :href='getImgURL(filename)'>Open this</a></div>
             <div v-else><p>{{message}}</p></div>
         </div> 
         <div v-else class="speech-bubble" id="gray-speech-bubble">
@@ -15,12 +16,12 @@
 import { EXPRESS_URL } from '../../serverFetch' 
 
 export default {   
-  data () {
+  /*data () {
     return {
       filetype: 'image/jpeg'
     }
-  },
-  props: ['sender', 'message', 'reciever', 'user'],
+  },*/
+  props: ['sender', 'message', 'reciever', 'user', 'messagetype', 'filename'],
 
   methods: {
     getImgURL (filename) {
