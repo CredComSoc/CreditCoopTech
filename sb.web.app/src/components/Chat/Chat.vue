@@ -46,6 +46,7 @@ export default {
       this.getChatHistory(this.all_chatIDs[userchat])
     },
     sendMessage (message) {
+      console.log(message)
       this.activeChat.push(message)
       this.socket.emit('message', {
         message: message.message,
