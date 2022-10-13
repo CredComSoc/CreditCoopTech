@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import { uploadEvent } from '../../serverFetch'
+import { Fancybox } from '@fancyapps/ui'
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -32,7 +33,7 @@ export default {
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents
-        //       eventAdd: this.postEvent
+        //eventAdd: this.postEvent
         /* you can update a remote database when these fire:
         eventChange:
         eventRemove:
@@ -56,7 +57,8 @@ export default {
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay
+          allDay: selectInfo.allDay,
+          description: 'this is a fun event'
         })
         //Lägg till ovanstående i databasen
         /*
@@ -79,10 +81,18 @@ export default {
       }
     },
     handleEventClick (clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
+      var fancyContent = ('<div class="header">Event Details</div> <div id="prac" class="pracform"> <label><b>Event: </b></label>' + clickInfo.title + 
+        '<br>' + '<label><b>Date: </b></label>' + clickInfo.start + 
+        '<br>' + '<label><b>Start Time: </b></label>' + clickInfo.start + '<br>' + 
+        '<label><b>End Time: </b></label>' + clickInfo.end + '<br>' + 
+        '<label><b>Description: </b></label>' + '<div class="event_desc">' + clickInfo.description + '</div>')
+      //+ '</div>' + '<br>' + '<label><b>Location: </b></label><a href=' + event.url + '>' + event.location + '</a>' + '<br>' + '</div>');
+      
+      Fancybox({
+        content: fancyContent
+      })
     },
+
     handleEvents (events) {
       this.currentEvents = events
     }
