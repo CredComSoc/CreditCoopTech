@@ -111,7 +111,6 @@ export default {
           
           if (data.user.saldo) {
             this.$store.commit('replaceSaldo', data.user.saldo)
-
           }
 
           if (data.requests) {
