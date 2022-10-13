@@ -670,3 +670,21 @@ export async function getChatHistories () {
     })
   return promise
 }
+
+export async function uploadFile (File) {
+  const data = new FormData()
+  data.append('file', File)
+  return await fetch(EXPRESS_URL + '/uploadFile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}

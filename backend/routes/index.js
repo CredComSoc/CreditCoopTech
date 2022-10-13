@@ -210,7 +210,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       }
       data.myCart = myCart
-
+      /*
       // get saldo
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
@@ -293,7 +293,7 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
-
+      */
       db.close()
 
       res.status(200).send(data)
@@ -606,6 +606,16 @@ module.exports = async function(dbUrl, dbFolder) {
     chatExists(req.user, chatter).then((exists) => {
       res.json(exists);
     });
+  })
+
+  router.post("/uploadFlie", upload.single('file'), (req, res) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
+      if (user != null) {
+        
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
   })
 
   /*****************************************************************************

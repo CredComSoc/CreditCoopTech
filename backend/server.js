@@ -84,6 +84,7 @@ function startChat(app) {
       socket.to(msg.id).emit('message', msg);
       const { storeChatMsg } = require('./routes/chatFunctions');
       const chatID = msg.id;
+      console.log(msg)
       //console.log("CHATID:", chatID.length)
      //console.log(io.sockets.adapter.rooms.get(chatID).size);      
       delete msg.id;
@@ -99,6 +100,7 @@ function startChat(app) {
         const { storeNotification } = require('./routes/chatFunctions');
         storeNotification(notification);
       }
+      
       storeChatMsg(chatID, msg)
     });
 

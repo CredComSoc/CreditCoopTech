@@ -3,24 +3,38 @@
   <div id='container-input'>
     <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
     <button id="send-message" @click="send()">Skicka</button>
-    <input ref="fileValue" type="file" class="file-input" accept=".jpg, .png, .jpeg"/>
+    <input ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg"/>
   </div>
 </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      fileData: [],
+      messagetype: '',
+      filename: ''
+    }
+  },
   name: 'InputField',
   methods: {
     send () {
       if (this.$refs.textValue.value !== '') {
-        this.$emit('sendMessage', this.$refs.textValue.value)
+        this.messagetype = 'string'
+        this.filename = ' '
+        this.$emit('sendMessage', { message: this.$refs.textValue.value, messagetype: this.messagetype, filename: this.filename })
         this.$refs.textValue.value = ''
-      }
-      if (this.$refs.fileValue.value !== '') {
-        this.$emit('sendMessage', this.$refs.fileValue.value)
+      } else if (this.$refs.fileValue.value !== '') {
+        this.messagetype = 'file'
+        this.filename = ' '
+        this.$emit('sendMessage', { message: this.fileData.file, messagetype: this.messagetype, filename: this.filename })
         this.$refs.fileValue.value = ''
       }
+    },
+    addFile (e) {
+      this.fileData.file = e.target.files[0]
+      //console.log(this.profileData.logo)
     }
   }
   
