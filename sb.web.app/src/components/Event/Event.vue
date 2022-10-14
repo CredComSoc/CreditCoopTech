@@ -5,11 +5,19 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import { uploadEvent } from '../../serverFetch'
-import { Fancybox } from '@fancyapps/ui'
+import { ref } from 'vue'
+//import { Fancybox } from '@fancyapps/ui' TA BORT DETTA PAKET FRÅN PACKET-LOCK JSON
+import Modal from '../Modal/Modal.vue'
+  
 export default {
   components: {
-    FullCalendar // make the <FullCalendar> tag available
-  },
+    FullCalendar, // make the <FullCalendar> tag available
+    Modal
+  }, 
+  setup () {
+    const showModal = ref(false)
+    return { showModal }
+  }, 
   data: function () {
     return {
       calendarOptions: {
@@ -39,7 +47,8 @@ export default {
         eventRemove:
         */
       },
-      currentEvents: []
+      currentEvents: [],
+      clickedEvent: 'hej' 
     }
   },
   methods: {
@@ -81,16 +90,9 @@ export default {
       }
     },
     handleEventClick (clickInfo) {
-      var fancyContent = ('<div class="header">Event Details</div> <div id="prac" class="pracform"> <label><b>Event: </b></label>' + clickInfo.title + 
-        '<br>' + '<label><b>Date: </b></label>' + clickInfo.start + 
-        '<br>' + '<label><b>Start Time: </b></label>' + clickInfo.start + '<br>' + 
-        '<label><b>End Time: </b></label>' + clickInfo.end + '<br>' + 
-        '<label><b>Description: </b></label>' + '<div class="event_desc">' + clickInfo.description + '</div>')
       //+ '</div>' + '<br>' + '<label><b>Location: </b></label><a href=' + event.url + '>' + event.location + '</a>' + '<br>' + '</div>');
-      
-      Fancybox({
-        content: fancyContent
-      })
+      this.clickedEvent = clickInfo
+      this.showModal = true
     },
 
     handleEvents (events) {
@@ -122,7 +124,6 @@ export default {
   }
 }
 </script>
-
 <template>
     <div class='demo-app'>
     <div class='demo-app-sidebar'>
@@ -164,6 +165,12 @@ export default {
             <i>{{ arg.event.title }}</i>
         </template>
         </FullCalendar>
+
+    <Modal :open="showModal" @close="showModal = !showModal">
+        <p> Event Details</p>
+        <p> {{this.clickedEvent.event.title}} </p>
+        <p> {{this.clickedEvent.event.startStr}} </p>
+    </Modal> 
     </div>
     </div>
 </template>
