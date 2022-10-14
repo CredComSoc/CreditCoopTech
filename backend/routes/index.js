@@ -102,6 +102,22 @@ module.exports = async function(dbUrl, dbFolder) {
     }
   });
 
+  router.get('/file/:filename', (req, res) => {
+    try {
+      gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+        if (!files[0] || files.length === 0) {
+          res.status(404).send('No file exists');
+        } else {
+          if (files[0].contentType === 'text/plain' || files[0].contentType === 'application/pdf') {
+            gfs.openDownloadStreamByName(files[0].filename).pipe(res)
+          }
+        }
+      })
+    } catch (error) {
+      res.status(404).send('No file exists');
+    }
+  });
+
   /*****************************************************************************
    * 
    *                           Login & Authentication
@@ -608,10 +624,19 @@ module.exports = async function(dbUrl, dbFolder) {
     });
   })
 
-  router.post("/uploadFlie", upload.single('file'), (req, res) => {
+  router.post("/uploadFile", upload.single('file'), (req, res) => {
     getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
-        
+        let newFile = {}
+        if (req.file) {
+          console.log(req.file)
+          newFile.name = req.file.filename
+          newFile.fileType = req.file.contentType
+          newFile.message = req.file.originalname
+          res.status(200).json(newFile)
+        } else {
+          res.status(404).send("The file doesnot exists.")
+        }
       } else {
         res.status(404).send("The profile doesn't exist.")
       }

@@ -682,7 +682,7 @@ export async function uploadFile (File) {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     } else {
-      return response
+      return response.json()
     }
   }).catch(err => {
     console.error('There has been a problem with your fetch operation:', err)

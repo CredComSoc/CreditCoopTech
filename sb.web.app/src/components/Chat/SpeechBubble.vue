@@ -1,8 +1,8 @@
 <template>
     <div class="fill">
         <div v-if='sender === user' class="speech-bubble" id="blue-speech-bubble">
-            <div v-if= 'messagetype === "image/jpeg"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
-            <div v-else-if= 'messagetype === "file"'><a :href='getImgURL(filename)'>Open this</a></div>
+            <div v-if= 'messagetype === "image/jpeg" || messagetype === "image/png" || messagetype === "image/gif"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
+            <div v-else-if= 'messagetype === "file" || messagetype === "text/plain"|| messagetype === "application/pdf"'><a target="_blank" :href='getFileURL(filename)'>{{message}}</a></div>
             <div v-else><p>{{message}}</p></div>
         </div> 
         <div v-else class="speech-bubble" id="gray-speech-bubble">
@@ -26,6 +26,9 @@ export default {
   methods: {
     getImgURL (filename) {
       return EXPRESS_URL + '/image/' + filename 
+    },
+    getFileURL (filename) {
+      return EXPRESS_URL + '/file/' + filename 
     }
   } 
 }

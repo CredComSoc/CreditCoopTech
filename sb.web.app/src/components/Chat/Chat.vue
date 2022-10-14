@@ -45,16 +45,16 @@ export default {
       this.reciever = userchat
       this.getChatHistory(this.all_chatIDs[userchat])
     },
-    sendMessage (message) {
-      console.log(message)
-      this.activeChat.push(message)
-
+    async sendMessage (message) {
       if (message.messagetype !== 'string') {
-        uploadFile (message.message)
+        const res = await uploadFile (message.message)
+        message.filename = res.name
+        message.messagetype = res.fileType
+        message.message = res.message
         this.socket.emit('message', {
-          message: '',
-          messagetype: message.messagetype,
-          filename: message.filename,
+          message: res.message,
+          messagetype: res.fileType,
+          filename: res.name,
           sender: this.user,
           id: this.all_chatIDs[this.reciever],
           reciever: this.reciever
@@ -69,6 +69,8 @@ export default {
           reciever: this.reciever
         })
       }
+      
+      this.activeChat.push(message)
     },
     getChatHistory (chatID) {
       getChatHistory(chatID)

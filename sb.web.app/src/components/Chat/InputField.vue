@@ -1,9 +1,9 @@
 <template>
 <div id="frame-input">
   <div id='container-input'>
-    <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+    <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = this.scrollHeight +"(px)"'></textarea>
     <button id="send-message" @click="send()">Skicka</button>
-    <input ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg"/>
+    <input ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg, .pdf, .txt "/>
   </div>
 </div>
 </template>
