@@ -12,7 +12,8 @@
           <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
         </div>
       </div>
-      <input required v-if="this.isDatePicker || this.isDateFilter" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
+      <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
+      <input required v-if="this.isDateFilter" :id="this.name + `-date-filter`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-filter" name="date" type="text" @change=setDate>
     </div>
   </div>
 </template>
@@ -143,6 +144,16 @@ export default {
 .date-picker {
   width: 420px;
   height: 38px;
+  background: white;
+  border: 2px solid #5c5c5c;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  font-size: 13px;
+}
+.date-filter {
+  width: 200px;
+  height: 20px;
   background: white;
   border: 2px solid #5c5c5c;
   border-radius: 4px;

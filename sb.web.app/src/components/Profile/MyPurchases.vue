@@ -68,8 +68,8 @@
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
         <p2>Filter:
-          <DateFilter ref="endDateInput" name="end-date-picker" :placeholder="`Från och med`"/>
-          <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Start datum</a>
+          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-picker" :placeholder="`Från och med`"/>
+          <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Start datum </a>
           <a href='#' @click="this.tab='latestlast'" :class="{ active: this.tab==='latestlast' }">Slut datum</a>
           <a>
             <!--<label class="box-label">Företag</label>-->
