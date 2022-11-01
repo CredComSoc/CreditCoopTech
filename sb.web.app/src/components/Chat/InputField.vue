@@ -3,7 +3,12 @@
   <div id='container-input'>
     <textarea ref="textValue" id="message-field" name="message" oninput='this.style.height = this.scrollHeight +"(px)"'></textarea>
     <button id="send-message" @click="send()">Skicka</button>
-    <input ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg, .pdf, .txt "/>
+    <div class="image-upload">
+      <label for="file-input">
+       <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Downloads-icon.png"/>
+      </label>
+      <input id="file-input" ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg, .pdf, .txt "/>
+    </div>
   </div>
 </div>
 </template>
@@ -94,4 +99,7 @@ export default {
     }
   } 
 
+  .image-upload>input {
+  display: none;
+}
 </style>
