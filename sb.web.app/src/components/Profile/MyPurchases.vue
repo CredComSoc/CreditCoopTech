@@ -67,10 +67,11 @@
       
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
-        <p2>Filter:
-          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-picker" :placeholder="`Från och med`"/>
-          <a href='#' @click="this.tab='latestfirst'" :class="{ active: this.tab!='latestlast' && this.tab!='business' && this.tab!='price' && this.tab!='sum' }">Start datum </a>
-          <a href='#' @click="this.tab='latestlast'" :class="{ active: this.tab==='latestlast' }">Slut datum</a>
+        <p>Filter:
+          <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`"/>
+          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`"/>
+          <a href='#' >Start datum </a>
+          <a href='#' >Slut datum</a>
           <a>
             <!--<label class="box-label">Företag</label>-->
             <input class="box-input" type="text" v-model="company" name="" placeholder="Företag" id="company-input" required>
@@ -79,7 +80,7 @@
             <!--<label class="box-label">Produkt</label>-->
             <input class="box-input" type="text" v-model="product" name="" placeholder="Produkt" id="product-input" required>
         </a>
-        </p2>
+        </p>
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
@@ -114,6 +115,7 @@
 import { getPurchases, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import DateFilter from './DateFilter.vue'
+import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 
 export default {
 
@@ -127,12 +129,18 @@ export default {
       completedPurchases: [],
       pendingPurchases: [],
       requests: [],
-      componentKey: 0
+      componentKey: 0,
+      payerNotEnoughBkr: false,
+      payeeTooMuchBkr: false,
+      max_limit: 0,
+      start_date: new Date(new Date().getDate()),
+      end_date: new Date(2022, 1, 1, 0, 0, 0)
     }
   },
   components: {
     Listing,
-    DateFilter
+    DateFilter,
+    PopupCard
   },
   methods: {
     
@@ -160,6 +168,7 @@ export default {
     },*/
     /*
     filteredTransactions () {
+      const endDate = this.$refs.endDateInput.getInput()
       const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase()))
       const filterProduct = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.product.value.toLowerCase()))
       return this.arrayUnique(filterCompany.concat(filterProduct))
@@ -204,6 +213,10 @@ export default {
           }
         })
       })
+    },
+    closePopup () {
+      this.payerNotEnoughBkr = false
+      this.payeeTooMuchBkr = false
     },
     statusSwap (index) {
       const tag = document.createElement('p')
@@ -267,10 +280,6 @@ p {
   font-size: 1.2rem;
 }
 
-p2 {
-  padding: 10px 0px 0px 0px;
-  font-size: 1.2rem;
-}
 .green {
   color:green;
 }

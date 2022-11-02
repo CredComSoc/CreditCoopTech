@@ -46,19 +46,33 @@ export default {
     },
     setDate () { 
       this.$refs.dateVal.type = 'text'
+
       const options = { 
         month: '2-digit', 
         day: '2-digit'
       }
       this.selectedValue = this.$refs.dateVal.value
-      this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      if (this.isDatePicker) {
+        this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      } else {
+        this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/')
+      }
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
     formatDate (endDate) {
-      const options = { 
-        month: '2-digit', 
-        day: '2-digit'
+      let options
+      if (this.isDatePicker) {
+        options = { 
+          month: '2-digit', 
+          day: '2-digit'
+        }
+      } else {
+        options = { 
+          year: '4-digit', 
+          month: '2-digit', 
+          day: '2-digit'
+        }
       }
       console.log(endDate)
       const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
@@ -106,12 +120,13 @@ export default {
       datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     } else {
       const minLimitDate = new Date()
-      const datePicker = document.getElementById(this.name + '-date-picker')
+      const dateFilter = document.getElementById(this.name + '-date-filter')
       minLimitDate.setFullYear(2020)
-      datePicker.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+      dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
       const maxLimitDate = new Date()
       maxLimitDate.setDate(maxLimitDate.getDate())
-      datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+      //console.log(maxLimitDate)
+      dateFilter.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     }
   },
   data () {
