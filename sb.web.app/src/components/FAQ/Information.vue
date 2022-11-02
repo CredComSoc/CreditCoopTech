@@ -1,6 +1,6 @@
 <template>  
     <div> 
-        <h1><b> Handlingsregler </b></h1>
+        <h1><b> Föreningsinformation </b></h1>
     </div>
     <div> 
       <h2><b>ANVÄNDARVILLKOR FÖR DELTAGARE PÅ SVENSKBARTER.SE</b></h2>

@@ -4,18 +4,16 @@
     <h1 className="title">HANDELSREGLER & TIPS</h1>
   </div>
 
+  <!--To add another nav in the menybar, add another <a href... here and add this.tab!='namn' in the first href -->
   <div className='topnav flexbox-item' id='myTopnav'>
-      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='background' && this.tab!='usefulcontacts' && this.tab!='traderules' && this.tab!='statues' }" id='questions'>Vanliga frågor</a>
-      <a href='#' @click="this.tab='background'" :class="{ active: this.tab==='background' }" id='background'>Bakgrund</a>
-      <a href='#' @click="this.tab='usefulcontacts'" :class="{ active: this.tab==='usefulcontacts' }" id='usefulcontacts'>Användbara kontakter</a>
-      <a href='#' @click="this.tab='traderules'" :class="{ active: this.tab==='traderules' }" id='traderules'>Handlingsregler</a>
-      <a href='#' @click="this.tab='statues'" :class="{ active: this.tab==='statues' }" id='statues'>Stadgar</a>
+      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information'}" id='questions'>Vanliga frågor</a>
+      <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>BarterTips</a>
+      <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>Föreningsinformation</a>
     </div>
+    <!--also, add another <NAME... here -->
     <div className="content flexbox-item">
-      <Background v-if="this.tab==='background'"/>
-      <UsefulContacts v-else-if="this.tab==='usefulcontacts'"/>
-      <TradeRules v-else-if="this.tab==='traderules'"/>
-      <Statues v-else-if="this.tab==='statues'"/>
+      <BarterTips v-if="this.tab==='bartertips'"/>
+      <Information v-else-if="this.tab==='information'"/>
       <Questions v-else/>
     </div>
   </div>
@@ -23,23 +21,21 @@
 
 <script>
 // @ is an alias to /src
+// to add another nav in the menybar, add import here 
 import Questions from '@/components/FAQ/Questions.vue'
-import Background from '@/components/FAQ/Background.vue'
-import UsefulContacts from '@/components/FAQ/UsefulContacts.vue'
-import TradeRules from '@/components/FAQ/TradeRules.vue'
-import Statues from '@/components/FAQ/Statues.vue'
+import BarterTips from '@/components/FAQ/BarterTips.vue'
+import Information from '@/components/FAQ/Information.vue'
 
 export default {
   data () {
     return {
     }
   },
+  // to add another nav in the menybar, add the name here, and then move over to Navbar.vue in Navbar
   components: {
     Questions,
-    Background,
-    UsefulContacts,
-    TradeRules,
-    Statues
+    BarterTips,
+    Information
   },
   created () {
     if (this.$route.params.tab) {

@@ -77,12 +77,11 @@
                   <figcaption class="l-text"> FAQ </figcaption>
               </figure>
             </router-link>
+            <!--To add another nav in the menybar, add another router-link here, then follow the comments in FAQ.vue--> 
             <div id="faq-content" @mouseover="highlightFAQLogo" class="dropdown-content">
                   <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">Vanliga frågor</router-link></div>
-                  <router-link :to="{name:'FAQ', params:{tab: 'background'}}">Bakgrund</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'usefulcontacts'}}">Användbara kontakter</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'traderules'}}">Handlingsregler</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'statues'}}">Stadgar</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'bartertips'}}">BarterTips</router-link>
+                  <router-link :to="{name:'FAQ', params:{tab: 'information'}}">Föreningsinformation</router-link>
                 </div>
             <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> FAQ </span>

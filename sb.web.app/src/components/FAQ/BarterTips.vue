@@ -1,5 +1,4 @@
 
-import { size } from 'cypress/types/lodash';
 <template>  
     <div> 
         <h1><b> Bakgrund </b></h1>
@@ -23,7 +22,7 @@ import { size } from 'cypress/types/lodash';
         <p><b>Här är en tänkbar vision:</b></p>
     </div>
     <div>
-        <img v-bind:src="require('/src/assets/Svensk-barter-ide-diagram.png')"/>
+        <img src="/assets/Svensk-barter-ide-diagram.png" alt="Svensk-barter-ide-diagram">
     </div>
     </template>
 
