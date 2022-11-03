@@ -68,8 +68,8 @@
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
         <p>Filter:
-          <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`"/>
-          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`"/>
+          <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @change="handleDate()"/>
+          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @change="handleDate()"/>
           <a href='#' >Start datum </a>
           <a href='#' >Slut datum</a>
           <a>
@@ -143,6 +143,16 @@ export default {
     PopupCard
   },
   methods: {
+    handleDate () {
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
+      const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      let startDateValue = new Date(dateFilterStartDate.value)
+      startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
+      const minLimitDate = new Date(startDateValue)
+
+      dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+      console.log(dateFilterStartDate.value)
+    },
     
     /*arrayUnique (array) {
       var a = array.concat()

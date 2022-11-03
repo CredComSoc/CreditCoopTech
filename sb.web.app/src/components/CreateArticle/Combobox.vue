@@ -13,7 +13,7 @@
         </div>
       </div>
       <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
-      <input required v-if="this.isDateFilter" :id="this.name + `-date-filter`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-filter" name="date" type="text" @change=setDate>
+      <input v-if="this.isDateFilter" :id="this.name + `-date-filter`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-filter" name="date" type="text" @change=setDate>
     </div>
   </div>
 </template>
@@ -51,16 +51,24 @@ export default {
         month: '2-digit', 
         day: '2-digit'
       }
+      
       this.selectedValue = this.$refs.dateVal.value
       if (this.isDatePicker) {
         this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
       } else {
         this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/')
       }
+      /*S
+      if (this.name === 'start-date-filter') {
+        this.startDateFilter = this.$refs.dateVal.value
+        console.log(this.name)
+        console.log(this.startDateFilter)
+      }
+      */
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
-    formatDate (endDate) {
+    formatDate (Date) {
       let options
       if (this.isDatePicker) {
         options = { 
@@ -74,9 +82,9 @@ export default {
           day: '2-digit'
         }
       }
-      console.log(endDate)
+      console.log(Date)
       const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
-      return now + ' - ' + new Date(endDate).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      return now + ' - ' + new Date(Date).toLocaleString('sv-SE', options).replaceAll('-', '/')
     },
     setValue (newValue) {
       if (this.isDatePicker || this.isDateFilter) {
@@ -98,6 +106,7 @@ export default {
     } 
   },
   mounted () {
+    //this.startDateFilter.setFullYear(2022)
     if (!this.isDatePicker && !this.isDateFilter) {
       const list = document.getElementById(this.name + '-dropdown')
       for (const item of list.childNodes) {
@@ -125,12 +134,12 @@ export default {
       dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
       const maxLimitDate = new Date()
       maxLimitDate.setDate(maxLimitDate.getDate())
-      //console.log(maxLimitDate)
       dateFilter.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
     }
   },
   data () {
     return { 
+      // startDateFilter: new Date(),
       selectedValue: null
     }
   }
