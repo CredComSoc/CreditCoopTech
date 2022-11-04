@@ -67,6 +67,8 @@ export default {
     p{
         font-size: 16px;
         word-wrap: break-word;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 
     @media (max-width: 580px) {
