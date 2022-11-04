@@ -100,9 +100,15 @@ export default {
       }
     },
     clearDatePicker () {
-      this.$refs.dateVal.type = 'text'
-      this.$refs.dateVal.value = null
-      this.selectedValue = null
+      if (this.isDatePicker) {
+        this.$refs.dateVal.type = 'text'
+        this.$refs.dateVal.value = null
+        this.selectedValue = null
+      }
+      if (this.isDateFilter) { // TITTA VIDARE SE TILL ATT DATUM SÄTTS TILL STANDARD VÄRDEN
+        this.$refs.dateVal.value = null
+        this.selectedValue = null
+      }
     } 
   },
   mounted () {

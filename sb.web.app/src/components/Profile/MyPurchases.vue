@@ -36,7 +36,7 @@
     </div>
     <h1><b> Väntande köp </b></h1>
       <div>
-        <p v-if="pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+        <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
@@ -70,6 +70,8 @@
         <p>Filter:
           <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @change="handleDate()"/>
           <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @change="handleDate()"/>
+          <button @click="filterTransactions()">Filtrera</button>
+          <!-- <button @click="clearFilter()">Rensa Filter</button> -->
           <a href='#' >Start datum </a>
           <a href='#' >Slut datum</a>
           <a>
@@ -83,7 +85,7 @@
         </p>
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
-      <table>
+      <table v-if="(!this.filterActive)">
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
@@ -95,6 +97,29 @@
           <th>Faktura</th>      
         </tr>
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item">
+          <td>{{item.payer}}</td>
+          <td>{{item.payee}}</td>
+          <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
+          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td>{{item.metadata.quantity}}</td>
+          <td>{{item.quant / item.metadata.quantity}}</td>
+          <td>{{item.quant}}</td>
+          <th>{{item.written}}</th>
+          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+        </tr>
+      </table>
+      <table v-if="(this.filterActive)">
+        <tr>
+          <th>Köpare</th>
+          <th>Säljare</th>
+          <th>Artikel</th>
+          <th>Antal</th>
+          <th>Pris</th>
+          <th>Summa</th>
+          <th>Tidstämpel</th>
+          <th>Faktura</th>      
+        </tr>
+        <tr v-for="(item) in this.filteredTransactions" :key="item">
           <td>{{item.payer}}</td>
           <td>{{item.payee}}</td>
           <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
@@ -121,20 +146,19 @@ export default {
 
   data () {
     return {
+      filterActive: false,
       company: '',
       product: '',
-      /* filterCompany: [],
-      filterProduct: [],*/
-      completedTransactions: [],
-      completedPurchases: [],
-      pendingPurchases: [],
+      /* filterCompany: [],*/
+      filteredTransactions: [],
+      //completedTransactions: [],
+      //completedPurchases: [],
+      //pendingPurchases: [],
       requests: [],
       componentKey: 0,
       payerNotEnoughBkr: false,
       payeeTooMuchBkr: false,
-      max_limit: 0,
-      start_date: new Date(new Date().getDate()),
-      end_date: new Date(2022, 1, 1, 0, 0, 0)
+      max_limit: 0
     }
   },
   components: {
@@ -143,15 +167,29 @@ export default {
     PopupCard
   },
   methods: {
+    mounted () {
+      this.clearFilters()
+    },
+    clearFilters () {
+      this.filterActive = false
+    },
     handleDate () {
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
-      let startDateValue = new Date(dateFilterStartDate.value)
-      startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
-      const minLimitDate = new Date(startDateValue)
-
-      dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0])
-      console.log(dateFilterStartDate.value)
+      console.log(this.$refs.startDateInput.getInput())
+      if (this.$refs.startDateInput.getInput() != null) {
+        let startDateValue = new Date(dateFilterStartDate.value)
+        startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
+        const minLimitEndDate = new Date(startDateValue)
+        dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0])
+      }
+      console.log(this.$refs.endDateInput.getInput())
+      if (this.$refs.endDateInput.getInput() != null) {
+        let endDateValue = new Date(dateFilterEndDate.value)
+        endDateValue = endDateValue.setDate(endDateValue.getDate() + 1)
+        const maxLimitStartDate = new Date(endDateValue)
+        dateFilterStartDate.setAttribute('max', maxLimitStartDate.toISOString().split('T')[0])
+      }
     },
     
     /*arrayUnique (array) {
@@ -176,13 +214,23 @@ export default {
       }
       return false
     },*/
-    /*
-    filteredTransactions () {
+    /*filteredTransactions () {
       const endDate = this.$refs.endDateInput.getInput()
       const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase()))
       const filterProduct = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.product.value.toLowerCase()))
       return this.arrayUnique(filterCompany.concat(filterProduct))
     },*/
+    filterTransactions () {
+      this.filterTransactions = []
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
+      const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      let startDateValue = new Date(dateFilterStartDate.value)
+      startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
+      const minLimitDate = new Date(dateFilterEndDate.value)
+      const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase())) 
+
+      this.filterActive = true
+    },
     
     invoice (filename, item) {
       console.log(item.entries[0])
