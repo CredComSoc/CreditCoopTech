@@ -176,14 +176,12 @@ export default {
     handleDate () {
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
-      console.log(this.$refs.startDateInput.getInput())
       if (this.$refs.startDateInput.getInput() != null) {
         let startDateValue = new Date(dateFilterStartDate.value)
         startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
         const minLimitEndDate = new Date(startDateValue)
         dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0])
       }
-      console.log(this.$refs.endDateInput.getInput())
       if (this.$refs.endDateInput.getInput() != null) {
         let endDateValue = new Date(dateFilterEndDate.value)
         endDateValue = endDateValue.setDate(endDateValue.getDate() + 1)
@@ -221,14 +219,25 @@ export default {
       return this.arrayUnique(filterCompany.concat(filterProduct))
     },*/
     filterTransactions () {
-      this.filterTransactions = []
+      this.filteredTransactions = []
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
       let startDateValue = new Date(dateFilterStartDate.value)
-      startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
-      const minLimitDate = new Date(dateFilterEndDate.value)
-      const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase())) 
-
+      startDateValue = new Date(startDateValue.setDate(startDateValue.getDate()))
+      startDateValue = startDateValue.setHours(0, 0, 0)
+      let endDateValue = new Date(dateFilterEndDate.value)
+      endDateValue = new Date(endDateValue.setDate(endDateValue.getDate()))
+      endDateValue = endDateValue.setHours(23, 59, 59)
+      console.log(dateFilterEndDate.value + dateFilterStartDate.value + 'HALLÅ')
+      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null) {
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+      } else if (this.$refs.endDateInput.getInput() != null) {
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+      } else if (this.$refs.startDateInput.getInput() != null) {
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
+      }
+      console.log('found ' + this.filteredTransactions.length + ' elements')
+      console.log(this.filterActive)
       this.filterActive = true
     },
     

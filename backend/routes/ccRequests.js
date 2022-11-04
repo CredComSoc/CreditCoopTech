@@ -74,7 +74,7 @@ module.exports = async function(dbUrl, dbFolder) {
       "quant"       : article.quantity * parseInt(article.price), //summa
       "description" : article.article,
       "type"        : "credit",
-      "metadata"    : {"id" : article.id, "quantity": article.quantity},
+      "metadata"    : {"id" : article.id, "quantity": article.quantity, "time": new Date()},//Completed transaction time ska sättas vid completion
       "state"       : "pending"}
     const result = await dbo.collection("transaction").insertOne(article_data)
     db.close()
