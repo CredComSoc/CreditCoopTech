@@ -16,7 +16,8 @@ export default {
   }, 
   setup () {
     const showModal = ref(false)
-    return { showModal }
+    const collectInfoModal = ref(false)
+    return { showModal, collectInfoModal }
   }, 
   data: function () {
     return {
@@ -40,7 +41,8 @@ export default {
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        eventsSet: this.handleEvents,
+        handleInput: this.handleInput
         //eventAdd: this.postEvent
         /* you can update a remote database when these fire:
         eventChange:
@@ -48,7 +50,8 @@ export default {
         */
       },
       currentEvents: [],
-      clickedEvent: 'hej' 
+      clickedEvent: '',
+      savedDate: []
     }
   },
   methods: {
@@ -56,29 +59,52 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
-      const title = prompt('Please enter a new title for your event')
+      this.eventTitle = null
+      this.eventDescription = null
+      this.eventContacts = null
+      this.eventLocation = null
+      //const title = prompt('Please enter a new title for your event')
+      this.collectInfoModal = true
+      this.savedDate = selectInfo
+      /*
+      const title = this.eventTitle
       const calendarApi = selectInfo.view.calendar
       calendarApi.unselect() // clear date selection
       const eventId = createEventId()
-      if (title) {
+      */ 
+      //Lägg till ovanstående i databasen
+      /*
+      this.newEvent.id = eventId
+      this.newEvent.title = 
+      this.newEvent.start = selectInfo.startStr
+      this.newEvent.end = selectInfo.endStr
+      this.newEvent.allDay = selectInfo.allDay*/
+      //console.log(selectInfo.id)
+    },
+    handleEventClick (clickInfo) {
+      this.clickedEvent = clickInfo
+      this.showModal = true
+    },
+
+    handleEvents (events) {
+      this.currentEvents = events
+    },
+
+    handleInput () {
+      const calendarApi = this.savedDate.view.calendar
+      calendarApi.unselect() // clear date selection
+      const eventId = createEventId()
+      if (this.eventTitle) {
         calendarApi.addEvent({
           id: eventId,
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-          description: 'this is a fun event'
+          title: this.eventTitle,
+          start: this.savedDate.startStr,
+          end: this.savedDate.endStr,
+          allDay: this.savedDate.allDay,
+          description: this.eventDescription
         })
-        //Lägg till ovanstående i databasen
-        /*
-        this.newEvent.id = eventId
-        this.newEvent.title = 
-        this.newEvent.start = selectInfo.startStr
-        this.newEvent.end = selectInfo.endStr
-        this.newEvent.allDay = selectInfo.allDay*/
-        //console.log(selectInfo.id)
-        
-        uploadEvent(title, selectInfo.start, selectInfo.end, selectInfo.allDay).then((res) => {
+
+        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
             this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
@@ -86,17 +112,8 @@ export default {
             this.error = true
             this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
           }
-        })
+        }) 
       }
-    },
-    handleEventClick (clickInfo) {
-      //+ '</div>' + '<br>' + '<label><b>Location: </b></label><a href=' + event.url + '>' + event.location + '</a>' + '<br>' + '</div>');
-      this.clickedEvent = clickInfo
-      this.showModal = true
-    },
-
-    handleEvents (events) {
-      this.currentEvents = events
     }
     /*   
     postEvent(){
@@ -123,6 +140,7 @@ export default {
     */
   }
 }
+
 </script>
 <template>
     <div class='demo-app'>
@@ -167,9 +185,28 @@ export default {
         </FullCalendar>
 
     <Modal :open="showModal" @close="showModal = !showModal">
-        <p> Event Details</p>
-        <p> {{this.clickedEvent.event.title}} </p>
-        <p> {{this.clickedEvent.event.startStr}} </p>
+      <p> Event Details</p>
+      <p> {{this.clickedEvent.event}} </p> 
+      <p> {{this.clickedEvent.event}} </p> 
+    </Modal> 
+    <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
+      <div>
+      <p> Titel för eventet: {{eventTitle}}</p>
+      <input v-model="eventTitle" placeholder="Titel" />
+      <p> Plats för eventet: {{eventLocation}}</p>
+      <input v-model="eventLocation" placeholder="Plats" />
+      <p> Kontaktuppgifter: {{eventContacts}}</p>
+      <input v-model="eventContacts" placeholder="Kontaktuppgifter" />
+      <p> URL för att visa andra medlemmar mer information: {{eventURL}} </p>
+      <input v-model="eventURL" placeholder="URL" />
+      <p> Beskrivning av eventet: {{eventDescription}} </p>
+      <input v-model="eventDescription" placeholder="Beskrivning" />
+      </div>
+      <button @click="handleInput();collectInfoModal = !collectInfoModal">Lägg till event</button>
+      <!-- <form id="form" onsubmit="return false;">
+      <input type="text" id="userInput" />
+      <input type="submit" @click='handleInput' />
+      </form>-->
     </Modal> 
     </div>
     </div>
