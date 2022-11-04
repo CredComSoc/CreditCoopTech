@@ -14,8 +14,9 @@ const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'http://155.4.159.231:8080'
-CC_NODE_URL = 'http://127.0.0.1/cc-node'
+//FRONTEND_URL = 'http://155.4.159.231:8080'
+FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
+CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
