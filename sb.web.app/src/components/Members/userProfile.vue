@@ -120,7 +120,7 @@ export default {
       this.comment = ''
     },
     goToChat () {
-      fetch(EXPRESS_URL + '/chat/' + this.profileData.accountName, {
+      fetch(EXPRESS_URL + '/adminchat/' + this.profileData.accountName, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -129,7 +129,7 @@ export default {
       }).then(res => res.json())
         .then(data => {
           if (data !== false) {
-            this.$router.push({ name: 'Chat', params: { chatID: data } })
+            this.$router.push({ name: 'AdminChat', params: { chatID: data } })
           } else {
             console.log('chat error!!')
             this.chatError = true

@@ -4,7 +4,7 @@ do not match the equivalent of the database.
 -->
 <template>
   <div>
-    <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
+    <router-link :to="{ name: 'AdminMemberUserprofile', params: { userprofile: listingObj.accountName }} ">
     <div class="element-container" @click="enterProfile"> 
       <div class="imgContainer">
         <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
