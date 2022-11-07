@@ -676,21 +676,27 @@ export async function getChatHistories () {
 *                                Event
 *                 
 *****************************************************************************/
+export async function loadEvents () {
+  const promise = fetch(EXPRESS_URL + '/load/event', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((res) => {
+      console.log('then.res')
+      return res.json()
+    })
+    .then((data) => {
+      console.log(data)
+      return (data)
+    })
+    .catch(() => {
+      return false
+    })
+  console.log('innan promsie')
+  return promise
+}
 
-export async function uploadEvent (title, start, end, allDay) {
-  console.log(start)
-  console.log(title)
-  console.log(end)
-  console.log(allDay)
-  
-  /*const data = new FormData()
-  data.append('eventdata', JSON.stringify({
-    title: title,
-    start: start,
-    end: end,
-    allDay: allDay
-  }))*/
-
+export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage) {
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
     headers: {
@@ -700,7 +706,12 @@ export async function uploadEvent (title, start, end, allDay) {
       title: title,
       eventstart: start,
       eventend: end,
-      eventallDay: allDay
+      eventallDay: allDay,
+      location: location,
+      description: description,
+      contacts: contacts,
+      webpage: webpage 
+
     }),
     credentials: 'include'
   }).then((res) => {

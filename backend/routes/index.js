@@ -917,6 +917,21 @@ module.exports = async function(dbUrl, dbFolder) {
 *                                Events
 *                 
 *****************************************************************************/
+router.get("/load/event", async (req, res) => {
+  //console.log(res)
+  const db = await MongoClient.connect(dbUrl)
+  const dbo = db.db(dbFolder);
+  dbo.collection('events').find({}).toArray(function (err, eventsdata) {
+    if (err) {
+      res.sendStatus(500)
+      db.close()
+    }
+    else {
+      res.status(200).send({eventsdata})
+      db.close()
+    } 
+  })
+})
 
 router.post('/upload/event', async (req, res) => {
   if (!req.isAuthenticated()) {
@@ -929,7 +944,11 @@ router.post('/upload/event', async (req, res) => {
       title: req.body.title,
       start: new Date(req.body.eventstart),
       end: new Date(req.body.eventend),
-      allDay: req.body.eventallDay
+      allDay: req.body.eventallDay,
+      location: req.body.location,
+      description: req.body.description,
+      contacts: req.body.contacts,
+      webpage: req.body.webpage
     }
     
     const user = await getUser({'profile.accountName': req.user})

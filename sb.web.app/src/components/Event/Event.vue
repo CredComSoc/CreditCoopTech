@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { INITIAL_EVENTS, createEventId, initEvents, loadedevents } from './event-utils'
 import { uploadEvent } from '../../serverFetch'
 import { ref } from 'vue'
 //import { Fancybox } from '@fancyapps/ui' TA BORT DETTA PAKET FRÅN PACKET-LOCK JSON
@@ -15,6 +15,7 @@ export default {
     Modal
   }, 
   setup () {
+    initEvents()
     const showModal = ref(false)
     const collectInfoModal = ref(false)
     return { showModal, collectInfoModal }
@@ -33,7 +34,7 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        initialEvents: loadedevents, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -59,6 +60,7 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
+      alert(initEvents())
       this.eventTitle = null
       this.eventDescription = null
       this.eventContacts = null
@@ -101,10 +103,13 @@ export default {
           start: this.savedDate.startStr,
           end: this.savedDate.endStr,
           allDay: this.savedDate.allDay,
-          description: this.eventDescription
+          location: this.eventLocation,
+          description: this.eventDescription,
+          contact: this.eventContacts,
+          website: this.eventURL
         })
 
-        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay).then((res) => {
+        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay, this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
             this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
