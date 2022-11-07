@@ -106,6 +106,13 @@ export default {
         this.selectedValue = null
       }
       if (this.isDateFilter) { // TITTA VIDARE SE TILL ATT DATUM SÄTTS TILL STANDARD VÄRDEN
+        const minLimitDate = new Date()
+        const dateFilter = document.getElementById(this.name + '-date-filter')
+        minLimitDate.setFullYear(2020)
+        dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+        const maxLimitDate = new Date()
+        maxLimitDate.setDate(maxLimitDate.getDate())
+        dateFilter.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
         this.$refs.dateVal.value = null
         this.selectedValue = null
       }
@@ -145,7 +152,6 @@ export default {
   },
   data () {
     return { 
-      // startDateFilter: new Date(),
       selectedValue: null
     }
   }

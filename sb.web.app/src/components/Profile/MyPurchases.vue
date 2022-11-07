@@ -76,11 +76,11 @@
           <a href='#' >Slut datum</a>
           <a>
             <!--<label class="box-label">Företag</label>-->
-            <input class="box-input" type="text" v-model="company" name="" placeholder="Företag" id="company-input" required>
+            <input class="box-input" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input" required>
           </a>  
         <a>
             <!--<label class="box-label">Produkt</label>-->
-            <input class="box-input" type="text" v-model="product" name="" placeholder="Produkt" id="product-input" required>
+            <input class="box-input" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input" required>
         </a>
         </p>
     </div>
@@ -151,9 +151,6 @@ export default {
       product: '',
       /* filterCompany: [],*/
       filteredTransactions: [],
-      //completedTransactions: [],
-      //completedPurchases: [],
-      //pendingPurchases: [],
       requests: [],
       componentKey: 0,
       payerNotEnoughBkr: false,
@@ -187,6 +184,20 @@ export default {
         endDateValue = endDateValue.setDate(endDateValue.getDate() + 1)
         const maxLimitStartDate = new Date(endDateValue)
         dateFilterStartDate.setAttribute('max', maxLimitStartDate.toISOString().split('T')[0])
+      }
+    },
+    getListing (item) {
+      for (const listing of this.$store.state.allArticles) {
+        if (listing.id === item.metadata.id) {
+          return listing
+        }
+      }
+    },
+    getListing_title (item) {
+      for (const listing of this.$store.state.allArticles) {
+        if (listing.id === item.metadata.id) {
+          return listing.title
+        }
       }
     },
     
@@ -228,17 +239,44 @@ export default {
       let endDateValue = new Date(dateFilterEndDate.value)
       endDateValue = new Date(endDateValue.setDate(endDateValue.getDate()))
       endDateValue = endDateValue.setHours(23, 59, 59)
-      console.log(dateFilterEndDate.value + dateFilterStartDate.value + 'HALLÅ')
+      //console.log(dateFilterEndDate.value + dateFilterStartDate.value + 'HALLÅ')
+      // date range search
       if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null) {
+        console.log('date range start and end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
       } else if (this.$refs.endDateInput.getInput() != null) {
+        console.log('date range end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
       } else if (this.$refs.startDateInput.getInput() != null) {
+        console.log('date range start')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
       }
+      //company name search
+      if (this.$refs.companyInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null)) {
+        console.log('company search with date range')
+        this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
+      } else if (this.$refs.companyInput.value !== '') {
+        console.log('company search without date range')
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
+      }
+      //procuct name search
+      console.log(this.$refs.productInput.value)
+      if (this.$refs.productInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || this.$refs.companyInput.value !== '')) {
+        console.log('product search with date range')
+        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
+      } else if (this.$refs.productInput.value !== '') {
+        console.log('product search without date range')
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
+      }
+
+      //if any filter is active filterActive is true. this 
+      if (this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null) {
+        this.filterActive = true
+      } else {
+        this.filterActive = false
+      } 
       console.log('found ' + this.filteredTransactions.length + ' elements')
       console.log(this.filterActive)
-      this.filterActive = true
     },
     
     invoice (filename, item) {
@@ -298,20 +336,6 @@ export default {
         grandChild = child.lastElementChild
       }
       child.appendChild(tag)
-    },
-    getListing (item) {
-      for (const listing of this.$store.state.allArticles) {
-        if (listing.id === item.metadata.id) {
-          return listing
-        }
-      }
-    },
-    getListing_title (item) {
-      for (const listing of this.$store.state.allArticles) {
-        if (listing.id === item.metadata.id) {
-          return listing.title
-        }
-      }
     }
   }
 }

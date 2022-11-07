@@ -1,5 +1,5 @@
 <template>
-    <Combobox ref="dateFilter" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDateFilter="true" />
+  <Combobox ref="dateFilter" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDateFilter="true" />
 </template>
   
 <script>
