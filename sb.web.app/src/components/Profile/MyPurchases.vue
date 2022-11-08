@@ -67,22 +67,20 @@
       
     <div>
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
-        <p>Filter:
-          <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @change="handleDate()"/>
-          <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @change="handleDate()"/>
-          <button @click="filterTransactions()">Filtrera</button>
-          <!-- <button @click="clearFilter()">Rensa Filter</button> -->
-          <a href='#' >Start datum </a>
-          <a href='#' >Slut datum</a>
-          <a>
-            <!--<label class="box-label">Företag</label>-->
-            <input class="box-input" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input" required>
-          </a>  
+        <div>Filter:</div>
+        <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
+        <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
+        <!--<input id="start-date-filter" type="date" class="dateFilter" ref="startDateInput" :placeholder="`Från och med`" @change="handleDate()">
+        <input id="end-date-filter" type="date" class="dateFilter" ref="endDateInput" :placeholder="`Till och med`" @change="handleDate()">-->
+        <button @click="filterTransactions()">Filtrera</button>
         <a>
-            <!--<label class="box-label">Produkt</label>-->
-            <input class="box-input" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input" required>
+          <!--<label class="box-label">Företag</label>-->
+          <input class="box-input" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+        </a>  
+        <a>
+          <!--<label class="box-label">Produkt</label>-->
+          <input class="box-input" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
         </a>
-        </p>
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
@@ -173,13 +171,22 @@ export default {
     handleDate () {
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
-      if (this.$refs.startDateInput.getInput() != null) {
+      console.log(dateFilterStartDate.value)
+      if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) {
+        const minLimitDate = new Date()
+        minLimitDate.setFullYear(2020)
+        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+      } else {
         let startDateValue = new Date(dateFilterStartDate.value)
         startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
         const minLimitEndDate = new Date(startDateValue)
         dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0])
       }
-      if (this.$refs.endDateInput.getInput() != null) {
+      if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) {
+        const maxLimitDate = new Date()
+        maxLimitDate.setFullYear(2020)
+        dateFilterStartDate.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+      } else {
         let endDateValue = new Date(dateFilterEndDate.value)
         endDateValue = endDateValue.setDate(endDateValue.getDate() + 1)
         const maxLimitStartDate = new Date(endDateValue)
@@ -342,6 +349,10 @@ export default {
 </script>
 
 <style scoped>
+.DateFilter {
+  width: 100px;
+  background-color: green;
+}
 
 table {
   margin-left: auto;
