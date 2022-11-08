@@ -131,15 +131,29 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (username, password) {
+export async function register (username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
   const hashedPassword = hashMyPassword(password)
-
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: username,
+    password: password,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone
+  }))
+  data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username: username, password: hashedPassword })
+    body: data
   })
     .then((response) => {
       if (!response.ok) {
@@ -189,7 +203,7 @@ export async function updateProfile (accountName, description, adress, city, bil
     billingBox: billingBox,
     billingAdress: billingAdress,
     orgNumber: orgNumber, 
-    email: email,
+    email: email.toLowerCase(),
     phone: phone
   }))
   data.append('file', logo)

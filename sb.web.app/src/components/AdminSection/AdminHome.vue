@@ -1,78 +1,154 @@
 <template>
-  <div class="admin_home"> 
-    <h1>Välkommen Admin</h1>
-  </div>
-  <div class="Task">
-    <div class="search">
-      Search
-    </div>
-    <div class="action">
-      Task
-    </div>
-    <div class="add members" >
-      <router-link :to="{name:'New_Member'}">        
-        <div>Add Members</div>
-        <img src="../../assets/cart_images/add.png" alt="">
-      </router-link>
-    </div>
-  </div>
-  
-  <div class="container">
+  <div class="wrapper">
 
+    <div>
+      <h2 class="center-text">MEDLEMMAR</h2>
+    </div>
+
+    <div class="center">
+        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vem vill du söka efter idag?'"/>
+    </div>
+    <br>
+    <div class="main">
+      <div class="listings">
+        <div v-if="this.SearchData.length !== 0">
+          <AllMembers :key=SearchData :search-data=SearchData />
+        </div>
+      </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
+import Searchfield from '@/components/SharedComponents/searchfield.vue'
+import AllMembers from '@/components/Members/all_members.vue'
 
 export default {
-  name: 'AdminHome',
-  components: {
 
-  },
   data () {
     return {
-      
+      SearchData: [],
+      singleListingData: [],
+      popupActive: false,
+      listingObjPopup: Object
     }
-  }
-}
+  },
 
+  components: {
+    Searchfield,
+    AllMembers
+  },
+
+  methods: {
+    triggerSearch (newSearchWord) {
+      let searchWord = newSearchWord.split(' ')
+      searchWord = searchWord.filter(function (value) {
+        return value !== ''
+      })
+
+      const allMembersArray = new Map()
+      const adminMembersArray = new Map()
+
+      for (const member of this.$store.state.allMembers) {
+        const name = member.accountName
+    
+        let foundSearchword = true
+        if (searchWord.length !== 0) {
+          for (let i = 0; i < searchWord.length; i++) {
+            if (!name.match(new RegExp(searchWord[i], 'i'))) {
+              foundSearchword = false
+              break
+            } 
+          }
+          if (!foundSearchword) {
+            continue
+          }
+        }
+
+        if (member.is_admin) {
+          if (!adminMembersArray.has('Admin')) {
+            adminMembersArray.set('Admin', [])
+          }
+          adminMembersArray.get('Admin').push(member)
+        } else {
+          console.log(member)
+          if (!allMembersArray.has(member.city)) {
+            allMembersArray.set(member.city, [])
+          }
+          allMembersArray.get(member.city).push(member)
+        }
+      }
+
+      //Sort alphabetically by swedish.
+      for (const value of allMembersArray.values()) {
+        value.sort((a, b) => a.accountName.localeCompare(b.accountName))
+      }
+      const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
+      const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+      this.SearchData = finishMap
+    }
+  },
+  mounted: function () {
+    console.log(this.$store.state.allMembers)
+    this.triggerSearch('')
+  }
+  
+}
 </script>
 
-<style>
-  .admin_home{
-    width: fit-content;
-    margin: auto;
-  }
-  .admin_home>h1{
-    margin: 0px;
+<style scoped>
+
+ * {
+    font-family: 'Ubuntu', sans-serif;
+    padding: 0;
+    margin: 0;
   }
 
-  .Task{
-    width: 100%;
-    padding-inline: 20%;
-    height: fit-content;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .search{
-    width: 30%;
-    height: 20px;
-    background-color: aquamarine;
-    border-radius: 4px; 
-  }
-  .action{
-    width: 30%;
-    height: 20px;
-    background-color: aquamarine;
-    border-radius: 4px; 
-  }
-  .seting{
-    width: 30%;
-    height: 20px;
-    background-color: aquamarine;
-    border-radius: 4px; 
-  }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.categories {
+  flex-basis: 20%;
+  height: auto;
+
+}
+
+.listings {
+  flex-basis: 100%;
+  width: auto;
+}
+
+.center-text {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;  
+  text-align: center;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 3rem;
+}
+
+h3 {
+  margin-left: 1rem;
+}
 
 </style>

@@ -16,13 +16,13 @@
               </router-link>
             </div>
           <div id="navbar-members" class="navlogo">
-             <router-link :to="{name:'AdminMembers'}">
+             <router-link :to="{name:'AdminAddMember'}">
               <figure class="logo-click">              
-                  <img src="../../assets/navbar_logos/members.png" />
-                  <figcaption class="l-text"> Medlemmar </figcaption>
+                  <img src="../../assets/navbar_logos/add.png" />
+                  <figcaption class="l-text"> Lägg till ny medlem </figcaption>
               </figure>
             </router-link>
-            <router-link :to="{name:'AdminMembers'}" v-if="this.isActive" @click="openNav">
+            <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> Medlemmar </span>
             </router-link>
           </div>

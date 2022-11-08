@@ -328,31 +328,36 @@ module.exports = async function(dbUrl, dbFolder) {
   router.post("/register", (req, res) => {
     getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
+        const newPro = JSON.parse(req.body.accountInfo)
         const newUser = {
-          email: req.body.email.toLowerCase(),
-          password: req.body.password,
+          email: newPro.email,
+          password: newPro.password,
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),
-          is_admin: req.body.is_admin === "false" ? false : true,
+          is_admin: req.body.is_admin === "false" ? false : true, //lägg till detta sen 
           profile: {
             website: "",
-            accountName: req.body.email,
-            description: "",
-            adress: "",
-            city: "",
-            phone: "",
+            accountName: newPro.accountName,
+            description: newPro.description,
+            adress: newPro.adress,
+            city: newPro.city,
+            phone: newPro.phone,
             billing: {
-              name: "",
-              box: "",
-              adress: "",
-              orgNumber: ""
+              name: newPro.billingName,
+              box: newPro.billingBox,
+              adress: newPro.billingAdress,
+              orgNumber: orgNumber
             },
             logo: "",
             logo_id: ""
           },
           messages: {},
           notifications: [],
+        }
+        if (req.file) {
+          newUser.logo = req.file.filename
+          newUser.logo_id = req.file.id
         }
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
