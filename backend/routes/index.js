@@ -14,7 +14,7 @@ const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'http://155.4.159.231:8080'
+FRONTEND_URL = 'http://192.168.10.122:8080'
 CC_NODE_URL = 'http://127.0.0.1/cc-node'
 
 const transporter = nodemailer.createTransport({
@@ -325,9 +325,11 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.post("/register", (req, res) => {
+  router.post("/register", upload.single('file'), (req, res) => {
+    console.log(req.body)
     getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
+        console.log(req.body.accountInfo)
         const newPro = JSON.parse(req.body.accountInfo)
         const newUser = {
           email: newPro.email,
@@ -335,7 +337,7 @@ module.exports = async function(dbUrl, dbFolder) {
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),
-          is_admin: req.body.is_admin === "false" ? false : true, //lägg till detta sen 
+          is_admin: newPro.is_admin ? true : false, //lägg till detta sen 
           profile: {
             website: "",
             accountName: newPro.accountName,
@@ -347,7 +349,7 @@ module.exports = async function(dbUrl, dbFolder) {
               name: newPro.billingName,
               box: newPro.billingBox,
               adress: newPro.billingAdress,
-              orgNumber: orgNumber
+              orgNumber: newPro.orgNumber
             },
             logo: "",
             logo_id: ""
@@ -363,6 +365,24 @@ module.exports = async function(dbUrl, dbFolder) {
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
+          await transporter.sendMail({
+            from: 'svenskbarter.reset@outlook.com', // sender address
+            to: newUser.email, 
+            subject: 'Medlem i Bvensk Barter', // Subject line
+            text: `
+            Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
+            Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+            
+            ${FRONTEND_URL}/login
+
+            Din uppgifter att logga in är:
+            Email: ${newPro.email}
+            Password: ${newPro.password}
+
+      
+            Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+          `
+          })
           res.sendStatus(200)
           db.close()
         } else {

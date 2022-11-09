@@ -131,10 +131,11 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
   const hashedPassword = hashMyPassword(password)
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
+    is_admin: isadmin,
     accountName: username,
     password: password,
     description: description,
@@ -150,9 +151,6 @@ export async function register (username, password, description, adress, city, b
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     body: data
   })
     .then((response) => {

@@ -1,81 +1,83 @@
 <template>
-      <form className="flexbox-container2" @submit.prevent="">
-        <div className="container-item">
-          <h1>Allmänt</h1>
-          <label for="logo">Logotyp:</label><br/>
-          <div class="image">
-          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+  <div class="container">
+    <H1 v-if="!registered">
+      LÄGG TILL MEDLEM
+    </H1>
+    <form v-if="!registered" className="flexbox-container2" @submit.prevent="">
+      <div className="container-item">
+        <h3>Allmänt</h3>
+        <label for="logo">Logotyp:</label><br/>
+        <div class="image">
+          <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          </div>
-          <input type="file" name="logo" @change="addLogo"><br/>
-          <label for="name">Företagsnamn:</label><br/>
-          <input type="text" id="name" v-model="profileData.name" required><br/>
-          <label for="description">Beskrivning:</label><br/>
-          <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="adress">Adress:</label><br/>
-          <input type="text" id="adress" v-model="profileData.adress" required><br/>
-          <label for="location">Stad/ort:</label><br/>
-          <input type="text" id="location" v-model="profileData.city" required><br/>
         </div>
-        <div className="container-item">
-          <h1>Faktureringsuppgifter</h1>
-          <label for="billingName">Namn:</label><br/>
-          <input name="billingName" v-model="profileData.billingName" required><br/>
-          <label for="billingBox">Box:</label><br/>
-          <input name="billingBox" v-model="profileData.billingBox" required><br/>
-          <label for="billingAdress">Adress:</label><br/>
-          <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
-          <label for="orgNumber">Organisationsnummer:</label><br/>
-          <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-          <h1>Kontaktuppgifter</h1>
-          <label for="email">Epost:</label><br/>
-          <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">Telefon:</label><br/>
-          <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
-
-          <button @click="submit" class="buttonflex">
-            <p style="padding-right:7px" > Spara </p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-              <circle cx="12" cy="14" r="2" />
-              <polyline points="14 4 14 8 8 8 8 4" />
+        <input type="file" name="logo" @change="addLogo"><br/>
+        <label for="checkbox" >Admin:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="checkbox" id="checkbox" v-model="profileData.isadmin" /><br/>
+        <label for="name">Företagsnamn:</label><br/>
+        <input type="text" id="name" v-model="profileData.name" required><br/>
+        <label for="description">Beskrivning:</label><br/>
+        <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
+        <label for="adress">Adress:</label><br/>
+        <input type="text" id="adress" v-model="profileData.adress" required><br/>
+        <label for="location">Stad/ort:</label><br/>
+        <input type="text" id="location" v-model="profileData.city" required><br/>
+      </div>
+      <div className="container-item">
+        <h3>Faktureringsuppgifter</h3>
+        <label for="billingName">Namn:</label><br/>
+        <input name="billingName" v-model="profileData.billingName" required><br/>
+        <label for="billingBox">Box:</label><br/>
+        <input name="billingBox" v-model="profileData.billingBox" required><br/>
+        <label for="billingAdress">Adress:</label><br/>
+        <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
+        <label for="orgNumber">Organisationsnummer:</label><br/>
+        <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
+        <h3>Kontaktuppgifter</h3>
+        <label for="email">Epost:</label><br/>
+        <input type="email" id="email" v-model="profileData.email" required><br/>
+        <label for="phone">Telefon:</label><br/>
+        <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
+        
+        <button @click="submit" class="buttonflex">
+          <p style="padding-right:7px" > Registrera </p>
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+            <circle cx="12" cy="14" r="2" />
+            <polyline points="14 4 14 8 8 8 8 4" />
           </svg>
-          </button>
-          <button @click="edit = !edit" class="buttonflex"> 
-            <p style="padding-right:0px" > Avbryt </p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-          </button>
-        </div>
-      </form>
+        </button>
+      </div>
+    </form>
+    <div v-if="registered">
+      <h1>Person är registrerat!!</h1>
+      <button @click="reset"> OK</button>
+    </div>
+  </div>
+  
 </template>
 
 <script>
-import { EXPRESS_URL, profile, updateProfile, register } from '../../serverFetch'
+import { register } from '../../serverFetch'
 
 export default {
   data () {
     return {
-      edit: false,
       profileData: [],
-      updateProfile,
       register,
-      logoURL: '',
-      localURL: ''
+      localURL: '',
+      registered: false
     }
   },
   mounted () {
-    profile()
-      .then(res => {
-        this.profileData = res
-        //console.log(this.profileData)
-        this.getImgURL()
-      })
+    /*profile()
+    .then(res => {
+      this.profileData = res
+      //console.log(this.profileData)
+      this.getImgURL()
+    })*/
+    this.profileData.isadmin = false
   },
   methods: {
     addLogo (e) {
@@ -83,28 +85,42 @@ export default {
       //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
     },
-    submit () {
-      this.register(
-        this.profileData.name, 
-        '123',
-        this.profileData.description, 
-        this.profileData.adress, 
-        this.profileData.city, 
-        this.profileData.billingName, 
-        this.profileData.billingBox, 
-        this.profileData.billingAdress, 
-        this.profileData.orgNumber, 
-        this.profileData.email, 
-        this.profileData.phone,
-        this.profileData.logo
+    async submit () {
+      var randomstring = Math.random().toString(36).slice(-8)
+      const result = await this.register(
+      this.profileData.isadmin,
+      this.profileData.name, 
+      randomstring,
+      this.profileData.description, 
+      this.profileData.adress, 
+      this.profileData.city, 
+      this.profileData.billingName, 
+      this.profileData.billingBox, 
+      this.profileData.billingAdress, 
+      this.profileData.orgNumber, 
+      this.profileData.email, 
+      this.profileData.phone,
+      this.profileData.logo
       )
-      if (this.localUrl) {
-        this.logoURL = this.localURL
+      if (result) {
+        this.registered = true
       }
-      this.edit = !this.edit
     },
-    getImgURL () {
-      this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
+    reset () {
+      this.profileData.isadmin = false
+      this.profileData.name = ''
+      this.profileData.description = '' 
+      this.profileData.adress = '' 
+      this.profileData.city = '' 
+      this.profileData.billingName = ''  
+      this.profileData.billingBox = '' 
+      this.profileData.billingAdress = '' 
+      this.profileData.orgNumber = '' 
+      this.profileData.email = '' 
+      this.profileData.phone = '' 
+      this.profileData.logo = ''
+      this.localURL = ''
+      this.registered = false
     }
   }
 }
@@ -112,14 +128,27 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Ubuntu', sans-serif;
+  padding: 0;
+  margin: 0;
+}
 
 @media screen and (min-width: 860px) {
+  .container{
+    width:100%;
+    height: fit-content;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+  }
   .flexbox-container2 {
     display: flex;
-    margin-right: 100px;
-    margin-top: 50px;
+    margin-top: 2%;
   }
-
+  
   .edit {
     align-self: flex-end;
   }
@@ -147,14 +176,14 @@ export default {
   border-radius: 50%;
   display: flex;
   justify-content: space-around;
-  }
+}
 
 .right {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   justify-content: space-between;
-
+  
 }
 
 h1 {
