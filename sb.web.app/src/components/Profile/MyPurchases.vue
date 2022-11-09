@@ -351,7 +351,8 @@ export default {
 <style scoped>
 .DateFilter {
   width: 100px;
-  background-color: green;
+  height: 50px;
+  display: inline-block;
 }
 
 table {
@@ -397,7 +398,7 @@ p {
 }
 
 button {
-  color: white;
+  color: black;
   margin-right: 10px;
   border-radius: 5px;
   font-size: 1.2rem;
