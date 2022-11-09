@@ -4,7 +4,7 @@
 const dbFolder = "sb-web-app"
 //const dbFolder = "tvitter"
 const mongoURL = function(folder, localUrl = true) {
-    localUrl = true;
+    localUrl = false;
     if (localUrl) {
         return "mongodb://localhost:27017/" + folder + "?retryWrites=true&w=majority"
     } else {
