@@ -20,6 +20,7 @@
           <td>{{item.metadata.quantity}}</td>
           <td>{{item.quant / item.metadata.quantity}}</td>
           <td>{{item.quant}}</td>
+          <td>{{item.metadata.time.split('T')[0]}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="cancel(item.uuid, item.payer, index)" style="background-color: red;"> Avbryt </button>
@@ -56,6 +57,7 @@
           <td>{{item.metadata.quantity}}</td>
           <td>{{item.quant / item.metadata.quantity}}</td>
           <td>{{item.quant}}</td>
+          <td>{{item.metadata.time.split('T')[0]}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
@@ -66,21 +68,12 @@
       <h1><b> Köphistorik </b></h1>
       
     <div>
-      <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 70px;">
-        <div>Filter:</div>
-        <DateFilter class= "DateFilter" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
-        <DateFilter class= "DateFilter" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <!--<input id="start-date-filter" type="date" class="dateFilter" ref="startDateInput" :placeholder="`Från och med`" @change="handleDate()">
-        <input id="end-date-filter" type="date" class="dateFilter" ref="endDateInput" :placeholder="`Till och med`" @change="handleDate()">-->
+      <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
         <button @click="filterTransactions()">Filtrera</button>
-        <a>
-          <!--<label class="box-label">Företag</label>-->
-          <input class="box-input" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
-        </a>  
-        <a>
-          <!--<label class="box-label">Produkt</label>-->
-          <input class="box-input" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
-        </a>
+        <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
+        <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
+        <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+        <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
@@ -102,6 +95,7 @@
           <td>{{item.metadata.quantity}}</td>
           <td>{{item.quant / item.metadata.quantity}}</td>
           <td>{{item.quant}}</td>
+          <td>{{item.metadata.time.split('T')[0]}}</td>
           <th>{{item.written}}</th>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
@@ -125,7 +119,8 @@
           <td>{{item.metadata.quantity}}</td>
           <td>{{item.quant / item.metadata.quantity}}</td>
           <td>{{item.quant}}</td>
-          <th>{{item.written}}</th>
+          <td>{{item.metadata.time.split('T')[0]}}</td>
+          <th>{{item.written}}</th> <!--might be date from cc-node-->
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
       </table>
@@ -184,7 +179,6 @@ export default {
       }
       if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) {
         const maxLimitDate = new Date()
-        maxLimitDate.setFullYear(2020)
         dateFilterStartDate.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
       } else {
         let endDateValue = new Date(dateFilterEndDate.value)
@@ -349,9 +343,15 @@ export default {
 </script>
 
 <style scoped>
+.filterObject {
+  width: 125px;
+  height: 30px;
+  margin: 5px;
+  align-content: center;
+}
 .DateFilter {
-  width: 100px;
-  height: 50px;
+  width: 125px;
+  height: 30px;
   display: inline-block;
 }
 

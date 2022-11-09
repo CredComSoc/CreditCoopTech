@@ -1,6 +1,6 @@
 <template>
   <div>
-   <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
+    <h3 v-if="!this.isDateFilter" :for="this.name" class="input-title"> {{ this.label }}</h3>
     <div id="combo-box-field">
       <div v-if="!this.isDatePicker && !this.isDateFilter" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
         <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
@@ -187,12 +187,13 @@ export default {
   cursor: pointer;
   font-size: 13px;
 }
+
 .date-filter {
-  width: 200px;
-  height: 20px;
+  width: 125px;
+  height: 30px;/*
   background: white;
   border: 2px solid #5c5c5c;
-  border-radius: 4px;
+  border-radius: 4px;*/
   position: relative;
   cursor: pointer;
   font-size: 13px;
