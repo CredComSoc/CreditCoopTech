@@ -927,6 +927,7 @@ router.get("/load/event", async (req, res) => {
       db.close()
     }
     else {
+      console.log('i index'+ {eventsdata})
       res.status(200).send({eventsdata})
       db.close()
     } 

@@ -676,26 +676,43 @@ export async function getChatHistories () {
 *                                Event
 *                 
 *****************************************************************************/
+
 export async function loadEvents () {
   const promise = fetch(EXPRESS_URL + '/load/event', {
     method: 'GET',
     credentials: 'include'
   })
     .then((res) => {
-      console.log('then.res')
+      console.log('then.res = ' + res.json())
       return res.json()
     })
     .then((data) => {
-      console.log(data)
+      console.log('data i data = ' + data)
       return (data)
     })
     .catch(() => {
       return false
     })
-  console.log('innan promsie')
-  return promise
+  console.log('innan data fd promise')
+  console.log(promise.then.res)
+  return promise.then.data  
 }
-
+/*
+export async function loadEvents () {
+  return fetch(EXPRESS_URL + '/load/event', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    console.log('response i server fecth' + response.json().stringify())
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+*/
 export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage) {
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
