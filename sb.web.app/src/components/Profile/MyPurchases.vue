@@ -202,28 +202,24 @@ export default {
         }
       }
     },
-    /*
-    downloadHelper (item, csvObj) {
-      csvObj.csv += item.payer + ';' 
-      csvObj.csv += item.payee + ';' 
-      csvObj.csv += this.getListing_title(item) + ';' 
-      csvObj.csv += item.metadata.quantity + ';' 
-      csvObj.csv += (item.quant / item.metadata.quantity) + ';' 
-      csvObj.csv += item.quant + ';'  
-      csvObj.csv += item.metadata.time.split('T')[0] 
-      //csv += item.written.join(','); 
-      csvObj.csv += '\n' 
-    },
-    */
     downloadFilterView () {
       var csv = 'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
-      /*
-      let csvObj = {
-        csv:'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
-      }
-      */
+      //console.log(this.getListing_title(this.$store.state.completedTransactions[0]))
       if (this.filterActive) { 
+        /*
         this.filteredTransactions.forEach(function (item) {  
+          csv += item.payer + ';' 
+          csv += item.payee + ';' 
+          csv += getListing_title(item) + ';' 
+          csv += item.metadata.quantity + ';' 
+          csv += (item.quant / item.metadata.quantity) + ';' 
+          csv += item.quant + ';'  
+          csv += item.metadata.time.split('T')[0] 
+          //csv += item.written.join(','); 
+          csv += '\n' 
+          
+        }) */
+        this.filteredTransactions.forEach((item) => {  
           csv += item.payer + ';' 
           csv += item.payee + ';' 
           csv += this.getListing_title(item) + ';' 
@@ -233,9 +229,9 @@ export default {
           csv += item.metadata.time.split('T')[0] 
           //csv += item.written.join(','); 
           csv += '\n' 
-        }) 
+        })
       } else {
-        this.$store.state.completedTransactions.forEach (function (item) {  
+        this.$store.state.completedTransactions.forEach ((item) => {  
           csv += item.payer + ';' 
           csv += item.payee + ';' 
           csv += this.getListing_title(item) + ';' 
@@ -248,11 +244,27 @@ export default {
         })
       }
       var hiddenElement = document.createElement('a') 
-      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv) 
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv)//creates an uri and 
       hiddenElement.target = '_blank' 
-        
       //provide the name for the CSV file to be downloaded  
-      hiddenElement.download = 'Filtered_Transactions.csv'  
+      //hiddenElement.download = 'Filtered_Transactions.csv'
+      
+      //provide the name for the CSV file to be downloaded. If both namefilter 
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
+      const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      let tmp = new Date(dateFilterEndDate.value)
+      tmp = tmp.setDate(tmp.getDate() + 1)
+      const endDateValue = new Date(tmp)
+      tmp = new Date(dateFilterStartDate.value)
+      tmp = tmp.setDate(tmp.getDate() + 1)
+      const startDateValue = new Date(tmp)
+      //startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
+      if (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null) {
+        hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'  
+      } else {
+        hiddenElement.download = 'Filtered_Transactions.csv'
+      }
+      
       hiddenElement.click ()  
     },
     
