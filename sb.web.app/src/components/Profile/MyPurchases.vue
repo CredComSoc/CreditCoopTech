@@ -74,6 +74,7 @@
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
         <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
         <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+        <button @click="downloadFilterView()">Ladda ner lista som CSV</button>
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
@@ -85,7 +86,7 @@
           <th>Pris</th>
           <th>Summa</th>
           <th>Tidstämpel</th>
-          <th>Faktura</th>      
+          <!--<th>Faktura</th>-->      
         </tr>
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item">
           <td>{{item.payer}}</td>
@@ -97,7 +98,7 @@
           <td>{{item.quant}}</td>
           <td>{{item.metadata.time.split('T')[0]}}</td>
           <th>{{item.written}}</th>
-          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
         </tr>
       </table>
       <table v-if="(this.filterActive)">
@@ -109,7 +110,7 @@
           <th>Pris</th>
           <th>Summa</th>
           <th>Tidstämpel</th>
-          <th>Faktura</th>      
+          <!--<th>Faktura</th>-->   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item">
           <td>{{item.payer}}</td>
@@ -121,7 +122,7 @@
           <td>{{item.quant}}</td>
           <td>{{item.metadata.time.split('T')[0]}}</td>
           <th>{{item.written}}</th> <!--might be date from cc-node-->
-          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
+          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
         </tr>
       </table>
       </div>
@@ -200,6 +201,59 @@ export default {
           return listing.title
         }
       }
+    },
+    /*
+    downloadHelper (item, csvObj) {
+      csvObj.csv += item.payer + ';' 
+      csvObj.csv += item.payee + ';' 
+      csvObj.csv += this.getListing_title(item) + ';' 
+      csvObj.csv += item.metadata.quantity + ';' 
+      csvObj.csv += (item.quant / item.metadata.quantity) + ';' 
+      csvObj.csv += item.quant + ';'  
+      csvObj.csv += item.metadata.time.split('T')[0] 
+      //csv += item.written.join(','); 
+      csvObj.csv += '\n' 
+    },
+    */
+    downloadFilterView () {
+      var csv = 'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
+      /*
+      let csvObj = {
+        csv:'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
+      }
+      */
+      if (this.filterActive) { 
+        this.filteredTransactions.forEach(function (item) {  
+          csv += item.payer + ';' 
+          csv += item.payee + ';' 
+          csv += this.getListing_title(item) + ';' 
+          csv += item.metadata.quantity + ';' 
+          csv += (item.quant / item.metadata.quantity) + ';' 
+          csv += item.quant + ';'  
+          csv += item.metadata.time.split('T')[0] 
+          //csv += item.written.join(','); 
+          csv += '\n' 
+        }) 
+      } else {
+        this.$store.state.completedTransactions.forEach (function (item) {  
+          csv += item.payer + ';' 
+          csv += item.payee + ';' 
+          csv += this.getListing_title(item) + ';' 
+          csv += item.metadata.quantity + ';' 
+          csv += (item.quant / item.metadata.quantity) + ';' 
+          csv += item.quant + ';'  
+          csv += item.metadata.time.split('T')[0] 
+          //csv += item.written.join(','); 
+          csv += '\n' 
+        })
+      }
+      var hiddenElement = document.createElement('a') 
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv) 
+      hiddenElement.target = '_blank' 
+        
+      //provide the name for the CSV file to be downloaded  
+      hiddenElement.download = 'Filtered_Transactions.csv'  
+      hiddenElement.click ()  
     },
     
     /*arrayUnique (array) {
