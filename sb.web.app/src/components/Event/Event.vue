@@ -60,7 +60,7 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
-      alert(initEvents())
+      //alert(initEvents())
       this.eventTitle = null
       this.eventDescription = null
       this.eventContacts = null
