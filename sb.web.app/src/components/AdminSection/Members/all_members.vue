@@ -15,7 +15,7 @@
       <div v-for="city in searchData" :key="city">
           <!-- city[1] = array of members in city -->
           <li v-for="member in city[1]" :key="member.title">
-            <Member :listingObj="member" @sendMessage="this.sendMessage"/>
+            <Member :listingObj="member" @openProfile="this.openProfile"/>
           </li>
       </div>
     </ul>
@@ -39,9 +39,8 @@ export default {
     console.log(this.searchData)
   },
   methods: {
-    sendMessage (message) {
-      this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message.message, messagetype: message.messagetype, filename: message.filename })
-      this.scrolltoBottom()
+    openProfile (message) {
+      this.$emit('openProfile', { name: message.name })
     }
   }
 }

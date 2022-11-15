@@ -22,27 +22,16 @@ do not match the equivalent of the database.
     </router-link>
 -->
   </div>
-  <div v-if="this.showProfile == true" class="userprofile">
-    <userProfile :userprofile="listingObj.accountName" />
-  </div>
+  
 </template>
 
 <script>
 import { EXPRESS_URL } from '@/serverFetch'
-import userProfile from '@/components/AdminSection/Members/userProfile.vue'
 
 export default {
 
   props: {
     listingObj: Object
-  },
-  data () {
-    return {
-      showProfile: false
-    }
-  },
-  components: {
-    userProfile
   },
   methods: {
     getImgURL () {
@@ -67,8 +56,7 @@ export default {
       } 
     },
     userselected () {
-      this.$emit('sendMessage', { message: this.fileData.file, messagetype: this.messagetype, filename: this.filename })
-      this.showProfile = true
+      this.$emit('openProfile', { name: listingObj.accountName })
     }
   }
 }

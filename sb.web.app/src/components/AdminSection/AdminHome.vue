@@ -10,16 +10,21 @@
     <div class="main">
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
-          <AllMembers :key=SearchData :search-data=SearchData @sendMessage="this.sendMessage"/>
+          <AllMembers :key=SearchData :search-data=SearchData @openProfile="this.openProfile"/>
         </div>
       </div>
     </div>
+  </div>
+  <div v-if="this.showProfile == true" class="userprofile">
+    <userProfile :userprofile="this.profileName" />
+    <div class="overlaybg"></div>
   </div>
 </template>
 
 <script>
 import Searchfield from '@/components/SharedComponents/searchfield.vue'
 import AllMembers from '@/components/AdminSection/Members/all_members.vue'
+import userProfile from '@/components/AdminSection/Members/userProfile.vue'
 
 export default {
 
@@ -28,13 +33,16 @@ export default {
       SearchData: [],
       singleListingData: [],
       popupActive: false,
-      listingObjPopup: Object
+      listingObjPopup: Object,
+      showProfile: false,
+      profileName: ''
+   
     }
   },
-
   components: {
     Searchfield,
-    AllMembers
+    AllMembers,
+    userProfile
   },
 
   methods: {
@@ -86,7 +94,9 @@ export default {
 
       this.SearchData = finishMap
     },
-    sendMessage (message) {
+    openProfile (message) {
+      this.profileName = message.name
+      this.showProfile = true
     }
   },
   mounted: function () {
@@ -148,6 +158,15 @@ h2 {
 
 h3 {
   margin-left: 1rem;
+}
+
+.userprofile{
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 </style>

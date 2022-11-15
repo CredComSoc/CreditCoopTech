@@ -51,7 +51,7 @@
       </div>
     </form>
     <div v-if="registered">
-      <h1>Person är registrerat!!</h1>
+      <h1>Personen är registrerat!</h1>
       <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
