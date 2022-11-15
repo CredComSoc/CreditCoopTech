@@ -8,7 +8,7 @@ do not match the equivalent of the database.
       <div class="element-container" @click="enterProfile"> 
         <div class="imgContainer">
           <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
-          <img v-if="this.listingObj.logo == ''" src='../../../assets/list_images/user.png' />
+          <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
@@ -56,7 +56,7 @@ export default {
       } 
     },
     userselected () {
-      this.$emit('openProfile', { name: listingObj.accountName })
+      this.$emit('openProfile', { name: this.listingObj.accountName})
     }
   }
 }

@@ -16,8 +16,8 @@
     </div>
   </div>
   <div v-if="this.showProfile == true" class="userprofile">
-    <userProfile :userprofile="this.profileName" />
-    <div class="overlaybg"></div>
+    <userProfile class="userprof"  :userprofile="this.profileName" />
+    <div class="overlaybg" @click="hideprof"></div>
   </div>
 </template>
 
@@ -97,6 +97,9 @@ export default {
     openProfile (message) {
       this.profileName = message.name
       this.showProfile = true
+    },
+    hideprof () {
+      this.showProfile = false
     }
   },
   mounted: function () {
@@ -161,12 +164,58 @@ h3 {
 }
 
 .userprofile{
-  display: block;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+.userprof{
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 2px;
+  z-index: 2;
+  width: fit-content;
+  max-height: 80vh;
+  overflow-y:scroll;
+}
+
+.overlaybg{
   position: absolute;
   top: 0px;
   left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  margin-right: 2px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 </style>
