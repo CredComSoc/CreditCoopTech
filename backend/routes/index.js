@@ -337,7 +337,7 @@ module.exports = async function(dbUrl, dbFolder) {
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),
-          is_admin: newPro.is_admin ? true : false, //lägg till detta sen 
+          is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
             accountName: newPro.accountName,
@@ -365,26 +365,31 @@ module.exports = async function(dbUrl, dbFolder) {
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
-          await transporter.sendMail({
-            from: 'svenskbarter.reset@outlook.com', // sender address
-            to: newUser.email, 
-            subject: 'Medlem i Bvensk Barter', // Subject line
-            text: `
-            Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
-            Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
-            
-            ${FRONTEND_URL}/login
+          try {
+            const reponse = await transporter.sendMail({
+              from: 'svenskbarter.reset@outlook.com', // sender address
+              to: newUser.email, 
+              subject: 'Medlem i Bvensk Barter', // Subject line
+              text: `
+              Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
+              Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+              
+              ${FRONTEND_URL}/login
 
-            Din uppgifter att logga in är:
-            Email: ${newPro.email}
-            Password: ${newPro.password}
+              Dina uppgifter att logga in är:
+              Email: ${newPro.email}
+              Password: ${newPro.password}
 
-      
-            Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
-          `
-          })
+              
+              Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+              `
+             })
+          } catch (error) {
+            res.status(404).send('Email doesnot exists');
+            db.close()
+          }
           res.sendStatus(200)
-          db.close()
+          
         } else {
           res.sendStatus(500)
           db.close()

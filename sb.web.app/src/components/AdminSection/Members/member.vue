@@ -4,28 +4,45 @@ do not match the equivalent of the database.
 -->
 <template>
   <div>
-    <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
-    <div class="element-container" @click="enterProfile"> 
-      <div class="imgContainer">
-        <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
-        <img v-if="this.listingObj.logo == ''" src='../../assets/list_images/user.png' />
+    <div class="button" >
+      <div class="element-container" @click="enterProfile"> 
+        <div class="imgContainer">
+          <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
+          <img v-if="this.listingObj.logo == ''" src='../../../assets/list_images/user.png' />
+        </div>
+        
+        <h4 class="element-title"> {{ listingObj.accountName }} </h4>
+        <button @click="userselected">Account</button>
       </div>
-      <h4 class="element-title"> {{ listingObj.accountName }} </h4>
-      
+      <h5>Senast Online: {{ getOnlineStatus() }}</h5>
     </div>
-    <h5>Senast Online: {{ getOnlineStatus() }}</h5>
+<!--
+  <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
+    
     </router-link>
-
+-->
+  </div>
+  <div v-if="this.showProfile == true" class="userprofile">
+    <userProfile :userprofile="listingObj.accountName" />
   </div>
 </template>
 
 <script>
-import { EXPRESS_URL } from '../../serverFetch'
+import { EXPRESS_URL } from '@/serverFetch'
+import userProfile from '@/components/AdminSection/Members/userProfile.vue'
 
 export default {
 
   props: {
     listingObj: Object
+  },
+  data () {
+    return {
+      showProfile: false
+    }
+  },
+  components: {
+    userProfile
   },
   methods: {
     getImgURL () {
@@ -48,6 +65,10 @@ export default {
       } else {
         return 'Aldrig'
       } 
+    },
+    userselected () {
+      this.$emit('sendMessage', { message: this.fileData.file, messagetype: this.messagetype, filename: this.filename })
+      this.showProfile = true
     }
   }
 }
@@ -105,7 +126,7 @@ export default {
       font-size: medium;
     }
 
-    a { 
+    .button { 
       display:flex;
       flex-direction: column;
       color: inherit; 
@@ -114,12 +135,12 @@ export default {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
     
-    a:hover {
+    .button:hover {
       color: black;
       box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
     }
 
-    a:hover h4{
+    .button:hover h4{
       text-decoration: underline;
       text-decoration-thickness: 2px;
     }

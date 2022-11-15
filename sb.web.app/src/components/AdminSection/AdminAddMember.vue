@@ -6,7 +6,7 @@
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="">
       <div className="container-item">
         <h3>Allmänt</h3>
-        <label for="logo">Logotyp:</label><br/>
+        <label for="logo">Logo Bild:</label><br/>
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -52,7 +52,7 @@
     </form>
     <div v-if="registered">
       <h1>Person är registrerat!!</h1>
-      <button @click="reset"> OK</button>
+      <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
   
@@ -88,19 +88,19 @@ export default {
     async submit () {
       var randomstring = Math.random().toString(36).slice(-8)
       const result = await this.register(
-      this.profileData.isadmin,
-      this.profileData.name, 
-      randomstring,
-      this.profileData.description, 
-      this.profileData.adress, 
-      this.profileData.city, 
-      this.profileData.billingName, 
-      this.profileData.billingBox, 
-      this.profileData.billingAdress, 
-      this.profileData.orgNumber, 
-      this.profileData.email, 
-      this.profileData.phone,
-      this.profileData.logo
+        this.profileData.isadmin,
+        this.profileData.name, 
+        randomstring,
+        this.profileData.description, 
+        this.profileData.adress, 
+        this.profileData.city, 
+        this.profileData.billingName, 
+        this.profileData.billingBox, 
+        this.profileData.billingAdress, 
+        this.profileData.orgNumber, 
+        this.profileData.email, 
+        this.profileData.phone,
+        this.profileData.logo
       )
       if (result) {
         this.registered = true
@@ -197,8 +197,25 @@ button {
 }
 
 .buttonflex {
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  padding: 2% 2%;
+  border-radius: 10px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  background-color: #4690CD;
+  color: white;
+}
+.buttonflex>svg {
+  fill:#4690CD;
+  stroke: white;
+}
+
+.buttonflex:hover svg, .buttonflex:hover {
+  background-color: #0a60a6;
+  fill: #0a60a6;
 }
 
 </style>

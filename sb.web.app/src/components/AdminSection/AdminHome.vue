@@ -1,10 +1,8 @@
 <template>
   <div class="wrapper">
-
     <div>
       <h2 class="center-text">MEDLEMMAR</h2>
     </div>
-
     <div class="center">
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vem vill du söka efter idag?'"/>
     </div>
@@ -12,17 +10,16 @@
     <div class="main">
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
-          <AllMembers :key=SearchData :search-data=SearchData />
+          <AllMembers :key=SearchData :search-data=SearchData @sendMessage="this.sendMessage"/>
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import Searchfield from '@/components/SharedComponents/searchfield.vue'
-import AllMembers from '@/components/Members/all_members.vue'
+import AllMembers from '@/components/AdminSection/Members/all_members.vue'
 
 export default {
 
@@ -88,6 +85,8 @@ export default {
       const finishMap = new Map([...adminMembersArray, ...sortedMap])
 
       this.SearchData = finishMap
+    },
+    sendMessage (message) {
     }
   },
   mounted: function () {
