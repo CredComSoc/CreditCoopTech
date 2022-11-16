@@ -171,8 +171,8 @@ export default {
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
       if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
         const minLimitDate = new Date()
-        minLimitDate.setFullYear(this.default_min_date)
-        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020
+        minLimitDate.setFullYear(this.default_min_date, 0, 1)
+        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020-01-01
       } else {
         let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
         startDateValue = startDateValue.setDate(startDateValue.getDate() + 1) //add 1 day for it to be correct
@@ -244,56 +244,28 @@ export default {
       tmp = new Date(dateFilterStartDate.value)
       tmp = tmp.setDate(tmp.getDate() + 1)
       const startDateValue = new Date(tmp)
-      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null) {
+      if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //nothing is null print both 
         hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'  
-      } else if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) {
+      } else if (dateFilterEndDate.value === '' && dateFilterStartDate.value !== '') { //end date is null print start and today
+        console.log(dateFilterEndDate.value === '')
+        console.log(this.$refs.endDateInput.getInput() === null)
         tmp = new Date()
         hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + tmp.toISOString().split('T')[0] + '.csv'
-      } else if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) {
+      } else if (dateFilterStartDate.value === '' && dateFilterEndDate.value !== '') { //start date is null print default start and end
         tmp = new Date()
-        tmp.setFullYear(this.default_min_date, 1, 1)
+        tmp.setFullYear(this.default_min_date, 0, 1)
         hiddenElement.download = 'Filtered_Transactions' + tmp.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'
-      } else {
-        var tmpstart = new Date()
+      } else { //both null print default to today
+        const tmpstart = new Date()
         console.log(tmpstart)
-        tmpstart.setFullYear(this.default_min_date)
+        tmpstart.setFullYear(this.default_min_date, 0, 1)
         console.log(tmpstart)
-        var tmpend = new Date()
+        const tmpend = new Date()
         hiddenElement.download = 'Filtered_Transactions' + tmpstart.toISOString().split('T')[0] + '-' + tmpend.toISOString().split('T')[0] + '.csv'
       }
-      
-      hiddenElement.click ()  
+      hiddenElement.click()  
     },
-    
-    /*arrayUnique (array) {
-      var a = array.concat()
-      for (var i = 0; i < a.length; ++i) {
-        for (var j = i + 1; j < a.length; ++j) {
-          if (a[i] === a[j]) {
-            a.splice(j--, 1)
-          }
-        }
-      }
-
-      return a
-    },*/
-    
-    /* filer_helper (item, company, product) {
-      if (item.payee.toLowerCase.includes(company.toLowerCase) || item.payer.toLowerCase.includes(company.toLowerCase)) {
-        return true
-      }
-      if (this.getListing_title(item).toLowerCase.includes(product.toLowerCase)) {
-        return true
-      }
-      return false
-    },*/
-    /*filteredTransactions () {
-      const endDate = this.$refs.endDateInput.getInput()
-      const filterCompany = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.company.value.toLowerCase()))
-      const filterProduct = this.$store.state.completedTransactions.filter((item) => item.toLowerCase().includes(this.product.value.toLowerCase()))
-      return this.arrayUnique(filterCompany.concat(filterProduct))
-    },*/
-    filterTransactions () {
+    filterTransactions () { //handles the filter
       this.filteredTransactions = []
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
@@ -303,47 +275,46 @@ export default {
       let endDateValue = new Date(dateFilterEndDate.value)
       endDateValue = new Date(endDateValue.setDate(endDateValue.getDate()))
       endDateValue = endDateValue.setHours(23, 59, 59)
-      //console.log(dateFilterEndDate.value + dateFilterStartDate.value + 'HALLÅ')
+
       // date range search
-      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null && dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') {
-        console.log('date range start and end')
+      if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //if we have daterange filter for it. Save result in Filtered Transactions
+        //console.log('date range start and end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
-      } else if (this.$refs.endDateInput.getInput() != null && dateFilterEndDate.value !== '') {
-        console.log('date range end')
+      } else if (dateFilterEndDate.value !== '') {  
+        //console.log('date range end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
-      } else if (this.$refs.startDateInput.getInput() != null && dateFilterStartDate.value !== '') {
-        console.log('date range start')
+      } else if (dateFilterStartDate.value !== '') { 
+        //console.log('date range start')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
       }
       //company name search
-      if (this.$refs.companyInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) {
-        console.log('company search with date range')
-        this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
-      } else if (this.$refs.companyInput.value !== '') {
-        console.log('company search without date range')
+      if (this.$refs.companyInput.value !== '' && (dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //if we have used a filter before, filter for company in filtered transactions and save in filteredTransactions
+        //console.log('company search with date range')
+        this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
+      } else if (this.$refs.companyInput.value !== '') { // else filter in vuex store completedTransactions and save in filteredTransactions
+        //console.log('company search without date range')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
       }
       //procuct name search
-      console.log(this.$refs.productInput.value)
-      if (this.$refs.productInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) {
-        console.log('product search with date range')
-        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
+
+      if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
+        //console.log('product search with date range and/or with company')
+        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
-        console.log('product search without date range')
+        //console.log('product search without date range and company')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
       }
 
-      //if any filter is active filterActive is true. this 
-      if (this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '') { //|| this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null
+      //if any filter is active filterActive is true.
+      if (this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '') { 
         this.filterActive = true
       } else {
         this.filterActive = false
       } 
-      console.log('found ' + this.filteredTransactions.length + ' elements')
-      console.log(this.filterActive)
+      //console.log('found ' + this.filteredTransactions.length + ' elements')
     },
     
-    invoice (filename, item) {
+    invoice (filename, item) { // not used atm. used for generating invoices
       console.log(item.entries[0])
       const pom = document.createElement('a')
       const text = 'hello'
@@ -358,12 +329,12 @@ export default {
         pom.click()
       }
     },
-    cancel (id, index) {
+    cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
       this.statusSwap(index)
       cancelRequest(id)
     },
-    accept (id, payer, index, cost) {
+    accept (id, payer, index, cost) { 
       getAvailableBalance().then((balance) => {
         getLimits().then((limits) => {
           this.max_limit = limits.max

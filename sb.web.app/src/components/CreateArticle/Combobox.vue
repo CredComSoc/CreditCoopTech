@@ -56,15 +56,8 @@ export default {
       if (this.isDatePicker) {
         this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
       } else {
-        this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/')
+        this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/') // used for dateFilter to set the date
       }
-      /*S
-      if (this.name === 'start-date-filter') {
-        this.startDateFilter = this.$refs.dateVal.value
-        console.log(this.name)
-        console.log(this.startDateFilter)
-      }
-      */
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
@@ -75,7 +68,7 @@ export default {
           month: '2-digit', 
           day: '2-digit'
         }
-      } else {
+      } else { //Formats with year int the date filter
         options = { 
           year: '4-digit', 
           month: '2-digit', 
@@ -105,10 +98,10 @@ export default {
         this.$refs.dateVal.value = null
         this.selectedValue = null
       }
-      if (this.isDateFilter) { // TITTA VIDARE SE TILL ATT DATUM SÄTTS TILL STANDARD VÄRDEN
+      if (this.isDateFilter) { //set standardvalues of the datefilter if cleared. is for the moment 2020
         const minLimitDate = new Date()
         const dateFilter = document.getElementById(this.name + '-date-filter')
-        minLimitDate.setFullYear(2020)
+        minLimitDate.setFullYear(2020, 0, 1)
         dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
         const maxLimitDate = new Date()
         maxLimitDate.setDate(maxLimitDate.getDate())
@@ -140,7 +133,7 @@ export default {
       const maxLimitDate = new Date()
       maxLimitDate.setFullYear(maxLimitDate.getFullYear() + 1)
       datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
-    } else {
+    } else { //initiate values in the datefilter
       const minLimitDate = new Date()
       const dateFilter = document.getElementById(this.name + '-date-filter')
       minLimitDate.setFullYear(2020)

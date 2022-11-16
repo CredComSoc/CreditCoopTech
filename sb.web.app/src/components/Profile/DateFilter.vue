@@ -1,3 +1,4 @@
+<!--Datefilter is a modified combobox used in my purchases. Changes to the filter is done in the combobox.-->
 <template>
   <Combobox ref="dateFilter" :name="this.name" :label="this.label" :placeholder="this.placeholder" :isDateFilter="true" />
 </template>
