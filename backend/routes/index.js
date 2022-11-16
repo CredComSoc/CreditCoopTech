@@ -918,7 +918,7 @@ module.exports = async function(dbUrl, dbFolder) {
 *                 
 *****************************************************************************/
 router.get("/load/event", async (req, res) => {
-  //console.log(res)
+  console.log('res' + res)
   const db = await MongoClient.connect(dbUrl)
   const dbo = db.db(dbFolder);
   dbo.collection('events').find({}).toArray(function (err, eventsdata) {
@@ -927,8 +927,8 @@ router.get("/load/event", async (req, res) => {
       db.close()
     }
     else {
-      console.log('i index'+ {eventsdata})
-      res.status(200).send({eventsdata})
+      console.log('i index'+ eventsdata)
+      res.status(200).send(eventsdata)
       db.close()
     } 
   })

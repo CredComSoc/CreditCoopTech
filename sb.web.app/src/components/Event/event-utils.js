@@ -2,12 +2,11 @@ import { loadEvents } from '../../serverFetch'
 let eventGuid = 0
 const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
 
-export let loadedevents = []
+export let loadedevents
 export function initEvents () {
   console.log('inne i initevenet!!!')
   loadedevents = loadEvents()
   console.log('loaded eventes =' + loadedevents)
-  loadedevents = loadEvents()
 }
 
 export const INITIAL_EVENTS = [

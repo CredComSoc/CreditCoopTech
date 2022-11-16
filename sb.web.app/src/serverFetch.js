@@ -683,19 +683,19 @@ export async function loadEvents () {
     credentials: 'include'
   })
     .then((res) => {
-      console.log('then.res = ' + res.json())
-      return res.json()
+      //console.log('then.res = ' + res.json())
+      return res
     })
-    .then((data) => {
-      console.log('data i data = ' + data)
-      return (data)
-    })
+    //.then((data) => {
+    //  console.log('data i data = ' + data)
+    //  return (data)
+    //})
     .catch(() => {
       return false
     })
-  console.log('innan data fd promise')
-  console.log(promise.then.res)
-  return promise.then.data  
+  //console.log('innan promise')
+  //console.log('promise = ' + promise)
+  return promise  
 }
 /*
 export async function loadEvents () {
