@@ -1,6 +1,7 @@
 <template>
   <div>
     <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
+    <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
     <h1><b> Köpförfrågningar </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
         <table v-if="requests">
@@ -35,6 +36,7 @@
         <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
       </div>
     </div>
+    <!--Gets all Pending purchases from the VueX store. -->
     <h1><b> Väntande köp </b></h1>
       <div>
         <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
@@ -68,13 +70,14 @@
       <h1><b> Köphistorik </b></h1>
       
     <div>
+      <!--Filter buttons and fields-->
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
-        <button @click="filterTransactions()">Filtrera</button>
+        <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
         <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
         <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
-        <button @click="downloadFilterView()">Ladda ner lista som CSV</button>
+        <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
@@ -85,10 +88,9 @@
           <th>Antal</th>
           <th>Pris</th>
           <th>Summa</th>
-          <th>Tidstämpel</th>
-          <!--<th>Faktura</th>-->      
+          <th>Tidstämpel</th>   
         </tr>
-        <tr v-for="(item) in this.$store.state.completedTransactions" :key="item">
+        <tr v-for="(item) in this.$store.state.completedTransactions" :key="item"><!--If the filter is not active, We get all completed transaction from the VueX store.  -->
           <td>{{item.payer}}</td>
           <td>{{item.payee}}</td>
           <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
@@ -112,7 +114,7 @@
           <th>Tidstämpel</th>
           <!--<th>Faktura</th>-->   
         </tr>
-        <tr v-for="(item) in this.filteredTransactions" :key="item">
+        <tr v-for="(item) in this.filteredTransactions" :key="item"> <!--If the filter is active, We get view all transactions from filtered transactions found below.  -->
           <td>{{item.payer}}</td>
           <td>{{item.payee}}</td>
           <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
@@ -140,16 +142,16 @@ export default {
 
   data () {
     return {
-      filterActive: false,
+      filterActive: false, //used to check if any filter is applied.
       company: '',
       product: '',
-      /* filterCompany: [],*/
-      filteredTransactions: [],
+      filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       requests: [],
       componentKey: 0,
       payerNotEnoughBkr: false,
       payeeTooMuchBkr: false,
-      max_limit: 0
+      max_limit: 0,
+      default_min_date: 2020
     }
   },
   components: {
@@ -164,21 +166,20 @@ export default {
     clearFilters () {
       this.filterActive = false
     },
-    handleDate () {
-      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
+    handleDate () { //HandleDate Moderates what is possible to pick in the dropdown menue. 
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter') //we get both date Filters by refering to their ID
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
-      console.log(dateFilterStartDate.value)
-      if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) {
+      if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
         const minLimitDate = new Date()
-        minLimitDate.setFullYear(2020)
-        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+        minLimitDate.setFullYear(this.default_min_date)
+        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020
       } else {
-        let startDateValue = new Date(dateFilterStartDate.value)
-        startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
+        let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
+        startDateValue = startDateValue.setDate(startDateValue.getDate() + 1) //add 1 day for it to be correct
         const minLimitEndDate = new Date(startDateValue)
-        dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0])
+        dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0]) // and set min date to that value
       }
-      if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) {
+      if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) { //see comments above.
         const maxLimitDate = new Date()
         dateFilterStartDate.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
       } else {
@@ -188,38 +189,24 @@ export default {
         dateFilterStartDate.setAttribute('max', maxLimitStartDate.toISOString().split('T')[0])
       }
     },
-    getListing (item) {
+    getListing (item) { //gets a specific articleobject from allArticles in the vuex store depending on a given id. 
       for (const listing of this.$store.state.allArticles) {
         if (listing.id === item.metadata.id) {
           return listing
         }
       }
     },
-    getListing_title (item) {
+    getListing_title (item) { //same as abobe but only the name
       for (const listing of this.$store.state.allArticles) {
         if (listing.id === item.metadata.id) {
           return listing.title
         }
       }
     },
-    downloadFilterView () {
+    downloadFilterView () { // takes the data, formats it into CSV form and downloads the csv as a file
       var csv = 'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
-      //console.log(this.getListing_title(this.$store.state.completedTransactions[0]))
-      if (this.filterActive) { 
-        /*
-        this.filteredTransactions.forEach(function (item) {  
-          csv += item.payer + ';' 
-          csv += item.payee + ';' 
-          csv += getListing_title(item) + ';' 
-          csv += item.metadata.quantity + ';' 
-          csv += (item.quant / item.metadata.quantity) + ';' 
-          csv += item.quant + ';'  
-          csv += item.metadata.time.split('T')[0] 
-          //csv += item.written.join(','); 
-          csv += '\n' 
-          
-        }) */
-        this.filteredTransactions.forEach((item) => {  
+      if (this.filterActive) {  
+        this.filteredTransactions.forEach((item) => { //takes from filtered transactions if filter is active
           csv += item.payer + ';' 
           csv += item.payee + ';' 
           csv += this.getListing_title(item) + ';' 
@@ -231,7 +218,7 @@ export default {
           csv += '\n' 
         })
       } else {
-        this.$store.state.completedTransactions.forEach ((item) => {  
+        this.$store.state.completedTransactions.forEach ((item) => { //if filter is not active, take the display the transactions from Completed transactions in the vuex store
           csv += item.payer + ';' 
           csv += item.payee + ';' 
           csv += this.getListing_title(item) + ';' 
@@ -242,14 +229,13 @@ export default {
           //csv += item.written.join(','); 
           csv += '\n' 
         })
-      }
+      } 
+      //Code for the download of the csv
       var hiddenElement = document.createElement('a') 
-      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv)//creates an uri and 
-      hiddenElement.target = '_blank' 
-      //provide the name for the CSV file to be downloaded  
-      //hiddenElement.download = 'Filtered_Transactions.csv'
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv)//creates an uri of the csv
+      hiddenElement.target = '_blank'  
       
-      //provide the name for the CSV file to be downloaded. If both namefilter 
+      //provide the name for the CSV file to be downloaded. If both namefilter are active it will add from and to dates to the name dates. If only one name is active it will set the other one to today or predetermined default_min_date
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
       let tmp = new Date(dateFilterEndDate.value)
@@ -258,11 +244,22 @@ export default {
       tmp = new Date(dateFilterStartDate.value)
       tmp = tmp.setDate(tmp.getDate() + 1)
       const startDateValue = new Date(tmp)
-      //startDateValue = startDateValue.setDate(startDateValue.getDate() + 1)
-      if (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null) {
+      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null) {
         hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'  
+      } else if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) {
+        tmp = new Date()
+        hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + tmp.toISOString().split('T')[0] + '.csv'
+      } else if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) {
+        tmp = new Date()
+        tmp.setFullYear(this.default_min_date, 1, 1)
+        hiddenElement.download = 'Filtered_Transactions' + tmp.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'
       } else {
-        hiddenElement.download = 'Filtered_Transactions.csv'
+        var tmpstart = new Date()
+        console.log(tmpstart)
+        tmpstart.setFullYear(this.default_min_date)
+        console.log(tmpstart)
+        var tmpend = new Date()
+        hiddenElement.download = 'Filtered_Transactions' + tmpstart.toISOString().split('T')[0] + '-' + tmpend.toISOString().split('T')[0] + '.csv'
       }
       
       hiddenElement.click ()  
@@ -308,18 +305,18 @@ export default {
       endDateValue = endDateValue.setHours(23, 59, 59)
       //console.log(dateFilterEndDate.value + dateFilterStartDate.value + 'HALLÅ')
       // date range search
-      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null) {
+      if (this.$refs.startDateInput.getInput() != null && this.$refs.endDateInput.getInput() != null && dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') {
         console.log('date range start and end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
-      } else if (this.$refs.endDateInput.getInput() != null) {
+      } else if (this.$refs.endDateInput.getInput() != null && dateFilterEndDate.value !== '') {
         console.log('date range end')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
-      } else if (this.$refs.startDateInput.getInput() != null) {
+      } else if (this.$refs.startDateInput.getInput() != null && dateFilterStartDate.value !== '') {
         console.log('date range start')
         this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
       }
       //company name search
-      if (this.$refs.companyInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null)) {
+      if (this.$refs.companyInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) {
         console.log('company search with date range')
         this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
       } else if (this.$refs.companyInput.value !== '') {
@@ -328,7 +325,7 @@ export default {
       }
       //procuct name search
       console.log(this.$refs.productInput.value)
-      if (this.$refs.productInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || this.$refs.companyInput.value !== '')) {
+      if (this.$refs.productInput.value !== '' && (this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null || this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) {
         console.log('product search with date range')
         this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))//check if whats written in company input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
@@ -337,7 +334,7 @@ export default {
       }
 
       //if any filter is active filterActive is true. this 
-      if (this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null) {
+      if (this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '') { //|| this.$refs.startDateInput.getInput() != null || this.$refs.endDateInput.getInput() != null
         this.filterActive = true
       } else {
         this.filterActive = false
