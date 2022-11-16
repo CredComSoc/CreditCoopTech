@@ -23,7 +23,7 @@ export default {
   props: ['reciever', 'activeChat', 'user'],
   methods: {
     sendMessage (message) {
-      this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message })
+      this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message.message, messagetype: message.messagetype, filename: message.filename })
       this.scrolltoBottom()
     },
     scrolltoBottom () {

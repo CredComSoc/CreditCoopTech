@@ -7,6 +7,8 @@
           :key="i"
           :message="msg.message"
           :user="this.user"
+          :messagetype="msg.messagetype"
+          :filename="msg.filename"
         />
   </div>
 </div>

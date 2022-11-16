@@ -12,7 +12,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
-import { CHAT_URL, getChatHistory, getChatHistories } from '../../serverFetch.js'
+import { CHAT_URL, getChatHistory, getChatHistories, uploadFile } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -45,14 +45,32 @@ export default {
       this.reciever = userchat
       this.getChatHistory(this.all_chatIDs[userchat])
     },
-    sendMessage (message) {
+    async sendMessage (message) {
+      if (message.messagetype !== 'string') {
+        const res = await uploadFile (message.message)
+        message.filename = res.name
+        message.messagetype = res.fileType
+        message.message = res.message
+        this.socket.emit('message', {
+          message: res.message,
+          messagetype: res.fileType,
+          filename: res.name,
+          sender: this.user,
+          id: this.all_chatIDs[this.reciever],
+          reciever: this.reciever
+        })
+      } else {
+        this.socket.emit('message', {
+          message: message.message,
+          messagetype: message.messagetype,
+          filename: message.filename,
+          sender: this.user,
+          id: this.all_chatIDs[this.reciever],
+          reciever: this.reciever
+        })
+      }
+      
       this.activeChat.push(message)
-      this.socket.emit('message', {
-        message: message.message,
-        sender: this.user,
-        id: this.all_chatIDs[this.reciever],
-        reciever: this.reciever
-      })
     },
     getChatHistory (chatID) {
       getChatHistory(chatID)
