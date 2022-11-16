@@ -60,7 +60,6 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
-      alert(initEvents())
       this.eventTitle = null
       this.eventDescription = null
       this.eventContacts = null
@@ -191,12 +190,11 @@ export default {
 
     <Modal :open="showModal" @close="showModal = !showModal">
       <p> Event Details</p>
-      <p> {{this.clickedEvent.event}} </p> 
-      <p> {{this.clickedEvent.event}} </p> 
+      <p v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.title}} <br>{{this.clickedEvent.event.start}} </p> 
     </Modal> 
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
-      <p> Titel för eventet: {{eventTitle}}</p>
+      <p> Titel för eventet: </p>
       <input v-model="eventTitle" placeholder="Titel" />
       <p> Plats för eventet: {{eventLocation}}</p>
       <input v-model="eventLocation" placeholder="Plats" />
