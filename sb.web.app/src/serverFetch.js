@@ -17,7 +17,7 @@ function hashMyPassword (password) {
   const hash = hashObj.getHash('HEX')
   return hash
 }
-
+ 
 /*****************************************************************************
  * 
  *                               Images
