@@ -432,6 +432,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/updateProfile", upload.single('file'), (req, res) => {
     getUser({ "profile.accountName": req.user }).then((user) => {
+      console.log(newPro.accountName)
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
         let newProfile = {

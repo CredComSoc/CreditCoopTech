@@ -1,15 +1,17 @@
 <template>
   <div>
-    <div className="flexbox-container2 flexbox-item">
-      
+    <div className="flexbox-container2 flexbox-item" v-if="!edit">
       <div className="image container-item">
         <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
         <img id="profile-img" v-if="profileData.logo === ''" src="../../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >Senast Online:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
-        
+        <button @click="edit = !edit" id="edit-btn"> 
+            Redigera <br> användare
+        </button>
       </div>
+
       <div className="right container-item">
         <h1> Företagsnamn </h1>
         <p> {{profileData.accountName}} </p>
@@ -33,8 +35,7 @@
         </div> 
       </div>
     </div>
-    <div class="sendmoney-box" v-if="show_optional">
-      
+    <div class="sendmoney-box" v-if="show_optional && !edit">
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
         <h1 class="box-text">Skicka Barterkronor</h1>
         <div>
@@ -53,11 +54,66 @@
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.accountName + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />
+  <div v-if="edit">
+      <form className="flexbox-container2" @submit.prevent="">
+        <div className="container-item">
+          <h1>Allmänt</h1>
+          <label for="logo">Logotyp:</label><br/>
+          <div class="image">
+          <img v-if="localURL === '' && this.profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          </div>
+          <input type="file" name="logo" @change="addLogo"><br/>
+          <label for="name">Företagsnamn:</label><br/>
+          <input type="text" id="name" v-model="profileData.name" required><br/>
+          <label for="description">Beskrivning:</label><br/>
+          <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
+          <label for="adress">Adress:</label><br/>
+          <input type="text" id="adress" v-model="profileData.adress" required><br/>
+          <label for="location">Stad/ort:</label><br/>
+          <input type="text" id="location" v-model="profileData.city" required><br/>
+        </div>
+        <div className="container-item">
+          <h1>Faktureringsuppgifter</h1>
+          <label for="billingName">Namn:</label><br/>
+          <input name="billingName" v-model="profileData.billingName" required><br/>
+          <label for="billingBox">Box:</label><br/>
+          <input name="billingBox" v-model="profileData.billingBox" required><br/>
+          <label for="billingAdress">Adress:</label><br/>
+          <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
+          <label for="orgNumber">Organisationsnummer:</label><br/>
+          <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
+          <h1>Kontaktuppgifter</h1>
+          <label for="email">Epost:</label><br/>
+          <input type="email" id="email" v-model="profileData.email" required><br/>
+          <label for="phone">Telefon:</label><br/>
+          <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
+          <button @click="submit" class="buttonflex">
+            <p style="padding-right:7px" > Spara </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+              <circle cx="12" cy="14" r="2" />
+              <polyline points="14 4 14 8 8 8 8 4" />
+          </svg>
+          </button>
+          <button @click="edit = !edit" class="buttonflex"> 
+            <p style="padding-right:0px" > Avbryt </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from '@/serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, profile, updateProfile } from '@/serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -71,8 +127,10 @@ export default {
   props: ['userprofile'],
   data () {
     return {
+      edit: false,
       logoURL: '',
       profileData: [],
+      updateProfile,
       bkr: 0,
       comment: '',
       bkrSentMsg: false,
@@ -83,7 +141,33 @@ export default {
       invalidNumberOfBkr: false
     }
   },
+  mounted () {
+  },
   methods: {
+    addLogo (e) {
+      this.profileData.logo = e.target.files[0]
+      //console.log(this.profileData.logo)
+      this.localURL = URL.createObjectURL(this.profileData.logo)
+    },
+    submit () {
+      this.updateProfile(
+        this.profileData.name, 
+        this.profileData.description, 
+        this.profileData.adress, 
+        this.profileData.city, 
+        this.profileData.billingName, 
+        this.profileData.billingBox, 
+        this.profileData.billingAdress, 
+        this.profileData.orgNumber, 
+        this.profileData.email, 
+        this.profileData.phone,
+        this.profileData.logo
+      )
+      if (this.localUrl) {
+        this.logoURL = this.localURL
+      }
+      this.edit = !this.edit
+    },
     getImgURL () {
       if (this.profileData.logo !== '') {
         this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
@@ -215,7 +299,18 @@ h1 {
   width: 135px;
   height: 45px;
   margin-left: 30%;
-  margin-bottom: 50px;
+  margin-bottom: 0px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+#edit-btn {
+  width: 135px;
+  height: 60px;
+  margin-left: 30%;
+  margin-bottom: 0px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -258,7 +353,7 @@ h1 {
 
 button {
   margin-top:40px;
-  margin-right: 10px;
+  margin-right:50px;
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 12px 2px 12px;

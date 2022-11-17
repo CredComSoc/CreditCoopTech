@@ -56,7 +56,7 @@ export default {
       } 
     },
     userselected () {
-      this.$emit('openProfile', { name: this.listingObj.accountName})
+      this.$emit('openProfile', { name: this.listingObj.accountName })
     }
   }
 }
