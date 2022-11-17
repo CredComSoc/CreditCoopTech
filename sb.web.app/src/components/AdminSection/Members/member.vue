@@ -10,8 +10,8 @@ do not match the equivalent of the database.
           <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
-        
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
+        <h5 class="element-title"> {{ listingObj.phone }} </h5>
         <button @click="userselected">Account</button>
       </div>
       <h5>Senast Online: {{ getOnlineStatus() }}</h5>
@@ -92,6 +92,10 @@ export default {
         text-align: left;
     }
 
+    .element-text {
+        font-size: 15px;
+        text-align: left;
+    }
     .imgContainer {
       height: 3rem;
       width: 3rem;
