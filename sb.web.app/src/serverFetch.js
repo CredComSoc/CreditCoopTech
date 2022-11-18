@@ -166,6 +166,20 @@ export async function register (isadmin, username, password, description, adress
     })
 }
 
+export async function fetchEconomy () {
+  return fetch(EXPRESS_URL + '/economy', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+
 /*****************************************************************************
  * 
  *                                Profile 

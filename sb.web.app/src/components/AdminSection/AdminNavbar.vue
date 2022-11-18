@@ -26,6 +26,17 @@
               <span class="mob-cap"> Medlemmar </span>
             </router-link>
           </div>
+          <div id="navbar-economy" class="navlogo">
+             <router-link :to="{name:'AdminEconomy'}">
+              <figure class="logo-click">              
+                  <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
+                  <figcaption class="l-text"> Ekonomisk översikt </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Ekonomi </span>
+            </router-link>
+          </div>
         </div>
         <div class="middle-logo">
           <div id="navbar-home" class="navlogo">

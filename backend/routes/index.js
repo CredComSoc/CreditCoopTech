@@ -401,6 +401,33 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  router.get("/economy", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    //let data = []
+    let data = await dbo.collection('transaction').find({}).toArray()
+    /*function (err, transactions) {
+      if (err) {
+        res.sendStatus(500)
+        db.close()
+      } else {
+        for(int i, i<transactions.
+          data[i] = transactions[i]
+        
+        res.status(200).send(data)
+        db.close()
+      }
+    }*/
+    for (const entry of data) { //replace id with account name 
+      const payee = await getUser({'_id': ObjectId(entry.payee)})
+      const payer = await getUser({'_id': ObjectId(entry.payer)})
+      entry.payee = payee.profile.accountName
+      entry.payer = payer.profile.accountName
+    }
+    res.status(200).send(data)
+        db.close()
+  })
+
   /*****************************************************************************
    * 
    *                                Profile

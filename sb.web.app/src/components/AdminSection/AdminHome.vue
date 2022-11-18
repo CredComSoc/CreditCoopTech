@@ -77,7 +77,7 @@ export default {
           }
           adminMembersArray.get('Admin').push(member)
         } else {
-          console.log(member)
+          //console.log(member)
           if (!allMembersArray.has(member.city)) {
             allMembersArray.set(member.city, [])
           }
