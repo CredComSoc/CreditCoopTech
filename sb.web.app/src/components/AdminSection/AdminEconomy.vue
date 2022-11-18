@@ -5,8 +5,17 @@
         <div>
             <h2 class="center-text">Ekonomi :-)</h2>
         </div>
+          <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
+          <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
+          <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
+          <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
+          <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+          <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+          <input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">
+          <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
+        </div>
         <button @click="getEconomy()">Hämta filtrerat urval</button>
-        <table v-if="(this.filterActive)">
+        <table v-if="(this.filterActive)">+
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
@@ -39,7 +48,8 @@ export default {
   data () {
     return {
       filterActive: false, //used to check if any filter is applied.
-      filteredTransactions: [] //all transactions that pass trough the applied filter will be stored in this array
+      filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
+      entries: 10
     //requests: [],
     //componentKey: 0,
     //payerNotEnoughBkr: false,
@@ -53,7 +63,37 @@ export default {
   },
   methods: {
     async getEconomy () {
-      const data = await fetchEconomy().then((res) => {
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
+      const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      let startDateValue = new Date(dateFilterStartDate.value)
+      startDateValue = new Date(startDateValue.setDate(startDateValue.getDate()))
+      startDateValue = startDateValue.setHours(0, 0, 0)
+      let endDateValue = new Date(dateFilterEndDate.value)
+      endDateValue = new Date(endDateValue.setDate(endDateValue.getDate()))
+      endDateValue = endDateValue.setHours(23, 59, 59)
+      //const searchParams = []
+
+      const searchParams = new FormData()
+      if (dateFilterEndDate.value === '') {
+        endDateValue = new Date()
+        //searchParams.push(endDateValue)
+      }
+      if (dateFilterStartDate.value === '') {
+        startDateValue = new Date().setFullYear(2020, 0, 1).setHours(23, 59, 59)
+        //searchParams.push(startDateValue)
+      }
+      searchParams.append(JSON.stringify({
+        max_date: endDateValue,
+        min_date: startDateValue,
+        company_name: this.$refs.companyInput.value,
+        product_name: this.$refs.companyInput.value,
+        entries: this.$refs.entriesInput.value
+      }))
+      //searchParams.push(this.$refs.companyInput.value)
+      //searchParams.push(this.$refs.productInput.value)
+      //searchParams.push(this.$refs.entriesInput.value)
+
+      const data = await fetchEconomy(searchParams).then((res) => {
         if (res) {
           return res
         }

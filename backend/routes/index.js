@@ -12,6 +12,7 @@ const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
+const { json } = require('express');
 const axios = require('axios').default;
 
 FRONTEND_URL = 'http://192.168.10.122:8080'
@@ -404,8 +405,22 @@ module.exports = async function(dbUrl, dbFolder) {
   router.get("/economy", async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
-    //let data = []
     let data = await dbo.collection('transaction').find({}).toArray()
+    const searchParams= JSON.parse(req.body)
+    //Fortsätt här
+    if(searchParams.endDateValue) {
+
+    }
+    if (dateFilterEndDate.value !== '') {  
+      //console.log('date range end')
+      this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+    } else if (dateFilterStartDate.value !== '') { 
+      //console.log('date range start')
+      this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
+    }
+
+    //let data = []
+    
     /*function (err, transactions) {
       if (err) {
         res.sendStatus(500)

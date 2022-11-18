@@ -166,13 +166,14 @@ export async function register (isadmin, username, password, description, adress
     })
 }
 
-export async function fetchEconomy () {
+export async function fetchEconomy (seachParams) {
   return fetch(EXPRESS_URL + '/economy', { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include'
+    credentials: 'include',
+    body: seachParams
   }).then((response) => {
     return response.json()
   }).catch(() => {
