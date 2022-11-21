@@ -6,16 +6,15 @@
             <h2 class="center-text">Ekonomi :-)</h2>
         </div>
           <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
-          <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
+          <button @click="getEconomy()">Filtrera</button><!--filter transactions handles all transcations. -->
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
           <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
           <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
           <input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">
-          <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
+          <!--<button @click="downloadFilterView()">Ladda ner lista som CSV</button> --><!-- downloadFilterView handles the csv download. -->
         </div>
-        <button @click="getEconomy()">Hämta filtrerat urval</button>
-        <table v-if="(this.filterActive)">+
+        <table v-if="(this.filterActive)">
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
@@ -43,25 +42,52 @@
 <script>
 import Listing from '@/components/SharedComponents/Listing.vue'
 import { fetchEconomy } from '@/serverFetch'
+import DateFilter from '@/components/Profile/DateFilter.vue'
 export default {
 
   data () {
     return {
       filterActive: false, //used to check if any filter is applied.
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
-      entries: 10
-    //requests: [],
-    //componentKey: 0,
-    //payerNotEnoughBkr: false,
-    //payeeTooMuchBkr: false,
-    //max_limit: 0,
-    //default_min_date: 2020
+      entries: 10,
+      //requests: [],
+      //componentKey: 0,
+      //payerNotEnoughBkr: false,
+      //payeeTooMuchBkr: false,
+      //max_limit: 0,
+      default_min_date: 2020
     }
   },
   components: {
-    Listing
+    Listing,
+    DateFilter
   },
   methods: {
+    handleDate () { //HandleDate Moderates what is possible to pick in the dropdown menue. 
+      const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter') //we get both date Filters by refering to their ID
+      const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
+        const minLimitDate = new Date()
+        minLimitDate.setFullYear(this.default_min_date, 0, 1)
+        console.log(minLimitDate)
+        dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020-01-01
+      } else {
+        let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
+        startDateValue = startDateValue.setDate(startDateValue.getDate() + 1) //add 1 day for it to be correct
+        const minLimitEndDate = new Date(startDateValue)
+        dateFilterEndDate.setAttribute('min', minLimitEndDate.toISOString().split('T')[0]) // and set min date to that value
+      }
+      if (dateFilterEndDate.value === '' || this.$refs.endDateInput.getInput() === null) { //see comments above.
+        const maxLimitDate = new Date()
+        dateFilterStartDate.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+      } else {
+        let endDateValue = new Date(dateFilterEndDate.value)
+        endDateValue = endDateValue.setDate(endDateValue.getDate() + 1)
+        const maxLimitStartDate = new Date(endDateValue)
+        dateFilterStartDate.setAttribute('max', maxLimitStartDate.toISOString().split('T')[0])
+      }
+    },
+
     async getEconomy () {
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
@@ -79,10 +105,10 @@ export default {
         //searchParams.push(endDateValue)
       }
       if (dateFilterStartDate.value === '') {
-        startDateValue = new Date().setFullYear(2020, 0, 1).setHours(23, 59, 59)
+        startDateValue = new Date().setFullYear(2020, 0, 1)
         //searchParams.push(startDateValue)
       }
-      searchParams.append(JSON.stringify({
+      searchParams.append('Filterdata', JSON.stringify({
         max_date: endDateValue,
         min_date: startDateValue,
         company_name: this.$refs.companyInput.value,
@@ -99,6 +125,7 @@ export default {
         }
       })
       this.filteredTransactions = data
+      console.log(this.filteredTransactions[0])
       //console.log(this.filteredTransactions[0])
       this.filterActive = true
     },
@@ -120,5 +147,10 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 15px 2px 15px;
+}
+.DateFilter {
+  width: 125px;
+  height: 30px;
+  display: inline-block;
 }
 </style>

@@ -406,18 +406,18 @@ module.exports = async function(dbUrl, dbFolder) {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     let data = await dbo.collection('transaction').find({}).toArray()
-    const searchParams= JSON.parse(req.body)
+    const searchParams = JSON.parse(req.body)
     //Fortsätt här
-    if(searchParams.endDateValue) {
-
-    }
-    if (dateFilterEndDate.value !== '') {  
+    //if(searchParams.endDateValue) {
+      
+    //}
+    /*if (dateFilterEndDate.value !== '') {  
       //console.log('date range end')
       this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
     } else if (dateFilterStartDate.value !== '') { 
       //console.log('date range start')
       this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
-    }
+    }*/
 
     //let data = []
     
