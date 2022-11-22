@@ -41,7 +41,7 @@
 </template>
 <script>
 import Listing from '@/components/SharedComponents/Listing.vue'
-import { fetchEconomy } from '@/serverFetch'
+import { fetchEconomy } from '@/serverFetch.js'
 import DateFilter from '@/components/Profile/DateFilter.vue'
 export default {
 
@@ -69,7 +69,7 @@ export default {
       if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
         const minLimitDate = new Date()
         minLimitDate.setFullYear(this.default_min_date, 0, 1)
-        console.log(minLimitDate)
+        //console.log(minLimitDate)
         dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020-01-01
       } else {
         let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
@@ -98,34 +98,46 @@ export default {
       endDateValue = new Date(endDateValue.setDate(endDateValue.getDate()))
       endDateValue = endDateValue.setHours(23, 59, 59)
       //const searchParams = []
-
-      const searchParams = new FormData()
       if (dateFilterEndDate.value === '') {
         endDateValue = new Date()
         //searchParams.push(endDateValue)
       }
       if (dateFilterStartDate.value === '') {
-        startDateValue = new Date().setFullYear(2020, 0, 1)
+        startDateValue = new Date()
+        startDateValue.setFullYear(2020, 0, 1)
         //searchParams.push(startDateValue)
       }
-      searchParams.append('Filterdata', JSON.stringify({
+
+      const searchParams = {
         max_date: endDateValue,
         min_date: startDateValue,
         company_name: this.$refs.companyInput.value,
-        product_name: this.$refs.companyInput.value,
+        product_name: this.$refs.productInput.value,
         entries: this.$refs.entriesInput.value
-      }))
+      } //new FormData()
+      /*searchParams.append('Filterdata', JSON.stringify({
+        max_date: endDateValue,
+        min_date: startDateValue,
+        company_name: this.$refs.companyInput.value,
+        product_name: this.$refs.productInput.value,
+        entries: this.$refs.entriesInput.value
+      }))*/
       //searchParams.push(this.$refs.companyInput.value)
       //searchParams.push(this.$refs.productInput.value)
       //searchParams.push(this.$refs.entriesInput.value)
-
-      const data = await fetchEconomy(searchParams).then((res) => {
+      console.log(endDateValue)
+      console.log(startDateValue)
+      console.log(this.$refs.companyInput.value)
+      console.log(this.$refs.productInput.value)
+      console.log(this.$refs.entriesInput.value)
+      console.log(searchParams)
+      const data = await fetchEconomy(endDateValue, startDateValue, this.$refs.companyInput.value, this.$refs.productInput.value, this.$refs.entriesInput.value).then((res) => {
         if (res) {
           return res
         }
       })
+      
       this.filteredTransactions = data
-      console.log(this.filteredTransactions[0])
       //console.log(this.filteredTransactions[0])
       this.filterActive = true
     },

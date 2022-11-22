@@ -166,14 +166,33 @@ export async function register (isadmin, username, password, description, adress
     })
 }
 
-export async function fetchEconomy (seachParams) {
-  return fetch(EXPRESS_URL + '/economy', { 
-    method: 'GET',
+export async function fetchEconomy (maxDate2, minDate2, company2, product2, entries2) {
+  /*
+  const data = new FormData()
+  data.append('filterInfo', JSON.stringify({ 
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }))
+  const data2 = 'test igen'
+  */
+  const data = {
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }
+
+  return await fetch(EXPRESS_URL + '/economy', { 
+    method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
-    body: seachParams
+    body: JSON.stringify(data)
   }).then((response) => {
     return response.json()
   }).catch(() => {

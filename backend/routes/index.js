@@ -312,7 +312,6 @@ module.exports = async function(dbUrl, dbFolder) {
       }
       */
       db.close()
-
       res.status(200).send(data)
     } catch {
       db.close()
@@ -402,11 +401,15 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
-  router.get("/economy", async (req, res) => {
+  router.post("/economy", async (req, res) => {
+    //console.log("test")
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
+    const users = await dbo.collection("users").find({"profile.accountname" : {'$regex': '/' + req.body.companyName +'/' }}, {_id: 1}).toArray()
     let data = await dbo.collection('transaction').find({}).toArray()
-    const searchParams = JSON.parse(req.body)
+    const searchParams = req.body//JSON.parse(req.body.filterInfo)//.parse(req.body)
+    console.log(searchParams.maxDate)
+    
     //Fortsätt här
     //if(searchParams.endDateValue) {
       
