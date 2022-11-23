@@ -43,6 +43,7 @@
 import Listing from '@/components/SharedComponents/Listing.vue'
 import { fetchEconomy } from '@/serverFetch.js'
 import DateFilter from '@/components/Profile/DateFilter.vue'
+import { filterTransactions } from '@/components/Profile/MyPurchases.vue'
 export default {
 
   data () {
@@ -114,33 +115,17 @@ export default {
         company_name: this.$refs.companyInput.value,
         product_name: this.$refs.productInput.value,
         entries: this.$refs.entriesInput.value
-      } //new FormData()
-      /*searchParams.append('Filterdata', JSON.stringify({
-        max_date: endDateValue,
-        min_date: startDateValue,
-        company_name: this.$refs.companyInput.value,
-        product_name: this.$refs.productInput.value,
-        entries: this.$refs.entriesInput.value
-      }))*/
-      //searchParams.push(this.$refs.companyInput.value)
-      //searchParams.push(this.$refs.productInput.value)
-      //searchParams.push(this.$refs.entriesInput.value)
-      console.log(endDateValue)
-      console.log(startDateValue)
-      console.log(this.$refs.companyInput.value)
-      console.log(this.$refs.productInput.value)
-      console.log(this.$refs.entriesInput.value)
-      console.log(searchParams)
+      } 
       const data = await fetchEconomy(endDateValue, startDateValue, this.$refs.companyInput.value, this.$refs.productInput.value, this.$refs.entriesInput.value).then((res) => {
         if (res) {
           return res
         }
       })
-      
-      this.filteredTransactions = data
-      //console.log(this.filteredTransactions[0])
+      this.filteredTransactionstemp = data
+      filterTransactions(data)
       this.filterActive = true
     },
+
     getListing_title (item) { //get name of article from vuex store
       for (const listing of this.$store.state.allArticles) {
         if (listing.id === item.metadata.id) {

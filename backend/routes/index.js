@@ -401,49 +401,30 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+
+//Might not be scalable when there is a lot of transactions
   router.post("/economy", async (req, res) => {
     //console.log("test")
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    const users = await dbo.collection("users").find({"profile.accountname" : {'$regex': '/' + req.body.companyName +'/' }}, {_id: 1}).toArray()
-    let data = await dbo.collection('transaction').find({}).toArray()
-    const searchParams = req.body//JSON.parse(req.body.filterInfo)//.parse(req.body)
-    console.log(searchParams.maxDate)
-    
-    //Fortsätt här
-    //if(searchParams.endDateValue) {
-      
-    //}
-    /*if (dateFilterEndDate.value !== '') {  
-      //console.log('date range end')
-      this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
-    } else if (dateFilterStartDate.value !== '') { 
-      //console.log('date range start')
-      this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
-    }*/
+    try{
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      const users = await dbo.collection("users").find({}).toArray()
 
-    //let data = []
-    
-    /*function (err, transactions) {
-      if (err) {
-        res.sendStatus(500)
-        db.close()
-      } else {
-        for(int i, i<transactions.
-          data[i] = transactions[i]
-        
-        res.status(200).send(data)
-        db.close()
+      //Get all the transcations from the whole system, 
+      //when connected to the cc-node we have to get all the transactions for each user seperatly
+      let data = await dbo.collection('transaction').find({}).toArray()
+
+      for (const entry of data) { //replace id with account name , might want to store both?
+        const payee = users.find(element => element._id == entry.payee);
+        const payer = users.find(element => element._id == entry.payer);
+        entry.payee = payee.profile.accountName
+        entry.payer = payer.profile.accountName
       }
-    }*/
-    for (const entry of data) { //replace id with account name 
-      const payee = await getUser({'_id': ObjectId(entry.payee)})
-      const payer = await getUser({'_id': ObjectId(entry.payer)})
-      entry.payee = payee.profile.accountName
-      entry.payer = payer.profile.accountName
+      res.status(200).send(data)
+      db.close()
+    } catch {
+      res.status(500).send(data)
     }
-    res.status(200).send(data)
-        db.close()
   })
 
   /*****************************************************************************
