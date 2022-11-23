@@ -518,7 +518,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
 
 //Might not be scalable when there is a lot of transactions
-  router.post("/economy", async (req, res) => {
+  router.get("/economy", async (req, res) => {
     //console.log("test")
     try{
       const db = await MongoClient.connect(dbUrl)

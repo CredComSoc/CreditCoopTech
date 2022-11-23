@@ -165,9 +165,9 @@ export async function register (isadmin, username, password, description, adress
       return false
     })
 }
-
+/*
 export async function fetchEconomy (maxDate2, minDate2, company2, product2, entries2) {
-  /*
+
   const data = new FormData()
   data.append('filterInfo', JSON.stringify({ 
     maxDate: maxDate2,
@@ -177,22 +177,22 @@ export async function fetchEconomy (maxDate2, minDate2, company2, product2, entr
     entries: entries2
   }))
   const data2 = 'test igen'
-  */
+  
   const data = {
     maxDate: maxDate2,
     minDate: minDate2,
     companyName: company2,
     productName: product2,
     entries: entries2
-  }
+  }*/
 
+export async function fetchEconomy () {
   return await fetch(EXPRESS_URL + '/economy', { 
-    method: 'POST',
+    method: 'GET',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    }
   }).then((response) => {
     return response.json()
   }).catch(() => {

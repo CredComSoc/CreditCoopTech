@@ -39,7 +39,7 @@
     <!--Gets all Pending purchases from the VueX store. -->
     <h1><b> Väntande köp </b></h1>
       <div>
-        <p v-if="this.$store.state.this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+        <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
@@ -72,11 +72,11 @@
     <div>
       <!--Filter buttons and fields-->
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
-        <button @click="filter()">Filtrera</button><!--filter transactions handles all transcations. -->
+        <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
-        <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
         <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
@@ -143,11 +143,9 @@ export default {
   data () {
     return {
       filterActive: false, //used to check if any filter is applied.
-      company: '',
-      product: '',
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       requests: [],
-      componentKey: 0,
+      //componentKey: 0,
       payerNotEnoughBkr: false,
       payeeTooMuchBkr: false,
       max_limit: 0,
@@ -155,7 +153,9 @@ export default {
     }
   },
   components: {
-    Listing
+    Listing,
+    DateFilter,
+    PopupCard
   },
   methods: {
     mounted () {
@@ -263,15 +263,8 @@ export default {
       }
       hiddenElement.click()  
     },
-    filter () {
-      for (const entry of this.$store.state.completedTransactions) {
-        console.log(entry.payee)
-      }
-      this.filteredTransactions = this.filterTransactions(this.$store.state.completedTransactions)
-    },
-    filterTransactions (allTransactions) { //handles the filter
-      let res = []
-      //filteredTransactions_TEMP = []
+    filterTransactions () { //handles the filter
+      this.filteredTransactions = []
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
       let startDateValue = new Date(dateFilterStartDate.value)
@@ -284,30 +277,30 @@ export default {
       // date range search
       if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //if we have daterange filter for it. Save result in Filtered Transactions
         //console.log('date range start and end')
-        res = allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterEndDate.value !== '') {  
         //console.log('date range end')
-        res = allTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterStartDate.value !== '') { 
         //console.log('date range start')
-        res = allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
       }
       //company name search
       if (this.$refs.companyInput.value !== '' && (dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //if we have used a filter before, filter for company in filtered transactions and save in filteredTransactions
         //console.log('company search with date range')
-        res = res.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
+        this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
       } else if (this.$refs.companyInput.value !== '') { // else filter in vuex store completedTransactions and save in filteredTransactions
         //console.log('company search without date range')
-        res = allTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
       }
       //procuct name search
 
       if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
         //console.log('product search with date range and/or with company')
-        res = res.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
+        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
         //console.log('product search without date range and company')
-        res = allTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
       }
 
       //if any filter is active filterActive is true.
@@ -317,8 +310,8 @@ export default {
         this.filterActive = false
       } 
       //console.log('found ' + this.filteredTransactions.length + ' elements')
-      return res
     },
+    
     invoice (filename, item) { // not used atm. used for generating invoices
       console.log(item.entries[0])
       const pom = document.createElement('a')
