@@ -220,6 +220,36 @@ export async function updateProfile (accountName, description, adress, city, bil
   })
 }
 
+export async function updateuserProfile (previousname, accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone
+  }))
+  data.append('file', logo)
+  return await fetch(EXPRESS_URL + '/updateuserProfile/' + previousname, {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
 /*****************************************************************************
  * 
  *                                Articles 

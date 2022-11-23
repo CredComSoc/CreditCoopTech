@@ -10,6 +10,9 @@
                         />
         </div>
     </div>
+    <button class="ChatBtn">
+      Starta Chat
+    </button>
 </div>
 </template>
 
@@ -48,6 +51,7 @@ export default {
     }
 
     #container-history {
+        border-radius: 10px;
         width: 300px;
         height: 100%;
         overflow-y: auto;
@@ -69,6 +73,22 @@ export default {
     #container-frame {
        position: relative;        
        height: 100%;
+    }
+
+    .ChatBtn{
+     border-radius: 4px;
+     background-color: #4690CD;
+     color: white;
+     font-family: 'Ubuntu', sans-serif;
+     border: none;
+     width: fit-content;
+     height: fit-content;
+     margin-top: 3px;
+     padding: 4px 12px;
+    }
+
+    .ChatBtn:hover{
+     background-color: #0a60a6;
     }
 
     @media (max-width: 1090px) {

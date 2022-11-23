@@ -431,10 +431,10 @@ module.exports = async function(dbUrl, dbFolder) {
   })
 
   router.post("/updateProfile", upload.single('file'), (req, res) => {
-    const newPro = JSON.parse(req.body.accountInfo)
-    getUser({ "profile.accountName": newPro.accountName }).then((user) => {
-      console.log(user.profile.accountName)
+    getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
+        const newPro = JSON.parse(req.body.accountInfo)
+        console.log(newPro.accountName)
         let newProfile = {
           website: "",
           accountName: newPro.accountName,
@@ -463,6 +463,62 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         }
         updateUser({ "profile.accountName": req.user }, query).then((query) => {
+          if (query.acknowledged) {
+            // delete old logo if exists
+            if (req.file) {
+              gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "uploads",
+              });
+              gridfsBucket.delete(user.profile.logo_id, function (err, r) {
+                if (err) {
+                  console.log(err)
+                }
+              });
+            }
+            res.sendStatus(200)
+          } else {
+            res.status(404).send("Unable to update profile.")
+          }
+        })
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
+  router.post("/updateuserProfile/:name", upload.single('file'), (req, res) => {
+    
+    getUser({ "profile.accountName": req.params.name }).then((user) => {
+      if (user != null) {
+        const newPro = JSON.parse(req.body.accountInfo)
+        let newProfile = {
+          website: "",
+          accountName: newPro.accountName,
+          description: newPro.description,
+          adress: newPro.adress,
+          city: newPro.city,
+          billing: {
+            name: newPro.billingName,
+            box: newPro.billingBox,
+            adress: newPro.billingAdress,
+            orgNumber: newPro.orgNumber
+          },
+          phone: newPro.phone,
+        }
+        if (req.file) {
+          newProfile.logo = req.file.filename
+          newProfile.logo_id = req.file.id
+        } else {
+          newProfile.logo = user.profile.logo
+          newProfile.logo_id = user.profile.logo_id
+        }
+        const query = {
+          $set: {
+            email: newPro.email,
+            profile: newProfile
+          }
+        }
+        updateUser({ "profile.accountName": req.params.name }, query).then((query) => {
           if (query.acknowledged) {
             // delete old logo if exists
             if (req.file) {

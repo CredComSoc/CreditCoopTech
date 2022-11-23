@@ -3,7 +3,7 @@
     <div className="flexbox-container2 flexbox-item" v-if="!edit">
       <div className="image container-item">
         <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="profileData.logo === ''" src="../../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >Senast Online:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
@@ -26,7 +26,7 @@
         <p> {{profileData.city}} </p>
 
         <h1> Faktureringsuppgifter </h1>
-        <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
+        <p> {{profileData.billing.name}}<br/>{{profileData.billing.box}}<br/>{{profileData.billing.adress}}<br/> {{profileData.billing.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
@@ -60,15 +60,14 @@
           <h1>Allmänt</h1>
           <label for="logo">Logotyp:</label><br/>
           <div class="image">
-          <img v-if="localURL === '' && this.profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">Företagsnamn:</label><br/>
-          <input type="text" id="name" v-model="profileData.name" required><br/>
+          <input type="text" id="name" v-model="profileData.accountName" required><br/>
           <label for="description">Beskrivning:</label><br/>
-          <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
+          <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
           <label for="adress">Adress:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>
           <label for="location">Stad/ort:</label><br/>
@@ -77,13 +76,13 @@
         <div className="container-item">
           <h1>Faktureringsuppgifter</h1>
           <label for="billingName">Namn:</label><br/>
-          <input name="billingName" v-model="profileData.billingName" required><br/>
+          <input name="billingName" v-model="profileData.billing.name" required><br/>
           <label for="billingBox">Box:</label><br/>
-          <input name="billingBox" v-model="profileData.billingBox" required><br/>
+          <input name="billingBox" v-model="profileData.billing.box" required><br/>
           <label for="billingAdress">Adress:</label><br/>
-          <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
+          <input name="billingAdress" v-model="profileData.billing.adress" required><br/>
           <label for="orgNumber">Organisationsnummer:</label><br/>
-          <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
+          <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br/><br/>
           <h1>Kontaktuppgifter</h1>
           <label for="email">Epost:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
@@ -113,7 +112,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, profile, updateProfile } from '@/serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, profile, updateuserProfile } from '@/serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -130,7 +129,7 @@ export default {
       edit: false,
       logoURL: '',
       profileData: [],
-      updateProfile,
+      updateuserProfile,
       bkr: 0,
       comment: '',
       bkrSentMsg: false,
@@ -150,15 +149,16 @@ export default {
       this.localURL = URL.createObjectURL(this.profileData.logo)
     },
     submit () {
-      this.updateProfile(
-        this.profileData.name, 
+      this.updateuserProfile(
+        this.profileData.previousname, 
+        this.profileData.accountName, 
         this.profileData.description, 
         this.profileData.adress, 
         this.profileData.city, 
-        this.profileData.billingName, 
-        this.profileData.billingBox, 
-        this.profileData.billingAdress, 
-        this.profileData.orgNumber, 
+        this.profileData.billing.name, 
+        this.profileData.billing.box, 
+        this.profileData.billing.adress, 
+        this.profileData.billing.orgNumber, 
         this.profileData.email, 
         this.profileData.phone,
         this.profileData.logo
@@ -244,6 +244,9 @@ export default {
     for (const member of this.$store.state.allMembers) {
       if (member.accountName === this.userprofile) {
         this.profileData = member
+        this.profileData.previousname = this.profileData.accountName
+        console.log(this.profileData.previousname)
+        console.log(this.profileData.accountName)
       }
     }
     this.getImgURL()

@@ -51,7 +51,19 @@
               <span class="mob-cap"> Meddelanden </span>
             </router-link>
           </div>
-          <div id="navbar-logout" class="navlogo">
+          <div id="navbar-settings" class="navlogo">
+            <router-link :to="{name:'NetworkSetting'}">
+              <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/gear.png"/>
+                  <figcaption class="l-text"> Inställningar</figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:'NetworkSetting'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Inställningar</span>
+            </router-link>
+          </div>
+        
+        <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
                   <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>

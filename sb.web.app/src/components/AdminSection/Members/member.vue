@@ -11,10 +11,17 @@ do not match the equivalent of the database.
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
-        <h5 class="element-title"> {{ listingObj.phone }} </h5>
-        <button @click="userselected">Account</button>
+        <h5 class="element-text one">Balance: <br/>{{ '0Kr' }}</h5>
+        <h5 class="element-text two">Online: <br/>{{ getOnlineStatus() }}</h5>
+        <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
+        <div class="button-container">
+          <button @click="userselected">Profil</button>
+          <button @click="null">Transaktion</button>
+          <button @click="null">Email</button>
+          <button @click="null">Offers</button>
+        </div>
       </div>
-      <h5>Senast Online: {{ getOnlineStatus() }}</h5>
+      
     </div>
 <!--
   <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
@@ -48,7 +55,7 @@ export default {
           return 'Igår'
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
-          days = Math.floor(days * 10) / 10
+          days = Math.floor(Math.floor(days * 10) / 10)
           return days + ' dagar sedan'
         }
       } else {
@@ -74,28 +81,38 @@ export default {
 
     .element-container {
         display:flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
         height:auto;
         background: #FFFFFF;
         white-space: nowrap; 
+        padding: 4px;
         /* margin: 1rem;*/
     }
-    
-     .element-container h4 {
-        /* margin-top: 4px;*/
-        width: 100%; 
-        font-weight: bold;
-     }
 
     .element-title {
-        font-size: 20px;
-        text-align: left;
+        font-size: 120%;
+        text-align: center;
+        width: 15%;
+        font-weight: bold;
+    }
+    /*class="element-text"*/
+    .element-text {
+        font-size: 100%;
+        text-align: center;
+        word-wrap: break-word;
+    }
+    .one{
+        width: 10%;
     }
 
-    .element-text {
-        font-size: 15px;
-        text-align: left;
+    .two{
+        width: 10%;
     }
+    .tre{
+        width: 10%;
+    } 
     .imgContainer {
       height: 3rem;
       width: 3rem;
@@ -107,15 +124,11 @@ export default {
       height: 100%;
     }
     h4 {
-      margin-left: 0.5rem;
-      align-self: flex-end;
+      margin: 0rem;
     }
 
     h5 {
-      margin-top: 5px;
-      margin-bottom: 2px;
-      margin-left: 3px;
-      font-size: medium;
+      margin: 0rem;
     }
 
     .button { 
@@ -131,10 +144,21 @@ export default {
       color: black;
       box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
     }
-
-    .button:hover h4{
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
+    .button-container{
+      width: fit-content;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+    .button-container>button{
+      background-color: #585F66;
+      font-weight: bold;
+      font-size: 1em;
+      color: #FFFFFF;
+      border: 0px solid #585F66;
+      border-radius: 4px;
+      padding: 5px 10px;
     }
 
 </style>

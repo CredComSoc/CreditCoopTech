@@ -147,8 +147,7 @@ export default {
 
 .center-text {
   text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin: 2rem 0rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;
