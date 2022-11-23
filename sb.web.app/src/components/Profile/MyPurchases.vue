@@ -39,7 +39,7 @@
     <!--Gets all Pending purchases from the VueX store. -->
     <h1><b> Väntande köp </b></h1>
       <div>
-        <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+        <p v-if="this.$store.state.this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
@@ -155,9 +155,7 @@ export default {
     }
   },
   components: {
-    Listing,
-    DateFilter,
-    PopupCard
+    Listing
   },
   methods: {
     mounted () {

@@ -20,7 +20,8 @@ const store = new Vuex.Store ({
 
     requests: [],
     pendingPurchases: [],
-    completedPurchases: [],
+    //completedPurchases: [],
+    completedTransactions: [],
 
     activeArticles: [],
     inactiveArticles: []
@@ -72,8 +73,8 @@ const store = new Vuex.Store ({
       state.pendingPurchases = payload
     },
 
-    replaceCompletedPurchases (state, payload) {
-      state.completedPurchases = payload
+    replaceCompletedTransactions (state, payload) {
+      state.completedTransactions = payload
     },
 
     replaceActiveArticles (state, payload) {

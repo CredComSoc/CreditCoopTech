@@ -121,8 +121,8 @@ export default {
             this.$store.commit('replacePendingPurchases', data.pendingPurchases)            
           }   
 
-          if (data.completedPurchases) {
-            this.$store.commit('replaceCompletedPurchases', data.completedPurchases)            
+          if (data.completedTransactions) {
+            this.$store.commit('replaceCompletedTransactions', data.completedTransactions)            
           }           
           // console.log(this.$store.state.user.email)
         }

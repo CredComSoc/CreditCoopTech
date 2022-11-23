@@ -24,7 +24,7 @@
         </td>
 
       </tr>
-      <tr v-for="(item) in this.$store.state.requests.filter(request => request.state==='completed')" :key="item">
+      <!--<tr v-for="(item) in this.$store.state.requests.filter(request => request.state==='completed')" :key="item">
         <td>{{item.entries[0].payer}}</td>
         <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
         <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -34,6 +34,7 @@
         <th>{{item.written}}</th>
         <td style="color: green;">GODKÄND</td>
       </tr>
+    -->
     </table>
     <div v-if="!requests">
       <h4> Du har inte fått några köpförfrågningar än. </h4>
@@ -53,7 +54,7 @@ export default {
     Listing,
     PopupCard
   },
-  data () {
+  data () {  
     return {
       requests: [],
       payerNotEnoughBkr: false,
