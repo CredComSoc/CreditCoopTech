@@ -152,7 +152,8 @@ module.exports = async function(dbUrl, dbFolder) {
 
       requests: [],
       pendingPurchases: [],
-      completedPurchases: []
+      completedPurchases: [],
+      allEvents: []
     }
 
     const db = await MongoClient.connect(dbUrl)
@@ -211,6 +212,8 @@ module.exports = async function(dbUrl, dbFolder) {
       }
       data.myCart = myCart
 
+      // get event data
+      data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
       /*
       try {
@@ -950,6 +953,8 @@ router.post('/upload/event', async (req, res) => {
       description: req.body.description,
       contacts: req.body.contacts,
       webpage: req.body.webpage
+      //startTime: req.body.startTime,
+      //endTime: req.body.endTime
     }
     
     const user = await getUser({'profile.accountName': req.user})

@@ -676,26 +676,20 @@ export async function getChatHistories () {
 *                                Event
 *                 
 *****************************************************************************/
-
 export async function loadEvents () {
-  const promise = fetch(EXPRESS_URL + '/load/event', {
+  return await fetch(EXPRESS_URL + '/load/event', {
     method: 'GET',
     credentials: 'include'
   })
-    .then((res) => {
-      //console.log('then.res = ' + res.json())
-      return res
-    })
-    //.then((data) => {
-    //  console.log('data i data = ' + data)
-    //  return (data)
-    //})
-    .catch(() => {
-      return false
-    })
-  //console.log('innan promise')
-  //console.log('promise = ' + promise)
-  return promise  
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    }).catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    }) 
 }
 /*
 export async function loadEvents () {
@@ -728,7 +722,8 @@ export async function uploadEvent (title, start, end, allDay, location, descript
       description: description,
       contacts: contacts,
       webpage: webpage 
-
+      //startTime: startTime,
+      //endTime: endTime
     }),
     credentials: 'include'
   }).then((res) => {

@@ -1,27 +1,33 @@
 import { loadEvents } from '../../serverFetch'
 let eventGuid = 0
 const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
-
+//let counter = 0
 export let loadedevents
+
+/*
+ Get function that returns all the events in the database. 
+*/
+export function getLoadedEvents () {
+  console.log('Inne i getLoaded: ' + loadedevents)
+  return loadedevents
+}
+/*
+ Function that loads all the events from the database for the calander at start. 
+ loadEvents is located in serverFetch.js
+ */
 export function initEvents () {
-  console.log('inne i initevenet!!!')
-  loadedevents = loadEvents()
-  console.log('loaded eventes =' + loadedevents)
+  loadEvents()
+    .then(res => {
+      console.log('Här är res: ')
+      console.log(res)
+      loadedevents = res
+      return res
+    })
 }
 
-export const INITIAL_EVENTS = [
-  {
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00'
-  }
-]
-
+/* 
+ Creates a unique id for every event to be able to fetch it from the database
+*/
 export function createEventId () {
   return String(eventGuid++)
 }

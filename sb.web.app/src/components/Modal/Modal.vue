@@ -1,10 +1,11 @@
 <template>
     <div class="vue-modal" v-show="open">
         <transition name="slide">
-          <div class="veu-modal-inner">
+          <div class="vue-modal-inner">
             <div class="vue-modal-content">
               <slot />
-              <button type="button" @click="$emit('close')">Close</button>
+                <button type="button" class="button-close" @click="$emit('close')">Close</button>
+                <br>
             </div>
           </div>
         </transition>
@@ -48,6 +49,13 @@ export default {
   margin: 2rem auto;
 }
 
+.button-close {
+  position: absolute;
+  right: 5%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+}
 .vue-modal-content {
   position: relative;
   background-color: #fff;

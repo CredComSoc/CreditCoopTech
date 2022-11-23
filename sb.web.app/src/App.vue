@@ -123,7 +123,11 @@ export default {
 
           if (data.completedPurchases) {
             this.$store.commit('replaceCompletedPurchases', data.completedPurchases)            
-          }           
+          } 
+          
+          if (data.allEvents) {       
+            this.$store.commit('replaceAllEvents', data.allEvents)
+          }
           // console.log(this.$store.state.user.email)
         }
       }

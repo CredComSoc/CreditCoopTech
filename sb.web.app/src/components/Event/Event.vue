@@ -3,9 +3,10 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId, initEvents, loadedevents } from './event-utils'
+import { createEventId, initEvents, getLoadedEvents } from './event-utils'
+import { store } from '../../store/index'
 import { uploadEvent } from '../../serverFetch'
-import { ref } from 'vue'
+import { ref, toDisplayString } from 'vue'
 //import { Fancybox } from '@fancyapps/ui' TA BORT DETTA PAKET FRÅN PACKET-LOCK JSON
 import Modal from '../Modal/Modal.vue'
   
@@ -13,9 +14,9 @@ export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
     Modal
-  }, 
+  },
   setup () {
-    initEvents()
+    //initEvents()
     const showModal = ref(false)
     const collectInfoModal = ref(false)
     return { showModal, collectInfoModal }
@@ -34,7 +35,8 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
-        initialEvents: loadedevents, // alternatively, use the `events` setting to fetch from a feed
+        //initialEvents: getLoadedEvents(), // alternatively, use the `events` setting to fetch from a feed
+        events: this.$store.state.allEvents,
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -52,7 +54,8 @@ export default {
       },
       currentEvents: [],
       clickedEvent: '',
-      savedDate: []
+      savedDate: [],
+      counter: 0
     }
   },
   methods: {
@@ -60,31 +63,8 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
-<<<<<<< HEAD
-=======
-      //alert(initEvents())
->>>>>>> a2f44aad7306822c920b740077de0d39709609ee
-      this.eventTitle = null
-      this.eventDescription = null
-      this.eventContacts = null
-      this.eventLocation = null
-      //const title = prompt('Please enter a new title for your event')
       this.collectInfoModal = true
       this.savedDate = selectInfo
-      /*
-      const title = this.eventTitle
-      const calendarApi = selectInfo.view.calendar
-      calendarApi.unselect() // clear date selection
-      const eventId = createEventId()
-      */ 
-      //Lägg till ovanstående i databasen
-      /*
-      this.newEvent.id = eventId
-      this.newEvent.title = 
-      this.newEvent.start = selectInfo.startStr
-      this.newEvent.end = selectInfo.endStr
-      this.newEvent.allDay = selectInfo.allDay*/
-      //console.log(selectInfo.id)
     },
     handleEventClick (clickInfo) {
       this.clickedEvent = clickInfo
@@ -92,9 +72,19 @@ export default {
     },
 
     handleEvents (events) {
+      console.log(this.counter++)
       this.currentEvents = events
     },
 
+    disableTime () {  
+      if (document.getElementById('all-day').checked) {
+        document.getElementById('eventTimeStart').disabled = true
+        document.getElementById('eventTimeEnd').disabled = true
+      } else {
+        document.getElementById('eventTimeStart').disabled = false
+        document.getElementById('eventTimeEnd').disabled = false  
+      }
+    },
     handleInput () {
       const calendarApi = this.savedDate.view.calendar
       calendarApi.unselect() // clear date selection
@@ -111,42 +101,17 @@ export default {
           contact: this.eventContacts,
           website: this.eventURL
         })
-
+        //, document.getElementById('eventTimeStart').value, document.getElementById('eventTimeEnd').value
         uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay, this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
-            this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
           } else {
             this.error = true
-            this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
           }
         }) 
       }
     }
-    /*   
-    postEvent(){
-      const newEvent = {
-      id: eventId,
-      title,
-      start: selectInfo.startStr,
-      end: selectInfo.endStr,
-      allDay: selectInfo.allDay
-    }
-        
-      const data = new FormData()
-      data.append('event', JSON.stringify(this.newEvent))
-      uploadEvent(data).then((res) => {
-        if (res.status === 200) {
-          this.isPublished = true // open popup with success message
-          this.popupCardText = 'Tjiho!! Det lyckades :).\nVar god försök inte igen senare.'
-        } else {
-          this.error = true
-          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
-        }
-        })
-    }
-    */
-  }
+  } 
 }
 
 </script>
@@ -193,27 +158,30 @@ export default {
         </FullCalendar>
 
     <Modal :open="showModal" @close="showModal = !showModal">
-      <p> Event Details</p>
-      <p v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.title}} <br>{{this.clickedEvent.event.start}} </p> 
+      <p> Eventdetaljer</p>
+      <p v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.title}} 
+        <br>{{this.clickedEvent.event.start}} </p> 
     </Modal> 
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
-      <p> Titel för eventet: </p>
-      <input v-model="eventTitle" placeholder="Titel" />
-      <p> Plats för eventet: {{eventLocation}}</p>
-      <input v-model="eventLocation" placeholder="Plats" />
-      <p> Kontaktuppgifter: {{eventContacts}}</p>
-      <input v-model="eventContacts" placeholder="Kontaktuppgifter" />
-      <p> URL för att visa andra medlemmar mer information: {{eventURL}} </p>
-      <input v-model="eventURL" placeholder="URL" />
-      <p> Beskrivning av eventet: {{eventDescription}} </p>
-      <input v-model="eventDescription" placeholder="Beskrivning" />
+      <p> Titel för eventet: 
+      <br><input v-model="eventTitle" placeholder="Titel" /> </p>
+      <p> Plats för eventet: 
+      <br><input v-model="eventLocation" placeholder="Plats" /> </p>
+      <p> Kontaktuppgifter:
+      <br><input v-model="eventContacts" placeholder="Kontaktuppgifter" /></p>
+      <p> URL för att visa andra medlemmar mer information: {{eventURL}} 
+      <br><input v-model="eventURL" placeholder="URL" /></p>
+      <p> Beskrivning av eventet:  
+      <br><input v-model="eventDescription" placeholder="Beskrivning" /></p>
+      <p> Välj starttid: 
+      <input type='time' id='eventTimeStart' name="EventTimeStart"/>
+       Välj sluttid: 
+      <input type='time' id='eventTimeEnd' name="EventTimeEnd"/></p>  
+      <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
+      <label for='all-day' > Hela dagen</label> <br>
       </div>
-      <button @click="handleInput();collectInfoModal = !collectInfoModal">Lägg till event</button>
-      <!-- <form id="form" onsubmit="return false;">
-      <input type="text" id="userInput" />
-      <input type="submit" @click='handleInput' />
-      </form>-->
+      <button @click="handleInput();collectInfoModal = !collectInfoModal" class="button-add">Lägg till event</button>
     </Modal> 
     </div>
     </div>
@@ -257,5 +225,11 @@ b { /* used for event dates/times */
 .fc { /* the calendar root */
     max-width: 1100px;
     margin: 0 auto;
+}
+
+.button-add {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.3rem;
+  padding: 0.2rem;
 }
 </style>

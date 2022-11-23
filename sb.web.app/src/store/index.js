@@ -23,7 +23,9 @@ const store = new Vuex.Store ({
     completedPurchases: [],
 
     activeArticles: [],
-    inactiveArticles: []
+    inactiveArticles: [],
+
+    allEvents: []
 
   },
   mutations: {
@@ -82,6 +84,10 @@ const store = new Vuex.Store ({
 
     replaceInactiveArticles (state, payload) {
       state.inactiveArticles = payload
+    },
+
+    replaceAllEvents (state, payload) {
+      state.allEvents = payload
     }
   },
   actions: {
