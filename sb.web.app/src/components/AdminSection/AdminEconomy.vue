@@ -2,10 +2,32 @@
 
 <template>
     <div class="wrapper">   
-        <div>
-            <h2 class="center-text">Ekonomi :-)</h2>
+        <div style="display:flex; justify-content:center;">
+            <h2 class="center-text">Ekonomisk Översikt :-)</h2>
         </div>
-          <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
+        <div class="EconomyStats">
+          <div>
+            <b>Dagens</b>
+            <p>Antal Transaktioner: {{this.numberOfTradesDay}}<br>
+            Omsättning: {{this.turnOverDay}}</p>
+          </div>
+          <div>
+            <b>Veckans</b>
+            <p>Antal Transaktioner: {{this.numberOfTradesWeek}}<br>
+            Omsättning: {{this.turnOverWeek}}</p>
+          </div>
+          <div>
+            <b>Månadens</b>
+            <p>Antal Transaktioner: {{this.numberOfTradesMonth}}<br>
+            Omsättning: {{this.turnOverMonth}}</p>
+          </div>
+          <div>
+            <b>Årets</b>
+            <p>Antal Transaktioner: {{this.numberOfTradesYear}}<br>
+            Omsättning: {{this.turnOverYear}}</p>
+          </div>
+        </div>
+        <div className='filter'>
           <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
@@ -310,10 +332,106 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 15px 2px 15px;
+  margin-left: 2.5%;
 }
 .DateFilter {
   width: 125px;
   height: 30px;
   display: inline-block;
 }
+.EconomyStats {
+  /*
+  display:block;
+  margin:auto;
+  align-items: center;
+  width: 70%;
+  */
+  display: flex;
+  justify-content: center;
+}
+.EconomyStats div {
+border: 3px solid;
+border-radius: 10px;
+text-align: center;
+margin:20px;
+padding: 20px;
+padding-bottom: 10px;;
+/*width: 20%;*/
+/*display: inline-block;
+
+margin-left:2.5%;
+margin-right:2%;
+*/
+}
+.filter {
+  /*
+  padding-top: 5px;
+  padding-bottom: 5px; 
+  margin-left:17%;
+  margin-right: 17%;
+  width: auto;
+  */
+  display:flex;
+  justify-content: center;
+}
+.filter a {
+  text-align: center;
+  padding: 8px 8px 8px 8px;
+  text-decoration: none;
+  font-size: 12px;
+  color: steelblue;
+  border-style: solid;
+  border-color: gainsboro;
+  border-radius: 5px;
+  margin-top: -1px;
+  margin-bottom: 2px;
+  margin-left: 1px;
+  margin-right: -1px;
+  border-width: 2px;
+}
+.filter a:hover {
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);  
+}
+
+.filter a.active {
+  color: dimgrey;
+  font-weight: bold;
+  
+}
+.filterObject {
+  height: 30px;
+  margin: 5px;
+  align-content: center;
+  margin-left:2.5%;
+}
+.filterObject {
+  width: 125px;
+  height: 30px;
+  margin: 5px;
+  align-content: center;
+  margin-left:2%;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing:50px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+}
+tr
+{
+  border-bottom: 2px solid;
+}
+
+th {
+  padding: 20px;
+  font-weight: normal;
+}
+
+td {
+  padding: 10px 0px 10px 0px;
+}
+
 </style>
