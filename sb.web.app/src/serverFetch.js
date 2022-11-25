@@ -707,7 +707,7 @@ export async function loadEvents () {
   })
 }
 */
-export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage) {
+export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage, startTime, endTime) {
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
     headers: {
@@ -721,9 +721,9 @@ export async function uploadEvent (title, start, end, allDay, location, descript
       location: location,
       description: description,
       contacts: contacts,
-      webpage: webpage 
-      //startTime: startTime,
-      //endTime: endTime
+      webpage: webpage, 
+      _startTime: startTime,
+      _endTime: endTime
     }),
     credentials: 'include'
   }).then((res) => {

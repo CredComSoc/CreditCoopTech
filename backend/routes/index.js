@@ -952,9 +952,9 @@ router.post('/upload/event', async (req, res) => {
       location: req.body.location,
       description: req.body.description,
       contacts: req.body.contacts,
-      webpage: req.body.webpage
-      //startTime: req.body.startTime,
-      //endTime: req.body.endTime
+      webpage: req.body.webpage,
+      _startTime: req.body._startTime,
+      _endTime: req.body._endTime
     }
     
     const user = await getUser({'profile.accountName': req.user})

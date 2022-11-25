@@ -72,8 +72,11 @@ export default {
     },
 
     handleEvents (events) {
+      console.log(events)
       console.log(this.counter++)
       this.currentEvents = events
+      console.log('This is the store/data: ')
+      console.log(this.$store.state.allEvents)
     },
 
     disableTime () {  
@@ -99,10 +102,15 @@ export default {
           location: this.eventLocation,
           description: this.eventDescription,
           contact: this.eventContacts,
-          website: this.eventURL
+          website: this.eventURL,
+          _startTime: document.getElementById('eventTimeStart').value, 
+          _endTime: document.getElementById('eventTimeEnd').value
         })
         //, document.getElementById('eventTimeStart').value, document.getElementById('eventTimeEnd').value
-        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay, this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL).then((res) => {
+        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay, 
+          this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL, 
+          document.getElementById('eventTimeStart').value, 
+          document.getElementById('eventTimeEnd').value).then((res) => {
           if (res.status === 200) {
             this.isPublished = true // open popup with success message
           } else {
@@ -160,7 +168,9 @@ export default {
     <Modal :open="showModal" @close="showModal = !showModal">
       <p> Eventdetaljer</p>
       <p v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.title}} 
-        <br>{{this.clickedEvent.event.start}} </p> 
+        <br>{{this.clickedEvent.event.title}} 
+        <br>{{this.clickedEvent.event.extendedProps._endTime}} 
+        <br>{{this.clickedEvent.event.extendedProps._startTime}} </p>
     </Modal> 
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
