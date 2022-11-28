@@ -60,6 +60,9 @@
         </tr>
       </table>
     </div>
+    <div class="chat">
+      <p>test</p>
+    </div>
 </template>
 <script>
 import Listing from '@/components/SharedComponents/Listing.vue'
@@ -326,6 +329,17 @@ export default {
 
 </script>
 <style scoped>
+.chat {
+  width: 25%;
+  height: 700px;
+  display: inline-block;
+  position: fixed;
+}
+.wrapper{
+  width: 75%;
+  float: left;
+  border-right: 2px solid;
+}
 button {
   color: black;
   margin-right: 10px;
