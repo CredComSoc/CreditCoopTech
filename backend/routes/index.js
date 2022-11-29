@@ -256,7 +256,7 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
-      console.log('HEEEEJ \n\n')
+
       // get purchases
       try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
@@ -267,7 +267,6 @@ module.exports = async function(dbUrl, dbFolder) {
         params: {
           'payer': userId
         }})
-        console.log('TRANSAKTIONER:' + response.data)
         let userNames = {}
         for (const entry of response.data) {
           if(!(entry.entries[0].payee in userNames)) {
