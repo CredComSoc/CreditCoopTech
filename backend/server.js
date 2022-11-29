@@ -8,7 +8,7 @@ const dbConfig = require('./mongoDB-config');
 
 let indexRouter
 
-async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = true) {
+async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
   const dbUrl = dbConfig.mongoURL(dbFolder, localDbUrl)
 
   const corsMiddleware = require('./cors');
