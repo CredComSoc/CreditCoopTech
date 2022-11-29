@@ -267,7 +267,7 @@ module.exports = async function(dbUrl, dbFolder) {
         params: {
           'payer': userId
         }})
-        console.log('TRANSAKTIONER:' + response)
+        console.log('TRANSAKTIONER:' + response.data)
         let userNames = {}
         for (const entry of response.data) {
           if(!(entry.entries[0].payee in userNames)) {
