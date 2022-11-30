@@ -55,7 +55,8 @@ export default {
       currentEvents: [],
       clickedEvent: '',
       savedDate: [],
-      counter: 0
+      counter: 0,
+      owner: false //To control if user is allowed to change events
     }
   },
   methods: {
@@ -68,6 +69,9 @@ export default {
     },
     handleEventClick (clickInfo) {
       this.clickedEvent = clickInfo
+      if (this.clickedEvent.event.title) { //Lägg till jämförelse
+        this.owner = true
+      }
       this.showModal = true
     },
 
@@ -164,14 +168,19 @@ export default {
             <i>{{ arg.event.title }}</i>
         </template>
         </FullCalendar>
-
+    <!-- Modal to show events   -->
     <Modal :open="showModal" @close="showModal = !showModal">
       <p> Eventdetaljer</p>
       <p v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.title}} 
         <br>{{this.clickedEvent.event.title}} 
         <br>{{this.clickedEvent.event.extendedProps._endTime}} 
         <br>{{this.clickedEvent.event.extendedProps._startTime}} </p>
+        <div  id="editbuttons">
+          <button v-if="owner">Redigera</button><button v-if="owner">Radera</button> <!-- Gjorde en varabel att sätta om dom ska visas -->
+        </div>
     </Modal> 
+
+    <!-- Modal to create events   -->
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
       <p> Titel för eventet: 
@@ -242,4 +251,10 @@ b { /* used for event dates/times */
   border-radius: 0.3rem;
   padding: 0.2rem;
 }
+/*
+#editbuttons {
+  display: show;
+}
+*/
+
 </style>
