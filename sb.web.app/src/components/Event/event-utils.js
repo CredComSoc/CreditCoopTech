@@ -1,9 +1,9 @@
-import { loadEvents } from '../../serverFetch'
+import { loadEvents, getUserId } from '../../serverFetch'
 let eventGuid = 0
 const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
 //let counter = 0
 export let loadedevents
-
+export let myUserId
 /*
  Get function that returns all the events in the database. 
 */
@@ -25,6 +25,13 @@ export function initEvents () {
     })
 }
 
+export function initUserId () {  
+  getUserId()
+    .then(res => {  
+      myUserId = res        
+      return res          
+    })  
+}
 /* 
  Creates a unique id for every event to be able to fetch it from the database
 */

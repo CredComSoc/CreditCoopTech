@@ -707,6 +707,19 @@ export async function loadEvents () {
   })
 }
 */
+export async function getUserId () {
+  return fetch(EXPRESS_URL + '/userId', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
 export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage, startTime, endTime) {
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
@@ -733,4 +746,18 @@ export async function uploadEvent (title, start, end, allDay, location, descript
   }).catch(error => {
     return error
   })
+}
+export async function deleteEvent (id) {
+  const promise = await fetch(EXPRESS_URL + '/event/remove/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
 }
