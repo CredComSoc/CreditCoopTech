@@ -119,7 +119,7 @@ export default {
           _endTime: document.getElementById('eventTimeEnd').value
         })
         //, document.getElementById('eventTimeStart').value, document.getElementById('eventTimeEnd').value
-        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, this.savedDate.allDay, 
+        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, document.getElementById('all-day').checked, 
           this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL, 
           document.getElementById('eventTimeStart').value, 
           document.getElementById('eventTimeEnd').value).then((res) => {
@@ -178,13 +178,16 @@ export default {
         </FullCalendar>
     <!-- Modal to show events   -->
     <Modal :open="showModal" @close="showModal = !showModal">
-      <p> Eventdetaljer</p>
-      <p v-if="this.clickedEvent.event != null"> 
-        {{this.clickedEvent.event.extendedProps._id}} 
-        <br>{{this.clickedEvent.event.extendedProps.userId}} 
-        <br>{{this.clickedEvent.event.title}} 
-        <br>{{this.clickedEvent.event.extendedProps._endTime}} 
-        <br>{{this.clickedEvent.event.extendedProps._startTime}} </p>        
+        
+          <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
+          <b> Plats: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>
+                  
+          <br><b>Starttid:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
+          <br><b>Sluttid: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._endTime}} </template>
+          
+          <br><b>Info om eventet: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
+          <br><b>URL: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
+          <br><br>
           <button v-if="owner" class="button-modal">Redigera</button>
           <button v-if="owner" class="button-modal" @click="testfunc ();showModal = !showModal">Radera</button> 
     </Modal> 
@@ -212,8 +215,10 @@ export default {
           Välj sluttid: 
           <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
         </p>  
+        <!--
         <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
         <label for='all-day' > Hela dagen</label> <br>
+        -->
       </div>
       <button @click="handleInput();collectInfoModal = !collectInfoModal" class="button-modal">Lägg till event</button>
     </Modal> 
@@ -271,5 +276,23 @@ b { /* used for event dates/times */
   display: show;
 }
 */
+.modal-split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
 
+.modal-left{
+right: 0;
+background-color: red;
+}
+
+.modal-left{
+left: 0;
+background-color: green;
+}
 </style>
