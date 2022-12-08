@@ -56,7 +56,7 @@ export default {
       clickedEvent: '',
       savedDate: [],
       counter: 0,
-      owner: false //To control if user is allowed to change events
+      owner: false //To control if user is allowed to change events      
     }
   },
   methods: {
@@ -64,16 +64,29 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
     handleDateSelect (selectInfo) {
-      this.collectInfoModal = true
+      selectInfo.allDay = false //Disables allday     
+      
       this.savedDate = selectInfo
+      this.collectInfoModal = true   
     },
+    stringmanipulat (savedDate, variabel) { //
+      let realtime = ''     
+      if (variabel === 'End') {
+        realtime = document.getElementById('eventTimeEnd').value + ':00'
+      } else if (variabel === 'Start') {
+        realtime = document.getElementById('eventTimeStart').value + ':00' 
+      } else { realtime = '' }
+      const datestring = savedDate + ' ' + realtime
+      return datestring
+    },
+
     handleEventClick (clickInfo) {
       this.clickedEvent = clickInfo
       this.owner = false
-      console.log('user: ')
-      console.log(myUserId)
-      console.log('eventuser:')
-      console.log(this.clickedEvent.event.extendedProps.userId)      
+      //console.log('user: ')
+      //console.log(myUserId)
+      //console.log('eventuser:')
+      //console.log(this.clickedEvent.event.extendedProps.userId)      
       if (this.clickedEvent.event.extendedProps.userId === myUserId) { //Kollar man är ägare av event
         this.owner = true
       }
@@ -81,11 +94,11 @@ export default {
     },
 
     handleEvents (events) {
-      console.log(events)
-      console.log(this.counter++)
+      //console.log(events)
+      //console.log(this.counter++)
       this.currentEvents = events
-      console.log('This is the store/data: ')
-      console.log(this.$store.state.allEvents)
+      //console.log('This is the store/data: ')
+      //console.log(this.$store.state.allEvents)
     },
     testfunc () {
       deleteEvent(this.clickedEvent.event.extendedProps._id)
@@ -99,27 +112,31 @@ export default {
         document.getElementById('eventTimeStart').disabled = false
         document.getElementById('eventTimeEnd').disabled = false  
       }
-    },
+    },    
     handleInput () {
       const calendarApi = this.savedDate.view.calendar
       calendarApi.unselect() // clear date selection
+
+      this.savedDate.startStr = this.stringmanipulat(this.savedDate.startStr, 'Start')
+      this.savedDate.endStr = this.stringmanipulat(this.savedDate.startStr, 'End')
+
       const eventId = createEventId()
       if (this.eventTitle) {
         calendarApi.addEvent({
           id: eventId,
           title: this.eventTitle,
           start: this.savedDate.startStr,
-          end: this.savedDate.endStr,
+          end: this.savedDate.startStr,
           allDay: this.savedDate.allDay,
           location: this.eventLocation,
           description: this.eventDescription,
-          contact: this.eventContacts,
-          website: this.eventURL,
+          contact: this.eventContacts,          
+          webpage: this.eventURL, 
           _startTime: document.getElementById('eventTimeStart').value, 
-          _endTime: document.getElementById('eventTimeEnd').value
+          _endTime: document.getElementById('eventTimeEnd').value          
         })
         //, document.getElementById('eventTimeStart').value, document.getElementById('eventTimeEnd').value
-        uploadEvent(this.eventTitle, this.savedDate.start, this.savedDate.end, document.getElementById('all-day').checked, 
+        uploadEvent(this.eventTitle, this.savedDate.startStr, this.savedDate.endStr, this.savedDate.allDay, 
           this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL, 
           document.getElementById('eventTimeStart').value, 
           document.getElementById('eventTimeEnd').value).then((res) => {
@@ -139,11 +156,11 @@ export default {
     <div class='demo-app'>
     <div class='demo-app-sidebar'>
         <div class='demo-app-sidebar-section'>
-        <h2>Instructions</h2>
+        <h2>Instruktioner</h2>
         <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
+            <li>Klicka på ett datum för att skapa ett evenemang</li>
+            <li>Klicka på ett evenemang för att se information</li>
+            <!--<li>Click an event to delete it</li>-->
         </ul>
         </div>
         <div class='demo-app-sidebar-section'>
@@ -153,14 +170,14 @@ export default {
             :checked='calendarOptions.weekends'
             @change='handleWeekendsToggle'
             />
-            toggle weekends
+            Visa helgerna
         </label>
         </div>
         <div class='demo-app-sidebar-section'>
-        <h2>All Events ({{ currentEvents.length }})</h2>
+        <h3>Alla evenemang ({{ currentEvents.length }})</h3>
         <ul>
             <li v-for='event in currentEvents' :key='event.id'>
-            <b>{{ event.startStr }}</b>
+            <b>{{ event.startStr.slice(0, 10) }}</b>
             <i>{{ event.title }}</i>
             </li>
         </ul>
