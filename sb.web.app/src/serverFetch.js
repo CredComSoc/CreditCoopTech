@@ -4,7 +4,7 @@ import JsSHA from 'jssha'
 const urlBase = 'http://dev-sb-backend.mutualcredit.services'
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
-const standardCreditLine = 5000;
+const standardCreditLine = 5000
 
 /*****************************************************************************
  * 
