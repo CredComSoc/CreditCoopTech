@@ -21,7 +21,6 @@
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{item.written.split('T')[0]}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
@@ -59,8 +58,7 @@
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{item.written.split('T')[0]}}</td>
-          <!--<th>{{item.written}}</th>-->
+          <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>
@@ -93,12 +91,11 @@
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item"><!--If the filter is not active, We get all completed transaction from the VueX store.  -->
           <td>{{item.entries[0].payer}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item)}}</td>
-          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
+          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{item.written.split('T')[0]}}</td>
           <th>{{item.written}}</th>
           <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
         </tr>
@@ -117,12 +114,11 @@
         <tr v-for="(item) in this.filteredTransactions" :key="item"> <!--If the filter is active, We get view all transactions from filtered transactions found below.  -->
           <td>{{item.entries[0].payer}}</td>
           <td>{{item.entries[0].payee}}</td>
-          <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item)}}</td>
-          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
+          <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
+          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <td>{{item.written.split('T')[0]}}</td>
           <th>{{item.written}}</th>
           <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
         </tr>
