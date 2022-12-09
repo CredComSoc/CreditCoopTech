@@ -110,7 +110,7 @@ export default {
           }
           
           this.$store.commit('replaceSaldo', data.saldo)
-
+          console.log(data.requests)
           if (data.requests) {
             this.$store.commit('replaceRequests', data.requests)            
           }
