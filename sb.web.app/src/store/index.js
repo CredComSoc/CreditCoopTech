@@ -17,6 +17,7 @@ const store = new Vuex.Store ({
     myCartSize: 0,
 
     saldo: 0,
+    creditLine: 0,
 
     requests: [],
     pendingPurchases: [],
@@ -62,6 +63,9 @@ const store = new Vuex.Store ({
 
     replaceSaldo (state, payload) {
       state.saldo = payload
+    },
+    replaceCreditLine (state, payload) {
+      state.creditLine = payload
     },
 
     replaceRequests (state, payload) {

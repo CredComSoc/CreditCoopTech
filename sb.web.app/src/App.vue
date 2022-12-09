@@ -110,9 +110,11 @@ export default {
           }
           
           this.$store.commit('replaceSaldo', data.saldo)
+          this.$store.commit('replaceCreditLine', data.creditLine)
           if (data.requests) {
             this.$store.commit('replaceRequests', data.requests)            
           }
+
 
           if (data.pendingPurchases) {
             this.$store.commit('replacePendingPurchases', data.pendingPurchases)            

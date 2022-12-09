@@ -20,7 +20,7 @@
             <a href="#">
               <img src="../assets/sidecard_logos/credit-card.png"/>
               <!-- state.saldo ska ändras till att connecta till kredit istället-->
-              <figcaption class="l-text" id='top-logo-text'> Kredit: {{ this.$store.state.saldo }} bKr</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> Kredit: {{ this.$store.state.creditLine }} bKr</figcaption>
             </a>
           </figure>
       </div>
