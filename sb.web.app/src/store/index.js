@@ -70,7 +70,6 @@ const store = new Vuex.Store ({
 
     replacePendingPurchases (state, payload) {
       state.pendingPurchases = payload
-      console.log(state.pendingPurchases)
     },
 
     replaceCompletedTransactions (state, payload) {

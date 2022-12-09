@@ -28,7 +28,7 @@
             </td>
           </tr>
         </table>
-        <div v-if="!requests">
+        <div>
           <h4> Du har inte fått några köpförfrågningar än. </h4>
         </div>
         <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
