@@ -15,8 +15,8 @@ const { promisify } = require('util');
 const { json } = require('express');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'http://192.168.10.122:8080'
-CC_NODE_URL = 'http://127.0.0.1/cc-node'
+FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
+CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',

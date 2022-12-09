@@ -8,7 +8,7 @@ const mongoURL = function(folder, localUrl = true) {
     if (localUrl) {
         return "mongodb://localhost:27017/" + folder + "?retryWrites=true&w=majority"
     } else {
-        return "mongodb+srv://sb:sb-password@cluster0.3e0zakq.mongodb.net/" + folder + "?retryWrites=true&w=majority"
+        return "mongodb+srv://MCS-SB-admin:4%25D3SgU3x%24gCJUFCQI@sb-dev.g59in.mongodb.net/" + folder + "?retryWrites=true&w=majority"
     }
     
 }
