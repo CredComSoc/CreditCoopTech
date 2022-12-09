@@ -14,7 +14,6 @@ const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const { json } = require('express');
 const axios = require('axios').default;
-const standardCreditLine = 5000;
 
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
@@ -363,7 +362,6 @@ module.exports = async function(dbUrl, dbFolder) {
           },
           messages: {},
           notifications: [],
-          creditLine: standardCreditLine
         }
         if (req.file) {
           newUser.logo = req.file.filename
