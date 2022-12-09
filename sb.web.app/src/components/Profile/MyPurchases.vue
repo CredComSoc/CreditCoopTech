@@ -76,11 +76,9 @@ export default {
   },
   methods: {
     convertToLocalTime (date) {
-      date.append(' UTC')
-      console.log(date)
       date = new Date(date)
       console.log(date)
-      return date
+      return date.toISOString().split('T')[0]
     },
     invoice (filename, item) {
       console.log(item.entries[0])
