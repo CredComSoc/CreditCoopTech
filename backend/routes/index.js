@@ -330,7 +330,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *                                Admin Page
    *                 
    *****************************************************************************/
-
+//parseInt(newPro.min_limit, 10),
   router.post("/register", upload.single('file'), (req, res) => {
     console.log(req.body)
     getUser({ email: req.body.email }).then(async (user) => {
@@ -341,7 +341,7 @@ module.exports = async function(dbUrl, dbFolder) {
           email: newPro.email,
           password: newPro.password,
           is_active: req.body.is_active === "false" ? false : true,
-          min_limit: parseInt(req.body.min_limit, 10),
+          min_limit: newPro.min_limit,
           max_limit: parseInt(req.body.max_limit, 10),
           is_admin: newPro.is_admin ? true : false,  
           profile: {

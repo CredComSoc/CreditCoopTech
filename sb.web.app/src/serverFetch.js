@@ -4,7 +4,7 @@ import JsSHA from 'jssha'
 const urlBase = 'http://dev-sb-backend.mutualcredit.services'
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
-const standardCreditLine = 5000
+const standardCreditLine = -5000
 
 /*****************************************************************************
  * 
@@ -147,13 +147,13 @@ export async function register (isadmin, username, password, description, adress
     billingAdress: billingAdress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
-    phone: phone
+    phone: phone,
+    min_limit: standardCreditLine
   }))
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
-    body: data, 
-    min_limit: standardCreditLine
+    body: data
   })
     .then((response) => {
       if (!response.ok) {
