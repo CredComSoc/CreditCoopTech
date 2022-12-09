@@ -166,6 +166,7 @@ module.exports = async function(dbUrl, dbFolder) {
       allArticles: [],
 
       saldo: 0,
+      creditLine: 0,
 
       requests: [],
       pendingPurchases: [],
@@ -181,6 +182,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
       // get current user data
       let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+      data.creditLine = user.min_limit*-1
       const userId = user._id.toString()
       delete user._id
       delete user.password
@@ -235,7 +237,13 @@ module.exports = async function(dbUrl, dbFolder) {
         'cc-user': userId,
         'cc-auth': '1'
         }})
+        
         data.saldo = response.data[userId].completed.balance
+        if(data.saldo < 0)
+        {
+          data.creditLine += data.saldo
+          data.saldo = 0
+        }
       } catch (error) {
         console.log(error)
       }
