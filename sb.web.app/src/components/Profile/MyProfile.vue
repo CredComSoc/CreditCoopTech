@@ -19,7 +19,7 @@
 
           <h1> Stad/ort </h1>
           <p> {{profileData.city}} </p>
-
+          
           <h1> Faktureringsuppgifter </h1>
           <p> {{profileData.billingName}}<br/>Box: {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> Org. nummer: {{profileData.orgNumber}} </p>
         </div>
