@@ -253,6 +253,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         let userNames = {}
         for (const entry of response.data) {
+          console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee.profile.accountName   
@@ -268,8 +269,13 @@ module.exports = async function(dbUrl, dbFolder) {
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
+          if (entry.state === 'completed') {
+            data.completedPurchases.push(entry)
+          } else if (entry.state === 'pending') {
+            data.requests.push(entry)
+          }
         }
-        data.requests = response.data
+        //data.requests = response.data
       } catch (error) {
         console.log(error)
       }
@@ -285,6 +291,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         let userNames = {}
         for (const entry of response.data) {
+          console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee.profile.accountName   

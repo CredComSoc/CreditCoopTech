@@ -50,7 +50,7 @@
             <th>Pris</th>
             <th>Summa</th>
             <th>Tidstämpel</th>
-            <th>Status</th>
+            <!--<th>Status</th>-->
           </tr>
           <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
             <td>{{item.entries[0].payee}}</td>
@@ -60,7 +60,7 @@
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <td>{{item.written.split('T')[0]}}</td>
-          <th>{{item.written}}</th>
+          <!--<th>{{item.written}}</th>-->
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>

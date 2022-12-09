@@ -20,7 +20,6 @@ const store = new Vuex.Store ({
 
     requests: [],
     pendingPurchases: [],
-    //completedPurchases: [],
     completedTransactions: [],
 
     activeArticles: [],
