@@ -1,36 +1,114 @@
 <template>
-  <div>
-    <div id="header-box" class="header-container">
-      <header>
-        <nav>
-          <div class="navlogo">
+  <div id="header-box" class="header-container">
+    <header>
+      <nav>
+        <div class="left-logos" v-if="this.desc">
+            <div id="navbar-shop" class="navlogo">
+              <router-link :to="{name:'AdminShop'}">
+                <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/shop.png" />
+                  <figcaption class="l-text"> Shop </figcaption>
+                </figure>
+              </router-link>
+              <!-- Ta inte bort dessa, de är för mobil nav. -->
+              <router-link :to="{name:'AdminShop'}" v-if="this.isActive" @click="openNav">
+                <span class="mob-cap"> Shop </span>
+              </router-link>
+            </div>
+          <div id="navbar-members" class="navlogo">
+             <router-link :to="{name:'AdminAddMember'}">
+              <figure class="logo-click">              
+                  <img src="../../assets/navbar_logos/add.png" />
+                  <figcaption class="l-text"> Lägg till ny medlem </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Medlemmar </span>
+            </router-link>
+          </div>
+          <div id="navbar-economy" class="navlogo">
+             <router-link :to="{name:'AdminEconomy'}">
+              <figure class="logo-click">              
+                  <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
+                  <figcaption class="l-text"> Ekonomisk översikt </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Ekonomi </span>
+            </router-link>
+          </div>
+        </div>
+        <div class="middle-logo">
+          <div id="navbar-home" class="navlogo">
+            <figure>
+              <router-link :to="{name:'Home'}" >
+                <img src="../../assets/navbar_logos/sb.png" />
+              </router-link>
+            </figure>
+          </div>
+        </div>
+        <div class="right-logos" v-if="this.desc">
+          <div id="navbar-notifications" class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
+              <Notifications></Notifications>
+          </div> 
+          <div id="navbar-chat" class="navlogo">
+            <router-link :to="{name:'AdminChat'}">
+              <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/chat.png" />
+                  <figcaption class="l-text"> Meddelanden </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name: 'AdminChat'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Meddelanden </span>
+            </router-link>
+          </div>
+          <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
                   <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                  <figcaption class="l-text"> Logout </figcaption>
+                  <figcaption class="l-text"> Logga Ut </figcaption>
               </figure>
             </router-link>
+            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+              <span class="mob-cap"> Logga Ut</span>
+            </router-link>
           </div>
-        </nav>
-      </header>
-    </div>
-    <div id="space">
-    </div>
+        </div> 
+        <div id="bell-container" class="navlogo" v-if="!this.desc && !this.isActive" @click.prevent="setNotificationsToSeen">
+            <Notifications></Notifications>
+        </div> 
+        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+        <button id="mob-nav-btn" class="icon" @click="openNav">
+          <i class="fa fa-bars"></i>
+        </button>
+      </nav>
+    </header>
+    
   </div>
+  <div id="space">
+  </div>
+
 </template>
 
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
 import { useRouter } from 'vue-router'
-import { logout } from '../../serverFetch.js'
+import { logout, setNotificationsToSeen, getCart } from '../../serverFetch.js'
+import Notifications from '../Navbar/Notifications.vue'
 const router = useRouter()
 
 export default {
+  components: {
+    Notifications
+  },
   data () {
     return {
       desc: true, // is in desktop mode of navbar
       isActive: false, // if mobile version has its button pressed
-      dropdownActive: false // if a dropdown menu is active
+      dropdownActive: false, // if a dropdown menu is active
+      newNotifications: [],
+      oldNotifications: [],
+      componentKey: 0
     }
   },
   name: 'Navbar',
@@ -39,21 +117,12 @@ export default {
     // When screen resize, make navbar responsive
     screenWidth: {
       handler: function (scrWidth) {
-        if (scrWidth < 861 && !this.isActive) {
-          this.desc = false
-        } else {
-          this.desc = true
-          if (scrWidth > 861) {
-            this.isActive = false
-            const box = document.getElementById('header-box')
-            box.style.height = 'fit-content'
-            box.style.overflow = 'inherit'
-          }
-        }
+        this.handleScrWidth(scrWidth)
       }
     }
   },
   mounted () {
+    this.handleScrWidth(this.screenWidth)
     this.resizeNav()
     window.addEventListener('resize', this.resizeNav)
     window.addEventListener('click', (e) => {
@@ -66,22 +135,25 @@ export default {
       
       if (this.dropdownActive) {
         let dropdown = document.getElementById('upload-dropdown')
-        dropdown.style.display = 'none'
+        if (dropdown !== null) {
+          dropdown.style.display = 'none'
+        }
         dropdown = document.getElementById('bell-dropdown')
-        dropdown.style.display = 'none'
-        this.dropdownActive = false
+        if (dropdown != null) {
+          dropdown.style.display = 'none'
+        }
         let logo = document.getElementById('add-logo')
-        logo.classList.remove('active-dropdown')
+        if (logo !== null) {
+          logo.classList.remove('active-dropdown')
+        }
+
         logo = document.getElementById('bell-logo')
-        logo.classList.remove('active-dropdown')
+        if (logo !== null) {
+          logo.classList.remove('active-dropdown')
+        }
+        this.dropdownActive = false
       } else {
-        if ([...e.target.classList].includes('add')) {
-          const dropdown = document.getElementById('upload-dropdown')
-          dropdown.style.display = 'block'
-          this.dropdownActive = true
-          const logo = document.getElementById('add-logo')
-          logo.classList.add('active-dropdown')
-        } else if ([...e.target.classList].includes('notice')) {
+        if ([...e.target.classList].includes('notice')) {
           const dropdown = document.getElementById('bell-dropdown')
           dropdown.style.display = 'block'
           this.dropdownActive = true
@@ -103,13 +175,26 @@ export default {
       }
       this.resizeNav()
     },
+    handleScrWidth (scrWidth) {
+      if (scrWidth <= 1025 && !this.isActive) {
+        this.desc = false
+      } else {
+        this.desc = true
+        if (scrWidth > 1025) {
+          this.isActive = false
+          const box = document.getElementById('header-box')
+          box.style.height = 'fit-content'
+          box.style.overflow = 'inherit'
+        }
+      }
+    },
     // make height for mobile navbar responsive and scrollable
     resizeNav () {
       if (this.isActive) {
         const box = document.getElementById('header-box')
         const height = window.innerHeight
 
-        if (height < 550) {
+        if (height < 720) {
           box.style.height = '' + height + 'px'
         } else {
           box.style.height = 'fit-content'
@@ -135,11 +220,15 @@ export default {
       }
     },
     logOut () {
-      this.$router.push({ name: 'Login' })
       logout().then(() => {
         window.location.reload()
       })
-    }
+    },
+    moveNotification (notification) {
+      this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
+      this.oldNotifications.unshift(notification)
+    },
+    setNotificationsToSeen
   }
 }
 </script>
@@ -156,7 +245,7 @@ html {
 }
 
 #space {
-  height:75px;
+  height:80px;
 }
 
 .header-container {
@@ -188,6 +277,12 @@ header {
   justify-content: space-evenly;
 }
 
+#bell-container {
+  position: absolute;
+  left:5%;
+  top:30%;
+}
+
 a {
   text-decoration: none;
   color: black;
@@ -212,16 +307,20 @@ a:hover {
 .left-logos, .right-logos {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 
 .middle-logo {
   flex-shrink: 0;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 40px;
+  margin-right: 20px;
   margin-bottom: 3px;
   margin-top: 3px;
   height: 100%;
+}
+
+.middle-logo:hover {
+  transform: scale(1.05);
 }
 
 #notice {
@@ -229,6 +328,45 @@ a:hover {
   height: 11px;
   width: 11px;
   margin-top: 4px;
+}
+
+#cart-notice-container {
+  position: absolute;
+  text-align: center;
+  margin-top: -58px;
+  margin-left: 14px;
+  font-size: 14px;
+}
+
+#cart-notice {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+
+}
+
+#cart-notice-text {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  margin-top: -2px;
+  margin-left: 19px;
+}
+
+#cart-notice-mobile {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  margin-left: 28px;
+  margin-top: 4px;
+}
+
+#cart-notice-text-mobile {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  margin-left: 75px;
+  margin-top: 3px;
 }
 
 figure {
@@ -281,26 +419,6 @@ figcaption {
   background-color: #E5F0FD;
 }
 
-.notice-desc, .notice-title {
-  font-family: Ubuntu;
-}
-
-.notice-desc {
-  font-weight: 300;
-  font-size: 10px;
-}
-
-.notice-title {
-  font-weight: 500;
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.notice-img {
-  float: right;
-  top: 50%;
-}
-
 .active-dropdown {
   border-bottom: 2px solid black;
   transform: scale(1.05);
@@ -322,15 +440,11 @@ figcaption {
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1025px) {
 
  .header-container {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
- }
-
- #space {
-   height: 69px;
  }
 
  /* Hide scrollbar for Chrome, Safari and Opera */
@@ -347,12 +461,11 @@ figcaption {
     background-color: #fff;
     margin: 0;
     flex-direction: column-reverse;
-}
+  }
 
   nav .middle-logo {
-    left: 0;
-    top: 0;
-    margin:0;
+    align-self: center;
+    justify-self: center;
     order: 4;
   }
 

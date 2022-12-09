@@ -131,15 +131,27 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (username, password) {
+export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
   const hashedPassword = hashMyPassword(password)
-
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    is_admin: isadmin,
+    accountName: username,
+    password: password,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone
+  }))
+  data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username: username, password: hashedPassword })
+    body: data
   })
     .then((response) => {
       if (!response.ok) {
@@ -152,6 +164,40 @@ export async function register (username, password) {
     .catch(() => {
       return false
     })
+}
+/*
+export async function fetchEconomy (maxDate2, minDate2, company2, product2, entries2) {
+
+  const data = new FormData()
+  data.append('filterInfo', JSON.stringify({ 
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }))
+  const data2 = 'test igen'
+  
+  const data = {
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }*/
+
+export async function fetchEconomy () {
+  return await fetch(EXPRESS_URL + '/economy', { 
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
 }
 
 /*****************************************************************************
@@ -189,7 +235,7 @@ export async function updateProfile (accountName, description, adress, city, bil
     billingBox: billingBox,
     billingAdress: billingAdress,
     orgNumber: orgNumber, 
-    email: email,
+    email: email.toLowerCase(),
     phone: phone
   }))
   data.append('file', logo)

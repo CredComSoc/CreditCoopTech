@@ -4,7 +4,7 @@
       
       <div className="image container-item">
         <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo === ''" src="../../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >Senast Online:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from '@/serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -68,6 +68,7 @@ export default {
     TextBox,
     TextArea
   },
+  props: ['userprofile'],
   data () {
     return {
       logoURL: '',
@@ -157,12 +158,12 @@ export default {
   },
   created: function () {
     for (const member of this.$store.state.allMembers) {
-      if (member.accountName === this.$route.params.userprofile) {
+      if (member.accountName === this.userprofile) {
         this.profileData = member
       }
     }
     this.getImgURL()
-    if (this.$route.params.userprofile !== this.$store.state.user.profile.accountName) {
+    if (this.userprofile !== this.$store.state.user.profile.accountName) {
       this.show_optional = true
     }
   }
@@ -310,8 +311,6 @@ button:focus {
     display: flex;
     margin-top: 30px;
     flex-direction: column;
-  }
-  .right, .container-item {
   }
   .image {
     width: 50%;

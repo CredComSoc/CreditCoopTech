@@ -12,9 +12,10 @@ const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
+const { json } = require('express');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'http://155.4.159.231:8080'
+FRONTEND_URL = 'http://192.168.10.122:8080'
 CC_NODE_URL = 'http://127.0.0.1/cc-node'
 
 const transporter = nodemailer.createTransport({
@@ -426,7 +427,6 @@ module.exports = async function(dbUrl, dbFolder) {
 */
 
       db.close()
-
       res.status(200).send(data)
     } catch {
       db.close()
@@ -440,28 +440,31 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.post("/register", (req, res) => {
+  router.post("/register", upload.single('file'), (req, res) => {
+    console.log(req.body)
     getUser({ email: req.body.email }).then(async (user) => {
       if (user == null) {
+        console.log(req.body.accountInfo)
+        const newPro = JSON.parse(req.body.accountInfo)
         const newUser = {
-          email: req.body.email.toLowerCase(),
-          password: req.body.password,
+          email: newPro.email,
+          password: newPro.password,
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),
-          is_admin: req.body.is_admin === "false" ? false : true,
+          is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
-            accountName: req.body.email,
-            description: "",
-            adress: "",
-            city: "",
-            phone: "",
+            accountName: newPro.accountName,
+            description: newPro.description,
+            adress: newPro.adress,
+            city: newPro.city,
+            phone: newPro.phone,
             billing: {
-              name: "",
-              box: "",
-              adress: "",
-              orgNumber: ""
+              name: newPro.billingName,
+              box: newPro.billingBox,
+              adress: newPro.billingAdress,
+              orgNumber: newPro.orgNumber
             },
             logo: "",
             logo_id: ""
@@ -469,12 +472,39 @@ module.exports = async function(dbUrl, dbFolder) {
           messages: {},
           notifications: [],
         }
+        if (req.file) {
+          newUser.logo = req.file.filename
+          newUser.logo_id = req.file.id
+        }
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
+          try {
+            const reponse = await transporter.sendMail({
+              from: 'svenskbarter.reset@outlook.com', // sender address
+              to: newUser.email, 
+              subject: 'Medlem i Bvensk Barter', // Subject line
+              text: `
+              Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
+              Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+              
+              ${FRONTEND_URL}/login
+
+              Dina uppgifter att logga in är:
+              Email: ${newPro.email}
+              Password: ${newPro.password}
+
+              
+              Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+              `
+             })
+          } catch (error) {
+            res.status(404).send('Email doesnot exists');
+            db.close()
+          }
           res.sendStatus(200)
-          db.close()
+          
         } else {
           res.sendStatus(500)
           db.close()
@@ -484,6 +514,32 @@ module.exports = async function(dbUrl, dbFolder) {
         res.sendStatus(500)
       }
     })
+  })
+
+
+//Might not be scalable when there is a lot of transactions
+  router.get("/economy", async (req, res) => {
+    //console.log("test")
+    try{
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      const users = await dbo.collection("users").find({}).toArray()
+
+      //Get all the transcations from the whole system, 
+      //when connected to the cc-node we have to get all the transactions for each user seperatly
+      let data = await dbo.collection('transaction').find({}).toArray()
+
+      for (const entry of data) { //replace id with account name , might want to store both?
+        const payee = users.find(element => element._id == entry.payee);
+        const payer = users.find(element => element._id == entry.payer);
+        entry.payee = payee.profile.accountName
+        entry.payer = payer.profile.accountName
+      }
+      res.status(200).send(data)
+      db.close()
+    } catch {
+      res.status(500).send(data)
+    }
   })
 
   /*****************************************************************************

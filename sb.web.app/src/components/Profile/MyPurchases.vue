@@ -75,8 +75,8 @@
         <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" v-model="company" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
-        <input class="box-input filterObject" type="text" v-model="product" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
         <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
@@ -143,11 +143,9 @@ export default {
   data () {
     return {
       filterActive: false, //used to check if any filter is applied.
-      company: '',
-      product: '',
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       requests: [],
-      componentKey: 0,
+      //componentKey: 0,
       payerNotEnoughBkr: false,
       payeeTooMuchBkr: false,
       max_limit: 0,
