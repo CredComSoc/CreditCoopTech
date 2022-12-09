@@ -4,7 +4,7 @@
     <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
     <h1><b> Köpförfrågningar </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
-        <table v-if="requests">
+        <table>
           <tr>
             <th>Företag</th>
             <th>Artikel</th>
@@ -28,7 +28,7 @@
             </td>
           </tr>
         </table>
-        <div>
+        <div v-if="!requests">
           <h4> Du har inte fått några köpförfrågningar än. </h4>
         </div>
         <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
