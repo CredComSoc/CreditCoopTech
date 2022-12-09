@@ -109,9 +109,7 @@ export default {
             this.$store.commit('replaceMyCartSize', cartSize)
           }
           
-          if (data.user.saldo) {
-            this.$store.commit('replaceSaldo', data.user.saldo)
-          }
+          this.$store.commit('replaceSaldo', data.saldo)
 
           if (data.requests) {
             this.$store.commit('replaceRequests', data.requests)            
@@ -119,7 +117,7 @@ export default {
 
           if (data.pendingPurchases) {
             this.$store.commit('replacePendingPurchases', data.pendingPurchases)            
-          }   
+          }    
 
           if (data.completedTransactions) {
             this.$store.commit('replaceCompletedTransactions', data.completedTransactions)            
