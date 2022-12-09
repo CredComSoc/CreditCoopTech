@@ -115,7 +115,6 @@ export default {
             this.$store.commit('replaceRequests', data.requests)            
           }
 
-
           if (data.pendingPurchases) {
             this.$store.commit('replacePendingPurchases', data.pendingPurchases)            
           }    
