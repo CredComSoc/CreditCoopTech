@@ -144,7 +144,7 @@ export default {
     return {
       filterActive: false, //used to check if any filter is applied.
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
-      requests: [],
+      //requests: [],
       //componentKey: 0,
       payerNotEnoughBkr: false,
       payeeTooMuchBkr: false,
@@ -189,14 +189,14 @@ export default {
     },
     getListing (item) { //gets a specific articleobject from allArticles in the vuex store depending on a given id. 
       for (const listing of this.$store.state.allArticles) {
-        if (listing.id === item.entries[0].metadata.id) {
+        if (listing.id === item.metadata.id) {
           return listing
         }
       }
     },
     getListing_title (item) { //same as abobe but only the name
       for (const listing of this.$store.state.allArticles) {
-        if (listing.id === item.entries[0].metadata.id) {
+        if (listing.id === item.metadata.id) {
           return listing.title
         }
       }
