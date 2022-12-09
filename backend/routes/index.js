@@ -270,7 +270,7 @@ module.exports = async function(dbUrl, dbFolder) {
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
           if (entry.state === 'completed') {
-            data.completedPurchases.push(entry)
+            data.completedTransactions.push(entry)
           } else if (entry.state === 'pending') {
             data.requests.push(entry)
           }
@@ -309,7 +309,7 @@ module.exports = async function(dbUrl, dbFolder) {
           entry.entries[0].author = userNames[entry.entries[0].author]
 
           if (entry.state === 'completed') {
-            data.completedPurchases.push(entry)
+            data.completedTransactions.push(entry)
           } else if (entry.state === 'pending') {
             data.pendingPurchases.push(entry)
           }
@@ -317,9 +317,10 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
-      
+      db.close()
       res.status(200).send(data)
     } catch {
+      db.close()
       res.status(200).send(data)
     }
   })
