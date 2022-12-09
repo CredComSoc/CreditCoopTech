@@ -3,10 +3,10 @@
 <template>
     <div class="wrapper">   
         <div style="display:flex; justify-content:center;">
-            <h2 class="center-text">Ekonomisk Översikt :-)</h2>
+            <h2 class="center-text">Ekonomisk Översikt</h2>
         </div>
         <div class="EconomyStats">
-          <div>
+          <div><!--Displays the total number of trascations and their turnover this month-->
             <b>Dagens</b>
             <p>Antal Transaktioner: {{this.numberOfTradesDay}}<br>
             Omsättning: {{this.turnOverDay}}</p>
@@ -27,6 +27,7 @@
             Omsättning: {{this.turnOverYear}}</p>
           </div>
         </div>
+        <!--This is a similar solution to the filter from profile->MyPurchases -->
         <div className='filter'>
           <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
@@ -36,7 +37,7 @@
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
           <button @click="downloadFilterView()">Ladda ner lista som CSV</button><!-- downloadFilterView handles the csv download. -->
         </div>
-        <table v-if="(this.filterActive)">
+        <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
@@ -46,7 +47,7 @@
           <th>Summa</th>
           <th>Tidstämpel</th>   
         </tr>
-        <tr v-for="(item) in this.filteredTransactions" :key="item"><!--If the filter is not active, We get all transactions from the database.  -->
+        <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
           <td>{{item.payer}}</td>
           <td>{{item.payee}}</td>
           <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
@@ -61,7 +62,7 @@
       </table>
     </div>
     <div class="chat">
-      <p>test</p>
+      <p style="text-align: center;">chat goes here</p>
     </div>
 </template>
 <script>
@@ -80,11 +81,11 @@ export default {
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       allTransactions: [],
       default_min_date: 2020,
-      turnOverDay: 0,
-      turnOverWeek: 0,
+      turnOverDay: 0, //turnover day,week,month,year
+      turnOverWeek: 0, 
       turnOverMonth: 0,
       turnOverYear: 0,
-      numberOfTradesDay: 0,
+      numberOfTradesDay: 0, //number of trades day,week,month,year
       numberOfTradesWeek: 0,
       numberOfTradesMonth: 0,
       numberOfTradesYear: 0
@@ -96,7 +97,7 @@ export default {
     DateFilter
   },
   methods: {
-    calculateSTATS () {
+    calculateSTATS () { // calculate turnover 
       let todaynight = new Date()
       let todayday = new Date()
       let lastWeek = new Date()
@@ -128,11 +129,12 @@ export default {
       let transactionsWeek = []
       let transactionsMonth = []
       let transactionsYear = []
+      //filter out transactions based on date from all transactions and fills arrays
       transactionsDay = this.allTransactions.filter(item => todayday.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
       transactionsWeek = this.allTransactions.filter(item => lastWeek.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
       transactionsMonth = this.allTransactions.filter(item => lastMonth.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
       transactionsYear = this.allTransactions.filter(item => lastYear.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
-
+      //adds everything in all the arrays together. 
       for (const entry of transactionsDay) {
         this.turnOverDay += entry.quant
         this.numberOfTradesDay += 1
@@ -149,6 +151,7 @@ export default {
         this.turnOverYear += entry.quant
         this.numberOfTradesYear += 1
       }
+      /*
       console.log('TO Day' + this.turnOverDay)
       console.log('TO Week' + this.turnOverWeek)
       console.log('TO Month' + this.turnOverMonth)
@@ -157,8 +160,9 @@ export default {
       console.log('NO Trades Week' + this.numberOfTradesWeek)
       console.log('NO Trades Month' + this.numberOfTradesMonth)
       console.log('NO Trades Year' + this.numberOfTradesYear)
+      */
     },
-    handleDate () { //HandleDate Moderates what is possible to pick in the dropdown menue. 
+    handleDate () { //HandleDate Moderates what is possible to pick in the dropdown menue fot the date filters. Should be able to just inport this function from profile/mypurchases but didnt get it to work.
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter') //we get both date Filters by refering to their ID
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
       if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
@@ -184,6 +188,8 @@ export default {
     },
 
     async getEconomy () {
+      //below comments were an attempt to remove the need to fetch all transactions from the backend. we would then try to only fetch the needed results given the search params from the filter.
+      
       /*
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
@@ -218,6 +224,8 @@ export default {
           return res
         }
       })*/ 
+
+      //get all transactions from backend
       this.allTransactions = await fetchEconomy()
       this.calculateSTATS()
       this.filterActive = true
