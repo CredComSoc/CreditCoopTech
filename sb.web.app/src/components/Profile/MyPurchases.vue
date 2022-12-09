@@ -20,7 +20,7 @@
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
-          <th>{{item.written}}</th>
+          <th>{{convertToLocalTime(item.written)}}</th>
           <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
         </tr>
       </table>
