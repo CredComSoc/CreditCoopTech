@@ -80,6 +80,7 @@ export default {
       console.log(date)
       date = new Date(date)
       console.log(date)
+      return date
     },
     invoice (filename, item) {
       console.log(item.entries[0])
