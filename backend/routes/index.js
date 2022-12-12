@@ -327,10 +327,10 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post("/register", upload.single('file'), (req, res) => {
     console.log(req.body)
-    getUser({ email: req.body.email }).then(async (user) => {
+    const newPro = JSON.parse(req.body.accountInfo)
+    getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
         console.log(req.body.accountInfo)
-        const newPro = JSON.parse(req.body.accountInfo)
         const newUser = {
           email: newPro.email,
           password: newPro.password,
@@ -385,11 +385,13 @@ module.exports = async function(dbUrl, dbFolder) {
               `
              })
           } catch (error) {
-            res.status(404).send('Email doesnot exists');
+            console.log(error)
+            res.status(404).send('Email doesnot exists') //stämmer inte 
             db.close()
+            return
           }
           res.sendStatus(200)
-          
+          db.close()
         } else {
           res.sendStatus(500)
           db.close()

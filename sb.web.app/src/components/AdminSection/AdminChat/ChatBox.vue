@@ -2,7 +2,6 @@
   <div id="frame-chatbox">
     <p v-if="this.reciever.length > 0"> {{ this.reciever }} </p>
     <p v-else> &nbsp;</p>
-    <Button class="start-chat" @click="this.$emit('showMembers')"> Starta nytt Chat</Button>
     <div id="container-chatbox">
       <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
       <InputField v-if="this.reciever.length > 0" @sendMessage="this.sendMessage"/>
@@ -56,22 +55,6 @@ export default {
       position: relative;
       height: 100%;
       width: 100%;
-    }
-    .start-chat{
-      border-radius: 5px;
-      background-color: #4690CD;
-      color: white;
-      font-family: 'Ubuntu', sans-serif;
-      border: none;
-      width: fit-content;
-      height: fit-content;
-      padding: 2px 8px;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-    }
-    .start-chat:hover{
-     background-color: #0a60a6;
     }
     
 </style>

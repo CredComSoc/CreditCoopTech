@@ -10,7 +10,7 @@
         />
       </div>
     </div>
-    <button class="ChatBtn" @click="this.$emit('showHistory')">Skicka ett Meddelande</button>
+    <button class="ChatBtn" @click="this.$emit('showHistory')">Starta ny chatt</button>
   </div>
 </template>
 
@@ -81,7 +81,7 @@ h3 {
   border: none;
   width: fit-content;
   height: fit-content;
-  margin-top: 3px;
+  margin-top: 10px;
   padding: 4px 12px;
 }
 

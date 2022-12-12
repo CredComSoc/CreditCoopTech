@@ -3,10 +3,10 @@
     <H1 v-if="!registered">
       LÄGG TILL MEDLEM
     </H1>
-    <form v-if="!registered" className="flexbox-container2" @submit.prevent="">
+    <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">
         <h3>Allmänt</h3>
-        <label for="logo">Logo Bild:</label><br/>
+        <label for="logo">Logo Bild:</label><br/> 
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -39,7 +39,7 @@
         <label for="phone">Telefon:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
         
-        <button @click="submit" class="buttonflex">
+        <button type="submit" value="Submit" class="buttonflex"> 
           <p style="padding-right:7px" > Registrera </p>
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -51,7 +51,7 @@
       </div>
     </form>
     <div v-if="registered">
-      <h1>Personen är registrerat!</h1>
+      <h1>Den nya medlemmen är nu registrerad!</h1>
       <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
