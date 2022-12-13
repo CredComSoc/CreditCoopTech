@@ -322,7 +322,7 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index,'AVBRUTEN')
+      this.statusSwap(index, 'AVBRUTEN')
       cancelRequest(id)
     },
     accept (id, payer, index, cost) { 
@@ -352,22 +352,22 @@ export default {
     statusSwap (index, messagetext) {
       const tag = document.createElement('p')
       const text = document.createTextNode(messagetext)
-      if(text === 'GODKÄND') {
+      if (text === 'GODKÄND') {
         tag.style.color = 'green'
       }
       else {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
-      const element = this.$refs.reqRefs[index]  //specific row 
+      const element = this.$refs.reqRefs[index] //specific row 
       console.log(index)
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 
-        child.removeChild(grandChild)  // remove all buttons starting with godkänn
+        child.removeChild(grandChild) //remove all buttons starting with godkänn
         grandChild = child.lastElementChild
       }
-      child.appendChild(tag) // add the Avbruten tag to where the buttons where. 
+      child.appendChild(tag) //add the Avbruten tag to where the buttons where. 
     }
   }
 }
