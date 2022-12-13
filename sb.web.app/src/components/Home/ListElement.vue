@@ -67,10 +67,6 @@ export default {
         body: JSON.stringify(cartItem) // This is your file object
       }).then(
         response => response
-      ).then(
-        success => {
-          console.log(success)
-        } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object
       )
