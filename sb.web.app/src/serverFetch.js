@@ -435,7 +435,11 @@ export async function createTransactions (cart) {
       },
       body: JSON.stringify(element),
       credentials: 'include'
-    })
+    }).catch(error => {
+      console.log(error)
+    }).catch(promise => {
+      console.log('ja:' + promise)
+    })  
     postNotification('saleRequest', element.userUploader) 
   }
   /*cart.forEach(element => {
