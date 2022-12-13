@@ -352,7 +352,7 @@ export default {
     statusSwap (index, messagetext) {
       const tag = document.createElement('p')
       const text = document.createTextNode(messagetext)
-      if (text === 'GODKÄND') {
+      if (messagetext === 'GODKÄND') {
         tag.style.color = 'green'
       } else {
         tag.style.color = 'red'

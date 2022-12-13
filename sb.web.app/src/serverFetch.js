@@ -425,6 +425,9 @@ export async function deleteCart (id) {
 
 export async function createTransactions (cart) {
   cart.forEach(element => {
+    console.log(element)
+  })
+  cart.forEach(element => {
     fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {

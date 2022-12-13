@@ -46,12 +46,8 @@ export default {
         method: 'POST',
         credentials: 'include'
       }).then(
-        success => {
-          console.log(success)
-          this.cart.splice(ind - 1, 1)
-
-          this.calcTotal()
-        }
+        this.cart.splice(ind - 1, 1),
+        this.calcTotal()
       ).catch(
         error => console.log(error)
       )
@@ -66,10 +62,7 @@ export default {
         body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
         credentials: 'include'
       }).then(
-        success => {
-          console.log(success)
-          this.calcTotal()
-        }
+        this.calcTotal()
       ).catch(
         error => console.log(error)
       )
@@ -85,10 +78,7 @@ export default {
           body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
           credentials: 'include'
         }).then(
-          success => {
-            console.log(success)
-            this.calcTotal()
-          }
+          this.calcTotal()
         ).catch(
           error => console.log(error)
         )
@@ -129,11 +119,7 @@ export default {
           fetch(EXPRESS_URL + '/cart/remove', {
             method: 'POST',
             credentials: 'include'
-          }).then(
-            success => {
-              console.log(success)
-            }
-          ).catch(
+          }).catch(
             error => console.log(error)
           )
         } else {
