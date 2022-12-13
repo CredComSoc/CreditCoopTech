@@ -427,19 +427,15 @@ export async function createTransactions (cart) {
   cart.forEach(element => {
     console.log(element)
   })
-  for (const element in cart) {
-    await fetch(EXPRESS_URL + '/createrequest', {
+  for (const element of cart) {
+    fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(element),
       credentials: 'include'
-    }).catch(error => {
-      console.log(error)
-    }).catch(promise => {
-      console.log('ja:' + promise)
-    })  
+    })
     postNotification('saleRequest', element.userUploader) 
   }
   /*cart.forEach(element => {
