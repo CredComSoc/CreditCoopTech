@@ -354,8 +354,7 @@ export default {
       const text = document.createTextNode(messagetext)
       if (text === 'GODKÄND') {
         tag.style.color = 'green'
-      }
-      else {
+      } else {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
