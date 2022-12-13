@@ -1,5 +1,5 @@
 const express = require('express');
-const passport = require('passport');
+const passport = require('passport');create
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const path = require('path');
@@ -261,7 +261,6 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         let userNames = {}
         for (const entry of response.data) {
-          console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee.profile.accountName   
@@ -299,7 +298,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         let userNames = {}
         for (const entry of response.data) {
-          console.log(entry)
+          //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee.profile.accountName   
@@ -532,7 +531,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get("/articles", async (req, res) => {
-    console.log(req)
+    //console.log(req)
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
@@ -771,7 +770,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post('/cart', (req, res) => {
     const cartItem = req.body;
-    console.log(cartItem);
+    //console.log(cartItem);
     cartItem.cartOwner = req.user;
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
