@@ -427,7 +427,7 @@ export async function createTransactions (cart) {
   cart.forEach(element => {
     console.log(element)
   })
-  for (element in cart) {
+  for (const element in cart) {
     await fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {
