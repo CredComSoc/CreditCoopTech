@@ -48,7 +48,7 @@
             <th>Tidstämpel</th>
             <!--<th>Status</th>-->
           </tr>
-          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
+          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" :myindex="index" ref="reqRefs">
             <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -57,7 +57,7 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
+              <button @click="cancel(item.uuid, myindex)" style="background-color: red;"> Avbryt </button>
             </td>
           </tr>
         </table>
@@ -322,7 +322,7 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index)
+      this.statusSwap(index,'AVBRUTEN')
       cancelRequest(id)
     },
     accept (id, payer, index, cost) { 
@@ -334,7 +334,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, 'accept')
+                this.statusSwap(index, 'GODKÄND')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
@@ -349,19 +349,25 @@ export default {
       this.payerNotEnoughBkr = false
       this.payeeTooMuchBkr = false
     },
-    statusSwap (index) {
+    statusSwap (index, text) {
       const tag = document.createElement('p')
-      const text = document.createTextNode('AVBRUTEN')
-      tag.style.color = 'red'
+      const text = document.createTextNode(text)
+      if(text === 'GODKÄND') {
+        tag.style.color = 'green'
+      }
+      else {
+        tag.style.color = 'red'
+      }
       tag.appendChild(text)
-      const element = this.$refs.reqRefs[index]
-      const child = element.lastElementChild
-      let grandChild = child.lastElementChild
-      while (grandChild) {
-        child.removeChild(grandChild)
+      const element = this.$refs.reqRefs[index]  //specific row 
+      console.log(index)
+      const child = element.lastElementChild //status element of selected row
+      let grandChild = child.lastElementChild //godkänn button in status element.
+      while (grandChild) { 
+        child.removeChild(grandChild)  // remove all buttons starting with godkänn
         grandChild = child.lastElementChild
       }
-      child.appendChild(tag)
+      child.appendChild(tag) // add the Avbruten tag to where the buttons where. 
     }
   }
 }
