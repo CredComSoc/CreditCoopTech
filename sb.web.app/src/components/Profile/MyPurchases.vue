@@ -349,9 +349,9 @@ export default {
       this.payerNotEnoughBkr = false
       this.payeeTooMuchBkr = false
     },
-    statusSwap (index, text) {
+    statusSwap (index, messagetext) {
       const tag = document.createElement('p')
-      const text = document.createTextNode(text)
+      const text = document.createTextNode(messagetext)
       if(text === 'GODKÄND') {
         tag.style.color = 'green'
       }
