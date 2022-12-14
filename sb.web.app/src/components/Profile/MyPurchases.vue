@@ -48,7 +48,7 @@
             <th>Tidstämpel</th>
             <!--<th>Status</th>-->
           </tr>
-          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" :myindex="index" ref="reqRefs">
+          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
             <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -57,7 +57,7 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, myindex)" style="background-color: red;"> Avbryt </button>
+              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>
           </tr>
         </table>
