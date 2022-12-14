@@ -23,7 +23,7 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button> <!--ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button> <!--ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
               <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button> <!--Messed up-->
             </td>
           </tr>
@@ -358,9 +358,8 @@ export default {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
-      const length = this.$refs.reqRefs.length - 1
-      const element = this.$refs.reqRefs[length - index] //specific row 
-      console.log(index)
+      const length = this.$refs.reqRefs.length - 1  // get number of elements
+      const element = this.$refs.reqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 
