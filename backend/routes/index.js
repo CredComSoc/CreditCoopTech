@@ -434,6 +434,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         console.log(response.data)
         let userNames = {}
+        let allTransactions = []
         for (const entry of response.data) {
           //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
@@ -448,17 +449,20 @@ module.exports = async function(dbUrl, dbFolder) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
             userNames[entry.entries[0].author] = author.profile.accountName   
           }
+          console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
+          console.log(entry)
+          allTransactions.push(entry)
         }
     } catch (error) {
       db.close()
       console.log(error)
     }
       db.close()
-      console.log(response.data)
-      res.status(200).send(response.data)
+      console.log(allTransactions)
+      res.status(200).send(allTransactions)
     })
     /*try{
       const db = await MongoClient.connect(dbUrl)
