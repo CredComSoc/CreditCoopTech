@@ -419,6 +419,10 @@ module.exports = async function(dbUrl, dbFolder) {
   router.get("/economy", async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder)
+    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+    const userId = user._id.toString()
+    delete user._id
+    delete user.password
     try{
       const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
