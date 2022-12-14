@@ -358,7 +358,7 @@ export default {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
-      let length = this.$refs.reqRefs.length
+      const length = this.$refs.reqRefs.length
       const element = this.$refs.reqRefs[length - index] //specific row 
       console.log(index)
       const child = element.lastElementChild //status element of selected row
