@@ -38,7 +38,9 @@
         <input type="email" id="email" v-model="profileData.email" required><br/>
         <label for="phone">Telefon:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
-        
+        <div v-if="!registered && registered_fail">
+          <p style="color: red">{{this.registeredText}}</p>
+        </div>
         <button type="submit" value="Submit" class="buttonflex"> 
           <p style="padding-right:7px" > Registrera </p>
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -50,8 +52,8 @@
         </button>
       </div>
     </form>
-    <div v-if="registered">
-      <h1>Den nya medlemmen är nu registrerad!</h1>
+    <div v-if="registered && !registered_fail">
+      <h1>{{this.registeredText}}</h1>
       <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
@@ -67,7 +69,9 @@ export default {
       profileData: [],
       register,
       localURL: '',
-      registered: false
+      registered: false,
+      registered_fail: false,
+      registeredText: ''
     }
   },
   mounted () {
@@ -87,7 +91,7 @@ export default {
     },
     async submit () {
       var randomstring = Math.random().toString(36).slice(-8)
-      const result = await this.register(
+      const res = await this.register(
         this.profileData.isadmin,
         this.profileData.name, 
         randomstring,
@@ -102,9 +106,16 @@ export default {
         this.profileData.phone,
         this.profileData.logo
       )
-      if (result) {
+      console.log(res.ok)
+      if (res.ok) {
         this.registered = true
+      } else {
+        this.registered_fail = true
       }
+      res.text()
+        .then((text) => {
+          this.registeredText = text
+        })
     },
     reset () {
       this.profileData.isadmin = false
@@ -121,6 +132,8 @@ export default {
       this.profileData.logo = ''
       this.localURL = ''
       this.registered = false
+      this.registered_fail = false
+      this.registeredText = ''
     }
   }
 }

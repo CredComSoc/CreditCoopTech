@@ -154,15 +154,7 @@ export async function register (isadmin, username, password, description, adress
     body: data
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        console.log('Registering account')
-        return true
-      }
-    })
-    .catch(() => {
-      return false
+      return response
     })
 }
 

@@ -24,6 +24,7 @@ export default {
   methods: {
     sendMessage (message) {
       this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message.message, messagetype: message.messagetype, filename: message.filename })
+      this.$emit('storeMsg')
       this.scrolltoBottom()
     },
     scrolltoBottom () {

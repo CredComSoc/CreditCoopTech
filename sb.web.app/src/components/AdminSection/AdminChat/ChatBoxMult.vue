@@ -1,6 +1,6 @@
 <template>
     <div id="frame-chatbox">
-        <p v-if="this.reciever.length > 0"> {{ this.reciever.toString() }} </p>
+        <p v-if="this.reciever.length > 0"> {{ this.reciever.toString().replaceAll(",",", ") }} </p>
         <p v-else> &nbsp;</p>
         <div id="container-chatbox">
             <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
@@ -13,6 +13,7 @@
 import InputField from './InputField.vue'
 import MessageDisplay from './MessageDisplay.vue'
 import { nextTick } from 'vue'
+import { uploadFile } from '@/serverFetch.js'
 
 export default {
   name: 'ChatBox',
@@ -22,7 +23,13 @@ export default {
   },
   props: ['reciever', 'activeChat', 'user'],
   methods: {
-    sendMessage (message) {
+    async sendMessage (message) {
+      if (message.messagetype !== 'string') {
+        const res = await uploadFile (message.message)
+        message.message = res.message
+        message.messagetype = res.fileType
+        message.filename = res.name
+      }
       for (var names of this.reciever) {
         this.$emit('sendMessage', { sender: this.user, reciever: names, message: message.message, messagetype: message.messagetype, filename: message.filename })
         console.log(1)
