@@ -358,7 +358,8 @@ export default {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
-      const element = this.$refs.reqRefs[index] //specific row 
+      let length = this.$refs.reqRefs.length
+      const element = this.$refs.reqRefs[length - index] //specific row 
       console.log(index)
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
