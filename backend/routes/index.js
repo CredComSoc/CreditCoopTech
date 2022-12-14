@@ -423,6 +423,7 @@ module.exports = async function(dbUrl, dbFolder) {
     const userId = user._id.toString()
     delete user._id
     delete user.password
+    let allTransactions = []
     try{
       const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
@@ -434,7 +435,6 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         console.log(response.data)
         let userNames = {}
-        let allTransactions = []
         for (const entry of response.data) {
           //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
