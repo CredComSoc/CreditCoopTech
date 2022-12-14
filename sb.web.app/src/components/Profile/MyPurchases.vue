@@ -200,7 +200,7 @@ export default {
         this.filteredTransactions.forEach((item) => { //takes from filtered transactions if filter is active
           csv += item.entries[0].payer + ';' 
           csv += item.entries[0].payee + ';' 
-          csv += this.getListing_title(item) + ';' 
+          csv += this.getListing_title(item.entries[0]) + ';' 
           csv += item.entries[0].metadata.quantity + ';' 
           csv += (item.entries[0].quant / item.entries[0].metadata.quantity) + ';' 
           csv += item.entries[0].quant + ';'  
@@ -212,7 +212,7 @@ export default {
         this.$store.state.completedTransactions.forEach ((item) => { //if filter is not active, take the display the transactions from Completed transactions in the vuex store
           csv += item.entries[0].payer + ';' 
           csv += item.entries[0].payee + ';' 
-          csv += this.getListing_title(item) + ';' 
+          csv += this.getListing_title(item.entries[0]) + ';' 
           csv += item.entries[0].metadata.quantity + ';' 
           csv += (item.entries[0].quant / item.entries[0].metadata.quantity) + ';' 
           csv += item.entries[0].quant + ';'  
@@ -290,10 +290,10 @@ export default {
 
       if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
         //console.log('product search with date range and/or with company')
-        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
+        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
         //console.log('product search without date range and company')
-        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
+        this.filteredTransactions = this.$store.state.completedTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
       }
 
       //if any filter is active filterActive is true.
