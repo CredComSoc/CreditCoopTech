@@ -286,7 +286,7 @@ module.exports = async function(dbUrl, dbFolder) {
       } catch (error) {
         console.log(error)
       }
-      // get purchases
+      // get transactions
       try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
@@ -417,8 +417,44 @@ module.exports = async function(dbUrl, dbFolder) {
 
 //Might not be scalable when there is a lot of transactions
   router.get("/economy", async (req, res) => {
-    //console.log("test")
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder)
     try{
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
+        headers: {
+        'cc-user': userId,
+        'cc-auth': '123'
+        },
+        params: {
+          'state': 'completed'
+        }})
+        let userNames = {}
+        for (const entry of response.data) {
+          //console.log(entry)
+          if(!(entry.entries[0].payee in userNames)) {
+            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+            userNames[entry.entries[0].payee] = payee.profile.accountName   
+          }
+          if(!(entry.entries[0].payer in userNames)) {
+            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+            userNames[entry.entries[0].payer] = payer.profile.accountName   
+          }
+          if(!(entry.entries[0].author in userNames)) {
+            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+            userNames[entry.entries[0].author] = author.profile.accountName   
+          }
+          entry.entries[0].payee = userNames[entry.entries[0].payee]
+          entry.entries[0].payer = userNames[entry.entries[0].payer]
+          entry.entries[0].author = userNames[entry.entries[0].author]
+        }
+    } catch (error) {
+      db.close()
+      console.log(error)
+    }
+      db.close()
+      res.status(200).send(data)
+    })
+    /*try{
       const db = await MongoClient.connect(dbUrl)
       const dbo = db.db(dbFolder);
       const users = await dbo.collection("users").find({}).toArray()
@@ -437,8 +473,9 @@ module.exports = async function(dbUrl, dbFolder) {
       db.close()
     } catch {
       res.status(500).send(data)
-    }
-  })
+    }*/
+
+ 
 
   /*****************************************************************************
    * 
