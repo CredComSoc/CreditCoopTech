@@ -433,7 +433,6 @@ module.exports = async function(dbUrl, dbFolder) {
           'state': 'completed'
         }})
         let userNames = {}
-        console.log(response)
         for (const entry of response.data) {
           //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
@@ -457,6 +456,7 @@ module.exports = async function(dbUrl, dbFolder) {
       console.log(error)
     }
       db.close()
+      console.log(response.data)
       res.status(200).send(response.data)
     })
     /*try{
