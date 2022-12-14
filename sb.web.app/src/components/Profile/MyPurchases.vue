@@ -23,7 +23,7 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button> <!--ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button> <!--ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
               <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button> <!--Messed up-->
             </td>
           </tr>
@@ -324,6 +324,11 @@ export default {
       console.log('Canceling order: ' + id)
       this.statusSwap(index, 'AVBRUTEN')
       cancelRequest(id)
+    },
+    startCancelRequest (id, payer, index) {
+      this.statusSwap(index, 'AVBRUTEN')
+      cancelRequest(id)
+      postNotification('saleRequestDenied', payer)
     },
     accept (id, payer, index, cost) { 
       getAvailableBalance().then((balance) => {
