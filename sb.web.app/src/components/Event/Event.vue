@@ -19,7 +19,8 @@ export default {
     initUserId()
     const showModal = ref(false)
     const collectInfoModal = ref(false)
-    return { showModal, collectInfoModal }
+    const editModal = ref(false)
+    return { showModal, collectInfoModal, editModal }
   }, 
   data: function () {
     return {
@@ -77,6 +78,7 @@ export default {
         realtime = document.getElementById('eventTimeStart').value + ':00' 
       } else { realtime = '' }
       const datestring = savedDate + ' ' + realtime
+      console.log('Här är datumsträngen: ' + datestring)
       return datestring
     },
 
@@ -117,8 +119,8 @@ export default {
       const calendarApi = this.savedDate.view.calendar
       calendarApi.unselect() // clear date selection
 
-      this.savedDate.startStr = this.stringmanipulat(this.savedDate.startStr, 'Start')
       this.savedDate.endStr = this.stringmanipulat(this.savedDate.startStr, 'End')
+      this.savedDate.startStr = this.stringmanipulat(this.savedDate.startStr, 'Start')
 
       const eventId = createEventId()
       if (this.eventTitle) {
@@ -126,7 +128,7 @@ export default {
           id: eventId,
           title: this.eventTitle,
           start: this.savedDate.startStr,
-          end: this.savedDate.startStr,
+          end: this.savedDate.endStr,
           allDay: this.savedDate.allDay,
           location: this.eventLocation,
           description: this.eventDescription,
@@ -147,6 +149,7 @@ export default {
           }
         }) 
       }
+      this.eventTitle = ''
     }
   } 
 }
@@ -205,7 +208,7 @@ export default {
           <br><b>Info om eventet: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
           <br><b>URL: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
           <br><br>
-          <button v-if="owner" class="button-modal">Redigera</button>
+          <button v-if="owner" class="button-modal" @click="editModal=true;showModal = !showModal">Redigera</button>
           <button v-if="owner" class="button-modal" @click="testfunc ();showModal = !showModal">Radera</button> 
     </Modal> 
 
@@ -213,7 +216,7 @@ export default {
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
         <p> Titel för eventet: 
-          <br><input v-model="eventTitle" placeholder="Titel" /> 
+          <br><input v-model="eventTitle" /> 
         </p>
         <p> Plats för eventet: 
           <br><input v-model="eventLocation" placeholder="Plats" /> 
@@ -225,7 +228,7 @@ export default {
           <br><input v-model="eventURL" placeholder="URL" />
         </p>
         <p> Beskrivning av eventet:  
-          <br><input v-model="eventDescription" placeholder="Beskrivning" />
+          <br><textarea v-model="eventDescription" placeholder="Beskrivning"> </textarea>
         </p>
         <p> Välj starttid: 
           <input type='time' id='eventTimeStart' name="EventTimeStart"/>
@@ -239,6 +242,40 @@ export default {
       </div>
       <button @click="handleInput();collectInfoModal = !collectInfoModal" class="button-modal">Lägg till event</button>
     </Modal> 
+  
+    <!-- Modal to edit events  -->  
+    <Modal :open="editModal" @close="editModal = !editModal">
+      <template v-if="this.clickedEvent.event != null">
+      <div>
+        <p> Titel för eventet: 
+          <br><input v-model="this.clickedEvent.event.title" placeholder="this.clickedEvent.event.title"/> 
+        </p>
+        <p> Plats för eventet: 
+          <br><input v-model="this.clickedEvent.event.extendedProps.location" placeholder="Plats" /> 
+        </p>
+        <p> Kontaktuppgifter:
+          <br><input v-model="this.clickedEvent.event.extendedProps.contacts" placeholder="Kontaktuppgifter" />
+        </p>
+        <p> URL för att visa andra medlemmar mer information: {{eventURL}} 
+          <br><input v-model="this.clickedEvent.event.extendedProps.webpage" placeholder="URL" />
+        </p>
+        <p> Beskrivning av eventet:  
+          <br><textarea v-model="this.clickedEvent.event.extendedProps.description" placeholder="Beskrivning"> </textarea>
+        </p>
+        <p> Välj starttid: 
+          <input type='time' id='eventTimeStart' name="EventTimeStart" value=/>
+          Välj sluttid: 
+          <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
+        </p>  
+        
+        <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
+        <label for='all-day' > Hela dagen</label> <br>
+      
+      </div>
+    </template>
+      <button @click="handleInput();collectInfoModal = !collectInfoModal" class="button-modal">Lägg till event</button>
+    </Modal> 
+
     </div>
     </div>
 </template>
