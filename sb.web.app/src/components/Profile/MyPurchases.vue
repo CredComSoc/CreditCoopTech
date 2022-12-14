@@ -363,7 +363,7 @@ export default {
         tag.style.color = 'red'
       }
       tag.appendChild(text)
-      const length = this.$refs.reqRefs.length - 1  // get number of elements
+      const length = this.$refs.reqRefs.length - 1 // get number of elements
       const element = this.$refs.reqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
