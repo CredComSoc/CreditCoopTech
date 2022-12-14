@@ -22,7 +22,7 @@
         <p><b>Här är en tänkbar vision:</b></p>
     </div>
     <div>
-        <img src="/assets/Svensk-barter-ide-diagram.png" alt="Svensk-barter-ide-diagram">
+        <img src="../../assets/Svensk-barter-ide-diagram.png" alt="Svensk-barter-ide-diagram">
     </div>
     </template>
 

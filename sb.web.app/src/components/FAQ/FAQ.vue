@@ -6,14 +6,16 @@
 
   <!--To add another nav in the menybar, add another <a href... here and add this.tab!='namn' in the first href -->
   <div className='topnav flexbox-item' id='myTopnav'>
-      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information'}" id='questions'>Vanliga frågor</a>
-      <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>BarterTips</a>
+      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information' && this.tab!='policy'}" id='questions'>Vanliga frågor</a>
+      <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>Bartertips</a>
       <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>Föreningsinformation</a>
+      <a href='#' @click="this.tab='policy'" :class="{ active: this.tab==='policy' }" id='policy'>Integritetspolicy</a>
     </div>
     <!--also, add another <NAME... here -->
     <div className="content flexbox-item">
       <BarterTips v-if="this.tab==='bartertips'"/>
       <Information v-else-if="this.tab==='information'"/>
+      <Policy v-else-if="this.tab==='policy'"/>
       <Questions v-else/>
     </div>
   </div>
@@ -25,6 +27,7 @@
 import Questions from '@/components/FAQ/Questions.vue'
 import BarterTips from '@/components/FAQ/BarterTips.vue'
 import Information from '@/components/FAQ/Information.vue'
+import Policy from '@/components/FAQ/Policy.vue'
 
 export default {
   data () {
@@ -35,6 +38,7 @@ export default {
   components: {
     Questions,
     BarterTips,
+    Policy,
     Information
   },
   created () {
