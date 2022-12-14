@@ -3,7 +3,7 @@
     <h1 id="title">MEDDELANDEN</h1>
     <div id="container-chat">
       <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat" @showHistory="this.showHistorylist = true"/>
-      <ChatBox v-if="!this.multipleChat" ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @showMembers="this.showMemberlist = true"/>
+      <ChatBox v-if="!this.multipleChat" ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg" @showMembers="this.showMemberlist = true"/>
       <ChatBoxMult v-if="this.multipleChat" ref="chatbox" :activeChat="this.activeChat" :reciever="this.checkedNames" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg"/>
     </div>
     <div v-if="this.showMemberlist" class="member-list-container">
@@ -14,9 +14,9 @@
       <div class="overlaybg" @click="this.showMemberlist = false"></div>
     </div>
     <div v-if="this.showHistorylist" class="member-list-container">
-      <H4 v-if="this.history.length === 0">Har inte startat chat med någon medlemmar</H4>
-      <div v-if="this.history.length !== 0" class="member-list">
-        <label :for="index" v-for=" ( member,index ) in this.history" :key="index">
+      <H4 v-if="this.allmembers.length === 0">Har inte startat chat med någon medlemmar</H4>
+      <div v-if="this.allmembers.length !== 0" class="member-list">
+        <label :for="index" v-for=" ( member,index ) in this.allmembers" :key="index">
           {{member}}
           <input type="checkbox" :id="index" :value="member" v-model="this.checkedNames">
         </label>
@@ -33,7 +33,7 @@ import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import ChatBoxMult from './ChatBoxMult.vue'
 import io from 'socket.io-client'
-import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories, uploadFile } from '@/serverFetch.js'
+import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories } from '@/serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -62,18 +62,7 @@ export default {
   },
   methods: {
     openChat (userchat) {
-      if (this.reciever !== '') {
-        this.socket.emit('leave', this.all_chatIDs[this.reciever])
-        this.reciever = ''
-        this.activeChat = []
-      }
-      if (this.checkedNames.length !== 0 && this.multipleChat) {
-        for (var name of this.checkedNames) {
-          this.socket.emit('leave', this.all_chatIDs[name])
-        }
-        this.checkedNames = []
-        this.activeChat = []
-      }
+      this.leaveChat()
       const chatRoom = {
         user: this.user,
         chatID: this.all_chatIDs[userchat]
@@ -83,19 +72,16 @@ export default {
       this.multipleChat = false
       this.getChatHistory(this.all_chatIDs[userchat])
     },
-    openMultipleChat () {
-      if (this.reciever !== '') {
-        console.log(this.reciever)
-        this.socket.emit('leave', this.all_chatIDs[this.reciever])
-        this.reciever = ''
-        this.activeChat = []
-      }
-      if (this.checkedNames.length !== 0 && this.multipleChat) {
-        for (var name of this.checkedNames) {
-          this.socket.emit('leave', this.all_chatIDs[name])
+    async openMultipleChat () {
+      this.leaveChat()
+      console.log(this.all_chatIDs)
+      for (var name of this.checkedNames) {
+        if (!this.all_chatIDs[name]) {
+          console.log('HERE')
+          await this.goToChat(name)
+        } else {
+          console.log('User exists')
         }
-        this.checkedNames = []
-        this.activeChat = []
       }
       for (var names of this.checkedNames) {
         const chatRoom = {
@@ -106,17 +92,24 @@ export default {
       }
       this.showHistorylist = false
       this.multipleChat = true
-      /*
-      this.reciever = userchat
-      this.getChatHistory(this.all_chatIDs[userchat]) */
+      if (!(this.checkedNames.length > 1)) {
+        this.getChatHistory(this.all_chatIDs[this.checkedNames[0]])
+      } 
     },
-    async sendMessage (message) {
-      if (message.messagetype !== 'string') {
-        const res = await uploadFile (message.message)
-        message.message = res.message
-        message.messagetype = res.fileType
-        message.filename = res.name
+    leaveChat () {
+      if (this.reciever !== '') {
+        this.socket.emit('leave', this.all_chatIDs[this.reciever])
+        this.reciever = ''
+        this.activeChat = []
       }
+      if (this.checkedNames.length !== 0 && this.multipleChat) {
+        for (var name of this.checkedNames) {
+          this.socket.emit('leave', this.all_chatIDs[name])
+        }
+        this.activeChat = []
+      }
+    },
+    sendMessage (message) {
       this.socket.emit('message', {
         message: message.message,
         messagetype: message.messagetype,
@@ -146,8 +139,8 @@ export default {
         })
         .catch(err => console.log(err))
     },
-    getChatHistories (chatid) {
-      getChatHistories()
+    async getChatHistories (chatid) {
+      await getChatHistories()
         .then(res => res.json())
         .then(data => {
           if (data.histories) {
@@ -180,26 +173,23 @@ export default {
       for (const member of this.$store.state.allMembers) {
         if (this.user === member.accountName) {
           continue
-        } else if (this.history.includes(member.accountName)) {
-          continue
         } else {
           this.allmembers.push(member.accountName)
         }
       }
       console.log(this.allmembers)
     },
-    goToChat (accountName) {
-      fetch(EXPRESS_URL + '/chat/' + accountName, {
+    async goToChat (accountName) {
+      await fetch(EXPRESS_URL + '/chat/' + accountName, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
         credentials: 'include'
       }).then(res => res.json())
-        .then(data => {
+        .then(async data => {
           if (data !== false) {
-            this.getChatHistories(data)
-            this.showMemberlist = false
+            await this.getChatHistories(data)
           } else {
             console.log('chat error!!')
             this.chatError = true
@@ -221,6 +211,7 @@ export default {
     })
   },
   beforeUnmount () {
+    this.leaveChat()
     this.socket.disconnect()
   }
 }

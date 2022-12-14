@@ -27,8 +27,6 @@ import Navbar from './components/Navbar/Navbar.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
-import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
 import { authenticate, checkAdminStatus, getSaldo, fetchData } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
 
@@ -130,15 +128,11 @@ export default {
     }
   },
   mounted () {
-    const router = useRouter()
     authenticate().then((res) => {
       if (res) {    
         checkAdminStatus().then((res2) => {
           this.auth = res
           this.admin = res2
-          if (res2) {
-            router.push({ name: 'AdminHome' })
-          }
         })
       } 
     })

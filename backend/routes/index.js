@@ -20,8 +20,8 @@ CC_NODE_URL = 'http://127.0.0.1/cc-node'
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
   auth: {
-    user: 'svenskbarter.reset@outlook.com',
-    pass: 'SvenskBarter2022!'
+    user: 'sbwebapp@outlook.com',
+    pass: '@sbapp_KU5'
   }
 })
 
@@ -368,6 +368,7 @@ module.exports = async function(dbUrl, dbFolder) {
           try {
             const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
               from: 'svenskbarter.reset@outlook.com', // sender address
+
               to: newUser.email, 
               subject: 'Medlem i Svensk Barter', // Subject line
               text: `
@@ -384,21 +385,26 @@ module.exports = async function(dbUrl, dbFolder) {
               Svensk Barter
               `
              })
+             console.log(reponse)
           } catch (error) {
             console.log(error)
-            res.status(404).send('Email doesnot exists') //stämmer inte 
+            const result = await dbo.collection("users").deleteOne(newUser)
+            if (!result.acknowledged) {
+              console.log("couldnot delete user"+result)
+            }
+            res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
             db.close()
             return
           }
-          res.sendStatus(200)
+          res.status(200).send('Den nya medlemmen är nu registrerad!')
           db.close()
         } else {
-          res.sendStatus(500)
+          res.sendStatus(404).send('Det gick inte att registrera medlemmen.')
           db.close()
         }
       } else {
         //Det finns redan en användare med namnet
-        res.sendStatus(500)
+        res.status(500).send('Denhär medlemmen finns redan.')
       }
     })
   })
