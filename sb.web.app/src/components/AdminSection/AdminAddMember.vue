@@ -5,8 +5,8 @@
     </H1>
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">
-        <h3>Allmänt</h3>
-        <label for="logo">Logo Bild:</label><br/> 
+        <h2>Allmänt</h2>
+        <label for="logo">Profilbild:</label><br/> 
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -24,7 +24,7 @@
         <input type="text" id="location" v-model="profileData.city" required><br/>
       </div>
       <div className="container-item">
-        <h3>Faktureringsuppgifter</h3>
+        <h2>Faktureringsuppgifter</h2>
         <label for="billingName">Namn:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
@@ -33,8 +33,8 @@
         <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
         <label for="orgNumber">Organisationsnummer:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-        <h3>Kontaktuppgifter</h3>
-        <label for="email">Epost:</label><br/>
+        <h2>Kontaktuppgifter</h2>
+        <label for="email">E-post:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
         <label for="phone">Telefon:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
@@ -51,7 +51,7 @@
       </div>
     </form>
     <div v-if="registered">
-      <h1>Den nya medlemmen är nu registrerad!</h1>
+      <h1>Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.</h1>
       <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
@@ -188,6 +188,11 @@ export default {
 
 h1 {
   font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.34rem;
+  font-weight: bold;
 }
 
 button {

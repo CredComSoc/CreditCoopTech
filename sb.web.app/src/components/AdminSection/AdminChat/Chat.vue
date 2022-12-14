@@ -20,7 +20,7 @@
           {{member}}
           <input type="checkbox" :id="index" :value="member" v-model="this.checkedNames">
         </label>
-        <button @click="openMultipleChat">Start</button>
+        <button @click="openMultipleChat">Starta chatt</button>
         <!-- <button  v-for="member in this.history" v-bind:key="member" @click="goToChat(member)">{{member}}</button> -->
       </div>
       <div class="overlaybg" @click="this.showHistorylist = false, this.checkedNames = []"></div>

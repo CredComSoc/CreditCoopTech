@@ -325,7 +325,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.post("/register", upload.single('file'), (req, res) => {
+  router.post("/register", upload.single('file'), (req, res) => { //register a new user
     console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
     getUser({ email: newPro.email }).then(async (user) => {
@@ -366,22 +366,22 @@ module.exports = async function(dbUrl, dbFolder) {
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
           try {
-            const reponse = await transporter.sendMail({
+            const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
               from: 'svenskbarter.reset@outlook.com', // sender address
               to: newUser.email, 
-              subject: 'Medlem i Bvensk Barter', // Subject line
+              subject: 'Medlem i Svensk Barter', // Subject line
               text: `
-              Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
+              Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
               Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
               
               ${FRONTEND_URL}/login
 
-              Dina uppgifter att logga in är:
-              Email: ${newPro.email}
-              Password: ${newPro.password}
-
+              Dina inloggningsuppgifter är:
+              E-postaddress: ${newPro.email}
+              Lösenord: ${newPro.password}
               
-              Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+              Med vänliga hälsningar,
+              Svensk Barter
               `
              })
           } catch (error) {

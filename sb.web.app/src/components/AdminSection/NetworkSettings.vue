@@ -1,21 +1,21 @@
 <template>
-  <!-- Inte implementerat Funktionalitet men bara designen-->
+  <!-- Ingen implementerad funktionalitet, bara designen. -->
   <div class="wrapper">
     
     <div class="center">
-      <h2 class="center-text">Nätverk Administration</h2>
+      <h2 class="center-text" >NÄTVERKSINSTÄLLNINGAR</h2>
     </div>
     <div class="main">
       <h3>Transaktionsavgift</h3>
       <div>
-        <input type="text" placeholder="Säljare Procentsats">
-        <input type="text" placeholder="Köpare Procentsats">
+        <input type="text" placeholder="Säljare procentsats">
+        <input type="text" placeholder="Köpare procentsats">
       </div>
       <h3>Ränta på BSEK</h3>
       <div>
         <input type="text" placeholder="Procentsats">
       </div>
-      <h3>Default Balance Limits</h3>
+      <h3>Default balance limits</h3> <!-- Ska ändras till svenska -->
       <div>
         <input type="text" placeholder="Maximum">
         <input type="text" placeholder="Minimum">
@@ -62,6 +62,7 @@ export default {
   text-align: center;
   margin: 0rem 0rem;
   font-size: 2.2rem;
+  margin-top: 2rem;
   letter-spacing: 0.3em;  
   text-align: center;
 }
@@ -82,15 +83,16 @@ h2 {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  border: 3px solid black;
   height: 70vh;
-  width:70vw;
+  width:35vw; /* OBS, har minskat hela fönstret, ändra tillbaka vid tillägg */
   padding: 3%;
   gap :5%;
 }
 
 h3 {
-  margin-left: 1rem;
+  margin-top: 1rem;
+  font-size:1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 ::-webkit-scrollbar {
