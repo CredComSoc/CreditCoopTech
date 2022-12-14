@@ -12,7 +12,7 @@ const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
-const { json } = require('express');
+const { json, response } = require('express');
 const axios = require('axios').default;
 
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
@@ -456,7 +456,7 @@ module.exports = async function(dbUrl, dbFolder) {
       console.log(error)
     }
       db.close()
-      res.status(200).send(data)
+      res.status(200).send(response)
     })
     /*try{
       const db = await MongoClient.connect(dbUrl)
