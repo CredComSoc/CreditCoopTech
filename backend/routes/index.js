@@ -432,6 +432,7 @@ module.exports = async function(dbUrl, dbFolder) {
         params: {
           'state': 'completed'
         }})
+        console.log(response.data)
         let userNames = {}
         for (const entry of response.data) {
           //console.log(entry)
