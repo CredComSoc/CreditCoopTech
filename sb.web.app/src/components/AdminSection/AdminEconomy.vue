@@ -48,14 +48,14 @@
           <th>Tidstämpel</th>   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
-          <td>{{item.payer}}</td>
-          <td>{{item.payee}}</td>
-          <td v-if="item.metadata.id !== '0'">{{getListing_title(item)}}</td>
-          <td v-if="item.metadata.id === '0'"><Listing :listingId="'0'" :comment="item.description"/></td>
-          <td>{{item.metadata.quantity}}</td>
-          <td>{{item.quant / item.metadata.quantity}}</td>
-          <td>{{item.quant}}</td>
-          <td>{{item.metadata.time.split('T')[0]}}</td>
+          <td>{{item.entries[0].payer}}</td>
+          <td>{{item.entries[0].payee}}</td>
+          <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
+          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
+          <td>{{item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
+          <td>{{item.entries[0].quant}}</td>
+          <!--<td>{{item.written.split('T')[0]}}</td>-->
           <th>{{item.written}}</th>
           <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
         </tr>
@@ -130,10 +130,10 @@ export default {
       let transactionsMonth = []
       let transactionsYear = []
       //filter out transactions based on date from all transactions and fills arrays
-      transactionsDay = this.allTransactions.filter(item => todayday.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
-      transactionsWeek = this.allTransactions.filter(item => lastWeek.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
-      transactionsMonth = this.allTransactions.filter(item => lastMonth.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
-      transactionsYear = this.allTransactions.filter(item => lastYear.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= todaynight.valueOf())
+      transactionsDay = this.allTransactions.filter(item => todayday.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
+      transactionsWeek = this.allTransactions.filter(item => lastWeek.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
+      transactionsMonth = this.allTransactions.filter(item => lastMonth.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
+      transactionsYear = this.allTransactions.filter(item => lastYear.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       //adds everything in all the arrays together. 
       for (const entry of transactionsDay) {
         this.turnOverDay += entry.quant
@@ -244,30 +244,30 @@ export default {
       // date range search
       if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //if we have daterange filter for it. Save result in Filtered Transactions
         //console.log('date range start and end')
-        this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf() && new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+        this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterEndDate.value !== '') {  
         //console.log('date range end')
-        this.filteredTransactions = this.allTransactions.filter(item => new Date(item.metadata.time).valueOf() <= endDateValue.valueOf()) 
+        this.filteredTransactions = this.allTransactions.filter(item => new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterStartDate.value !== '') { 
         //console.log('date range start')
-        this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.metadata.time).valueOf()) 
+        this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf()) 
       }
       //company name search
       if (this.$refs.companyInput.value !== '' && (dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //if we have used a filter before, filter for company in filtered transactions and save in filteredTransactions
         //console.log('company search with date range')
-        this.filteredTransactions = this.filteredTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
+        this.filteredTransactions = this.filteredTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
       } else if (this.$refs.companyInput.value !== '') { // else filter in vuex store completedTransactions and save in filteredTransactions
         //console.log('company search without date range')
-        this.filteredTransactions = this.allTransactions.filter(item => item.payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
+        this.filteredTransactions = this.allTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
       }
       //procuct name search
 
       if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
         //console.log('product search with date range and/or with company')
-        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
+        this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
         //console.log('product search without date range and company')
-        this.filteredTransactions = this.allTransactions.filter(item => this.getListing_title(item).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
+        this.filteredTransactions = this.allTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
       }
       if (!(this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '')) { 
         this.filteredTransactions = this.allTransactions
@@ -287,13 +287,13 @@ export default {
       var csv = 'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
       
       this.filteredTransactions.forEach((item) => { //takes from filtered transactions if filter is active
-        csv += item.payer + ';' 
-        csv += item.payee + ';' 
-        csv += this.getListing_title(item) + ';' 
-        csv += item.metadata.quantity + ';' 
-        csv += (item.quant / item.metadata.quantity) + ';' 
-        csv += item.quant + ';'  
-        csv += item.metadata.time.split('T')[0] 
+        csv += item.entries[0].payer + ';' 
+        csv += item.entries[0].payee + ';' 
+        csv += this.getListing_title(item.entries[0]) + ';' 
+        csv += item.entries[0].metadata.quantity + ';' 
+        csv += (item.entries[0].quant / item.entries[0].metadata.quantity) + ';' 
+        csv += item.entries[0].quant + ';'  
+        csv += item.written.split('T')[0] 
         //csv += item.written.join(','); 
         csv += '\n' 
       })
