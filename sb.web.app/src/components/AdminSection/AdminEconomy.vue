@@ -137,19 +137,19 @@ export default {
       transactionsYear = this.allTransactions.filter(item => lastYear.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       //adds everything in all the arrays together. 
       for (const entry of transactionsDay) {
-        this.turnOverDay += entry.quant
+        this.turnOverDay += entry.entries[0].quant
         this.numberOfTradesDay += 1
       }
       for (const entry of transactionsWeek) {
-        this.turnOverWeek += entry.quant
+        this.turnOverWeek += entry.entries[0].quant
         this.numberOfTradesWeek += 1
       }
       for (const entry of transactionsMonth) {
-        this.turnOverMonth += entry.quant
+        this.turnOverMonth += entry.entries[0].quant
         this.numberOfTradesMonth += 1
       }
       for (const entry of transactionsYear) {
-        this.turnOverYear += entry.quant
+        this.turnOverYear += entry.entries[0].quant
         this.numberOfTradesYear += 1
       }
       /*
