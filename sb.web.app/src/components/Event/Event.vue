@@ -4,15 +4,18 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { createEventId, initUserId, myUserId, initEvents, getLoadedEvents } from './event-utils'
-import { store } from '../../store/index'
 import { uploadEvent, deleteEvent } from '../../serverFetch'
-import { ref, toDisplayString } from 'vue'
-//import { Fancybox } from '@fancyapps/ui' TA BORT DETTA PAKET FRÅN PACKET-LOCK JSON
+import { ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
-  
+/*
+The FullCalendar plugin is used to create calendar.
+Modal is used for popup windows. check Modal/Modal.vue
+event-utils.js contains some helperfunctions to fullcalendar
+sb.web.app/src/serverFetch.js has function to talk to database. 
+*/
 export default {
   components: {
-    FullCalendar, // make the <FullCalendar> tag available
+    FullCalendar, 
     Modal
   },
   setup () {
@@ -28,15 +31,14 @@ export default {
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // needed for dateClick
+          interactionPlugin 
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        initialView: 'dayGridMonth',
-        //initialEvents: getLoadedEvents(), // alternatively, use the `events` setting to fetch from a feed
+        initialView: 'dayGridMonth',        
         events: this.$store.state.allEvents,
         editable: true,
         selectable: true,
@@ -47,30 +49,29 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         handleInput: this.handleInput
-        //eventAdd: this.postEvent
-        /* you can update a remote database when these fire:
-        eventChange:
-        eventRemove:
-        */
+
       },
       currentEvents: [],
       clickedEvent: '',
       savedDate: [],
       counter: 0,
-      owner: false //To control if user is allowed to change events      
+      owner: false  
     }
   },
   methods: {
     handleWeekendsToggle () {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
+      this.calendarOptions.weekends = !this.calendarOptions.weekends 
     },
+
+    //runs when user clicks on a date, opens the collect info modal.
     handleDateSelect (selectInfo) {
-      selectInfo.allDay = false //Disables allday     
-      
+      selectInfo.allDay = false       
       this.savedDate = selectInfo
       this.collectInfoModal = true   
     },
-    stringmanipulat (savedDate, variabel) { //
+
+    //Helper function to add correct time to event.
+    timeManipulate (savedDate, variabel) { 
       let realtime = ''     
       if (variabel === 'End') {
         realtime = document.getElementById('eventTimeEnd').value + ':00'
@@ -78,53 +79,36 @@ export default {
         realtime = document.getElementById('eventTimeStart').value + ':00' 
       } else { realtime = '' }
       const datestring = savedDate + ' ' + realtime
-      console.log('Här är datumsträngen: ' + datestring)
       return datestring
     },
 
+    //Runs when user clickes event. Saves info eventinfo in clickedEvent, checks ownership and opens the show info modal.
     handleEventClick (clickInfo) {
       this.clickedEvent = clickInfo
-      this.owner = false
-      //console.log('user: ')
-      //console.log(myUserId)
-      //console.log('eventuser:')
-      //console.log(this.clickedEvent.event.extendedProps.userId)      
-      if (this.clickedEvent.event.extendedProps.userId === myUserId) { //Kollar man är ägare av event
+      this.owner = false      
+      if (this.clickedEvent.event.extendedProps.userId === myUserId) { 
         this.owner = true
       }
       this.showModal = true
     },
 
     handleEvents (events) {
-      //console.log(events)
-      //console.log(this.counter++)
       this.currentEvents = events
-      //console.log('This is the store/data: ')
-      //console.log(this.$store.state.allEvents)
-    },
-    editevent () {
-      alert('redigera')
     },
 
-    testfunc () {
+    // Calls deleteEvent that removes event from database and then removes the evenet from calendar Api.  
+    removeEvent () {
       deleteEvent(this.clickedEvent.event.extendedProps._id)
       this.clickedEvent.event.remove()
     },
-    disableTime () {  
-      if (document.getElementById('all-day').checked) {
-        document.getElementById('eventTimeStart').disabled = true
-        document.getElementById('eventTimeEnd').disabled = true
-      } else {
-        document.getElementById('eventTimeStart').disabled = false
-        document.getElementById('eventTimeEnd').disabled = false  
-      }
-    },    
+     
+    //Creates an event and add it to both database and calendar Api. Called on by createevent modal.       
     handleInput () {
       const calendarApi = this.savedDate.view.calendar
-      calendarApi.unselect() // clear date selection
+      calendarApi.unselect()
 
-      this.savedDate.endStr = this.stringmanipulat(this.savedDate.startStr, 'End')
-      this.savedDate.startStr = this.stringmanipulat(this.savedDate.startStr, 'Start')
+      this.savedDate.endStr = this.timeManipulate(this.savedDate.startStr, 'End')
+      this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
 
       const eventId = createEventId()
       if (this.eventTitle) {
@@ -140,34 +124,34 @@ export default {
           webpage: this.eventURL, 
           _startTime: document.getElementById('eventTimeStart').value, 
           _endTime: document.getElementById('eventTimeEnd').value          
-        })
-        //, document.getElementById('eventTimeStart').value, document.getElementById('eventTimeEnd').value
+        })  
+
+        // UploadEvent saves event on database, is located in sb.web.app/src/serverFetch.js       
         uploadEvent(this.eventTitle, this.savedDate.startStr, this.savedDate.endStr, this.savedDate.allDay, 
           this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL, 
           document.getElementById('eventTimeStart').value, 
           document.getElementById('eventTimeEnd').value).then((res) => {
           if (res.status === 200) {
-            this.isPublished = true // open popup with success message
+            this.isPublished = true 
           } else {
             this.error = true
           }
         }) 
-      }
-      this.eventTitle = ''
+      }      
     }
   } 
 }
 
 </script>
 <template>
-    <div class='demo-app'>
+  <!-- Sidebar -->
+  <div class='demo-app'>
     <div class='demo-app-sidebar'>
         <div class='demo-app-sidebar-section'>
         <h2>Instruktioner</h2>
         <ul>
             <li>Klicka på ett datum för att skapa ett evenemang</li>
-            <li>Klicka på ett evenemang för att se information</li>
-            <!--<li>Click an event to delete it</li>-->
+            <li>Klicka på ett evenemang för att se information</li>            
         </ul>
         </div>
         <div class='demo-app-sidebar-section'>
@@ -201,19 +185,16 @@ export default {
         </template>
         </FullCalendar>
     <!-- Modal to show events   -->
-    <Modal :open="showModal" @close="showModal = !showModal">
-        
-          <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
-          <b> Plats: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>
-                  
-          <br><b>Starttid:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
-          <br><b>Sluttid: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._endTime}} </template>
-          
-          <br><b>Info om eventet: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
-          <br><b>URL: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
-          <br><br>
-          <button v-if="owner" class="button-modal" @click="editevent (); showModal = !showModal">Redigera</button>
-          <button v-if="owner" class="button-modal" @click="testfunc ()">Radera</button> 
+    <Modal :open="showModal" @close="showModal = !showModal">        
+      <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
+      <b> Plats: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>            
+      <br><b>Starttid:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
+      <br><b>Sluttid: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._endTime}} </template>    
+      <br><b>Info om eventet: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
+      <br><b>URL: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
+      <br>
+      <br>          
+      <button v-if="owner" class="button-modal" @click="removeEvent ()">Radera</button> 
     </Modal> 
 
     <!-- Modal to create events   -->
@@ -238,81 +219,13 @@ export default {
           <input type='time' id='eventTimeStart' name="EventTimeStart"/>
           Välj sluttid: 
           <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
-        </p>  
-        <!--
-        <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
-        <label for='all-day' > Hela dagen</label> <br>
-        -->
+        </p>          
       </div>
       <button @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal">Lägg till event</button>
     </Modal> 
 
-        <!-- Modal to edit events   -->
-        <Modal :open="editModal" @close="editModal = !editModal">
-      <div>
-        <p> Titel för eventet: 
-          <br><input v-model="changedTitle" /> 
-        </p>
-        <p> Plats för eventet: 
-          <br><Input type="text" v-model="changedLocation"  /> 
-        </p>
-        <p> Kontaktuppgifter:
-          <br><input v-model="eventContacts" placeholder="Kontaktuppgifter" />
-        </p>
-        <p> URL för att visa andra medlemmar mer information: {{eventURL}} 
-          <br><input v-model="eventURL" placeholder="URL" />
-        </p>
-        <p> Beskrivning av eventet:  
-          <br><textarea v-model="eventDescription" placeholder="Beskrivning"> </textarea>
-        </p>
-        <p> Välj starttid: 
-          <input type='time' id='eventTimeStart' name="EventTimeStart"/>
-          Välj sluttid: 
-          <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
-        </p>  
-        <!--
-        <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
-        <label for='all-day' > Hela dagen</label> <br>
-        -->
-      </div>
-      <button @click=" editModal = !editModal" class="button-modal">Ändra</button>
-    </Modal> 
-
-    <!-- Modal to edit events   
-    <Modal :open="editModal" @close="editModal = !editModal">
-      <template v-if="this.clickedEvent.event != null">
-      <div>
-        <p> Titel för eventet: 
-          <br><input v-model="this.clickedEvent.event.title" placeholder=this.clickedEvent.event.title/> 
-        </p>
-        <p> Plats för eventet: 
-          <br><input v-model="this.clickedEvent.event.location" placeholder="Plats" /> 
-        </p>
-        <p> Kontaktuppgifter:
-          <br><input v-model="this.clickedEvent.event.extendedProps.contacts" placeholder="Kontaktuppgifter" />
-        </p>
-        <p> URL för att visa andra medlemmar mer information: {{eventURL}} 
-          <br><input v-model="this.clickedEvent.event.extendedProps.webpage" placeholder="URL" />
-        </p>
-        <p> Beskrivning av eventet:  
-          <br><textarea v-model="this.clickedEvent.event.extendedProps.description" placeholder="Beskrivning"> </textarea>
-        </p>
-        <p> Välj starttid: 
-          <input type='time' id='eventTimeStart' name="EventTimeStart" value=/>
-          Välj sluttid: 
-          <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
-        </p>  
-        
-        <input type='checkbox' @click="disableTime()" id='all-day' name='all-day' />
-        <label for='all-day' > Hela dagen</label> <br>   
-      </div>
-      <button @click="handleInput(); testfunc ();;showModal = !showModal; editModal = !editModal" class="button-modal">Ändra</button>
-      </template>
-      
-    </Modal> 
-    --> 
     </div>
-    </div>
+  </div>
 </template>
 
 <style lang='css'>
@@ -360,11 +273,7 @@ b { /* used for event dates/times */
   border-radius: 0.3rem;
   padding: 0.2rem;
 }
-/*
-#editbuttons {
-  display: show;
-}
-*/
+
 .modal-split {
   height: 100%;
   width: 50%;
