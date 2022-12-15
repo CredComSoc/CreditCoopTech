@@ -5,27 +5,34 @@
             <div v-if= 'messagetype === "image/jpeg" || messagetype === "image/png" || messagetype === "image/gif"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
             <div v-else-if= 'messagetype === "file" || messagetype === "text/plain"|| messagetype === "application/pdf"'><a target="_blank" :href='getFileURL(filename)'>{{message}}</a></div>
             <div v-else><p>{{message}}</p></div>
-        </div> 
+        </div>
         <div v-else class="speech-bubble" id="gray-speech-bubble">
-            <p>{{message}}</p>
+            <div v-if= 'messagetype === "image/jpeg" || messagetype === "image/png" || messagetype === "image/gif"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
+            <div v-else-if= 'messagetype === "file" || messagetype === "text/plain"|| messagetype === "application/pdf"'><a target="_blank" :href='getFileURL(filename)'>{{message}}</a></div>
+            <div v-else><p>{{message}}</p></div>
         </div>
     </div>
 </template>
 
 <script>
-import { EXPRESS_URL } from '../../serverFetch' 
+import { EXPRESS_URL } from '../../serverFetch'
 
-export default {   
+export default {
+  /*data () {
+    return {
+      filetype: 'image/jpeg'
+    }
+  },*/
   props: ['sender', 'message', 'reciever', 'user', 'messagetype', 'filename'],
 
   methods: {
     getImgURL (filename) {
-      return EXPRESS_URL + '/image/' + filename 
+      return EXPRESS_URL + '/image/' + filename
     },
     getFileURL (filename) {
-      return EXPRESS_URL + '/file/' + filename 
+      return EXPRESS_URL + '/file/' + filename
     }
-  } 
+  }
 }
 </script>
 
@@ -43,7 +50,7 @@ export default {
         padding: 10px;
         overflow: auto;
     }
-    
+
     .image{
         object-fit: cover;
         width: 100%;
