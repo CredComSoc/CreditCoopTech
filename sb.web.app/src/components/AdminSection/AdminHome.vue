@@ -125,6 +125,7 @@ export default {
 
 .center {
   justify-content: center;
+  margin-left: -7rem;
   margin-bottom: 40px;
 }
 
@@ -148,6 +149,7 @@ export default {
 .center-text {
   text-align: center;
   margin: 2rem 0rem;
+  margin-left: -8rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;

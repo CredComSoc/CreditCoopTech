@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <H1 v-if="!registered">
+    <H1 v-if="!registered" class="center-text">
       LÄGG TILL MEDLEM
     </H1>
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
@@ -155,6 +155,7 @@ export default {
     width:100%;
     height: fit-content;
     margin-top: 2%;
+    margin-left: 15rem;
     display: flex;
     flex-direction: column;
     justify-content:center;
@@ -200,6 +201,16 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   
+}
+
+.center-text {
+  text-align: center;
+  margin: 2rem 0rem;
+  margin-top: 0rem;
+  margin-left: 0rem;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;  
+  text-align: center;
 }
 
 h1 {

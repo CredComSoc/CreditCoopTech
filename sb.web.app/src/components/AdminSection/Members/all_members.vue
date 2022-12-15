@@ -1,19 +1,8 @@
 
 <template>
-  <!--
-  <div class="container_all_listings">
-    <ul>
-      <li v-for="item in searchData" :key="item.title">
-        <Member :listingObj="item"/>
-      </li>
-    </ul>
-  </div>
-  -->
-  
   <div class="container_all_listings">
     <ul>
       <div v-for="city in searchData" :key="city">
-          <!-- city[1] = array of members in city -->
           <li v-for="member in city[1]" :key="member.title">
             <Member :listingObj="member" @openProfile="this.openProfile"/>
           </li>
@@ -75,13 +64,4 @@ h3 {
   margin-top: 20px;
   margin-bottom: 10px;
 }
-
-/* @media only screen and (min-width: 1200) {
-  li {
-    display: inline-block;
-    flex-grow: 1;
-    width: calc(100% * (1/4) - 10px - 1px);
-  }
-} */
-
 </style>

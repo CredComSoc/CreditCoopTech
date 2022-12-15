@@ -16,9 +16,9 @@ do not match the equivalent of the database.
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
         <div class="button-container">
           <button @click="userselected">Profil</button>
-          <button @click="null">Transaktion</button>
-          <button @click="null">Email</button>
-          <button @click="null">Offers</button>
+          <button @click="null">Transaktioner</button> <!--Inte implementerad ännu-->
+          <button @click="null">E-mail</button> <!--Inte implementerad ännu-->
+          <button @click="null">Köpförfrågningar</button> <!--Inte implementerad ännu-->
         </div>
       </div>
       

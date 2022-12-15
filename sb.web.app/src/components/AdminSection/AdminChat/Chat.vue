@@ -227,7 +227,7 @@ export default {
   }
 
   #title {
-    margin-top: 4rem;
+    margin-top: 2rem;
     margin-bottom: 4rem;
     font-size: 2.2rem;
     letter-spacing: 0.3em;  
@@ -356,7 +356,7 @@ export default {
     }
 
     #title {
-      margin-top: 30px;
+      margin-top: 5px;
       margin-bottom: 30px;
       font-size: 2.2em;
     }
@@ -368,7 +368,7 @@ export default {
     }
 
     #title {
-      margin-top: 20px;
+      margin-top: 5px;
       margin-bottom: 20px;
       font-size: 2.2em;
     }
