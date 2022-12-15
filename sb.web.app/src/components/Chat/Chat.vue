@@ -22,7 +22,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
-import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories, uploadFile} from '../../serverFetch.js'
+import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories, uploadFile } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -96,7 +96,6 @@ export default {
           }
         })
         .catch(err => console.log(err))
-
     },
     getChatHistories (chatid) {
       getChatHistories()
