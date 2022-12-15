@@ -4,7 +4,7 @@
     <h1 className="title">HANDELSREGLER & TIPS</h1>
   </div>
 
-  <!--To add another nav in the menybar, add another <a href... here and add this.tab!='namn' in the first href -->
+  <!--To add another link in the menybar, add another <a href... here and add this.tab!='namn' in the first href -->
   <div className='topnav flexbox-item' id='myTopnav'>
       <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information' && this.tab!='policy'}" id='questions'>Vanliga frågor</a>
       <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>Bartertips</a>
