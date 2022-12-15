@@ -1,5 +1,6 @@
 <template>
     <div class="fill">
+       <!--Skriva ut meddelande/fil/bild i chatbubbla:-->
         <div v-if='sender === user' class="speech-bubble" id="blue-speech-bubble">
             <div v-if= 'messagetype === "image/jpeg" || messagetype === "image/png" || messagetype === "image/gif"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
             <div v-else-if= 'messagetype === "file" || messagetype === "text/plain"|| messagetype === "application/pdf"'><a target="_blank" :href='getFileURL(filename)'>{{message}}</a></div>
@@ -7,7 +8,6 @@
         </div> 
         <div v-else class="speech-bubble" id="gray-speech-bubble">
             <p>{{message}}</p>
-            <img src="../../assets/sb2.png" alt="Picture">
         </div>
     </div>
 </template>
@@ -16,11 +16,6 @@
 import { EXPRESS_URL } from '../../serverFetch' 
 
 export default {   
-  /*data () {
-    return {
-      filetype: 'image/jpeg'
-    }
-  },*/
   props: ['sender', 'message', 'reciever', 'user', 'messagetype', 'filename'],
 
   methods: {

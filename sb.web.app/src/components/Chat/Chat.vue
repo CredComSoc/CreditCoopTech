@@ -1,3 +1,4 @@
+<!--Vissa av funktionerna i denna fil leder till sb.web.app/src/serverfetch.js som i sin tur leder till backend/routes/index.js--> 
 <template>
   <div>
     <h1 id="title">MEDDELANDEN</h1>
@@ -71,9 +72,9 @@ export default {
       }
       
       this.activeChat.push(message)
-    },
-    getChatHistory (chatID) {
-      getChatHistory(chatID)
+    }, 
+    getChatHistory (chatID) { 
+      getChatHistory(chatID) 
         .then(res => res.json())
         .then(data => {
           this.history_values[this.reciever] = data
@@ -83,9 +84,9 @@ export default {
           }
         })
         .catch(err => console.log(err))
-    },
-    getChatHistories () {
-      getChatHistories()
+    }, 
+    getChatHistories () { 
+      getChatHistories() 
         .then(res => res.json())
         .then(data => {
           if (data.histories) {
