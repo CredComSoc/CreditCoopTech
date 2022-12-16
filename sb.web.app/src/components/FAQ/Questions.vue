@@ -31,6 +31,38 @@
 Önskas ytterligare information rekommenderar vi <a href="https://www4.skatteverket.se/rattsligvagledning/347753.html">skatteverkets officiella ställningstagande för beskattning av medlem i bytesring.</a>
 </p>
   </div>
+
+  <button class="accordion"  @click="expand">Hur hittar jag andra medlemmar?
+
+</button>
+  <div class="panel">
+    <p>Genom vår virtuella handelsplattform, medlemsbrev och handelsmöten får du kontakt med nya handelspartners. Våra stödansvariga i föreningen kan i viss mån hjälpa till att “bartermäkla”.</p>
+  </div>
+
+  <button class="accordion"  @click="expand">Hur beräknar jag lönsamheten för min handel i barterringen?
+
+</button>
+  <div class="panel">
+    <p>För att få ut mesta möjliga av dina barterkronor måste du ta reda på hur mycket det kostar dig att tjäna in dem. Först bedöms din kostnad för att göra affärer: till exempel om du kör ett konsultföretag och din bruttomarginal är 70% då kostar det 30 SEK kontant att tjäna in hundra barterkronor. Tillverkare tenderar att ha lägre marginaler och media har ofta en mycket låg kostnad eftersom de kan sälja "oanvända" lager.</p>
+    <p>Oavsett din marginal (bruttoresultat efter din kostnad för att göra affärer) är barterringens syfte att bringa dig nya affärer och hjälpa dig att spara pengar. Det handlar om att bestämma vad du ska sälja, och när det är vettigt att sälja på barteravtal. Vissa företag säljer inte på barteravtal under högsäsong eftersom den typen av merförsäljning inte behövs vid den tiden. De är upptagna nog som det är då. Men det kan vara bra att sälja på barteravtal under mindre intensiva tider på året. Därför, oavsett vilken marginal som helst, kan nästan vilket företag som helst utnyttja försäljnings- och köpkraften hos en barterring. Vid någon tid på året kommer det i princip alltid att finnas en överkapacitet att avyttra. </p>
+    <p>Du kan även använda barterhandeln som MARKNADSFÖRING och då behöver du inte tänka på när du säljer utan då handlar det om att öka totalförsäljningen via nya kunder, oavsett tid på året. Detta kan också vara en klok strategi för att få fart på omsättningen på ditt handelskonto. </p>
+    <p>Om du vill kan du utveckla en plan för att handla mest effektivt inom systemet. En fast strategi för att successivt täcka månatliga omkostnader med barteravtal kan vara mycket främjande för din soliditet. Ett exempel på sådan strategi kan vara att skapa fasta handelscirklar med andra medlemmar, där ni skriver avtal om att göra specifika barteraffärer med varandra varje månad över en längre tid. </p>
+  </div>
+
+  <button class="accordion"  @click="expand">Varför finns olika varor och tjänster tillgängliga vid olika tillfällen?
+
+</button>
+  <div class="panel">
+    <p>Som nämndes under förra frågan så försöker medlemmar ibland att skapa mest merförsäljning under mindre aktiva tider över året. Därför kommer vissa varor och tjänster inte att vara tillgängliga vissa tider på året. </p>
+  </div>
+
+  <button class="accordion"  @click="expand">Hur fungerar prissättningen i barterringen?
+
+</button>
+  <div class="panel">
+  <p>Barterpriserna är företrädesvis slutkundpriser utan rabatter eller andra former av förmånserbjudanden. Om någon medlem säljer under vad som kan sägas vara i linje med rekommenderat slutkundspris för en viss vara eller tjänst kan det leda till varning och fortsätter beteendet kan det innebära uteslutning. Att ta överpriser kan efter godkännande av admin dock vara godtagbart förutsatt att det gäller ”hårda produkter” med låg bruttomarginal och ett stort värde för våra medlemmar, t ex datorer, mobiltelefoner, båtar, verktyg, maskiner och så vidare. Sådana produkter kan annars vara mycket svåra att få in i barterringen överhuvudtaget.Barterpriserna är företrädesvis slutkundpriser utan rabatter eller andra former av förmånserbjudanden. Om någon medlem säljer under vad som kan sägas vara i linje med rekommenderat slutkundspris för en viss vara eller tjänst kan det leda till varning och fortsätter beteendet kan det innebära uteslutning. Att ta överpriser kan efter godkännande av admin dock vara godtagbart förutsatt att det gäller ”hårda produkter” med låg bruttomarginal och ett stort värde för våra medlemmar, t ex datorer, mobiltelefoner, båtar, verktyg, maskiner och så vidare. Sådana produkter kan annars vara mycket svåra att få in i barterringen överhuvudtaget.</p>
+  </div>  
+  
 </template>
 
 <script>
