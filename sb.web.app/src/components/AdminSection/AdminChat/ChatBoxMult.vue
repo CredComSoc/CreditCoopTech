@@ -24,18 +24,20 @@ export default {
   props: ['reciever', 'activeChat', 'user'],
   methods: {
     async sendMessage (message) {
+      //if message is not a string i.e, file or image 
+      //which uploades only once in the database
       if (message.messagetype !== 'string') {
         const res = await uploadFile (message.message)
         message.message = res.message
         message.messagetype = res.fileType
         message.filename = res.name
       }
+      //for storing message to the database
+      //which stores for every users chat seperately
       for (var names of this.reciever) {
         this.$emit('sendMessage', { sender: this.user, reciever: names, message: message.message, messagetype: message.messagetype, filename: message.filename })
-        console.log(1)
-        //console.log({ sender: this.user, reciever: names, message: message.message, messagetype: message.messagetype, filename: message.filename })
       }
-      console.log(3)
+      //for storing message to the active chat
       this.$emit('storeMsg')
       this.scrolltoBottom()
     },

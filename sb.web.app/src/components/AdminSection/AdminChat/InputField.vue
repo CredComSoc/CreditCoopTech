@@ -38,6 +38,7 @@ export default {
   },
   name: 'InputField',
   methods: {
+    //call a function in parent component ChatBoxMult.vue
     send () {
       if (this.$refs.textValue.value !== '') {
         this.messagetype = 'string'
@@ -55,7 +56,6 @@ export default {
     },
     addFile (e) {
       this.fileData.file = e.target.files[0]
-      //console.log(e.target.files[0])
       var fileName = ''
       if (this.fileData.file) {
         fileName = this.fileData.file.name

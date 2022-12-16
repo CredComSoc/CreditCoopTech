@@ -10,7 +10,7 @@ export const CHAT_URL = urlBase + ':3001'
  *                           Helper Functions
  *                 
  *****************************************************************************/
-
+//maybe doing this in backend so that one cant inspect the source code to encrypt a password
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
@@ -132,7 +132,7 @@ export async function fetchData () {
  *****************************************************************************/
 
 export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
-  const hashedPassword = hashMyPassword(password)
+  const hashedPassword = hashMyPassword(password) // maybe doing this in backend for security
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     is_admin: isadmin,
@@ -716,7 +716,7 @@ export async function uploadFile (File) {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     } else {
-      return response.json()
+      return response.json() //contains file original name
     }
   }).catch(err => {
     console.error('There has been a problem with your fetch operation:', err)

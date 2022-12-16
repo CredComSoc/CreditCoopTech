@@ -108,6 +108,7 @@ module.exports = async function(dbUrl, dbFolder) {
         if (!files[0] || files.length === 0) {
           res.status(404).send('No file exists');
         } else {
+          //to be implimented{more types of files if needed}
           if (files[0].contentType === 'text/plain' || files[0].contentType === 'application/pdf') {
             gfs.openDownloadStreamByName(files[0].filename).pipe(res)
           }
@@ -132,6 +133,8 @@ module.exports = async function(dbUrl, dbFolder) {
     } 
   })
 
+  //to be implimented{if hashed password is stored in db then converting user input password 
+  //and then doing password.authenticate}
   router.post("/login", passport.authenticate('local'), (req, res) => {
     res.sendStatus(200)
   })
@@ -333,7 +336,8 @@ module.exports = async function(dbUrl, dbFolder) {
         console.log(req.body.accountInfo)
         const newUser = {
           email: newPro.email,
-          password: newPro.password,
+          //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
+          password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(req.body.min_limit, 10),
           max_limit: parseInt(req.body.max_limit, 10),

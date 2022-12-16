@@ -78,22 +78,17 @@ export default {
     }
   },
   mounted () {
-    /*profile()
-    .then(res => {
-      this.profileData = res
-      //console.log(this.profileData)
-      this.getImgURL()
-    })*/
     this.profileData.isadmin = false
   },
   methods: {
     addLogo (e) {
       this.profileData.logo = e.target.files[0]
-      //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
     },
+    
     async submit () {
-      var randomstring = Math.random().toString(36).slice(-8)
+      var randomstring = Math.random().toString(36).slice(-8) //for password
+      //calls a register function in serverfetch
       const res = await this.register(
         this.profileData.isadmin,
         this.profileData.name, 
@@ -111,13 +106,13 @@ export default {
       )
       console.log(res.ok)
       if (res.ok) {
-        this.registered = true
+        this.registered = true //could register
       } else {
-        this.registered_fail = true
+        this.registered_fail = true //couldnet register
       }
       res.text()
         .then((text) => {
-          this.registeredText = text
+          this.registeredText = text //message from backend
         })
     },
     reset () {

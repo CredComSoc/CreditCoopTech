@@ -2,35 +2,25 @@
   <div>
     <h1 id="title">MEDDELANDEN</h1>
     <div id="container-chat">
-      <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat" @showHistory="this.showHistorylist = true"/>
-      <ChatBox v-if="!this.multipleChat" ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg" @showMembers="this.showMemberlist = true"/>
-      <ChatBoxMult v-if="this.multipleChat" ref="chatbox" :activeChat="this.activeChat" :reciever="this.checkedNames" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg"/>
+      <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat" @showHistory="this.showMembersList = true"/>
+      <ChatBoxMult ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg"/>
     </div>
-    <div v-if="this.showMemberlist" class="member-list-container">
-      <H4 v-if="this.allmembers.length === 0">Har startat chat med alla medlemmar</H4>
-      <div v-if="this.allmembers.length !== 0" class="member-list">
-        <button  v-for="member in this.allmembers" v-bind:key="member" @click="goToChat(member)">{{member}}</button>
-      </div>
-      <div class="overlaybg" @click="this.showMemberlist = false"></div>
-    </div>
-    <div v-if="this.showHistorylist" class="member-list-container">
-      <H4 v-if="this.allmembers.length === 0">Har inte startat chat med någon medlemmar</H4>
+    <div v-if="this.showMembersList" class="member-list-container">
+      <H4 v-if="this.allmembers.length === 0">Ingen medlemmar</H4>
       <div v-if="this.allmembers.length !== 0" class="member-list">
         <label :for="index" v-for=" ( member,index ) in this.allmembers" :key="index">
           {{member}}
           <input type="checkbox" :id="index" :value="member" v-model="this.checkedNames">
         </label>
         <button @click="openMultipleChat">Starta chatt</button>
-        <!-- <button  v-for="member in this.history" v-bind:key="member" @click="goToChat(member)">{{member}}</button> -->
       </div>
-      <div class="overlaybg" @click="this.showHistorylist = false, this.checkedNames = []"></div>
+      <div class="overlaybg" @click="this.showMembersList = false, this.checkedNames = []"></div>
     </div>
   </div>
 </template>
 
 <script>
 import ChatHistory from './ChatHistory.vue'
-import ChatBox from './ChatBox.vue'
 import ChatBoxMult from './ChatBoxMult.vue'
 import io from 'socket.io-client'
 import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories } from '@/serverFetch.js'
@@ -39,7 +29,6 @@ export default {
   name: 'Chat',
   components: {
     ChatHistory,
-    ChatBox,
     ChatBoxMult
   },
   data () {
@@ -47,42 +36,38 @@ export default {
       history: [],
       history_values: {},
       activeChat: [],
-      reciever: '',
       socket: 0,
       all_chatIDs: {},
       user: '',
       chosenChat: null,
       allmembers: [],
-      showMemberlist: false,
-      showHistorylist: false,
+      showMembersList: false,
       checkedNames: [],
-      multipleChat: false,
+      reciever: [],
       msg: {}
     }
   },
   methods: {
+    //when clicking a user on ChatHistory
     openChat (userchat) {
-      this.leaveChat()
-      const chatRoom = {
-        user: this.user,
-        chatID: this.all_chatIDs[userchat]
-      }
-      this.socket.emit('join', chatRoom)
-      this.reciever = userchat
-      this.multipleChat = false
-      this.getChatHistory(this.all_chatIDs[userchat])
+      //puts one name in checkedNames
+      this.checkedNames.push(userchat)
+      this.openMultipleChat()
     },
+    
+    //can open single or multiple chat depending on how many users are in checkedNames
     async openMultipleChat () {
+      //disconnect previous chats
       this.leaveChat()
-      console.log(this.all_chatIDs)
+      
+      //If there is no chat id for the user then this creates it
       for (var name of this.checkedNames) {
         if (!this.all_chatIDs[name]) {
-          console.log('HERE')
           await this.goToChat(name)
-        } else {
-          console.log('User exists')
         }
       }
+
+      //creates chatroom and joins them for all the users selected
       for (var names of this.checkedNames) {
         const chatRoom = {
           user: this.user,
@@ -90,25 +75,27 @@ export default {
         }
         this.socket.emit('join', chatRoom)
       }
-      this.showHistorylist = false
-      this.multipleChat = true
-      if (!(this.checkedNames.length > 1)) {
-        this.getChatHistory(this.all_chatIDs[this.checkedNames[0]])
+    
+      this.reciever = this.checkedNames
+      this.showMembersList = false
+      this.checkedNames = []
+
+      //if only one user then load chat history from database
+      if (this.reciever.length === 1) {
+        this.getChatHistory(this.all_chatIDs[this.reciever[0]])
       } 
     },
+    //disconnects all chats that are active
     leaveChat () {
-      if (this.reciever !== '') {
-        this.socket.emit('leave', this.all_chatIDs[this.reciever])
-        this.reciever = ''
-        this.activeChat = []
-      }
-      if (this.checkedNames.length !== 0 && this.multipleChat) {
-        for (var name of this.checkedNames) {
+      if (this.reciever.length !== 0) {
+        for (var name of this.reciever) {
           this.socket.emit('leave', this.all_chatIDs[name])
         }
+        this.reciever = []
         this.activeChat = []
       }
     },
+    //call a function in backend for storing message to the database
     sendMessage (message) {
       this.socket.emit('message', {
         message: message.message,
@@ -118,20 +105,20 @@ export default {
         id: this.all_chatIDs[message.reciever],
         reciever: message.reciever
       })
-      console.log(2)
-      console.log(message)
+      //save an instance of that message for putting it in activeChat
       this.msg = message
     },
+    //putting the instance of a message in activeChat
     storeMsg () {
-      console.log(4)
-      console.log(this.msg)
       this.activeChat.push(this.msg)
     },
     getChatHistory (chatID) {
+      //load chat history from database
       getChatHistory(chatID)
         .then(res => res.json())
         .then(data => {
           this.history_values[this.reciever] = data
+          //put all the chat history in the activeChat for Chatbox to show it
           this.activeChat = this.history_values[this.reciever]
           if (this.activeChat.length > 0) {
             this.$refs.chatbox.scrolltoBottom()
@@ -140,6 +127,7 @@ export default {
         .catch(err => console.log(err))
     },
     async getChatHistories (chatid) {
+      //get the list of user chat id that this user have initiated
       await getChatHistories()
         .then(res => res.json())
         .then(data => {
@@ -167,8 +155,8 @@ export default {
         .catch(err => console.log(err))
     },
     getAllMembers () {
-      while (this.allmembers.length > 0) {
-        this.allmembers.pop()
+      if (this.allmembers.length > 0) {
+        this.allmembers = []
       }
       for (const member of this.$store.state.allMembers) {
         if (this.user === member.accountName) {
@@ -177,7 +165,6 @@ export default {
           this.allmembers.push(member.accountName)
         }
       }
-      console.log(this.allmembers)
     },
     async goToChat (accountName) {
       await fetch(EXPRESS_URL + '/chat/' + accountName, {
@@ -192,7 +179,6 @@ export default {
             await this.getChatHistories(data)
           } else {
             console.log('chat error!!')
-            this.chatError = true
           }
         }).catch(err => console.log(err))
     }

@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     openChat (userchat) {
+      //call a function in Chat.vue
       this.$emit('openChat', userchat)
     }
   }
