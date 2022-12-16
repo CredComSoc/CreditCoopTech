@@ -1,9 +1,19 @@
+<!--Vissa av funktionerna i denna fil leder till sb.web.app/src/serverfetch.js som i sin tur leder till backend/routes/index.js--> 
 <template>
   <div>
     <h1 id="title">MEDDELANDEN</h1>
     <div id="container-chat">
       <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat"/>
-      <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage"/>
+      <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage" @showMembers="this.showMembers"/>
+    </div>
+    <div v-if="this.showMemberlist" class="member-list-container">
+      <H4 v-if="this.allmembers.length === 0">Har startat chat med alla medlemmar</H4>
+      <div v-if="this.allmembers.length !== 0" class="member-list">
+        <!--<input type="checkbox" :id="member.accountName"  :value="member.accountName" v-model="this.checkedNames">
+        <label :for="member.accountName">{{member.accountName}}</label> -->
+        <button  v-for="member in this.allmembers" v-bind:key="member" @click="goToChat(member)">{{member}}</button>
+      </div>
+      <div class="overlaybg" @click="this.showMemberlist = false"></div>
     </div>
   </div>
 </template>
@@ -12,7 +22,7 @@
 import ChatHistory from './ChatHistory.vue'
 import ChatBox from './ChatBox.vue'
 import io from 'socket.io-client'
-import { CHAT_URL, getChatHistory, getChatHistories, uploadFile } from '../../serverFetch.js'
+import { EXPRESS_URL, CHAT_URL, getChatHistory, getChatHistories, uploadFile } from '../../serverFetch.js'
 
 export default {
   name: 'Chat',
@@ -29,7 +39,10 @@ export default {
       socket: 0,
       all_chatIDs: {},
       user: '',
-      chosenChat: null
+      chosenChat: null,
+      allmembers: [],
+      showMemberlist: false,
+      checkedNames: []
     }
   },
   methods: {
@@ -71,9 +84,9 @@ export default {
       }
       
       this.activeChat.push(message)
-    },
-    getChatHistory (chatID) {
-      getChatHistory(chatID)
+    }, 
+    getChatHistory (chatID) { 
+      getChatHistory(chatID) 
         .then(res => res.json())
         .then(data => {
           this.history_values[this.reciever] = data
@@ -84,24 +97,68 @@ export default {
         })
         .catch(err => console.log(err))
     },
-    getChatHistories () {
+    getChatHistories (chatid) {
       getChatHistories()
         .then(res => res.json())
         .then(data => {
           if (data.histories) {
+            while (this.history.length > 0) {
+              this.history.pop()
+            }
             for (const [key, value] of Object.entries(data.histories)) {
               this.all_chatIDs[value] = key
               this.history.push(value)
-              if (this.$route.params.chatID) {
+              if (chatid) {
+                if (chatid === key) {
+                  this.chosenChat = value
+                }
+              } else if (this.$route.params.chatID) {
                 if (this.$route.params.chatID === key) {
                   this.chosenChat = value
                 }
               }
             }
             this.user = data.username
+            this.getAllMembers()
           }
         })
         .catch(err => console.log(err))
+    },
+    getAllMembers () {
+      while (this.allmembers.length > 0) {
+        this.allmembers.pop()
+      }
+      for (const member of this.$store.state.allMembers) {
+        if (this.user === member.accountName) {
+          continue
+        } else if (this.history.includes(member.accountName)) {
+          continue
+        } else {
+          this.allmembers.push(member.accountName)
+        }
+      }
+      console.log(this.allmembers)
+    },
+    showMembers () {
+      this.showMemberlist = true
+    },
+    goToChat (accountName) {
+      fetch(EXPRESS_URL + '/chat/' + accountName, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      }).then(res => res.json())
+        .then(data => {
+          if (data !== false) {
+            this.getChatHistories(data)
+            this.showMemberlist = false
+          } else {
+            console.log('chat error!!')
+            this.chatError = true
+          }
+        }).catch(err => console.log(err))
     }
   },
   created () {
@@ -115,7 +172,7 @@ export default {
 
     this.socket.onAny((event, ...args) => {
       console.log(event, args)
-    })
+    })    
   },
   beforeUnmount () {
     this.socket.disconnect()
@@ -151,6 +208,47 @@ export default {
     gap: 80px;
     align-items: center;
   }
+
+  .member-list-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+  }
+  .member-list{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 2px;
+    z-index: 2;
+    width: 30%;
+    max-height: 50vh;
+    overflow-y:scroll;
+    display: flex;
+    flex-direction: column;
+  }
+  .member-list>button{
+    width: 100%;
+    padding: 1.5em;
+    background-color: white;
+    border: 0px ;
+  }
+  .member-list>button:hover{
+    background-color: rgb(230, 230, 230);
+  }
+  .overlaybg{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;  
+}
   
   @media (max-width: 1090px) {
     #container-chat {

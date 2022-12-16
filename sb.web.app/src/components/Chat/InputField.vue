@@ -39,12 +39,12 @@ export default {
   name: 'InputField',
   methods: {
     send () {
-      if (this.$refs.textValue.value !== '') {
+      if (this.$refs.textValue.value !== '') { // ett meddelande ska skickas
         this.messagetype = 'string'
         this.filename = ' '
         this.$emit('sendMessage', { message: this.$refs.textValue.value, messagetype: this.messagetype, filename: this.filename })
         this.$refs.textValue.value = ''
-      } else if (this.$refs.fileValue.value !== '') {
+      } else if (this.$refs.fileValue.value !== '') { //om en fil ska skickas
         this.messagetype = 'file'
         this.filename = ' '
         this.$emit('sendMessage', { message: this.fileData.file, messagetype: this.messagetype, filename: this.filename })
@@ -55,7 +55,6 @@ export default {
     },
     addFile (e) {
       this.fileData.file = e.target.files[0]
-      //console.log(e.target.files[0])
       var fileName = ''
       if (this.fileData.file) {
         fileName = this.fileData.file.name

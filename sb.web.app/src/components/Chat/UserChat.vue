@@ -61,7 +61,9 @@ export default {
       flex-direction: column;
       padding-top: 25px;
     }
-
+    .user-chat:hover{
+      background-color: rgb(230, 230, 230);
+    }
     .active{
       background-color: #C4C4C433;
     }
