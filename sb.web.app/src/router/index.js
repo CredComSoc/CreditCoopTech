@@ -19,8 +19,9 @@ import AdminHome from '../components/AdminSection/AdminHome.vue'
 import AdminChat from '../components/AdminSection/AdminChat/Chat.vue'
 import AdminAddMember from '../components/AdminSection/AdminAddMember.vue'
 import AdminEconomy from '../components/AdminSection/AdminEconomy.vue'
+import NetworkSetting from '../components/AdminSection/NetworkSettings.vue'
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat']
-const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember']
+const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting']
 
 const routes = [
   // USER ROUTES
@@ -133,6 +134,11 @@ const routes = [
     path: '/admineconomy',
     name: 'AdminEconomy',
     component: AdminEconomy
+  },
+  {
+    path: '/networksetting',
+    name: 'NetworkSetting',
+    component: NetworkSetting
   }
 ]
 

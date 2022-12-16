@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <H1 v-if="!registered">
+    <H1 v-if="!registered" class="center-text">
       LÄGG TILL MEDLEM
     </H1>
-    <form v-if="!registered" className="flexbox-container2" @submit.prevent="">
+    <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">
-        <h3>Allmänt</h3>
-        <label for="logo">Logo Bild:</label><br/>
+        <h2>Allmänt</h2>
+        <label for="logo">Profilbild:</label><br/> 
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -24,7 +24,7 @@
         <input type="text" id="location" v-model="profileData.city" required><br/>
       </div>
       <div className="container-item">
-        <h3>Faktureringsuppgifter</h3>
+        <h2>Faktureringsuppgifter</h2>
         <label for="billingName">Namn:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
@@ -33,13 +33,15 @@
         <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
         <label for="orgNumber">Organisationsnummer:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-        <h3>Kontaktuppgifter</h3>
-        <label for="email">Epost:</label><br/>
+        <h2>Kontaktuppgifter</h2>
+        <label for="email">E-post:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
         <label for="phone">Telefon:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
-        
-        <button @click="submit" class="buttonflex">
+        <div v-if="!registered && registered_fail">
+          <p style="color: red">{{this.registeredText}}</p>
+        </div>
+        <button type="submit" value="Submit" class="buttonflex"> 
           <p style="padding-right:7px" > Registrera </p>
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -50,8 +52,11 @@
         </button>
       </div>
     </form>
-    <div v-if="registered">
-      <h1>Personen är registrerat!</h1>
+  <!--<div v-if="registered">
+    //  <h1>Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.</h1>
+-->
+    <div v-if="registered && !registered_fail">
+      <h1>{{this.registeredText}}</h1>
       <button @click="reset" class="buttonflex">OK</button>
     </div>
   </div>
@@ -67,27 +72,24 @@ export default {
       profileData: [],
       register,
       localURL: '',
-      registered: false
+      registered: false,
+      registered_fail: false,
+      registeredText: ''
     }
   },
   mounted () {
-    /*profile()
-    .then(res => {
-      this.profileData = res
-      //console.log(this.profileData)
-      this.getImgURL()
-    })*/
     this.profileData.isadmin = false
   },
   methods: {
     addLogo (e) {
       this.profileData.logo = e.target.files[0]
-      //console.log(this.profileData.logo)
       this.localURL = URL.createObjectURL(this.profileData.logo)
     },
+    
     async submit () {
-      var randomstring = Math.random().toString(36).slice(-8)
-      const result = await this.register(
+      var randomstring = Math.random().toString(36).slice(-8) //for password
+      //calls a register function in serverfetch
+      const res = await this.register(
         this.profileData.isadmin,
         this.profileData.name, 
         randomstring,
@@ -102,9 +104,16 @@ export default {
         this.profileData.phone,
         this.profileData.logo
       )
-      if (result) {
-        this.registered = true
+      console.log(res.ok)
+      if (res.ok) {
+        this.registered = true //could register
+      } else {
+        this.registered_fail = true //couldnet register
       }
+      res.text()
+        .then((text) => {
+          this.registeredText = text //message from backend
+        })
     },
     reset () {
       this.profileData.isadmin = false
@@ -121,6 +130,8 @@ export default {
       this.profileData.logo = ''
       this.localURL = ''
       this.registered = false
+      this.registered_fail = false
+      this.registeredText = ''
     }
   }
 }
@@ -139,6 +150,7 @@ export default {
     width:100%;
     height: fit-content;
     margin-top: 2%;
+    margin-left: 15rem;
     display: flex;
     flex-direction: column;
     justify-content:center;
@@ -186,8 +198,23 @@ export default {
   
 }
 
+.center-text {
+  text-align: center;
+  margin: 2rem 0rem;
+  margin-top: 0rem;
+  margin-left: 0rem;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;  
+  text-align: center;
+}
+
 h1 {
   font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.34rem;
+  font-weight: bold;
 }
 
 button {

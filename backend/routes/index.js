@@ -21,8 +21,8 @@ CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
   auth: {
-    user: 'svenskbarter.reset@outlook.com',
-    pass: 'SvenskBarter2022!'
+    user: 'sbwebapp@outlook.com',
+    pass: '@sbapp_KU5'
   }
 })
 
@@ -109,6 +109,7 @@ module.exports = async function(dbUrl, dbFolder) {
         if (!files[0] || files.length === 0) {
           res.status(404).send('No file exists');
         } else {
+          //to be implimented{more types of files if needed}
           if (files[0].contentType === 'text/plain' || files[0].contentType === 'application/pdf') {
             gfs.openDownloadStreamByName(files[0].filename).pipe(res)
           }
@@ -133,6 +134,8 @@ module.exports = async function(dbUrl, dbFolder) {
     } 
   })
 
+  //to be implimented{if hashed password is stored in db then converting user input password 
+  //and then doing password.authenticate}
   router.post("/login", passport.authenticate('local'), (req, res) => {
     res.sendStatus(200)
   })
@@ -337,16 +340,17 @@ module.exports = async function(dbUrl, dbFolder) {
    *                                Admin Page
    *                 
    *****************************************************************************/
-//parseInt(newPro.min_limit, 10),
-  router.post("/register", upload.single('file'), (req, res) => {
+
+  router.post("/register", upload.single('file'), (req, res) => { //register a new user
     console.log(req.body)
-    getUser({ email: req.body.email }).then(async (user) => {
+    const newPro = JSON.parse(req.body.accountInfo)
+    getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
         console.log(req.body.accountInfo)
-        const newPro = JSON.parse(req.body.accountInfo)
         const newUser = {
           email: newPro.email,
-          password: newPro.password,
+          //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
+          password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: newPro.min_limit,
           max_limit: parseInt(req.body.max_limit, 10),
@@ -379,37 +383,45 @@ module.exports = async function(dbUrl, dbFolder) {
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
           try {
-            const reponse = await transporter.sendMail({
+            const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
               from: 'svenskbarter.reset@outlook.com', // sender address
+
               to: newUser.email, 
-              subject: 'Medlem i Bvensk Barter', // Subject line
+              subject: 'Medlem i Svensk Barter', // Subject line
               text: `
-              Du får det här mailet för att du har begärt oss att vara medlem hos Svensk Barter.
+              Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
               Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
               
               ${FRONTEND_URL}/login
 
-              Dina uppgifter att logga in är:
-              Email: ${newPro.email}
-              Password: ${newPro.password}
-
+              Dina inloggningsuppgifter är:
+              E-postaddress: ${newPro.email}
+              Lösenord: ${newPro.password}
               
-              Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+              Med vänliga hälsningar,
+              Svensk Barter
               `
              })
+             console.log(reponse)
           } catch (error) {
-            res.status(404).send('Email doesnot exists');
+            console.log(error)
+            const result = await dbo.collection("users").deleteOne(newUser)
+            if (!result.acknowledged) {
+              console.log("couldnot delete user"+result)
+            }
+            res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
             db.close()
+            return
           }
-          res.sendStatus(200)
-          
+          res.status(200).send('Den nya medlemmen är nu registrerad!')
+          db.close()
         } else {
-          res.sendStatus(500)
+          res.sendStatus(404).send('Det gick inte att registrera medlemmen.')
           db.close()
         }
       } else {
         //Det finns redan en användare med namnet
-        res.sendStatus(500)
+        res.status(500).send('Denhär medlemmen finns redan.')
       }
     })
   })
@@ -520,6 +532,7 @@ module.exports = async function(dbUrl, dbFolder) {
     getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
+        console.log(newPro.accountName)
         let newProfile = {
           website: "",
           accountName: newPro.accountName,
@@ -548,6 +561,62 @@ module.exports = async function(dbUrl, dbFolder) {
           }
         }
         updateUser({ "profile.accountName": req.user }, query).then((query) => {
+          if (query.acknowledged) {
+            // delete old logo if exists
+            if (req.file) {
+              gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "uploads",
+              });
+              gridfsBucket.delete(user.profile.logo_id, function (err, r) {
+                if (err) {
+                  console.log(err)
+                }
+              });
+            }
+            res.sendStatus(200)
+          } else {
+            res.status(404).send("Unable to update profile.")
+          }
+        })
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
+  router.post("/updateuserProfile/:name", upload.single('file'), (req, res) => {
+    
+    getUser({ "profile.accountName": req.params.name }).then((user) => {
+      if (user != null) {
+        const newPro = JSON.parse(req.body.accountInfo)
+        let newProfile = {
+          website: "",
+          accountName: newPro.accountName,
+          description: newPro.description,
+          adress: newPro.adress,
+          city: newPro.city,
+          billing: {
+            name: newPro.billingName,
+            box: newPro.billingBox,
+            adress: newPro.billingAdress,
+            orgNumber: newPro.orgNumber
+          },
+          phone: newPro.phone,
+        }
+        if (req.file) {
+          newProfile.logo = req.file.filename
+          newProfile.logo_id = req.file.id
+        } else {
+          newProfile.logo = user.profile.logo
+          newProfile.logo_id = user.profile.logo_id
+        }
+        const query = {
+          $set: {
+            email: newPro.email,
+            profile: newProfile
+          }
+        }
+        updateUser({ "profile.accountName": req.params.name }, query).then((query) => {
           if (query.acknowledged) {
             // delete old logo if exists
             if (req.file) {

@@ -1,7 +1,7 @@
 <template>
   <div id="frame-chatbox">
     <p v-if="this.reciever.length > 0"> {{ this.reciever }} </p>
-    <p v-else> Välj någon att chatta med </p>
+    <p v-else> &nbsp;</p>
     <div id="container-chatbox">
       <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
       <InputField v-if="this.reciever.length > 0" @sendMessage="this.sendMessage"/>
@@ -24,6 +24,7 @@ export default {
   methods: {
     sendMessage (message) {
       this.$emit('sendMessage', { sender: this.user, reciever: this.reciever, message: message.message, messagetype: message.messagetype, filename: message.filename })
+      this.$emit('storeMsg')
       this.scrolltoBottom()
     },
     scrolltoBottom () {

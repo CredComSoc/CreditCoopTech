@@ -17,7 +17,7 @@
   </div>
   <div v-if="this.showProfile == true" class="userprofile">
     <userProfile class="userprof"  :userprofile="this.profileName" />
-    <div class="overlaybg" @click="hideprof"></div>
+    <div class="overlaybg" @click="this.showProfile = false"></div>
   </div>
 </template>
 
@@ -45,7 +45,9 @@ export default {
     userProfile
   },
 
-  methods: {
+  methods: { 
+    //filter and sorts according to list of cities
+    //**to be implimented--{ to not sort according to cities and just according to alphabetical order}
     triggerSearch (newSearchWord) {
       let searchWord = newSearchWord.split(' ')
       searchWord = searchWord.filter(function (value) {
@@ -97,9 +99,6 @@ export default {
     openProfile (message) {
       this.profileName = message.name
       this.showProfile = true
-    },
-    hideprof () {
-      this.showProfile = false
     }
   },
   mounted: function () {
@@ -125,6 +124,7 @@ export default {
 
 .center {
   justify-content: center;
+  margin-left: -7rem;
   margin-bottom: 40px;
 }
 
@@ -147,8 +147,8 @@ export default {
 
 .center-text {
   text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin: 2rem 0rem;
+  margin-left: -8rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;

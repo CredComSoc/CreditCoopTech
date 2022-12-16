@@ -11,7 +11,7 @@ const standardCreditLine = -5000
  *                           Helper Functions
  *                 
  *****************************************************************************/
-
+//maybe doing this in backend so that one cant inspect the source code to encrypt a password
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
@@ -133,7 +133,7 @@ export async function fetchData () {
  *****************************************************************************/
 
 export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
-  const hashedPassword = hashMyPassword(password)
+  const hashedPassword = hashMyPassword(password) // maybe doing this in backend for security
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     is_admin: isadmin,
@@ -156,15 +156,7 @@ export async function register (isadmin, username, password, description, adress
     body: data
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        console.log('Registering account')
-        return true
-      }
-    })
-    .catch(() => {
-      return false
+      return response
     })
 }
 /*
@@ -242,6 +234,36 @@ export async function updateProfile (accountName, description, adress, city, bil
   }))
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/updateProfile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
+export async function updateuserProfile (previousname, accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone
+  }))
+  data.append('file', logo)
+  return await fetch(EXPRESS_URL + '/updateuserProfile/' + previousname, {
     method: 'POST',
     credentials: 'include',
     body: data 
@@ -744,7 +766,7 @@ export async function uploadFile (File) {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     } else {
-      return response.json()
+      return response.json() //contains file original name
     }
   }).catch(err => {
     console.error('There has been a problem with your fetch operation:', err)
