@@ -371,7 +371,7 @@ module.exports = async function(dbUrl, dbFolder) {
         if (result.acknowledged) {
           try {
             const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-              from: 'svenskbarter.reset@outlook.com', // sender address
+              from: 'sbwebapp@outlook.com', // sender address
 
               to: newUser.email, 
               subject: 'Medlem i Svensk Barter', // Subject line
