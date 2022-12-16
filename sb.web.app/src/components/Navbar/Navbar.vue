@@ -120,6 +120,17 @@
                 <span class="mob-cap"> Min Sida </span>
               </router-link>
           </div>
+          <div id="navbar-event" class="navlogo">
+            <router-link :to="{name:'Event'}">
+              <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/events.png" />
+                  <figcaption class="l-text"> Evenemang </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name: 'Event'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Evenemang </span>
+            </router-link>
+          </div>
           <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">

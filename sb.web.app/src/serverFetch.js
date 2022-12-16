@@ -772,3 +772,93 @@ export async function uploadFile (File) {
     console.error('There has been a problem with your fetch operation:', err)
   })
 }
+/*****************************************************************************
+* 
+*                                Event
+*                 
+*****************************************************************************/
+export async function loadEvents () {
+  return await fetch(EXPRESS_URL + '/load/event', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    }).catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    }) 
+}
+/*
+export async function loadEvents () {
+  return fetch(EXPRESS_URL + '/load/event', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    console.log('response i server fecth' + response.json().stringify())
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+*/
+export async function getUserId () {
+  return fetch(EXPRESS_URL + '/userId', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage, startTime, endTime) {
+  return await fetch(EXPRESS_URL + '/upload/event', { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: title,
+      eventstart: start,
+      eventend: end,
+      eventallDay: allDay,
+      location: location,
+      description: description,
+      contacts: contacts,
+      webpage: webpage, 
+      _startTime: startTime,
+      _endTime: endTime
+    }),
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  })
+}
+export async function deleteEvent (id) {
+  const promise = await fetch(EXPRESS_URL + '/event/remove/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
+  return promise
+}

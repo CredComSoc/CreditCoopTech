@@ -120,6 +120,10 @@ export default {
           if (data.completedTransactions) {
             this.$store.commit('replaceCompletedTransactions', data.completedTransactions)            
           }           
+          
+          if (data.allEvents) {       
+            this.$store.commit('replaceAllEvents', data.allEvents)
+          }
           // console.log(this.$store.state.user.email)
         }
       }

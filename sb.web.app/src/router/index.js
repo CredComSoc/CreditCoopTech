@@ -20,8 +20,11 @@ import AdminChat from '../components/AdminSection/AdminChat/Chat.vue'
 import AdminAddMember from '../components/AdminSection/AdminAddMember.vue'
 import AdminEconomy from '../components/AdminSection/AdminEconomy.vue'
 import NetworkSetting from '../components/AdminSection/NetworkSettings.vue'
-const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat']
+import Event from '../components/Event/Event.vue'
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
 const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting']
+
+
 
 const routes = [
   // USER ROUTES
@@ -91,6 +94,13 @@ const routes = [
     path: '/chat',
     name: 'Chat',
     component: Chat,
+    props: true
+  },
+
+  {
+    path: '/Event',
+    name: 'Event',
+    component: Event,
     props: true
   },
   {

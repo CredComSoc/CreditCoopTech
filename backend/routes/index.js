@@ -173,7 +173,8 @@ module.exports = async function(dbUrl, dbFolder) {
 
       requests: [],
       pendingPurchases: [],
-      completedTransactions: []
+      completedTransactions: [],
+      allEvents: []
     }
 
     const db = await MongoClient.connect(dbUrl)
@@ -232,7 +233,9 @@ module.exports = async function(dbUrl, dbFolder) {
         }
       }
       data.myCart = myCart
-      
+
+      // get event data
+      data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
@@ -324,6 +327,7 @@ module.exports = async function(dbUrl, dbFolder) {
             data.pendingPurchases.push(entry)
           }
         }
+      
       } catch (error) {
         console.log(error)
       }
@@ -1127,5 +1131,107 @@ module.exports = async function(dbUrl, dbFolder) {
     return res.status(200).send("Email successfully sent")
   })
 
-  return { 'router': router, 'conn': conn }
-}
+  
+
+
+  /*****************************************************************************
+  * 
+  *                                Events
+  *                 
+  *****************************************************************************/
+  router.get("/load/event", async (req, res) => {
+    console.log('res' + res)
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    dbo.collection('events').find({}).toArray(function (err, eventsdata) {
+      if (err) {
+        res.sendStatus(500)
+        db.close()
+      }
+      else {
+        console.log('i index'+ eventsdata)
+        res.status(200).send(eventsdata)
+        db.close()
+      } 
+    })
+  })
+
+  router.get("/userId", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
+      res.status(200).json(user._id)
+    }).catch((error) => {
+      res.sendStatus(500)
+    })
+  })
+
+  router.post('/upload/event', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      
+      console.log(req.body) //shows contents of body in terminal
+      
+      let newEvent = {
+        title: req.body.title,
+        start: new Date(req.body.eventstart),
+        end: new Date(req.body.eventend),
+        allDay: req.body.eventallDay,
+        location: req.body.location,
+        description: req.body.description,
+        contacts: req.body.contacts,
+        webpage: req.body.webpage,
+        _startTime: req.body._startTime,
+        _endTime: req.body._endTime
+      }
+      
+      const user = await getUser({'profile.accountName': req.user})
+      
+      newEvent.userId = user._id
+      
+      // for ttl index in posts
+      //if ('end-date' in newArticle) {
+      //newArticle['end-date'] = new Date(newArticle['end-date']);
+      //}
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      dbo.collection("events").insertOne(newEvent, (err, result)=>{
+        if (err) {
+          res.sendStatus(500)
+          db.close()
+        }
+        else if (result != null) {
+          res.sendStatus(200);
+          db.close()
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(404).send("No posts found.")
+        }
+      })
+    }
+  })
+  router.post('/event/remove/:id', (req, res) => {
+    const query = { _id: ObjectId(req.params.id) };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('events').deleteOne(query, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result.matchedCount != 0) {
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.sendStatus(404);
+        }
+      })
+    })
+  })
+
+return { 'router': router, 'conn': conn }
+};
