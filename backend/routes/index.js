@@ -28,11 +28,13 @@ const transporter = nodemailer.createTransport({
   }
 })
 */
+//const ouremail = sbwebapp@outlook.com
+const ouremail = 'dev-sb@outlook.com'
 const transporter = nodemailer.createTransport({
   service: 'Outlook365',
   secure: true,
   auth: {
-    user: 'dev-sb@outlook.com',
+    user: ouremail,
     pass: 'UOIJufhsaoug32579asFG1!fsd'
   }
 })
@@ -399,7 +401,7 @@ module.exports = async function(dbUrl, dbFolder) {
         if (result.acknowledged) {
           try {
             const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-              from: 'sbwebapp@outlook.com', // sender address
+              from: ouremail, // sender address
 
               to: newUser.email, 
               subject: 'Medlem i Svensk Barter', // Subject line
@@ -1097,7 +1099,7 @@ module.exports = async function(dbUrl, dbFolder) {
     updateUser(user, query)
 
     await transporter.sendMail({
-      from: 'svenskbarter.reset@outlook.com', // sender address
+      from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
       to: user.email, // list of receivers
       subject: 'Återställning av lösenord', // Subject line
       text: `
@@ -1132,7 +1134,7 @@ module.exports = async function(dbUrl, dbFolder) {
   
     const resetEmail = {
       to: user.email,
-      from: 'svenskbarter.reset@outlook.com',
+      from: ouremail, //'svenskbarter.reset@outlook.com'
       subject: 'Ditt lösenord har ändrats',
       text: `
       Det här är en bekräftelse på att lösenordet för ditt konto "${user.profile.accountName}" hos Svensk Barter har ändrats.
