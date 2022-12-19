@@ -18,12 +18,22 @@ const axios = require('axios').default;
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
+/*
 const transporter = nodemailer.createTransport({
   service: 'Outlook365',
   secure: true,
   auth: {
     user: 'sbwebapp@outlook.com',
     pass: '@sbapp_KU5'
+  }
+})
+*/
+const transporter = nodemailer.createTransport({
+  service: 'Outlook365',
+  secure: true,
+  auth: {
+    user: 'dev-sb@outlook.com',
+    pass: 'UOIJufhsaoug32579asFG1!fsd'
   }
 })
 
