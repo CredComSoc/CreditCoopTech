@@ -369,6 +369,8 @@ export default {
         length = this.$refs.inreq - 1 // get number of elements
         element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       }
+      console.log(this.$refs)
+      console.log(this.$refs.outreq)
       console.log(this.$refs.outreq[length - index])
       console.log(this.$refs.inreq[length - index])
       console.log(element)
