@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, 'AVBRUTEN', this.$refs.inreqRefs)
+      this.statusSwap(index, 'AVBRUTEN', 'in')
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, 'AVBRUTEN', this.$refs.outreqRefs)
+      this.statusSwap(index, 'AVBRUTEN', 'out')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -362,9 +362,16 @@ export default {
       } else {
         tag.style.color = 'red'
       }
+      let length 
+      let element
       tag.appendChild(text)
-      const length = list.length - 1 // get number of elements
-      const element = list[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      if (list === 'in') { //choose which list of elements to operate on
+        length = this.$refs.inreqRefs - 1 // get number of elements
+        element = this.$refs.inreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      } else {
+        length = this.$refs.outreqRefs - 1 // get number of elements
+        element = this.$refs.outreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      }
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 
