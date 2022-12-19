@@ -362,15 +362,12 @@ export default {
       } else {
         tag.style.color = 'red'
       }
-      let length 
-      let element
+      let length = this.$refs.outreqRefs - 1 // get number of elements
+      let element = this.$refs.outreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       tag.appendChild(text)
       if (list === 'in') { //choose which list of elements to operate on
         length = this.$refs.inreqRefs - 1 // get number of elements
         element = this.$refs.inreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
-      } else {
-        length = this.$refs.outreqRefs - 1 // get number of elements
-        element = this.$refs.outreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       }
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
