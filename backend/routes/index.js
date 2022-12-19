@@ -19,8 +19,8 @@ FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
 const transporter = nodemailer.createTransport({
-  service: 'hotmail',
-  //service: 'outlook',
+  service: 'Outlook365',
+  secure: true,
   auth: {
     user: 'sbwebapp@outlook.com',
     pass: '@sbapp_KU5'
@@ -383,7 +383,6 @@ module.exports = async function(dbUrl, dbFolder) {
           newUser.logo = req.file.filename
           newUser.logo_id = req.file.id
         }
-        console.log('hej! ' + newUser.email)
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
