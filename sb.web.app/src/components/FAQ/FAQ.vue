@@ -15,7 +15,7 @@
     <div className="content flexbox-item">
       <BarterTips v-if="this.tab==='bartertips'"/>
       <Information v-else-if="this.tab==='information'"/>
-      <!--<Policy v-else-if="this.tab==='policy'"/>-->
+      <Policy v-else-if="this.tab==='policy'"/>
       <Questions v-else/>
     </div>
   </div>
@@ -27,7 +27,7 @@
 import Questions from '@/components/FAQ/Questions.vue'
 import BarterTips from '@/components/FAQ/BarterTips.vue'
 import Information from '@/components/FAQ/Information.vue'
-//import Policy from '@/components/FAQ/Policy.vue'
+import Policy from '@/components/FAQ/Policy.vue'
 
 export default {
   data () {
@@ -38,7 +38,7 @@ export default {
   components: {
     Questions,
     BarterTips,
-    //Policy,
+    Policy,
     Information
   },
   created () {
