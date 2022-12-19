@@ -14,7 +14,7 @@
             <th>Tidstämpel</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreqRefs">
+          <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreq">
             <td>{{item.entries[0].payer}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -48,7 +48,7 @@
             <th>Tidstämpel</th>
             <!--<th>Status</th>-->
           </tr>
-          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="inreqRefs">
+          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="inreq">
             <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -362,13 +362,16 @@ export default {
       } else {
         tag.style.color = 'red'
       }
-      let length = this.$refs.outreqRefs - 1 // get number of elements
-      let element = this.$refs.outreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      let length = this.$refs.outreq - 1 // get number of elements
+      let element = this.$refs.outreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       tag.appendChild(text)
       if (list === 'in') { //choose which list of elements to operate on
-        length = this.$refs.inreqRefs - 1 // get number of elements
-        element = this.$refs.inreqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+        length = this.$refs.inreq - 1 // get number of elements
+        element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       }
+      console.log(this.$refs.outreq[length - index])
+      console.log(this.$refs.inreq[length - index])
+      console.log(element)
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 
