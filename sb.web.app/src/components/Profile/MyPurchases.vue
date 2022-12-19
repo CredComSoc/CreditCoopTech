@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, 'AVBRUTEN' ,this.$refs.inreqRefs)
+      this.statusSwap(index, 'AVBRUTEN', this.$refs.inreqRefs)
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, 'AVBRUTEN' ,this.$refs.outreqRefs)
+      this.statusSwap(index, 'AVBRUTEN', this.$refs.outreqRefs)
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
