@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div className="flexbox-container">
     <div v-if="isMobile()">
       <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
@@ -12,26 +12,29 @@
       <h1 className="title" > MIN SIDA </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' }" id='profile'>Min profil</a>
-      <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'>Min profil</a>
+      <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp & sälj</a>
       <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Mina artiklar</a>
-      <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>
+     <!-- <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>-->
+      <a href='#' @click="this.tab='economy'" :class="{ active: this.tab==='economy' }" id='economy'>Min Ekonomi</a>
     </div>
     <div className="content flexbox-item">
       <MyPurchases v-if="this.tab==='purchases'"/>
       <MyArticles v-else-if="this.tab==='articles'"/>
-      <MyRequests v-else-if="this.tab==='requests'"/>
+      <!--<MyRequests v-else-if="this.tab==='requests'"/>-->
+      <MyEconomy v-else-if="this.tab==='economy'"/>
       <MyProfile v-else/>
-    </div>
+    </div> 
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+// @ is an alias to /src 
 import MyProfile from '@/components/Profile/MyProfile.vue'
 import MyPurchases from '@/components/Profile/MyPurchases.vue'
 import MyArticles from '@/components/Profile/MyArticles.vue'
-import MyRequests from '@/components/Profile/MyRequests.vue'
+//import MyRequests from '@/components/Profile/MyRequests.vue'
+import MyEconomy from '@/components/Profile/MyEconomy.vue'
 
 export default {
   data () {
@@ -42,7 +45,8 @@ export default {
     MyProfile,
     MyPurchases,
     MyArticles,
-    MyRequests
+    //MyRequests,
+    MyEconomy
   },
   created () {
     if (this.$route.params.tab) {

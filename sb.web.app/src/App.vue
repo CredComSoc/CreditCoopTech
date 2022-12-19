@@ -27,8 +27,6 @@ import Navbar from './components/Navbar/Navbar.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
-import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
 import { authenticate, checkAdminStatus, getSaldo, fetchData } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
 
@@ -108,37 +106,35 @@ export default {
             }
             this.$store.commit('replaceMyCartSize', cartSize)
           }
-
-          if (data.saldo) {
-            this.$store.commit('replaceSaldo', data.saldo)
-          }
-
+          
+          this.$store.commit('replaceSaldo', data.saldo)
+          this.$store.commit('replaceCreditLine', data.creditLine)
           if (data.requests) {
             this.$store.commit('replaceRequests', data.requests)            
           }
 
           if (data.pendingPurchases) {
             this.$store.commit('replacePendingPurchases', data.pendingPurchases)            
-          }   
+          }    
 
-          if (data.completedPurchases) {
-            this.$store.commit('replaceCompletedPurchases', data.completedPurchases)            
+          if (data.completedTransactions) {
+            this.$store.commit('replaceCompletedTransactions', data.completedTransactions)            
           }           
+          
+          if (data.allEvents) {       
+            this.$store.commit('replaceAllEvents', data.allEvents)
+          }
           // console.log(this.$store.state.user.email)
         }
       }
     }
   },
   mounted () {
-    const router = useRouter()
     authenticate().then((res) => {
       if (res) {    
         checkAdminStatus().then((res2) => {
           this.auth = res
           this.admin = res2
-          if (res2) {
-            router.push({ name: 'AdminHome' })
-          }
         })
       } 
     })

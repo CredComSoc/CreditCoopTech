@@ -54,7 +54,28 @@
               <span class="mob-cap"> Medlemmar </span>
             </router-link>
           </div>
+          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
+            <div id="faq-dropdown" class="dropdown"></div>
+            <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
+              <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
+                  <img src="../../assets/navbar_logos/question.png" style="height:24px; width:24px" />
+              
+                  <figcaption class="l-text"> FAQ </figcaption>
+              </figure>
+            </router-link>
+            <!--To add another link in the dropdownmeny, add another router-link here, then follow the comments in FAQ.vue--> 
+            <div id="faq-content" @mouseover="highlightFAQLogo" class="dropdown-content">
+                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">Vanliga frågor</router-link></div>
+                  <router-link :to="{name:'FAQ', params:{tab: 'bartertips'}}">Bartertips</router-link><!--FAQ/BarterTips.vue-->
+                  <router-link :to="{name:'FAQ', params:{tab: 'information'}}">Föreningsinformation</router-link> <!--FAQ/Information.vue-->
+                  <router-link :to="{name:'FAQ', params:{tab: 'policy'}}">Integritetspolicy</router-link><!--FAQ/Policy.vue-->
+                </div>
+            <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> FAQ </span>
+            </router-link>
+          </div>
         </div>
+        
         <div class="middle-logo">
           <div id="navbar-home" class="navlogo">
             <figure>
@@ -68,26 +89,6 @@
           <div id="navbar-notifications" class="navlogo" v-if="!this.isActive" @click.prevent="setNotificationsToSeen">
               <Notifications></Notifications>
           </div> 
-          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
-            <div id="faq-dropdown" class="dropdown"></div>
-            <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
-              <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
-                  <img src="../../assets/navbar_logos/question.png" style="height:24px; width:24px" />
-              
-                  <figcaption class="l-text"> FAQ </figcaption>
-              </figure>
-            </router-link>
-            <div id="faq-content" @mouseover="highlightFAQLogo" class="dropdown-content">
-                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">Vanliga frågor</router-link></div>
-                  <router-link :to="{name:'FAQ', params:{tab: 'background'}}">Bakgrund</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'usefulcontacts'}}">Användbara kontakter</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'traderules'}}">Handlingsregler</router-link>
-                  <router-link :to="{name:'FAQ', params:{tab: 'statues'}}">Stadgar</router-link>
-                </div>
-            <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> FAQ </span>
-            </router-link>
-          </div>
           <div id="navbar-chat" class="navlogo">
             <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
@@ -110,14 +111,26 @@
                 </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link></div>
-                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp</router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp & sälj</router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'articles'}}">Mina artiklar</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>
+                  <!--<router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>-->
+                  <router-link :to="{name:'Profile', params:{tab: 'economy'}}">Min Ekonomi</router-link>
                 </div>
               </div>
               <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">
                 <span class="mob-cap"> Min Sida </span>
               </router-link>
+          </div>
+          <div id="navbar-event" class="navlogo">
+            <router-link :to="{name:'Event'}">
+              <figure class="logo-click">
+                  <img src="../../assets/navbar_logos/events.png" />
+                  <figcaption class="l-text"> Evenemang </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name: 'Event'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap"> Evenemang </span>
+            </router-link>
           </div>
           <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">

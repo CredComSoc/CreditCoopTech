@@ -14,6 +14,16 @@
             </a>
           </figure>
       </div>
+      <div class="border" v-if="isActive"></div>
+      <div id='credit-card' v-if="isActive">
+          <figure id='top-log'>
+            <a href="#">
+              <img src="../assets/sidecard_logos/credit-card.png"/>
+              <!-- state.saldo ska ändras till att connecta till kredit istället-->
+              <figcaption class="l-text" id='top-logo-text'> Kredit: {{ this.$store.state.creditLine }} bKr</figcaption>
+            </a>
+          </figure>
+      </div>
     </div>
 </template>
 
@@ -37,10 +47,10 @@ export default {
         if (scrWidth < 1212 && !this.opend) {
           this.isActive = false
           outline.style.width = '25px'
-          outline.style.height = '25px'
+          outline.style.height = '40px'
         } else if (scrWidth >= 1212 && this.opend) {
           this.isActive = true
-          this.opend = false
+          this.opend = true
           outline.style.width = '130px'
           outline.style.height = '70px'
         }
@@ -55,7 +65,7 @@ export default {
       }
       const outline = document.getElementById('saldo-card-outline')
       outline.style.width = '25px'
-      outline.style.height = '25px'
+      outline.style.height = '40px'
     },
     openCard (scrWidth) {
       this.isActive = true
@@ -80,10 +90,10 @@ export default {
 
   #saldo-card-outline{
     width: 135px;
-    height: 80px;
-    top:50%;
+    height: 70px;
+    top: calc(50% - 75px);
     bottom: 50%;
-    position:fixed;
+    position: fixed;
     right: 0;
     z-index: 2;
   }
@@ -92,7 +102,19 @@ export default {
       background-color: #F9C661;
       width: 85%;
       height: 100%;
-      border-radius: 10px 0px 0px 10px;
+      border-radius: 10px 0px 0px 0px;
+      float: right;
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  #credit-card{
+      background-color: #F9C661;
+      width: 85%;
+      height: 100%;
+      border-radius: 0px 0px 0px 10px;
       float: right;
       display: flex;
       justify-content: space-evenly;
@@ -116,6 +138,14 @@ export default {
         text-align: center;
     }
 
+    .border{
+      border: 0px solid #dee2e6 !important;
+      width: 85%;
+      float: right;
+      height: 2px;
+      background-color: black;
+      display: flex;
+    }
     #kund{
         position: relative;
     }

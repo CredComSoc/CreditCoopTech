@@ -4,20 +4,21 @@ import JsSHA from 'jssha'
 const urlBase = 'http://dev-sb-backend.mutualcredit.services'
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
+const standardCreditLine = -5000
 
 /*****************************************************************************
  * 
  *                           Helper Functions
  *                 
  *****************************************************************************/
-
+//maybe doing this in backend so that one cant inspect the source code to encrypt a password
 function hashMyPassword (password) {
   const hashObj = new JsSHA('SHA-512', 'TEXT', { numRounds: 1 })
   hashObj.update(password)
   const hash = hashObj.getHash('HEX')
   return hash
 }
-
+ 
 /*****************************************************************************
  * 
  *                               Images
@@ -131,27 +132,66 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (username, password) {
-  const hashedPassword = hashMyPassword(password)
-
+export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  const hashedPassword = hashMyPassword(password) // maybe doing this in backend for security
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    is_admin: isadmin,
+    accountName: username,
+    password: password,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone,
+    min_limit: standardCreditLine
+  }))
+  data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username: username, password: hashedPassword })
+    body: data
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      } else {
-        console.log('Registering account')
-        return true
-      }
+      return response
     })
-    .catch(() => {
-      return false
-    })
+}
+/*
+export async function fetchEconomy (maxDate2, minDate2, company2, product2, entries2) {
+
+  const data = new FormData()
+  data.append('filterInfo', JSON.stringify({ 
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }))
+  const data2 = 'test igen'
+  
+  const data = {
+    maxDate: maxDate2,
+    minDate: minDate2,
+    companyName: company2,
+    productName: product2,
+    entries: entries2
+  }*/
+
+export async function fetchEconomy () {
+  return await fetch(EXPRESS_URL + '/economy', { 
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
 }
 
 /*****************************************************************************
@@ -189,11 +229,41 @@ export async function updateProfile (accountName, description, adress, city, bil
     billingBox: billingBox,
     billingAdress: billingAdress,
     orgNumber: orgNumber, 
-    email: email,
+    email: email.toLowerCase(),
     phone: phone
   }))
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/updateProfile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+
+export async function updateuserProfile (previousname, accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+  const data = new FormData()
+  data.append('accountInfo', JSON.stringify({ 
+    accountName: accountName,
+    description: description,
+    adress: adress,
+    city: city,
+    billingName: billingName,
+    billingBox: billingBox,
+    billingAdress: billingAdress,
+    orgNumber: orgNumber, 
+    email: email.toLowerCase(),
+    phone: phone
+  }))
+  data.append('file', logo)
+  return await fetch(EXPRESS_URL + '/updateuserProfile/' + previousname, {
     method: 'POST',
     credentials: 'include',
     body: data 
@@ -377,6 +447,9 @@ export async function deleteCart (id) {
 
 export async function createTransactions (cart) {
   cart.forEach(element => {
+    console.log(element)
+  })
+  for (const element of cart) {
     fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
       headers: {
@@ -386,7 +459,18 @@ export async function createTransactions (cart) {
       credentials: 'include'
     })
     postNotification('saleRequest', element.userUploader) 
-  })
+  }
+  /*cart.forEach(element => {
+    await fetch(EXPRESS_URL + '/createrequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(element),
+      credentials: 'include'
+    })
+    postNotification('saleRequest', element.userUploader) 
+  })*/
 }
 
 /*****************************************************************************
@@ -668,5 +752,113 @@ export async function getChatHistories () {
     .catch(() => {
       return false
     })
+  return promise
+}
+
+export async function uploadFile (File) {
+  const data = new FormData()
+  data.append('file', File)
+  return await fetch(EXPRESS_URL + '/uploadFile', {
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    } else {
+      return response.json() //contains file original name
+    }
+  }).catch(err => {
+    console.error('There has been a problem with your fetch operation:', err)
+  })
+}
+/*****************************************************************************
+* 
+*                                Event
+*                 
+*****************************************************************************/
+export async function loadEvents () {
+  return await fetch(EXPRESS_URL + '/load/event', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      } else {
+        return response.json()
+      }
+    }).catch(err => {
+      console.error('There has been a problem with your fetch operation:', err)
+    }) 
+}
+/*
+export async function loadEvents () {
+  return fetch(EXPRESS_URL + '/load/event', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    console.log('response i server fecth' + response.json().stringify())
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+*/
+export async function getUserId () {
+  return fetch(EXPRESS_URL + '/userId', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return false
+  })
+}
+export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage, startTime, endTime) {
+  return await fetch(EXPRESS_URL + '/upload/event', { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: title,
+      eventstart: start,
+      eventend: end,
+      eventallDay: allDay,
+      location: location,
+      description: description,
+      contacts: contacts,
+      webpage: webpage, 
+      _startTime: startTime,
+      _endTime: endTime
+    }),
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  })
+}
+export async function deleteEvent (id) {
+  const promise = await fetch(EXPRESS_URL + '/event/remove/' + id, {
+    method: 'POST',
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+
   return promise
 }

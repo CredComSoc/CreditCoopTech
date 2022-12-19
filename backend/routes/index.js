@@ -12,17 +12,21 @@ const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
+const { json, response } = require('express');
 const axios = require('axios').default;
 
+<<<<<<< HEAD
 //FRONTEND_URL = 'http://155.4.159.231:8080'
+=======
+>>>>>>> PreMain
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
   auth: {
-    user: 'svenskbarter.reset@outlook.com',
-    pass: 'SvenskBarter2022!'
+    user: 'sbwebapp@outlook.com',
+    pass: '@sbapp_KU5'
   }
 })
 
@@ -103,6 +107,23 @@ module.exports = async function(dbUrl, dbFolder) {
     }
   });
 
+  router.get('/file/:filename', (req, res) => {
+    try {
+      gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+        if (!files[0] || files.length === 0) {
+          res.status(404).send('No file exists');
+        } else {
+          //to be implimented{more types of files if needed}
+          if (files[0].contentType === 'text/plain' || files[0].contentType === 'application/pdf') {
+            gfs.openDownloadStreamByName(files[0].filename).pipe(res)
+          }
+        }
+      })
+    } catch (error) {
+      res.status(404).send('No file exists');
+    }
+  });
+
   /*****************************************************************************
    * 
    *                           Login & Authentication
@@ -117,6 +138,8 @@ module.exports = async function(dbUrl, dbFolder) {
     } 
   })
 
+  //to be implimented{if hashed password is stored in db then converting user input password 
+  //and then doing password.authenticate}
   router.post("/login", passport.authenticate('local'), (req, res) => {
     res.sendStatus(200)
   })
@@ -150,10 +173,12 @@ module.exports = async function(dbUrl, dbFolder) {
       allArticles: [],
 
       saldo: 0,
+      creditLine: 0,
 
       requests: [],
       pendingPurchases: [],
-      completedPurchases: []
+      completedTransactions: [],
+      allEvents: []
     }
 
     const db = await MongoClient.connect(dbUrl)
@@ -165,6 +190,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
       // get current user data
       let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+      data.creditLine = user.min_limit*-1
       const userId = user._id.toString()
       delete user._id
       delete user.password
@@ -212,6 +238,8 @@ module.exports = async function(dbUrl, dbFolder) {
       }
       data.myCart = myCart
 
+      // get event data
+      data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
       try {
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
@@ -219,10 +247,17 @@ module.exports = async function(dbUrl, dbFolder) {
         'cc-user': userId,
         'cc-auth': '1'
         }})
+        
         data.saldo = response.data[userId].completed.balance
+        if(data.saldo < 0)
+        {
+          data.creditLine += data.saldo
+          data.saldo = 0
+        }
       } catch (error) {
         console.log(error)
       }
+      
 
       // get requests
       try {
@@ -251,13 +286,17 @@ module.exports = async function(dbUrl, dbFolder) {
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
+          if (entry.state === 'completed') {
+            data.completedTransactions.push(entry)
+          } else if (entry.state === 'pending') {
+            data.requests.push(entry)
+          }
         }
-        data.requests = response.data
+        //data.requests = response.data
       } catch (error) {
         console.log(error)
       }
-
-      // get purchases
+      // get transactions
       try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
         headers: {
@@ -269,6 +308,7 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         let userNames = {}
         for (const entry of response.data) {
+          //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee.profile.accountName   
@@ -286,17 +326,16 @@ module.exports = async function(dbUrl, dbFolder) {
           entry.entries[0].author = userNames[entry.entries[0].author]
 
           if (entry.state === 'completed') {
-            data.completedPurchases.push(entry)
+            data.completedTransactions.push(entry)
           } else if (entry.state === 'pending') {
             data.pendingPurchases.push(entry)
           }
         }
+      
       } catch (error) {
         console.log(error)
       }
-
       db.close()
-
       res.status(200).send(data)
     } catch {
       db.close()
@@ -310,28 +349,32 @@ module.exports = async function(dbUrl, dbFolder) {
    *                 
    *****************************************************************************/
 
-  router.post("/register", (req, res) => {
-    getUser({ email: req.body.email }).then(async (user) => {
+  router.post("/register", upload.single('file'), (req, res) => { //register a new user
+    console.log(req.body)
+    const newPro = JSON.parse(req.body.accountInfo)
+    getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
+        console.log(req.body.accountInfo)
         const newUser = {
-          email: req.body.email.toLowerCase(),
-          password: req.body.password,
+          email: newPro.email,
+          //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
+          password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
-          min_limit: parseInt(req.body.min_limit, 10),
+          min_limit: newPro.min_limit,
           max_limit: parseInt(req.body.max_limit, 10),
-          is_admin: req.body.is_admin === "false" ? false : true,
+          is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
-            accountName: req.body.email,
-            description: "",
-            adress: "",
-            city: "",
-            phone: "",
+            accountName: newPro.accountName,
+            description: newPro.description,
+            adress: newPro.adress,
+            city: newPro.city,
+            phone: newPro.phone,
             billing: {
-              name: "",
-              box: "",
-              adress: "",
-              orgNumber: ""
+              name: newPro.billingName,
+              box: newPro.billingBox,
+              adress: newPro.billingAdress,
+              orgNumber: newPro.orgNumber
             },
             logo: "",
             logo_id: ""
@@ -339,22 +382,130 @@ module.exports = async function(dbUrl, dbFolder) {
           messages: {},
           notifications: [],
         }
+        if (req.file) {
+          newUser.logo = req.file.filename
+          newUser.logo_id = req.file.id
+        }
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
-          res.sendStatus(200)
+          try {
+            const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+              from: 'sbwebapp@outlook.com', // sender address
+
+              to: newUser.email, 
+              subject: 'Medlem i Svensk Barter', // Subject line
+              text: `
+              Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
+              Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+              
+              ${FRONTEND_URL}/login
+
+              Dina inloggningsuppgifter är:
+              E-postaddress: ${newPro.email}
+              Lösenord: ${newPro.password}
+              
+              Med vänliga hälsningar,
+              Svensk Barter
+              `
+             })
+             console.log(reponse)
+          } catch (error) {
+            console.log(error)
+            const result = await dbo.collection("users").deleteOne(newUser)
+            if (!result.acknowledged) {
+              console.log("couldnot delete user"+result)
+            }
+            res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
+            db.close()
+            return
+          }
+          res.status(200).send('Den nya medlemmen är nu registrerad!')
           db.close()
         } else {
-          res.sendStatus(500)
+          res.sendStatus(404).send('Det gick inte att registrera medlemmen.')
           db.close()
         }
       } else {
         //Det finns redan en användare med namnet
-        res.sendStatus(500)
+        res.status(500).send('Denhär medlemmen finns redan.')
       }
     })
   })
+
+
+//Might not be scalable when there is a lot of transactions
+  router.get("/economy", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder)
+    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+    const userId = user._id.toString()
+    delete user._id
+    delete user.password
+    let allTransactions = []
+    try{
+      const response = await axios.get(CC_NODE_URL + '/transactions', { 
+        headers: {
+        'cc-user': userId,
+        'cc-auth': '123'
+        },
+        params: {
+          'state': 'completed'
+        }})
+        console.log(response.data)
+        let userNames = {}
+        for (const entry of response.data) {
+          //console.log(entry)
+          if(!(entry.entries[0].payee in userNames)) {
+            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+            userNames[entry.entries[0].payee] = payee.profile.accountName   
+          }
+          if(!(entry.entries[0].payer in userNames)) {
+            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+            userNames[entry.entries[0].payer] = payer.profile.accountName   
+          }
+          if(!(entry.entries[0].author in userNames)) {
+            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+            userNames[entry.entries[0].author] = author.profile.accountName   
+          }
+          console.log(entry)
+          entry.entries[0].payee = userNames[entry.entries[0].payee]
+          entry.entries[0].payer = userNames[entry.entries[0].payer]
+          entry.entries[0].author = userNames[entry.entries[0].author]
+          console.log(entry)
+          allTransactions.push(entry)
+        }
+    } catch (error) {
+      db.close()
+      console.log(error)
+    }
+      db.close()
+      console.log(allTransactions)
+      res.status(200).send(allTransactions)
+    })
+    /*try{
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      const users = await dbo.collection("users").find({}).toArray()
+
+      //Get all the transcations from the whole system, 
+      //when connected to the cc-node we have to get all the transactions for each user seperatly
+      let data = await dbo.collection('transaction').find({}).toArray()
+
+      for (const entry of data) { //replace id with account name , might want to store both?
+        const payee = users.find(element => element._id == entry.payee);
+        const payer = users.find(element => element._id == entry.payer);
+        entry.payee = payee.profile.accountName
+        entry.payer = payer.profile.accountName
+      }
+      res.status(200).send(data)
+      db.close()
+    } catch {
+      res.status(500).send(data)
+    }*/
+
+ 
 
   /*****************************************************************************
    * 
@@ -389,6 +540,7 @@ module.exports = async function(dbUrl, dbFolder) {
     getUser({ "profile.accountName": req.user }).then((user) => {
       if (user != null) {
         const newPro = JSON.parse(req.body.accountInfo)
+        console.log(newPro.accountName)
         let newProfile = {
           website: "",
           accountName: newPro.accountName,
@@ -440,6 +592,62 @@ module.exports = async function(dbUrl, dbFolder) {
     })
   })
 
+  router.post("/updateuserProfile/:name", upload.single('file'), (req, res) => {
+    
+    getUser({ "profile.accountName": req.params.name }).then((user) => {
+      if (user != null) {
+        const newPro = JSON.parse(req.body.accountInfo)
+        let newProfile = {
+          website: "",
+          accountName: newPro.accountName,
+          description: newPro.description,
+          adress: newPro.adress,
+          city: newPro.city,
+          billing: {
+            name: newPro.billingName,
+            box: newPro.billingBox,
+            adress: newPro.billingAdress,
+            orgNumber: newPro.orgNumber
+          },
+          phone: newPro.phone,
+        }
+        if (req.file) {
+          newProfile.logo = req.file.filename
+          newProfile.logo_id = req.file.id
+        } else {
+          newProfile.logo = user.profile.logo
+          newProfile.logo_id = user.profile.logo_id
+        }
+        const query = {
+          $set: {
+            email: newPro.email,
+            profile: newProfile
+          }
+        }
+        updateUser({ "profile.accountName": req.params.name }, query).then((query) => {
+          if (query.acknowledged) {
+            // delete old logo if exists
+            if (req.file) {
+              gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "uploads",
+              });
+              gridfsBucket.delete(user.profile.logo_id, function (err, r) {
+                if (err) {
+                  console.log(err)
+                }
+              });
+            }
+            res.sendStatus(200)
+          } else {
+            res.status(404).send("Unable to update profile.")
+          }
+        })
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
   /*****************************************************************************
    * 
    *                                Articles
@@ -447,7 +655,7 @@ module.exports = async function(dbUrl, dbFolder) {
    *****************************************************************************/
 
   router.get("/articles", async (req, res) => {
-    console.log(req)
+    //console.log(req)
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
@@ -609,6 +817,25 @@ module.exports = async function(dbUrl, dbFolder) {
     });
   })
 
+  router.post("/uploadFile", upload.single('file'), (req, res) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
+      if (user != null) {
+        let newFile = {}
+        if (req.file) {
+          console.log(req.file)
+          newFile.name = req.file.filename
+          newFile.fileType = req.file.contentType
+          newFile.message = req.file.originalname
+          res.status(200).json(newFile)
+        } else {
+          res.status(404).send("The file doesnot exists.")
+        }
+      } else {
+        res.status(404).send("The profile doesn't exist.")
+      }
+    })
+  })
+
   /*****************************************************************************
    * 
    *                                Notifications
@@ -667,7 +894,7 @@ module.exports = async function(dbUrl, dbFolder) {
 
   router.post('/cart', (req, res) => {
     const cartItem = req.body;
-    console.log(cartItem);
+    //console.log(cartItem);
     cartItem.cartOwner = req.user;
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
@@ -908,5 +1135,107 @@ module.exports = async function(dbUrl, dbFolder) {
     return res.status(200).send("Email successfully sent")
   })
 
-  return { 'router': router, 'conn': conn }
-}
+  
+
+
+  /*****************************************************************************
+  * 
+  *                                Events
+  *                 
+  *****************************************************************************/
+  router.get("/load/event", async (req, res) => {
+    console.log('res' + res)
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    dbo.collection('events').find({}).toArray(function (err, eventsdata) {
+      if (err) {
+        res.sendStatus(500)
+        db.close()
+      }
+      else {
+        console.log('i index'+ eventsdata)
+        res.status(200).send(eventsdata)
+        db.close()
+      } 
+    })
+  })
+
+  router.get("/userId", (req, res) => {
+    getUser({ "profile.accountName": req.user }).then((user) => {
+      res.status(200).json(user._id)
+    }).catch((error) => {
+      res.sendStatus(500)
+    })
+  })
+
+  router.post('/upload/event', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      
+      console.log(req.body) //shows contents of body in terminal
+      
+      let newEvent = {
+        title: req.body.title,
+        start: new Date(req.body.eventstart),
+        end: new Date(req.body.eventend),
+        allDay: req.body.eventallDay,
+        location: req.body.location,
+        description: req.body.description,
+        contacts: req.body.contacts,
+        webpage: req.body.webpage,
+        _startTime: req.body._startTime,
+        _endTime: req.body._endTime
+      }
+      
+      const user = await getUser({'profile.accountName': req.user})
+      
+      newEvent.userId = user._id
+      
+      // for ttl index in posts
+      //if ('end-date' in newArticle) {
+      //newArticle['end-date'] = new Date(newArticle['end-date']);
+      //}
+      const db = await MongoClient.connect(dbUrl)
+      const dbo = db.db(dbFolder);
+      dbo.collection("events").insertOne(newEvent, (err, result)=>{
+        if (err) {
+          res.sendStatus(500)
+          db.close()
+        }
+        else if (result != null) {
+          res.sendStatus(200);
+          db.close()
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.status(404).send("No posts found.")
+        }
+      })
+    }
+  })
+  router.post('/event/remove/:id', (req, res) => {
+    const query = { _id: ObjectId(req.params.id) };
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('events').deleteOne(query, function (err, result) {
+        if (err) {
+          db.close();
+          res.sendStatus(500);
+        }
+        else if (result.matchedCount != 0) {
+          db.close();
+          res.sendStatus(200);
+        }
+        else {
+          // If we dont find a result
+          db.close();
+          res.sendStatus(404);
+        }
+      })
+    })
+  })
+
+return { 'router': router, 'conn': conn }
+};

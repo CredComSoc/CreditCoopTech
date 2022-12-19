@@ -17,13 +17,16 @@ const store = new Vuex.Store ({
     myCartSize: 0,
 
     saldo: 0,
+    creditLine: 0,
 
     requests: [],
     pendingPurchases: [],
-    completedPurchases: [],
+    completedTransactions: [],
 
     activeArticles: [],
-    inactiveArticles: []
+    inactiveArticles: [],
+
+    allEvents: []
 
   },
   mutations: {
@@ -63,6 +66,9 @@ const store = new Vuex.Store ({
     replaceSaldo (state, payload) {
       state.saldo = payload
     },
+    replaceCreditLine (state, payload) {
+      state.creditLine = payload
+    },
 
     replaceRequests (state, payload) {
       state.requests = payload
@@ -72,8 +78,8 @@ const store = new Vuex.Store ({
       state.pendingPurchases = payload
     },
 
-    replaceCompletedPurchases (state, payload) {
-      state.completedPurchases = payload
+    replaceCompletedTransactions (state, payload) {
+      state.completedTransactions = payload
     },
 
     replaceActiveArticles (state, payload) {
@@ -82,6 +88,10 @@ const store = new Vuex.Store ({
 
     replaceInactiveArticles (state, payload) {
       state.inactiveArticles = payload
+    },
+
+    replaceAllEvents (state, payload) {
+      state.allEvents = payload
     }
   },
   actions: {

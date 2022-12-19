@@ -1,18 +1,19 @@
 <template>
   <div>
-   <h3 :for="this.name" class="input-title"> {{ this.label }}</h3>
+    <h3 v-if="!this.isDateFilter" :for="this.name" class="input-title"> {{ this.label }}</h3>
     <div id="combo-box-field">
-      <div v-if="!this.isDatePicker" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
+      <div v-if="!this.isDatePicker && !this.isDateFilter" tabindex="0" :id="this.name" class="combobox" :name="this.name" @click="handleSelect(this.name)" >
         <p unselectable="on" :data-placeholder="placeholder" :id="this.name + '-combo-placeholder'"></p>
         <img id="combo-arrow" src="../../assets/link_arrow/combobox-arrow-down.png" />
       <!-- <input :id="this.name + `-date-picker`" ref="dateVal" v-if="this.isDatePicker" class="date-picker" name="date" type="date" @change=setDate> -->
       </div>
-      <div v-if="!this.isDatePicker" class="dropdown-combo">
+      <div v-if="!this.isDatePicker && !this.isDateFilter" class="dropdown-combo">
         <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
           <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
         </div>
       </div>
       <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
+      <input v-if="this.isDateFilter" :id="this.name + `-date-filter`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-filter" name="date" type="text" @change=setDate>
     </div>
   </div>
 </template>
@@ -20,7 +21,7 @@
 <script>
 export default {
   name: 'Combobox',
-  props: ['name', 'label', 'options', 'placeholder', 'isDatePicker'],
+  props: ['name', 'label', 'options', 'placeholder', 'isDatePicker', 'isDateFilter'],
   emits: ['clearNoEndDateCheckbox'],
   methods: {
     handleSelect (id) {
@@ -45,26 +46,41 @@ export default {
     },
     setDate () { 
       this.$refs.dateVal.type = 'text'
+
       const options = { 
         month: '2-digit', 
         day: '2-digit'
       }
+      
       this.selectedValue = this.$refs.dateVal.value
-      this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      if (this.isDatePicker) {
+        this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      } else {
+        this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/') // used for dateFilter to set the date
+      }
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
-    formatDate (endDate) {
-      const options = { 
-        month: '2-digit', 
-        day: '2-digit'
+    formatDate (Date) {
+      let options
+      if (this.isDatePicker) {
+        options = { 
+          month: '2-digit', 
+          day: '2-digit'
+        }
+      } else { //Formats with year int the date filter
+        options = { 
+          year: '4-digit', 
+          month: '2-digit', 
+          day: '2-digit'
+        }
       }
-      console.log(endDate)
+      console.log(Date)
       const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
-      return now + ' - ' + new Date(endDate).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      return now + ' - ' + new Date(Date).toLocaleString('sv-SE', options).replaceAll('-', '/')
     },
     setValue (newValue) {
-      if (this.isDatePicker) {
+      if (this.isDatePicker || this.isDateFilter) {
         this.$refs.dateVal.type = 'text'
         this.$refs.dateVal.value = this.formatDate(newValue)
         this.$refs.dateVal.blur()
@@ -77,13 +93,27 @@ export default {
       }
     },
     clearDatePicker () {
-      this.$refs.dateVal.type = 'text'
-      this.$refs.dateVal.value = null
-      this.selectedValue = null
+      if (this.isDatePicker) {
+        this.$refs.dateVal.type = 'text'
+        this.$refs.dateVal.value = null
+        this.selectedValue = null
+      }
+      if (this.isDateFilter) { //set standardvalues of the datefilter if cleared. is for the moment 2020
+        const minLimitDate = new Date()
+        const dateFilter = document.getElementById(this.name + '-date-filter')
+        minLimitDate.setFullYear(2020, 0, 1)
+        dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+        const maxLimitDate = new Date()
+        maxLimitDate.setDate(maxLimitDate.getDate())
+        dateFilter.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+        this.$refs.dateVal.value = null
+        this.selectedValue = null
+      }
     } 
   },
   mounted () {
-    if (!this.isDatePicker) {
+    //this.startDateFilter.setFullYear(2022)
+    if (!this.isDatePicker && !this.isDateFilter) {
       const list = document.getElementById(this.name + '-dropdown')
       for (const item of list.childNodes) {
         item.addEventListener('click', () => {
@@ -95,7 +125,7 @@ export default {
           document.getElementById(this.name).classList.remove('combobox-active')
         })
       }
-    } else {
+    } else if (this.isDatePicker) {
       const minLimitDate = new Date()
       const datePicker = document.getElementById(this.name + '-date-picker')
       minLimitDate.setDate(minLimitDate.getDate() + 1)
@@ -103,7 +133,15 @@ export default {
       const maxLimitDate = new Date()
       maxLimitDate.setFullYear(maxLimitDate.getFullYear() + 1)
       datePicker.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
-    } 
+    } else { //initiate values in the datefilter
+      const minLimitDate = new Date()
+      const dateFilter = document.getElementById(this.name + '-date-filter')
+      minLimitDate.setFullYear(2020)
+      dateFilter.setAttribute('min', minLimitDate.toISOString().split('T')[0])
+      const maxLimitDate = new Date()
+      maxLimitDate.setDate(maxLimitDate.getDate())
+      dateFilter.setAttribute('max', maxLimitDate.toISOString().split('T')[0])
+    }
   },
   data () {
     return { 
@@ -138,6 +176,17 @@ export default {
   background: white;
   border: 2px solid #5c5c5c;
   border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.date-filter {
+  width: 125px;
+  height: 30px;/*
+  background: white;
+  border: 2px solid #5c5c5c;
+  border-radius: 4px;*/
   position: relative;
   cursor: pointer;
   font-size: 13px;

@@ -9,15 +9,22 @@ import Shop from '../components/Shop/Shop.vue'
 import Members from '../components/Members/members.vue'
 import NewArticle from '../components/CreateArticle/NewArticle.vue'
 import Profile from '../components/Profile/Profile.vue'
-import AdminHome from '../components/AdminSection/AdminHome.vue'
 import userProfile from '../components/Members/userProfile.vue'
 import ShoppingCart from '../components/ShoppingCart/ShoppingCart.vue'
 import Chat from '../components/Chat/Chat.vue'
 import About from '../components/Footer/About.vue'
 import FAQ from '../components/FAQ/FAQ.vue'
 
-const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'FAQ']
-const adminRoutes = ['AdminHome']
+import AdminHome from '../components/AdminSection/AdminHome.vue'
+import AdminChat from '../components/AdminSection/AdminChat/Chat.vue'
+import AdminAddMember from '../components/AdminSection/AdminAddMember.vue'
+import AdminEconomy from '../components/AdminSection/AdminEconomy.vue'
+import NetworkSetting from '../components/AdminSection/NetworkSettings.vue'
+import Event from '../components/Event/Event.vue'
+const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
+const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting']
+
+
 
 const routes = [
   // USER ROUTES
@@ -89,6 +96,13 @@ const routes = [
     component: Chat,
     props: true
   },
+
+  {
+    path: '/Event',
+    name: 'Event',
+    component: Event,
+    props: true
+  },
   {
     path: '/about',
     name: 'About',
@@ -99,6 +113,42 @@ const routes = [
     path: '/admin',
     name: 'AdminHome',
     component: AdminHome
+  },
+  {
+    path: '/adminchat',
+    name: 'AdminChat',
+    component: AdminChat
+  },
+  {
+    path: '/adminmembers',
+    name: 'AdminMembers',
+    component: Members
+  },
+  {
+    path: '/adminshop',
+    name: 'AdminShop',
+    component: Shop
+  },
+  {
+    path: '/adminmembers/:userprofile',
+    name: 'AdminMemberUserprofile',
+    component: userProfile,
+    props: true
+  },
+  {
+    path: '/adminaddmember',
+    name: 'AdminAddMember',
+    component: AdminAddMember
+  },
+  {
+    path: '/admineconomy',
+    name: 'AdminEconomy',
+    component: AdminEconomy
+  },
+  {
+    path: '/networksetting',
+    name: 'NetworkSetting',
+    component: NetworkSetting
   }
 ]
 
