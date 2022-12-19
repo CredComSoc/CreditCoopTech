@@ -362,8 +362,6 @@ export default {
       } else {
         tag.style.color = 'red'
       }
-      console.log(this.$refs)
-      console.log(this.$refs.outreq)
       let length = this.$refs.outreq.length - 1 // get number of elements
       let element = this.$refs.outreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       tag.appendChild(text)
@@ -371,10 +369,6 @@ export default {
         length = this.$refs.inreq.length - 1 // get number of elements
         element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       }
-      
-      console.log(this.$refs.outreq[length - index])
-      console.log(this.$refs.inreq[length - index])
-      console.log(element)
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 
