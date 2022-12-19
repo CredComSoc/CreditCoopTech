@@ -364,11 +364,11 @@ export default {
       }
       console.log(this.$refs)
       console.log(this.$refs.outreq)
-      let length = this.$refs.outreq - 1 // get number of elements
+      let length = this.$refs.outreq.length - 1 // get number of elements
       let element = this.$refs.outreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       tag.appendChild(text)
       if (list === 'in') { //choose which list of elements to operate on
-        length = this.$refs.inreq - 1 // get number of elements
+        length = this.$refs.inreq.length - 1 // get number of elements
         element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       }
       
