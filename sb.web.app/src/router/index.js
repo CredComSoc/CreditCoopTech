@@ -24,8 +24,6 @@ import Event from '../components/Event/Event.vue'
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
 const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting']
 
-
-
 const routes = [
   // USER ROUTES
   {
