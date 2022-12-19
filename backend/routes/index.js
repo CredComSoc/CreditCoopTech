@@ -15,10 +15,6 @@ const { promisify } = require('util');
 const { json, response } = require('express');
 const axios = require('axios').default;
 
-<<<<<<< HEAD
-//FRONTEND_URL = 'http://155.4.159.231:8080'
-=======
->>>>>>> PreMain
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 

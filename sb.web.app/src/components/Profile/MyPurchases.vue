@@ -1,45 +1,9 @@
-<<<<<<< HEAD
-<template >
-    <div >
-      <h1><b> Bekräftade köp </b></h1>
-
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
-      <table>
-        <tr>
-          <th>Företag</th>
-          <th>Artikel</th>
-          <th>Antal</th>
-          <th>Pris</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>
-          <th>Faktura</th>      
-        </tr>
-        <tr v-for="(item) in this.$store.state.completedPurchases" :key="item">
-          <td>{{item.entries[0].payee}}</td>
-          <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-          <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-          <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
-          <th>{{convertToLocalTime(item.written)}}</th>
-          <td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>
-        </tr>
-      </table>
-      </div>
-
-      <h1><b> Väntande köp </b></h1>
-      <div>
-        <p v-if="pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
-      </div>
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
-=======
 <template>
   <div>
     <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
     <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
     <h1><b> Köpförfrågningar </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
->>>>>>> PreMain
         <table>
           <tr>
             <th>Företag</th>
@@ -86,21 +50,12 @@
           </tr>
           <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
             <td>{{item.entries[0].payee}}</td>
-<<<<<<< HEAD
-            <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
-            <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
-            <td>{{item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-            <td>{{item.entries[0].quant}}</td>
-            <th>{{convertToLocalTime(item.written)}}</th>
-=======
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
->>>>>>> PreMain
             <td id="buttons">
               <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
             </td>
@@ -196,14 +151,6 @@ export default {
     PopupCard
   },
   methods: {
-<<<<<<< HEAD
-    convertToLocalTime (date) {
-      date = new Date(date)
-      console.log(date)
-      return date.toISOString().split('T')[0]
-    },
-    invoice (filename, item) {
-=======
     mounted () {
       this.clearFilters()
     },
@@ -359,7 +306,6 @@ export default {
     },
     
     invoice (filename, item) { // not used atm. used for generating invoices
->>>>>>> PreMain
       console.log(item.entries[0])
       const pom = document.createElement('a')
       const text = 'hello'
