@@ -382,6 +382,7 @@ module.exports = async function(dbUrl, dbFolder) {
           newUser.logo = req.file.filename
           newUser.logo_id = req.file.id
         }
+        console.log('hej! ' + newUser.email)
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
