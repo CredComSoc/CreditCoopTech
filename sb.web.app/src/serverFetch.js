@@ -5,6 +5,7 @@ const urlBase = 'http://dev-sb-backend.mutualcredit.services'
 export const EXPRESS_URL = urlBase + ':3000' 
 export const CHAT_URL = urlBase + ':3001'
 const standardCreditLine = -5000
+const standardMaxAmount = 20000
 
 /*****************************************************************************
  * 
@@ -148,7 +149,8 @@ export async function register (isadmin, username, password, description, adress
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone,
-    min_limit: standardCreditLine
+    min_limit: standardCreditLine,
+    max_limit: standardMaxAmount
   }))
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/register', {

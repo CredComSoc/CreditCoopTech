@@ -370,7 +370,7 @@ module.exports = async function(dbUrl, dbFolder) {
           password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: newPro.min_limit,
-          max_limit: parseInt(req.body.max_limit, 10),
+          max_limit: newPro.max_limit,
           is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
