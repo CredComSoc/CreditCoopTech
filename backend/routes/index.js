@@ -20,6 +20,7 @@ CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
 const transporter = nodemailer.createTransport({
   service: 'hotmail',
+  //service: 'outlook',
   auth: {
     user: 'sbwebapp@outlook.com',
     pass: '@sbapp_KU5'
