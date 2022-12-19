@@ -54,8 +54,7 @@
               <span class="mob-cap"> Medlemmar </span>
             </router-link>
           </div>
-        </div>
-        <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
+          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
             <div id="faq-dropdown" class="dropdown"></div>
             <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
               <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
@@ -75,6 +74,8 @@
               <span class="mob-cap"> FAQ </span>
             </router-link>
           </div>
+        </div>
+        
         <div class="middle-logo">
           <div id="navbar-home" class="navlogo">
             <figure>
