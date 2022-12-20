@@ -14,7 +14,7 @@
             <th>Tidstämpel</th>
             <th>Status</th>
           </tr>
-          <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="reqRefs">
+          <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreq">
             <td>{{item.entries[0].payer}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -23,8 +23,8 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button> <!--ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button> <!--Messed up-->
+              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button> 
+              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
             </td>
           </tr>
         </table>
@@ -48,7 +48,7 @@
             <th>Tidstämpel</th>
             <!--<th>Status</th>-->
           </tr>
-          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="reqRefs">
+          <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="inreq">
             <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, 'AVBRUTEN')
+      this.statusSwap(index, 'AVBRUTEN', 'in')
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, 'AVBRUTEN')
+      this.statusSwap(index, 'AVBRUTEN', 'out')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -354,7 +354,7 @@ export default {
       this.payerNotEnoughBkr = false
       this.payeeTooMuchBkr = false
     },
-    statusSwap (index, messagetext) {
+    statusSwap (index, messagetext, list) {
       const tag = document.createElement('p')
       const text = document.createTextNode(messagetext)
       if (messagetext === 'GODKÄND') {
@@ -362,9 +362,13 @@ export default {
       } else {
         tag.style.color = 'red'
       }
+      let length = this.$refs.outreq.length - 1 // get number of elements
+      let element = this.$refs.outreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
       tag.appendChild(text)
-      const length = this.$refs.reqRefs.length - 1 // get number of elements
-      const element = this.$refs.reqRefs[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      if (list === 'in') { //choose which list of elements to operate on
+        length = this.$refs.inreq.length - 1 // get number of elements
+        element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      }
       const child = element.lastElementChild //status element of selected row
       let grandChild = child.lastElementChild //godkänn button in status element.
       while (grandChild) { 

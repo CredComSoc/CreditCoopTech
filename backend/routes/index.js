@@ -18,11 +18,24 @@ const axios = require('axios').default;
 FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
 CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
 
+/*
 const transporter = nodemailer.createTransport({
-  service: 'hotmail',
+  service: 'Outlook365',
+  secure: true,
   auth: {
     user: 'sbwebapp@outlook.com',
     pass: '@sbapp_KU5'
+  }
+})
+*/
+//const ouremail = sbwebapp@outlook.com
+const ouremail = 'dev-sb@outlook.com'
+const transporter = nodemailer.createTransport({
+  service: 'Outlook365',
+  secure: true,
+  auth: {
+    user: ouremail,
+    pass: 'UOIJufhsaoug32579asFG1!fsd'
   }
 })
 
@@ -357,7 +370,7 @@ module.exports = async function(dbUrl, dbFolder) {
           password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: newPro.min_limit,
-          max_limit: parseInt(req.body.max_limit, 10),
+          max_limit: newPro.max_limit,
           is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
@@ -388,7 +401,7 @@ module.exports = async function(dbUrl, dbFolder) {
         if (result.acknowledged) {
           try {
             const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-              from: 'sbwebapp@outlook.com', // sender address
+              from: ouremail, // sender address
 
               to: newUser.email, 
               subject: 'Medlem i Svensk Barter', // Subject line
@@ -1086,7 +1099,7 @@ module.exports = async function(dbUrl, dbFolder) {
     updateUser(user, query)
 
     await transporter.sendMail({
-      from: 'svenskbarter.reset@outlook.com', // sender address
+      from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
       to: user.email, // list of receivers
       subject: 'Återställning av lösenord', // Subject line
       text: `
@@ -1121,7 +1134,7 @@ module.exports = async function(dbUrl, dbFolder) {
   
     const resetEmail = {
       to: user.email,
-      from: 'svenskbarter.reset@outlook.com',
+      from: ouremail, //'svenskbarter.reset@outlook.com'
       subject: 'Ditt lösenord har ändrats',
       text: `
       Det här är en bekräftelse på att lösenordet för ditt konto "${user.profile.accountName}" hos Svensk Barter har ändrats.
