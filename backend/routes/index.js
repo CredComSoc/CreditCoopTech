@@ -32,11 +32,11 @@ const transporter = nodemailer.createTransport({
 const ouremail = "sbwebapp@outlook.com"
 
 const transporter = nodemailer.createTransport({
-  service: 'Outlook365',
+  service: 'hotmail',
   secure: true,
   auth: {
     user: ouremail,
-    pass: 'UOIJufhsaoug32579asFG1!fsd'
+    pass: '@sbapp_KU5'
   }
 })
 
