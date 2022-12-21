@@ -14,6 +14,19 @@
         </tr>
       </table>
     </div>
+    <div>
+      <p style="font-style: italic; width: 950px;"> Sidan vidareutvecklades för projektkursen TDDI17: Programmeringsprojekt på Linköpings Universitet, av följande studenter:  </p>
+    </div>
+    <div style="max-height: 50em;">
+      <table>
+        <tr>
+        </tr>
+        <tr v-for="item in creators2" :key="item">
+          <td> {{item}} </td>
+
+        </tr>
+      </table>
+    </div>
 
  </div>
 </template>
@@ -23,7 +36,8 @@
 export default {
   data () {
     return {
-      creators: ['Vincent Ahlström', 'Alicia Bergman', 'Robin Jensen', 'Linus Johansson', 'Kasper Nilsson', 'Viktor Rösler']
+      creators: ['Vincent Ahlström', 'Alicia Bergman', 'Robin Jensen', 'Linus Johansson', 'Kasper Nilsson', 'Viktor Rösler'],
+      creators2: ['Oscar Castenäs', 'Simon Jernström', 'Hanna Häger', 'Rojal Maharyan', 'Pernilla Ljungqvist', 'Alma Wärnsäter', 'Rikard Arnemo']
     }
   }
 }
