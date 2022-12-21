@@ -28,8 +28,9 @@ const transporter = nodemailer.createTransport({
   }
 })
 */
-//const ouremail = sbwebapp@outlook.com
-const ouremail = 'dev-sb@outlook.com'
+
+const ouremail = "sbwebapp@outlook.com"
+
 const transporter = nodemailer.createTransport({
   service: 'Outlook365',
   secure: true,
