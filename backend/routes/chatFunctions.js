@@ -1,11 +1,10 @@
 const { MongoClient, ObjectId } = require('mongodb');
-const dbConfig = require('../mongoDB-config');
+const config = require('../mongoDB-config');
 const uuid = require('uuid');
 const { query } = require('express');
 const { model } = require('mongoose');
 
-const dbFolder = dbConfig.dbFolder
-const mongoURL = dbConfig.mongoURL(dbFolder)
+const mongoURL = config.mongoURL;
 
 module.exports.initChat = async (sender, receiver) => {
     return new Promise(async (resolve, reject) => {
@@ -15,12 +14,12 @@ module.exports.initChat = async (sender, receiver) => {
             const res2 = await this.createChat(receiver, sender, chatID);
             if (!res2) {
                 this.deleteChat(sender, receiver, chatID);
-                console.log("Kan inte skapa chatten just nu");
+                //console.log("Kan inte skapa chatten just nu");
                 resolve(false);
             }
             else {
                 const db = await MongoClient.connect(mongoURL);
-                const dbo = db.db(dbFolder);
+                const dbo = db.db();
                 dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
                     if (err) {
                         console.log(err);
@@ -42,7 +41,7 @@ module.exports.initChat = async (sender, receiver) => {
 
 module.exports.deleteChat = async (user, chatter, chatID) => {
     const db = await MongoClient.connect(mongoURL);
-    const dbo = db.db(dbFolder);
+    const dbo = db.db();
     const key = 'chats.' + chatID;
     dbo.collection('users').updateOne({'profile.accountName': user}, { $unset: { [key]: 1 } }, (err, res) => {
         if (err) {
@@ -59,7 +58,7 @@ module.exports.deleteChat = async (user, chatter, chatID) => {
 module.exports.createChat = (user, chatter, chatID) => {
     return new Promise( async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
-        const dbo = db.db(dbFolder);
+        const dbo = db.db();
         const key = 'chats.' + chatID;
         dbo.collection('users').updateOne({'profile.accountName': user}, { $set: { [key]: chatter } }, (err, res) => {
             if (err) {
@@ -100,7 +99,7 @@ module.exports.chatExists = async (user, chatter) => {
 module.exports.getAllChatIDs = async (user) => {
     return new Promise( async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
-        const dbo = db.db(dbFolder);
+        const dbo = db.db();
         dbo.collection('users').findOne({'profile.accountName': user}, (err, res) => {
             if (err) {
                 console.log(err);
@@ -136,7 +135,7 @@ module.exports.getAllChatHistories = async (user) => {
 module.exports.getChatHistory = async (chatID) => {
     return new Promise(async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
-        const dbo = db.db(dbFolder);
+        const dbo = db.db();
         dbo.collection('chats').findOne({[chatID]: {$exists: true}}, (err, res) => {
             if (err) {
                 console.log(err);
@@ -157,7 +156,7 @@ module.exports.getChatHistory = async (chatID) => {
 module.exports.getChatID = async (user, chatter) => {
     return new Promise(async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
-        const dbo = db.db(dbFolder);
+        const dbo = db.db();
         dbo.collection('users').findOne({ 'profile.accountName': user }, (err, res) => {
             if (err) {
                 console.log(err);
@@ -189,7 +188,7 @@ module.exports.getChatID = async (user, chatter) => {
 module.exports.checkChatStatus = async (user, chatter) => {
     return new Promise(async (resolve, reject) => {
         const db = await MongoClient.connect(mongoURL);
-        const dbo = db.db(dbFolder);
+        const dbo = db.db();
         const key = 'chats.' + chatter;
         dbo.collection('users').findOne({ 'profile.accountName': user } , (err, res) => {
             if (err) {
@@ -215,7 +214,7 @@ module.exports.checkChatStatus = async (user, chatter) => {
 
 module.exports.storeChatMsg = async (chatID, msg) => {
     const db = await MongoClient.connect(mongoURL);
-    const dbo = db.db(dbFolder);
+    const dbo = db.db();
     dbo.collection('chats').updateOne({[chatID]: {$exists: true}}, { $push: { [chatID]: msg } }, (err, res) => {
         if (err) {
             console.log(err);
@@ -231,7 +230,7 @@ module.exports.storeChatMsg = async (chatID, msg) => {
 
 module.exports.storeNotification = async (notification) => {
     const db = await MongoClient.connect(mongoURL)
-    const dbo = db.db(dbFolder);
+    const dbo = db.db();
    
     dbo.collection('users').findOne({ 'profile.accountName': notification.toUser }, (err, user) => {
         if (err) {
@@ -272,7 +271,7 @@ module.exports.storeNotification = async (notification) => {
 
 module.exports.markNotification = async (chatID, username) => {
     const db = await MongoClient.connect(mongoURL)
-    const dbo = db.db(dbFolder);
+    const dbo = db.db();
    
     dbo.collection('users').findOne({ 'profile.accountName': username }, (err, user) => {
         if (err) {

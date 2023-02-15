@@ -9,6 +9,9 @@ fetch = fetchCookie(fetch)
 const FormData = require('form-data')
 const fastJson = require('fast-json-stringify')
 
+// this should ensure we use the config from .env.test
+process.env.NODE_ENV = 'test';
+
 const test_port = 3002
 const express_url = 'http://localhost:' + test_port
 const app = express()
@@ -18,8 +21,10 @@ const member = 'testuser'
 const admin = 'testadmin'
 const password = '123'
 
+
+
 async function deleteCollection(name) {
-  const db = await MongoClient.connect(dbConfig.mongoURL("test", true))
+  const db = await MongoClient.connect(dbConfig.mongoURL)
   const dbo = db.db("test");
   const result = await dbo.collection(name).deleteMany({})
   db.close();
@@ -27,7 +32,7 @@ async function deleteCollection(name) {
 }
 
 async function getCollection(name) {
-  const db = await MongoClient.connect(dbConfig.mongoURL("test", true))
+  const db = await MongoClient.connect(dbConfig.mongoURL)
   const dbo = db.db("test");
   const result = await dbo.collection(name).find({}).toArray()
   db.close();

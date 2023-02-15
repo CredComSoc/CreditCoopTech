@@ -1,22 +1,19 @@
 const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const Grid = require('gridfs-stream');
 const path = require('path');
 const multer = require('multer');
 const crypto = require('crypto');
 const { GridFsStorage } = require('multer-gridfs-storage');
-const methodOverride = require('method-override');
 const uuid = require('uuid');
-const util = require('util');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
-const { json, response } = require('express');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'https://sb.mutualcredit.services'
-CC_NODE_URL = 'https://sb-ledger.mutualcredit.services'
+const config = require('../mongoDB-config');
+
+
 
 /*
 const transporter = nodemailer.createTransport({
@@ -40,7 +37,13 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-module.exports = async function(dbUrl, dbFolder) {
+module.exports = function() {
+
+  const dbUrl = config.mongoURL;
+  const dbFolder = config.dbFolder;
+  const FRONTEND_URL = config.FRONTEND_URL; 
+  const CC_NODE_URL = config.CC_NODE_URL; 
+
   const router = express.Router();
 
   /*****************************************************************************
@@ -260,12 +263,6 @@ module.exports = async function(dbUrl, dbFolder) {
         
         data.saldo = response.data[userId].completed.balance
 
-        // no.. don't do this !
-        // if(data.saldo < 0)
-        // {
-        //   data.creditLine += data.saldo
-        //   data.saldo = 0
-        //}
       } catch (error) {
         console.log(error)
       }

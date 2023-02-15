@@ -1,42 +1,45 @@
 const LocalStrategy = require('passport-local')
-const {MongoClient} = require('mongodb');
 const mongoose = require('mongoose');
-const dbConfig = require('./mongoDB-config')
+const config = require('./mongoDB-config')
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
-module.exports = function(dbFolder, localUrl = false) {
-  const url = dbConfig.mongoURL(dbFolder, localUrl)
-
+  
+module.exports = function() {
+ 
+  const mongoURL = config.mongoURL;
+  
   async function authenticateUser (email, password, done) {
-    const  myquery = { email: email, password: password}
-    MongoClient.connect(url, (err, db) => {
-      const  dbo = db.db(dbFolder);
-      dbo.collection("users").findOne(myquery, function(err, result) {
-        if (err) {
-          db.close()
-          return done(err)
-        } 
-        else if (result != null) {
-          db.close()
-          return done(null, result)
-        } 
-        else {
-          db.close();
-          return done(null, false, {message: 'User Not Found'})
-        }
-      })
-    })
+    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    try {
+
+      await client.connect();
+      const result = await client.db().collection("users").findOne({ email, password });
+
+      if (result != null) {
+        return done(null, result);
+      } else {
+        return done(null, false, { message: 'User not found' });
+      }
+
+    } catch (err) {
+      return done(err);
+    } finally {
+      await client.close();
+    }
   }
   
   async function getUser(id) {
-    const myquery = { _id: id}
-    const db = await MongoClient.connect(url)
-    const dbo = db.db(dbFolder);
-    const user = await dbo.collection("users").findOne(myquery)
-    db.close();
-    return user
+    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    try {
+      await client.connect();
+      const user = await client.db().collection("users").findOne({ _id: id });
+      return user
+    } finally {
+      await client.close();
+    }
   }
 
-  return function initialize (passport) {
+  function initialize (passport) {
     passport.use (new LocalStrategy ({usernameField: 'email'}, authenticateUser))
     passport.serializeUser((user, done) => {
       return done(null, user._id)
@@ -47,8 +50,10 @@ module.exports = function(dbFolder, localUrl = false) {
       }).catch((err) => {
         return done(err)
       })
-    })
+    }) 
   }
+
+  return { initialize }
 }
 
 
