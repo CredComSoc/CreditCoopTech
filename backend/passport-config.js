@@ -1,15 +1,14 @@
 const LocalStrategy = require('passport-local')
 const mongoose = require('mongoose');
 const config = require('./mongoDB-config')
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
   
-module.exports = function() {
- 
+
   const mongoURL = config.mongoURL;
   
   async function authenticateUser (email, password, done) {
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
 
       await client.connect();
@@ -29,7 +28,7 @@ module.exports = function() {
   }
   
   async function getUser(id) {
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
       await client.connect();
       const user = await client.db().collection("users").findOne({ _id: id });
@@ -53,7 +52,6 @@ module.exports = function() {
     }) 
   }
 
-  return { initialize }
-}
+module.exports = { initialize }
 
 

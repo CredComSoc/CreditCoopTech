@@ -1,7 +1,7 @@
 const express = require('express');
 const ObjectId = require('mongodb').ObjectId
 const config = require('../mongoDB-config')
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
 // Routes required by the Credits Common Node
 // https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
@@ -14,7 +14,7 @@ module.exports = function() {
 
   router.head("/:acc_id", async (req, res) => {
 
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
       
       await client.connect();
@@ -43,7 +43,7 @@ module.exports = function() {
 
 
   router.get("/filter/full", async (req, res) => {
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
 
       await client.connect();
@@ -77,7 +77,7 @@ module.exports = function() {
   }) 
     
   router.get("/filter", async (req, res) => {
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
 
       await client.connect();
@@ -125,7 +125,7 @@ module.exports = function() {
   
   router.get("/:acc_id", async (req, res) => {
 
-    const client = new MongoClient(mongoURL, { serverApi: ServerApiVersion.v1 });
+    const client = new MongoClient(mongoURL);
     try {
       
       await client.connect();

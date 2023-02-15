@@ -1,0 +1,13 @@
+[
+    {
+      "exec_mode": "fork_mode",
+      "cwd" : "/root/sb-web-app-2.0/backend",
+      "script": "app.js",
+      "name": "backend_service",
+      "restart_delay":"9000",
+      "port"       : 3000,
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+]
