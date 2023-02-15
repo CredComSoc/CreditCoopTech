@@ -28,7 +28,12 @@
       <button id="login-button" >Logga in</button>
     </form>
     <div class="box-link">
-      <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link>
+      <a href="#" @click="handleMailToClick('svenskbarter@gmail.com')">Har ett problem? <br/>Kontakta Jonas</a>
+      <div class="box-msg" v-if="this.mailtoClicked">
+          <a href="mailto:svenskbarter@gmail.com">svenskbarter@gmail.com</a>
+      </div>
+      <!-- bring this back later -->
+      <!-- <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link> -->
     </div> 
     <div class="box-error" v-if="this.error">
       Fel epost eller lösenord ({{ loginCount }})
@@ -48,10 +53,15 @@ export default {
       username: '',
       password: '',
       error: false,
+      mailtoClicked: false,
       loginCount: 0
     }
   },
   methods: {
+    async handleMailToClick (emailAddress) {
+      this.mailtoClicked = true
+      window.location.href = 'mailto:' + emailAddress
+    },
     async handleSubmit () {
       login(this.username.toLowerCase(), this.password).then((response) => {
         console.log(response)
@@ -194,6 +204,14 @@ a {
 a:hover {
   text-decoration: underline;
   color: black;
+}
+
+.box-msg a {
+  font-size: 14px;
+  text-align: center;
+  color: rgb(27, 77, 2);
+  margin-top: 15px;
+  margin-bottom: -58px
 }
 
 </style>
