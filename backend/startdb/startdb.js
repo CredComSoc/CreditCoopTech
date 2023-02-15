@@ -6,6 +6,8 @@ const fetchCookie = require('fetch-cookie')
 fetch = fetchCookie(fetch)
 const FormData = require('form-data')
 
+// this should ensure we use the config from .env.test
+process.env.NODE_ENV = 'test';
 const test_port = 3002
 const express_url = 'http://localhost:' + test_port
 const app = express()
@@ -35,16 +37,15 @@ async function registerUser (isadmin, username, password, email) {
       method: 'POST',
       body: data
     })
-      .then((response) => {
-        return response
-      })
+    .then((response) => {
+      return response
+    })
   }
 
 describe('index routes', function () {
     this.beforeAll(async function() {
-        server.initApp(app, dbFolder="sb-web-app", localDbUrl = true)
+        server.initApp(app, test=true)
         server_instance = server.startServer(app, test_port)
-        
     })
   
     this.afterAll(async function() {
@@ -60,7 +61,7 @@ describe('index routes', function () {
 
     describe('POST /register', function() {
         it('Login admin', async function() {
-          const result = await await registerUser(true, admin, password, email)
+          const result = await registerUser(true, admin, password, email)
           assert(result.status === 200)
         })
     })

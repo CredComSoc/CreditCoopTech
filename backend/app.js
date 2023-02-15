@@ -9,7 +9,7 @@ let app = express()
 
 app.use(cors)
 
-server.initApp(app, dbFolder=dbConfig.dbFolder)
+server.initApp(app)
 
 server_instance = server.startServer(app, port)
 server.startChat(app)
