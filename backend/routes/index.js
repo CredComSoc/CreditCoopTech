@@ -15,8 +15,8 @@ const { promisify } = require('util');
 const { json, response } = require('express');
 const axios = require('axios').default;
 
-FRONTEND_URL = 'http://dev-sb.mutualcredit.services'
-CC_NODE_URL = 'http://dev-sb-ledger.mutualcredit.services'
+FRONTEND_URL = 'https://sb.mutualcredit.services'
+CC_NODE_URL = 'https://sb-ledger.mutualcredit.services'
 
 /*
 const transporter = nodemailer.createTransport({
