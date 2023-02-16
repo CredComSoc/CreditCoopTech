@@ -259,11 +259,13 @@ module.exports = async function(dbUrl, dbFolder) {
         }})
         
         data.saldo = response.data[userId].completed.balance
-        if(data.saldo < 0)
-        {
-          data.creditLine += data.saldo
-          data.saldo = 0
-        }
+
+        // no.. don't do this !
+        // if(data.saldo < 0)
+        // {
+        //   data.creditLine += data.saldo
+        //   data.saldo = 0
+        //}
       } catch (error) {
         console.log(error)
       }
