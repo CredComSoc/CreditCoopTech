@@ -3,7 +3,7 @@ import JsSHA from 'jssha'
 //const urlBase = 'http://155.4.159.231' // USE HOST EXPRESS
 //const urlBase = 'http://sb-backend.mutualcredit.services'
 export const EXPRESS_URL = 'https://sb-backend.mutualcredit.services'
-export const CHAT_URL = 'https://sb-backend.mutualcredit.services'
+export const CHAT_URL = 'https://sb-chat.mutualcredit.services'
 const standardCreditLine = -5000
 const standardMaxAmount = 20000
 

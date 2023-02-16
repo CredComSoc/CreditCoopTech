@@ -2,7 +2,8 @@ const express = require('express');
 const passport = require('passport')
 const session = require('cookie-session')
 const dbConfig = require('./mongoDB-config');
-//const { Socket } = require('socket.io');
+
+// const { Socket } = require('socket.io');
 // const path = require('path');
 // const { v1: uuidv1, v4: uuidv4 } = require('uuid');
 
@@ -11,10 +12,6 @@ let indexRouter
 async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
   const dbUrl = dbConfig.mongoURL(dbFolder, localDbUrl)
 
-  const corsMiddleware = require('./cors');
-  app.options('*', corsMiddleware);
-  app.use(corsMiddleware);
-  
   const logger = require('morgan');
   app.use(logger('dev'));
   
@@ -63,11 +60,10 @@ function stopServer(server) {
 
 function startChat(app) {
   const http = require('http').createServer(app);
-  const io = require('socket.io')(http,{
-    cors : {
-      origin: '*'
-    }
-  });
+  const io = require('socket.io', {})(http)
+  
+  // have to do this in the apache conf for some reason?
+  // io.use(cors)
 
   io.on('connection', (socket) => {
     console.log('a user connected');

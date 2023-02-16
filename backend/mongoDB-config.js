@@ -13,5 +13,8 @@ const mongoURL = function(folder, localUrl = true) {
     
 }
 
+// regex that a domain starts with "http://localhost" or ends with ".mutualcredit.services
+// later we'll read this from .env but that is on another branch for now 
+corsWhiteList = [/^http:\/\/localhost/, /\.mutualcredit\.services$/]
 
-module.exports = { mongoURL, dbFolder }
+module.exports = { mongoURL, dbFolder, corsWhiteList }
