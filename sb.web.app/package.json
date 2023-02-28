@@ -25,6 +25,7 @@
     "bootstrap-vue": "^2.21.2",
     "bootstrap-vue-3": "^0.1.6",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.3",
     "fetch-no-cors": "^1.0.13",
     "js-cookie": "^2.2.1",
     "jssha": "^3.2.0",

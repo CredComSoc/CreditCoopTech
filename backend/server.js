@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const session = require('cookie-session')
-const dbConfig = require('./mongoDB-config');
+const dbConfig = require('./config');
 
 // const { Socket } = require('socket.io');
 // const path = require('path');
@@ -9,9 +9,12 @@ const dbConfig = require('./mongoDB-config');
 
 let indexRouter
 
-async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
-  const dbUrl = dbConfig.mongoURL(dbFolder, localDbUrl)
-
+function initApp(app) {
+ 
+  const corsMiddleware = require('./cors');
+  app.options('*', corsMiddleware);
+  app.use(corsMiddleware);
+  
   const logger = require('morgan');
   app.use(logger('dev'));
   
@@ -29,14 +32,13 @@ async function initApp(app, dbFolder=dbConfig.dbFolder, localDbUrl = false) {
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }))
   
-  const initializePassport = require('./passport-config')(dbFolder, localDbUrl) // (dbUrl, dbFolder)
-  initializePassport(passport)
   app.use(passport.initialize())
   app.use(passport.session())
+  require('./passport-config').initialize(passport)
 
-  indexRouter = await require('./routes/index')(dbUrl, dbFolder)
-  const ccRequests = await require('./routes/ccRequests')(dbUrl, dbFolder)
-  const ccUserStore = require('./routes/ccUserStore')(dbUrl, dbFolder)
+  indexRouter = require('./routes/index')()
+  const ccRequests = require('./routes/ccRequests')()
+  const ccUserStore = require('./routes/ccUserStore')()
   app.use('/', indexRouter.router)
   app.use('/', ccRequests)
   app.use('/', ccUserStore)
@@ -62,7 +64,7 @@ function startChat(app) {
   const http = require('http').createServer(app);
   const io = require('socket.io', {})(http)
   
-  // have to do this in the apache conf for some reason?
+  // FIXME: have to do this in the apache conf for some reason?
   // io.use(cors)
 
   io.on('connection', (socket) => {

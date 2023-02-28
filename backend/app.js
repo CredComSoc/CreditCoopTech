@@ -1,6 +1,5 @@
 const express = require('express');
 const server = require('./server');
-const dbConfig = require('./mongoDB-config')
 const cors = require('./cors')  
 
 const port = 3000
@@ -9,7 +8,7 @@ let app = express()
 
 app.use(cors)
 
-server.initApp(app, dbFolder=dbConfig.dbFolder)
+server.initApp(app)
 
 server_instance = server.startServer(app, port)
 server.startChat(app)

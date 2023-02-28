@@ -1,23 +1,27 @@
 const express = require('express');
 const axios = require('axios').default;
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
-
-const CC_NODE_URL = 'https://sb-ledger.mutualcredit.services'
-
+const config = require('../config')
+const CC_NODE_URL = config.CC_NODE_URL;
 
 // Routes that make requests to the Credits Common Node on behalf of the user,
 // in order to authenticate the user with Passport before any requests to the ccNode is made.
 
-module.exports = async function(dbUrl, dbFolder) {
+module.exports = function() {
+  
   const router = express.Router();
-
+  const mongoURL = config.mongoURL;
+  
   async function getUser(user_query) {
-    const db = await MongoClient.connect(dbUrl)
-    const dbo = db.db(dbFolder);
-    const result = await dbo.collection("users").findOne(user_query)
-    db.close()
-    return result
+    const client = await MongoClient.connect(mongoURL)
+    try {
+      const dbo = client.db();
+      return await dbo.collection("users").findOne(user_query)
+    }
+    finally {
+      client.close()
+    }
   }
 
   // PAYER MUST ALSO BE AUTHOR OF TRANSACTION
