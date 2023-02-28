@@ -32,3 +32,4 @@ pnpm-debug.log*
 notes.txt
 backend/.env.staging
 backend/.env.production
+backend/.env
