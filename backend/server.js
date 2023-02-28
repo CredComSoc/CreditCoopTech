@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const session = require('cookie-session')
-const dbConfig = require('./mongoDB-config');
+const dbConfig = require('./config');
 
 // const { Socket } = require('socket.io');
 // const path = require('path');

@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const axios = require('axios').default;
 
-const config = require('../mongoDB-config');
+const config = require('../config');
 
 
 

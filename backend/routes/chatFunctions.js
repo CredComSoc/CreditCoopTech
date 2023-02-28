@@ -1,5 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb');
-const config = require('../mongoDB-config');
+const config = require('../config');
 const uuid = require('uuid');
 const { query } = require('express');
 const { model } = require('mongoose');

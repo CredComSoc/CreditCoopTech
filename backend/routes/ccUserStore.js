@@ -1,6 +1,6 @@
 const express = require('express');
 const ObjectId = require('mongodb').ObjectId
-const config = require('../mongoDB-config')
+const config = require('../config')
 const { MongoClient } = require("mongodb");
 
 // Routes required by the Credits Common Node

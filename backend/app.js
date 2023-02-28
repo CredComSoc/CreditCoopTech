@@ -1,6 +1,5 @@
 const express = require('express');
 const server = require('./server');
-const dbConfig = require('./mongoDB-config')
 const cors = require('./cors')  
 
 const port = 3000
