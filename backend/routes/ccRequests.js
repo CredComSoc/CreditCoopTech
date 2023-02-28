@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios').default;
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
-const config = require('../mongoDB-config')
+const config = require('../config')
 const CC_NODE_URL = config.CC_NODE_URL;
 
 // Routes that make requests to the Credits Common Node on behalf of the user,

@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local')
 const mongoose = require('mongoose');
-const config = require('./mongoDB-config')
+const config = require('./config')
 const { MongoClient } = require("mongodb");
 
   

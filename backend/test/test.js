@@ -1,7 +1,7 @@
 const express = require('express');
 const assert = require('assert');
 const server = require('../server')
-const dbConfig = require('../mongoDB-config')
+const cnofig = require('../config')
 const {MongoClient} = require('mongodb');
 let fetch = require('node-fetch')
 const fetchCookie = require('fetch-cookie')
@@ -24,7 +24,7 @@ const password = '123'
 
 
 async function deleteCollection(name) {
-  const db = await MongoClient.connect(dbConfig.mongoURL)
+  const db = await MongoClient.connect(cnofig.mongoURL)
   const dbo = db.db("test");
   const result = await dbo.collection(name).deleteMany({})
   db.close();
@@ -32,7 +32,7 @@ async function deleteCollection(name) {
 }
 
 async function getCollection(name) {
-  const db = await MongoClient.connect(dbConfig.mongoURL)
+  const db = await MongoClient.connect(cnofig.mongoURL)
   const dbo = db.db("test");
   const result = await dbo.collection(name).find({}).toArray()
   db.close();
