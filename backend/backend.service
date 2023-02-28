@@ -1,0 +1,15 @@
+[Unit]
+Description=Backend Express/NodeJS Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/sb-web-app-2.0/backend
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run start
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
