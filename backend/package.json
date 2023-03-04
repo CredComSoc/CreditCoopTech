@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node app.js",
+    "start-prod": "node app.js",
     "test": "mocha --exit",
     "startdb": "mocha --timeout 15000 startdb/startdb.js"
   },
