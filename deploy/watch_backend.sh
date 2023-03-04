@@ -1,0 +1,1 @@
+journalctl -u backend -n 30 -f
