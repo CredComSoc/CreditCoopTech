@@ -28,7 +28,7 @@
       <button id="login-button" >Logga in</button>
     </form>
     <div class="box-link">
-      <a href="#" @click="handleMailToClick('svenskbarter@gmail.com')">Har ett problem? <br/>Kontakta Jonas</a>
+      <a href="#" @click="handleMailToClick('svenskbarter@gmail.com')">Behöver du hjälp?<br/>Kontakta oss.</a>
       <div class="box-msg" v-if="this.mailtoClicked">
           <a href="mailto:svenskbarter@gmail.com">svenskbarter@gmail.com</a>
       </div>
