@@ -361,6 +361,7 @@ module.exports = function() {
   router.post("/register", upload.single('file'), (req, res) => { //register a new user
     console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
+    const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
     getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
         console.log(req.body.accountInfo)
@@ -399,36 +400,39 @@ module.exports = function() {
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
-          try {
-            const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-              from: ouremail, // sender address
 
-              to: newUser.email, 
-              subject: 'Medlem i Svensk Barter', // Subject line
-              text: `
-              Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
-              Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
-              
-              ${FRONTEND_URL}/login
+          if (sendWelcomeEmail) {
+            try {
+              const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+                from: ouremail, // sender address
 
-              Dina inloggningsuppgifter är:
-              E-postaddress: ${newPro.email}
-              Lösenord: ${newPro.password}
-              
-              Med vänliga hälsningar,
-              Svensk Barter
-              `
-             })
-             console.log(reponse)
-          } catch (error) {
-            console.log(error)
-            const result = await dbo.collection("users").deleteOne(newUser)
-            if (!result.acknowledged) {
-              console.log("couldnot delete user"+result)
+                to: newUser.email, 
+                subject: 'Medlem i Svensk Barter', // Subject line
+                text: `
+                Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
+                Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
+                
+                ${FRONTEND_URL}/login
+
+                Dina inloggningsuppgifter är:
+                E-postaddress: ${newPro.email}
+                Lösenord: ${newPro.password}
+                
+                Med vänliga hälsningar,
+                Svensk Barter
+                `
+              })
+              console.log(reponse)
+            } catch (error) {
+              console.log(error)
+              const result = await dbo.collection("users").deleteOne(newUser)
+              if (!result.acknowledged) {
+                console.log("could not delete user " + result)
+              }
+              res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
+              db.close()
+              return
             }
-            res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
-            db.close()
-            return
           }
           res.status(200).send('Den nya medlemmen är nu registrerad!')
           db.close()
