@@ -1,5 +1,5 @@
 
-const dotenv = require('dotenv')
+const dotenv = require('dotenv-flow')
 
 // Load config from .env file or an environment variable 
 //
@@ -26,5 +26,6 @@ const mongoURL = dbUri + dbFolder + '?retryWrites=true&w=majority'
 
 // regex that a domain starts with "http://localhost" or ends with ".mutualcredit.services
 CORS_WHITE_LIST = [/^http:\/\/localhost/, /\.mutualcredit\.services$/]
+
 
 module.exports = { mongoURL, FRONT_END_URL, CC_NODE_URL, CORS_WHITE_LIST}
