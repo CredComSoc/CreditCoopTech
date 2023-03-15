@@ -22,7 +22,7 @@
             <div class="edit">
               <button v-if="(new Date(item['end-date'])).getTime() > Date.now()" @click="remove(item, index)" 
                 style="background-color: red;"> Ta bort </button>
-              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
+              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> {{ $t('edit_ads') }} </router-link> -->
             </div> 
           </td> 
         </tr>
@@ -44,7 +44,7 @@
           <td>{{item.uploadDate}} </td> 
           <td>   
             <div class="edit">
-              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> Redigera annons </router-link> -->
+              <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> {{ $t('edit_ads') }} </router-link> -->
             </div> 
           </td>
         </tr>

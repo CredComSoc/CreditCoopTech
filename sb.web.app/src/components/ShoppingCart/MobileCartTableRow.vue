@@ -5,7 +5,7 @@
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
     <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} bKr </p>
   </div>
-  <!--<h3 v-if="ind === 1"> Antal </h3>-->  
+  <!--<h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>-->  
   <!--<h3 v-if="ind === 1"> Pris </h3>-->
   <!--<h3 v-if="ind === 1"> Summa </h3>-->   
   <div class="right-part">

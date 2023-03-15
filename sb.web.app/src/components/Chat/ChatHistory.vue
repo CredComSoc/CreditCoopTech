@@ -1,6 +1,6 @@
 <template>
 <div id='container-frame'>
-    <h3>DINA CHATTAR</h3>
+    <h3>{{ $t('chat.your_chats') }}</h3>
     <div id="container-outer">
         <div id="container-history">
             <UserChat @openChat="this.openChat" v-for="(h, i) in this.history"

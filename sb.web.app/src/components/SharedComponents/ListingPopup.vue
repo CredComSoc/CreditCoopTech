@@ -39,14 +39,14 @@
           <h5>Kategori</h5> 
           <p>{{listingObj.category}}</p>
 
-          <h5>Beskrivning</h5> 
+          <h5>{{ $t('user.description') }}</h5> 
           <p>{{listingObj.longDesc}}</p>
           
           <h5>Styckpris</h5> 
           <p>{{listingObj.price}} Barter Kronor</p>
 
           <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
-            <h5>Antal</h5> 
+            <h5>{{ $t('quantity') }}</h5> 
             <div class="quant">
               <div @click="decreaseAmount">
                 <img src="../../assets/cart_images/sub.png" >
@@ -72,7 +72,7 @@
       </div>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">
         <div>
-          <button class="chattBtn" @click="goToChat">Starta chatt</button>
+          <button class="chattBtn" @click="goToChat">{{ $t('chat.start') }}</button>
         </div>
       </div>
     </div>

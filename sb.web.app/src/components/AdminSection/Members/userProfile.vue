@@ -4,19 +4,19 @@
       <div className="image container-item">
         <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
         <img id="profile-img" v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <h5 >Senast Online:</h5>
+        <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
-        <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
+        <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
         <button @click="edit = !edit" id="edit-btn"> 
             Redigera <br> användare
         </button>
       </div>
 
       <div className="right container-item">
-        <h1> Företagsnamn </h1>
+        <h1> {{ $t('user.business') }} </h1>
         <p> {{profileData.accountName}} </p>
 
-        <h1> Beskrivning </h1>
+        <h1> {{ $t('user.description') }} </h1>
         <p> {{profileData.description}} </p>
 
         <h1> Adress </h1>
@@ -37,16 +37,16 @@
     </div>
     <div class="sendmoney-box" v-if="show_optional && !edit">
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
-        <h1 class="box-text">Skicka Barterkronor</h1>
+        <h1 class="box-text">{{ $t('misc.send') }} Barterkronor</h1>
         <div>
-          <label class="box-label">Antal</label>
+          <label class="box-label">{{ $t('quantity') }}</label>
           <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
           <label class="box-label">Kommentar</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="send-btn">Skicka</button>
+        <button id="send-btn">{{ $t('misc.send') }}</button>
       </form>
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />
@@ -64,9 +64,9 @@
           <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
-          <label for="name">Företagsnamn:</label><br/>
+          <label for="name">{{ $t('user.business') }}:</label><br/>
           <input type="text" id="name" v-model="profileData.accountName" required><br/>
-          <label for="description">Beskrivning:</label><br/>
+          <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
           <label for="adress">Adress:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>
@@ -225,18 +225,18 @@ export default {
       if (this.profileData.last_online) {
         const lastOnline = new Date(this.profileData.last_online)
         if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
-          return 'Nu'
+          return this.$i18n.t('time.now')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
-          return 'Idag'
+          return this.$i18n.t('time.today')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
-          return 'Igår'
+          return this.$i18n.t('time.yesterday')
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + ' dagar sedan'
+          return days + this.$i18n.t('time.days_ago')
         }
       } else {
-        return 'Aldrig'
+        return this.$i18n.t('time.never')
       } 
     }
   },

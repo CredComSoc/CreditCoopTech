@@ -8,10 +8,10 @@
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
-          <h1> Företagsnamn </h1>
+          <h1> {{ $t('user.business') }} </h1>
           <p> {{profileData.name}} </p>
 
-          <h1> Beskrivning </h1>
+          <h1> {{ $t('user.description') }} </h1>
           <p> {{profileData.description}} </p>
   
           <h1> Adress </h1>
@@ -30,7 +30,7 @@
           </div>
           <div>
             <button @click="edit = !edit" class="buttonflex"> 
-              <p style="padding-right:7px" > Redigera </p>
+              <p style="padding-right:7px" > {{ $t('edit') }} </p>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
@@ -54,9 +54,9 @@
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
-          <label for="name">Företagsnamn:</label><br/>
+          <label for="name">{{ $t('user.business') }}:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
-          <label for="description">Beskrivning:</label><br/>
+          <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
           <label for="adress">Adress:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>

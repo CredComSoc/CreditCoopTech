@@ -2,13 +2,13 @@
   <div>
     <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
     <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
-    <h1><b> Köpförfrågningar </b></h1>
+    <h1><b> {{ $t('user.purchase_requests') }} </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
             <th>Företag</th>
             <th>Artikel</th>
-            <th>Antal</th>
+            <th>{{ $t('quantity') }}</th>
             <th>Pris</th>
             <th>Summa</th>
             <th>Tidstämpel</th>
@@ -42,7 +42,7 @@
           <tr>
             <th>Företag</th>
             <th>Artikel</th>
-            <th>Antal</th>
+            <th>{{ $t('quantity') }}</th>
             <th>Pris</th>
             <th>Summa</th>
             <th>Tidstämpel</th>
@@ -80,7 +80,7 @@
           <th>Köpare</th>
           <th>Säljare</th>
           <th>Artikel</th>
-          <th>Antal</th>
+          <th>{{ $t('quantity') }}</th>
           <th>Pris</th>
           <th>Summa</th>
           <th>Tidstämpel</th>   
@@ -102,7 +102,7 @@
           <th>Köpare</th>
           <th>Säljare</th>
           <th>Artikel</th>
-          <th>Antal</th>
+          <th>{{ $t('quantity') }}</th>
           <th>Pris</th>
           <th>Summa</th>
           <th>Tidstämpel</th>
