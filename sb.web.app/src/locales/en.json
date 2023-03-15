@@ -1,0 +1,42 @@
+{
+    "chat": {
+        "title": "MESSAGES",
+        "start_new": "Start new chat",
+        "start": "Start chat",
+        "your_chats": "Your chats"
+    },
+    "user": {
+        "last_online": "Last Online",
+        "profile": "Profile",
+        "email": "Email",
+        "purchase_requests": "Purchase requests",
+        "business": "Business name",
+        "description": "Description",
+        "street_address": "Street address",
+        "town": "Town/city",
+        "billing": "Billing information",
+        "contact": "Contact information"
+    },
+    "time": {
+        "now": "Now",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "never": "Never",
+        "days_ago": " days ago"
+    },
+    "transactions":"Transactions",
+    "number_of_transactions": "Number of transactions",
+    "send": "Send",
+    "edit": "Edit",
+    "edit_ads": "Edit ad",
+    "quantity": "Quantity",
+    "comment": "Comment",
+    "request_sent": "Request sent",
+    "okay": "Okay",
+    "purchase_requests": "Purchase requests", 
+    "item": "Item",
+    "price": "Price",
+    "total": "Total",
+    "timestamp": "Timestamp",
+    "status": "Status"
+}

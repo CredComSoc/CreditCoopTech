@@ -1,0 +1,42 @@
+{
+    "chat": {
+        "title": "MEDDELANDEN",
+        "start_new": "Starta ny chatt",
+        "start": "Starta chatt",
+        "your_chats": "Dina chattar"
+    },
+    "user": {
+        "last_online": "Senast Online",
+        "profile": "Profil",
+        "email": "E-mail",
+        "purchase_requests": "Köpförfrågningar",
+        "business": "Företagsnamn",
+        "description": "Beskrivning",
+        "street_address": "Adress",
+        "town": "Stad/ort",
+        "billing": "Faktureringsuppgifter",
+        "contact": "Kontaktuppgifter"
+    },
+    "time": {
+        "now": "Nu",
+        "today": "Idag",
+        "yesterday": "Igår",
+        "never": "Aldrig",
+        "days_ago": " dagar sedan"
+    },
+    "transactions": "Transaktioner",
+    "number_of_transactions": "Antal Transaktioner",
+    "send": "Skicka",
+    "edit": "Redigera",
+    "edit_ads": "Redigera annons",
+    "quantity": "Antal",
+    "comment": "Kommentar",
+    "request_sent": "Förfrågan skickad",
+    "okay": "Ok",
+    "purchase_requests": "Köpförfrågningar",
+    "item": "Artikel",
+    "price": "Pris",
+    "total": "Summa",
+    "timestamp": "Tidstämpel",
+    "status": "Status"
+}
