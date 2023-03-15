@@ -13,7 +13,7 @@ do not match the equivalent of the database.
       <h4 class="element-title"> {{ listingObj.accountName }} </h4>
       
     </div>
-    <h5>Senast Online: {{ getOnlineStatus() }}</h5>
+    <h5>{{ $t('user.last_online')}}: {{ getOnlineStatus() }}</h5>
     </router-link>
 
   </div>
@@ -35,18 +35,18 @@ export default {
       if (this.listingObj.last_online) {
         const lastOnline = new Date(this.listingObj.last_online)
         if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
-          return 'Nu'
+          return this.$i18n.t('time.now')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
-          return 'Idag'
+          return this.$i18n.t('time.today')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
-          return 'Igår'
+          return this.$i18n.t('time.yesterday')
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + ' dagar sedan'
+          return days + this.$i18n.t('time.days_ago')
         }
       } else {
-        return 'Aldrig'
+        return this.$i18n.t('time.never')
       } 
     }
   }

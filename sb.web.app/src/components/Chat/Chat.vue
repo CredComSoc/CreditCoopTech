@@ -1,7 +1,7 @@
 <!--Vissa av funktionerna i denna fil leder till sb.web.app/src/serverfetch.js som i sin tur leder till backend/routes/index.js--> 
 <template>
   <div>
-    <h1 id="title">MEDDELANDEN</h1>
+    <h1 id="title">{{ $t('chat.title') }}</h1>
     <div id="container-chat">
       <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat"/>
       <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage" @showMembers="this.showMembers"/>

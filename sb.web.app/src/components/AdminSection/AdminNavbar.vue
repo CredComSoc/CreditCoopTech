@@ -55,11 +55,11 @@
             <router-link :to="{name:'AdminChat'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/chat.png" />
-                  <figcaption class="l-text"> Meddelanden </figcaption>
+                  <figcaption class="l-text"> {{ $t('chat.title') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name: 'AdminChat'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Meddelanden </span>
+              <span class="mob-cap"> {{ $t('chat.title') }} </span>
             </router-link>
           </div>
           <div id="navbar-settings" class="navlogo">

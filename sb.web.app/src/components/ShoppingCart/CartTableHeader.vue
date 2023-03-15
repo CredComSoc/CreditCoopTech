@@ -3,7 +3,7 @@
     <span></span>
     <h3> Produkt </h3>
     <span></span>
-    <h3> Antal </h3>
+    <h3> {{ $t('quantity') }} </h3>
     <h3> Pris </h3>
     <h3> Summa </h3>
     <span></span>

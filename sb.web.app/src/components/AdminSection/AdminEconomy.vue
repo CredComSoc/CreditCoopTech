@@ -8,22 +8,22 @@
         <div class="EconomyStats">
           <div><!--Displays the total number of trascations and their turnover this month-->
             <b>Dagens</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesDay}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesDay}}<br>
             Omsättning: {{this.turnOverDay}}</p>
           </div>
           <div>
             <b>Veckans</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesWeek}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesWeek}}<br>
             Omsättning: {{this.turnOverWeek}}</p>
           </div>
           <div>
             <b>Månadens</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesMonth}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesMonth}}<br>
             Omsättning: {{this.turnOverMonth}}</p>
           </div>
           <div>
             <b>Årets</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesYear}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesYear}}<br>
             Omsättning: {{this.turnOverYear}}</p>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <th>Köpare</th>
           <th>Säljare</th>
           <th>Artikel</th>
-          <th>Antal</th>
+          <th>{{ $t('quantity') }}</th>
           <th>Pris</th>
           <th>Summa</th>
           <th>Tidstämpel</th>   

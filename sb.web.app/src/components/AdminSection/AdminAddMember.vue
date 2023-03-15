@@ -14,9 +14,9 @@
         <input type="file" name="logo" @change="addLogo"><br/>
         <label for="checkbox" >Admin:&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input type="checkbox" id="checkbox" v-model="profileData.isadmin" /><br/>
-        <label for="name">Företagsnamn:</label><br/>
+        <label for="name">{{ $t('user.business') }}:</label><br/>
         <input type="text" id="name" v-model="profileData.name" required><br/>
-        <label for="description">Beskrivning:</label><br/>
+        <label for="description">{{ $t('user.description') }}:</label><br/>
         <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
         <label for="adress">Adress:</label><br/>
         <input type="text" id="adress" v-model="profileData.adress" required><br/>

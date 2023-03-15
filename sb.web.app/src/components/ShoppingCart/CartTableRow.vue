@@ -9,7 +9,7 @@
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Antal </h3>   
+    <h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>   
     <div class="item-controller">
         <div type="button" class="sub-item" @click="minItem">
             <img src="../../assets/cart_images/sub.png">
