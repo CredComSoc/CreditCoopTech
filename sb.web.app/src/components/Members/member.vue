@@ -43,7 +43,7 @@ export default {
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + this.$i18n.t('time.days_ago')
+          return days + ' ' + this.$i18n.t('time.days_ago')
         }
       } else {
         return this.$i18n.t('time.never')

@@ -190,6 +190,7 @@ export default {
   }
 
   #title {
+    font-variant: all-petite-caps;
     margin-top: 4rem;
     margin-bottom: 4rem;
     font-size: 2.2rem;
@@ -308,6 +309,7 @@ export default {
     }
 
     #title {
+      font-variant: all-petite-caps;
       margin-top: 30px;
       margin-bottom: 30px;
       font-size: 2.2em;
@@ -320,6 +322,7 @@ export default {
     }
 
     #title {
+      font-variant: all-petite-caps;
       margin-top: 20px;
       margin-bottom: 20px;
       font-size: 2.2em;

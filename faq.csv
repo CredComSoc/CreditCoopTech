@@ -17,10 +17,10 @@ sb.web.app/src/components/FAQ/BarterTips.vue:4,,Här är en tänkbar vision:,0
 sb.web.app/src/components/FAQ/BarterTips.vue:4,,Svensk-barter-ide-diagram,0
 sb.web.app/src/components/FAQ/BarterTips.vue:4,,,0
 sb.web.app/src/components/FAQ/FAQ.vue:4,Trade rules & tips,HANDELSREGLER & TIPS,0
-sb.web.app/src/components/FAQ/FAQ.vue:4,Common questions,Vanliga frågor,0
-sb.web.app/src/components/FAQ/FAQ.vue:4,,Bartertips,0
-sb.web.app/src/components/FAQ/FAQ.vue:4,,Föreningsinformation,0
-sb.web.app/src/components/FAQ/FAQ.vue:4,Privacy policy,Integritetspolicy,0
+sb.web.app/src/components/FAQ/FAQ.vue:4,Common questions,{{ $t('faq.common_questions') }},0
+sb.web.app/src/components/FAQ/FAQ.vue:4,,{{ $t('trading_tips') }},0
+sb.web.app/src/components/FAQ/FAQ.vue:4,,{{ $t('association_information') }},0
+sb.web.app/src/components/FAQ/FAQ.vue:4,Privacy policy,{{ $t('faq.policy') }},0
 sb.web.app/src/components/FAQ/FAQ.vue:4,,,0
 sb.web.app/src/components/FAQ/Information.vue:1,,All text här är i nuläget hårdkodad och översatt till html via wordtohtml.net.,0
 sb.web.app/src/components/FAQ/Information.vue:1,,"Detta kommer i framtiden behöva ändras så att admin kan ändra texten via adminpage,",0
@@ -205,7 +205,7 @@ sb.web.app/src/components/FAQ/Policy.vue:1,,&Auml;ndringar i integritetspolicy,2
 sb.web.app/src/components/FAQ/Policy.vue:1,,Svensk Barter kan &auml;ndra eller uppdatera sin Integritetspolicy efter eget gottfinnande. D&auml;rf&ouml;r uppmuntrar Svensk Barter anv&auml;ndare att &aring;terkommande bes&ouml;ka denna sida f&ouml;r eventuella &auml;ndringar i sin sekretesspolicy. Din fortsatta anv&auml;ndning av denna webbplats efter n&aring;gon &auml;ndring av denna sekretesspolicy kommer att utg&ouml;ra din godtagande av s&aring;dan &auml;ndring.,2
 sb.web.app/src/components/FAQ/Policy.vue:1,,"Om du har fr&aring;gor om &aring;tkomst till eller korrigering av dina personuppgifter, kontakta oss p&aring;: svenskbarter@gmail.com",2
 sb.web.app/src/components/FAQ/Policy.vue:1,,,2
-sb.web.app/src/components/FAQ/Questions.vue:3,, Vanliga frågor ,2
+sb.web.app/src/components/FAQ/Questions.vue:3,, {{ $t('faq.common_questions') }} ,2
 sb.web.app/src/components/FAQ/Questions.vue:3,,Hur tjänar jag barterkrediter?,2
 sb.web.app/src/components/FAQ/Questions.vue:3,,"Precis som ett bankkonto, när du först öppnar ditt barterkonto är din balans noll. Du tjänar barterkrediter genom att sälja dina varor eller tjänster till andra medlemmar i ringen. Du kan annonsera i våra e-posterbjudanden och webbshop, eller så kan du rådgöra med din bartermäklare om andra sätt att marknadsföra ditt företag inom ringen.  Ett annat sätt att är att skapa barterkrediter genom att använda din kreditlina. Det är så barterkrediterna inom nätverket skapas. Ju mer du köper och säljer i nätverket på regelbunden basis, ju större kreditlina kommer du att få av din bartermäklare.",2
 sb.web.app/src/components/FAQ/Questions.vue:3,,Hur spenderar jag mina barterkrediter?,2

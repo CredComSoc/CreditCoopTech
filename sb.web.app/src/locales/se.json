@@ -15,16 +15,51 @@
         "street_address": "Adress",
         "town": "Stad/ort",
         "billing": "Faktureringsuppgifter",
-        "contact": "Kontaktuppgifter"
+        "contact": "Kontaktuppgifter",
+        "edit_user": "Redigera <br> användare"
+    },
+    "event": {      
+        "instructions": "Instruktioner",
+        "click_date": "Klicka på ett datum för att skapa ett evenemang",
+        "click_event": "Klicka på ett evenemang för att se information",
+        "show_weekends": "Visa helgerna",
+        "show_all": "Alla evenemang",
+        "start": "Starttid",
+        "end_time": "Sluttid",
+        "event_info": "Info om eventet",
+        "event_name": "Titel för eventet",
+        "event_loc": "Plats för eventet",
+        "event_contact": "Kontaktuppgifter",
+        "url": "URL för att visa andra medlemmar mer information",
+        "choose_start": "Välj starttid",
+        "choose_end": "Välj sluttid",
+        "create_event": "Lägg till event",
+        "event_description": "Beskrivning av eventet"
     },
     "time": {
         "now": "Nu",
         "today": "Idag",
         "yesterday": "Igår",
         "never": "Aldrig",
-        "days_ago": " dagar sedan"
+        "days_ago": "dagar sedan"
+    },
+    "nav": {
+        "shop": "Shop",
+        "cart": "Varukorg",
+        "new_item": "Ny Artikel",
+        "members": "Medlemmar",
+        "messages": "Meddelanden",
+        "my_account": "Min sida",
+        "my_profile": "Min profil",
+        "my_buy_sell": "Mina köp & sälj",
+        "my_items": "Mina artiklar",
+        "my_purchase_requests": "Mina köpförfrågningar",
+        "balance": "Min Ekonomi",
+        "events": "Evenemang",
+        "sign_out": "Logga Ut"
     },
     "transactions": "Transaktioner",
+    "location": "Plats",
     "number_of_transactions": "Antal Transaktioner",
     "send": "Skicka",
     "edit": "Redigera",

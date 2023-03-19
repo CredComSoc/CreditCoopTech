@@ -1,6 +1,6 @@
 <template>  
   <div> 
-    <h1><b> Vanliga frågor </b></h1>
+    <h1><b> {{ $t('faq.common_questions') }} </b></h1>
   </div>
   <button class="accordion" @click="expand">Hur tjänar jag barterkrediter?
 </button>

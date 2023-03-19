@@ -7,12 +7,12 @@
               <router-link :to="{name:'AdminShop'}">
                 <figure class="logo-click">
                   <img src="../../assets/navbar_logos/shop.png" />
-                  <figcaption class="l-text"> Shop </figcaption>
+                  <figcaption class="l-text">{{ $t('nav.shop') }} </figcaption>
                 </figure>
               </router-link>
-              <!-- Ta inte bort dessa, de är för mobil nav. -->
+              <!-- Do not remove these, they are for mobile nav. -->
               <router-link :to="{name:'AdminShop'}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap"> Shop </span>
+                <span class="mob-cap">{{ $t('nav.shop') }} </span>
               </router-link>
             </div>
           <div id="navbar-members" class="navlogo">
@@ -23,7 +23,7 @@
               </figure>
             </router-link>
             <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Medlemmar </span>
+              <span class="mob-cap">  {{ $t('nav.members') }}  </span>
             </router-link>
           </div>
           <div id="navbar-economy" class="navlogo">
@@ -77,12 +77,12 @@
         <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
-                  <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                  <figcaption class="l-text"> Logga Ut </figcaption>
+                  <img src="../../assets/link_arrow/popup_close.png" alt="$t('nav.sign_out')"/>
+                  <figcaption class="l-text">  {{ $t('nav.sign_out') }}  </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
-              <span class="mob-cap"> Logga Ut</span>
+              <span class="mob-cap">  {{ $t('nav.sign_out') }} </span>
             </router-link>
           </div>
         </div> 

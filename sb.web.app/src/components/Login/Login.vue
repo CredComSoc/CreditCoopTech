@@ -16,7 +16,7 @@
   </div>
   <div class="login-box">
     <form @submit.prevent="handleSubmit">
-      <div class="box-text">Logga in på Svensk Barter</div>
+      <div class="box-text">Logga in på Svensk Barter {{        }}</div>
       <div>
         <label class="box-label">E-postadress</label>
         <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>

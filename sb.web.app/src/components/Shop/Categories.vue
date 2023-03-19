@@ -13,7 +13,7 @@
         <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' title='Produkter'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='service' title='Tjänster'/>
 
-        <h1>Plats</h1>
+        <h1>{{ $t('location') }}</h1>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='norrkoping' title='Norrköping'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='soderkoping' title='Söderköping'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='linkoping' title='Linköping'/>

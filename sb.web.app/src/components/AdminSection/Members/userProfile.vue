@@ -7,9 +7,9 @@
         <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
-        <button @click="edit = !edit" id="edit-btn"> 
-            Redigera <br> användare
-        </button>
+        <button @click="edit = !edit" id="edit-btn">
+          <span v-html="$t('edit.edit_user')"></span>
+         </button>
       </div>
 
       <div className="right container-item">
@@ -19,18 +19,18 @@
         <h1> {{ $t('user.description') }} </h1>
         <p> {{profileData.description}} </p>
 
-        <h1> Adress </h1>
+        <h1> {{ $t('user.street_address') }} </h1>
         <p> {{profileData.adress}} </p>
 
-        <h1> Stad/ort </h1>
+        <h1> {{ $t('user.town') }} </h1>
         <p> {{profileData.city}} </p>
 
-        <h1> Faktureringsuppgifter </h1>
+        <h1> {{ $t('user.billing') }} </h1>
         <p> {{profileData.billing.name}}<br/>{{profileData.billing.box}}<br/>{{profileData.billing.adress}}<br/> {{profileData.billing.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
-          <h1> Kontaktuppgifter </h1>
+          <h1> {{ $t('user.contact') }} </h1>
           <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
         </div> 
       </div>
@@ -68,22 +68,22 @@
           <input type="text" id="name" v-model="profileData.accountName" required><br/>
           <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="adress">Adress:</label><br/>
+          <label for="adress">{{ $t('user.street_address') }}:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>
-          <label for="location">Stad/ort:</label><br/>
+          <label for="location">{{ $t('user.town') }}:</label><br/>
           <input type="text" id="location" v-model="profileData.city" required><br/>
         </div>
         <div className="container-item">
-          <h1>Faktureringsuppgifter</h1>
+          <h1>{{ $t('user.billing') }}</h1>
           <label for="billingName">Namn:</label><br/>
           <input name="billingName" v-model="profileData.billing.name" required><br/>
           <label for="billingBox">Box:</label><br/>
           <input name="billingBox" v-model="profileData.billing.box" required><br/>
-          <label for="billingAdress">Adress:</label><br/>
+          <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAdress" v-model="profileData.billing.adress" required><br/>
           <label for="orgNumber">Organisationsnummer:</label><br/>
           <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br/><br/>
-          <h1>Kontaktuppgifter</h1>
+          <h1>{{ $t('user.contact') }}</h1>
           <label for="email">Epost:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
           <label for="phone">Telefon:</label><br/>
@@ -233,7 +233,7 @@ export default {
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + this.$i18n.t('time.days_ago')
+          return days + ' ' + this.$i18n.t('time.days_ago')
         }
       } else {
         return this.$i18n.t('time.never')
