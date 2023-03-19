@@ -14,18 +14,18 @@
           <h1> {{ $t('user.description') }} </h1>
           <p> {{profileData.description}} </p>
   
-          <h1> Adress </h1>
+          <h1> {{ $t('user.street_address') }} </h1>
           <p> {{profileData.adress}} </p>
 
-          <h1> Stad/ort </h1>
+          <h1> {{ $t('user.town') }} </h1>
           <p> {{profileData.city}} </p>
           
-          <h1> Faktureringsuppgifter </h1>
+          <h1> {{ $t('user.billing') }} </h1>
           <p> {{profileData.billingName}}<br/>Box: {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> Org. nummer: {{profileData.orgNumber}} </p>
         </div>
         <div className="right container-item">
           <div>
-            <h1> Kontaktuppgifter </h1>
+            <h1> {{ $t('user.contact') }} </h1>
             <p> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
           </div>
           <div>
@@ -58,22 +58,22 @@
           <input type="text" id="name" v-model="profileData.name" required><br/>
           <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="adress">Adress:</label><br/>
+          <label for="adress">{{ $t('user.street_address') }}:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>
-          <label for="location">Stad/ort:</label><br/>
+          <label for="location">{{ $t('user.town') }}:</label><br/>
           <input type="text" id="location" v-model="profileData.city" required><br/>
         </div>
         <div className="container-item">
-          <h1>Faktureringsuppgifter</h1>
+          <h1>{{ $t('user.billing') }}</h1>
           <label for="billingName">Namn:</label><br/>
           <input name="billingName" v-model="profileData.billingName" required><br/>
           <label for="billingBox">Box:</label><br/>
           <input name="billingBox" v-model="profileData.billingBox" required><br/>
-          <label for="billingAdress">Adress:</label><br/>
+          <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
           <label for="orgNumber">Organisationsnummer:</label><br/>
           <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-          <h1>Kontaktuppgifter</h1>
+          <h1>{{ $t('user.contact') }}</h1>
           <label for="email">Epost:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
           <label for="phone">Telefon:</label><br/>

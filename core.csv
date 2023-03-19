@@ -1,18 +1,18 @@
 ﻿sb.web.app/src/components/AdminSection/Members/member.vue:18,Profile,{{ $t('user.profile') }},0
-sb.web.app/src/components/AdminSection/Members/member.vue:18,Transactions,Transaktioner,0
+sb.web.app/src/components/AdminSection/Members/member.vue:18,Transactions,{{ $t('transaction') }},0
 sb.web.app/src/components/AdminSection/Members/member.vue:18,Email,{{ $t('user.email') }},0
 sb.web.app/src/components/AdminSection/Members/member.vue:18,Purchase requests,{{ $t('user.purchase_requests') }},0
 sb.web.app/src/components/AdminSection/Members/member.vue:18,,,0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Last online,{{ $t('user.last_online')}},0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,<replaced>,Starta chatt,0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,<replaced>,{{ $t('chat.start') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Edit,{{ $t('edit') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,member,användare,0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,Adress,0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,Stad/ort,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,Faktureringsuppgifter,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,Kontaktuppgifter,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,{{ $t('user.town') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,{{ $t('user.billing') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1
@@ -40,14 +40,14 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,Allmänt,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,Adress,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,Stad/ort,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,Faktureringsuppgifter,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,{{ $t('user.town') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,{{ $t('user.billing') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,Namn,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,ZIP code,Box,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Address,Adress,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,Organisationsnummer,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,Kontaktuppgifter,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Email,Epost,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Phone,Telefon,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Save,Spara,1
@@ -62,14 +62,14 @@ sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Profile picture,Profilbild,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Description,{{ $t('user.description') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Street address,Adress,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Town/city,Stad/ort,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Billing information,Faktureringsuppgifter,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Street address,{{ $t('user.street_address') }},1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Town/city,{{ $t('user.town') }},1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Billing information,{{ $t('user.billing') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,Namn,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ZIP code,Box,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Address,Adress,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,Organisationsnummer,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Contact information,Kontaktuppgifter,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Email:,E-post:,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Phone:,Telefon:,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Register,Registrera,1
@@ -110,18 +110,17 @@ sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,MEDLEMMAR,1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,Who do you want to search for today?,Vem vill du söka efter idag?,1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,,,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,1
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,"Do not remove these, they are for mobile hubs.","Ta inte bort dessa, de är för mobil nav.",2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Add member,Lägg till medlem,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Members,Medlemmar,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Members, {{ $t('nav.members') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network overview,Ekonomisk översikt,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network,Ekonomi,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages,Meddelanden,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages,Meddelanden,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages, {{ $t('nav.messages') }} ,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages, {{ $t('nav.messages') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,Inställningar,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,Inställningar,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out,Logga Ut,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out,Logga Ut,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out, {{ $t('nav.sign_out') }} ,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out, {{ $t('nav.sign_out') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,,,2
 sb.web.app/src/components/AdminSection/NetworkSettings.vue:2,"No implemented functionality, just the design.","Ingen implementerad funktionalitet, bara designen.",2
 sb.web.app/src/components/AdminSection/NetworkSettings.vue:2,NETWORK SETTINGS,NÄTVERKSINSTÄLLNINGAR,2
@@ -185,7 +184,7 @@ sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Description,{{ $t('
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Type of item,Typ av artikel,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Category,Kategori,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Time,Tid,2
-sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Location,Plats,2
+sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Location,{{ $t('location') }},2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Price,Pris,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Images,Bilder,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Confirmation,Publiceringsbekräftelse,2
@@ -278,7 +277,7 @@ sb.web.app/src/components/CreateArticle/StepThree.vue:6,,,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Until when will this,Tills när kommer denna ,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4, be available?, vara tillgänglig?,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4, Indefinitely, På obestämd tid ,3
-sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Location,Plats,3
+sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Location,{{ $t('location') }},3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Linköping,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Norrköping,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Söderköping,3
@@ -290,26 +289,26 @@ sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,,3
 sb.web.app/src/components/Event/event-utils.js:11,Inside getLoaded:,Inne i getLoaded: ,3
 sb.web.app/src/components/Event/event-utils.js:11,Here is res:,Här är res: ,3
 sb.web.app/src/components/Event/event-utils.js:11,,,3
-sb.web.app/src/components/Event/Event.vue:151,Instructions,Instruktioner,3
-sb.web.app/src/components/Event/Event.vue:151,Click on a date to create an event,Klicka på ett datum för att skapa ett evenemang,3
-sb.web.app/src/components/Event/Event.vue:151,Click on an event to see details,Klicka på ett evenemang för att se information,3
-sb.web.app/src/components/Event/Event.vue:151,Show weekends,Visa helgerna,3
-sb.web.app/src/components/Event/Event.vue:151,All events,Alla evenemang,3
-sb.web.app/src/components/Event/Event.vue:151,Location:,Plats:,3
-sb.web.app/src/components/Event/Event.vue:151,Start time:,Starttid:,3
-sb.web.app/src/components/Event/Event.vue:151,End time:,Sluttid: ,3
-sb.web.app/src/components/Event/Event.vue:151,Event info:,Info om eventet: ,3
-sb.web.app/src/components/Event/Event.vue:151,Event name:, Titel för eventet:,3
-sb.web.app/src/components/Event/Event.vue:151, Event location:, Plats för eventet:,3
-sb.web.app/src/components/Event/Event.vue:151,Location,Plats,3
-sb.web.app/src/components/Event/Event.vue:151, Contact information:, Kontaktuppgifter:,3
-sb.web.app/src/components/Event/Event.vue:151,Contact information,Kontaktuppgifter,3
-sb.web.app/src/components/Event/Event.vue:151, URL for more information:, URL för att visa andra medlemmar mer information:,3
-sb.web.app/src/components/Event/Event.vue:151, Event description:, {{ $t('user.description') }} av eventet:,3
-sb.web.app/src/components/Event/Event.vue:151,Description,{{ $t('user.description') }},3
-sb.web.app/src/components/Event/Event.vue:151, Choose start time:, Välj starttid:,3
-sb.web.app/src/components/Event/Event.vue:151,Choose end time:,Välj sluttid:,3
-sb.web.app/src/components/Event/Event.vue:151,Create event,Lägg till event,3
+sb.web.sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
+sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
 sb.web.app/src/components/Footer/About.vue:3, Created by, Skapad av ,4
 sb.web.app/src/components/Footer/About.vue:3," The site was created for the course TDP032: Agile System Development at Linköping University, by the following students:"," Sidan skapades ursprunglingen för projektkursen TDP032: Agile System Development på Linköpings Universitet, av följande studenter:  ",4
 sb.web.app/src/components/Footer/About.vue:3," The site was further developed for the course TDDI17: Programming projects at Linköping University, by the following students:"," Sidan vidareutvecklades för projektkursen TDDI17: Programmeringsprojekt på Linköpings Universitet, av följande studenter:  ",4
@@ -382,13 +381,13 @@ sb.web.app/src/components/Members/members.vue:5,MEMBERS,MEDLEMMAR,4
 sb.web.app/src/components/Members/members.vue:5,Who would you like to search for today? ',Vem vill du söka efter idag?',4
 sb.web.app/src/components/Members/members.vue:5,,,4
 sb.web.app/src/components/Members/userProfile.vue:8,Last online:,{{ $t('user.last_online')}}:,4
-sb.web.app/src/components/Members/userProfile.vue:8, <replaced>, Starta chatt ,4
+sb.web.app/src/components/Members/userProfile.vue:8, <replaced>, {{ $t('chat.start') }} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,Business name, {{ $t('user.business') }} ,4
 sb.web.app/src/components/Members/userProfile.vue:8, Description, {{ $t('user.description') }} ,4
-sb.web.app/src/components/Members/userProfile.vue:8,Street address, Adress ,4
-sb.web.app/src/components/Members/userProfile.vue:8,Town/city, Stad/ort ,4
-sb.web.app/src/components/Members/userProfile.vue:8, Billing information, Faktureringsuppgifter ,4
-sb.web.app/src/components/Members/userProfile.vue:8, Contact information, Kontaktuppgifter ,4
+sb.web.app/src/components/Members/userProfile.vue:8,Street address, {{ $t('user.street_address') }} ,4
+sb.web.app/src/components/Members/userProfile.vue:8,Town/city, {{ $t('user.town') }} ,4
+sb.web.app/src/components/Members/userProfile.vue:8, Billing information, {{ $t('user.billing') }} ,4
+sb.web.app/src/components/Members/userProfile.vue:8, Contact information, {{ $t('user.contact') }} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Quantity,{{ $t('quantity') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Comment,Kommentar,4
@@ -420,33 +419,32 @@ sb.web.app/src/components/Members/userProfile.vue:8,Yesterday,Igår,5
 sb.web.app/src/components/Members/userProfile.vue:8, days ago, dagar sedan,5
 sb.web.app/src/components/Members/userProfile.vue:8,Never,Aldrig,5
 sb.web.app/src/components/Members/userProfile.vue:8,,,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Shop, Shop ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10," Do not remove these, they are for mobile hubs."," Ta inte bort dessa, de är för mobil nav.",5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Shop, Shop ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Cart, Varukorg ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Cart, Varukorg ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, New item, Ny Artikel ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, New item, Ny Artikel ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Members, Medlemmar ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Members, Medlemmar ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Common questions,Vanliga frågor,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,,Bartertips,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,,Föreningsinformation,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Privacy policy,Integritetspolicy,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Messages, Meddelanden ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Messages, Meddelanden ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, My account, Min sida ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,My profile,Min profil,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,My buying & selling,Mina köp & sälj,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,My items,Mina artiklar,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Shop,{{ $t('nav.shop') }} ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Shop,{{ $t('nav.shop') }} ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Cart,  {{ $t('nav.cart') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Cart,  {{ $t('nav.cart') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, New item,  {{ $t('nav.new_item') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, New item,  {{ $t('nav.new_item') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Members,  {{ $t('nav.members') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Members,  {{ $t('nav.members') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Common questions,{{ $t('faq.common_questions') }},5
+sb.web.app/src/components/Navbar/Navbar.vue:10,,{{ $t('trading_tips') }},5
+sb.web.app/src/components/Navbar/Navbar.vue:10,,{{ $t('association_information') }},5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Privacy policy,{{ $t('faq.policy') }},5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Messages,  {{ $t('nav.messages') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Messages,  {{ $t('nav.messages') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, My account,  {{ $t('nav.messages') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,My profile, {{ $t('nav.my_profile') }} ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,My buying & selling, {{ $t('nav.my_buy_sell') }} ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,My items, {{ $t('nav.my_items') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,My purchase requests,Mina köpförfrågningar,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Balance & limits,Min Ekonomi,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Balance & limits, {{ $t('nav.balance') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10, My account, Min Sida ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Events, Evenemang ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Events, Evenemang ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10,Sign out button,logut knapp,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out, Logga Ut ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out, Logga Ut,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Events,  {{ $t('nav.events') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Events,  {{ $t('nav.events') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10,Sign out,logut Ut,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out,  {{ $t('nav.sign_out') }}  ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out,  {{ $t('nav.sign_out') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,,,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,Go to shop,shop knapp,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, Notifications, Notiser ,5
@@ -454,17 +452,17 @@ sb.web.app/src/components/Navbar/Notifications.vue:6,New,Nya,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,You have received a purchase request from,Du har fått en köpförfrågan från ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,. Go to,. Gå till ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, have sent, har skickat ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,, barterkronor. ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,Go to,Gå till,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, has approved your purchase request. Go to, har godkänt din köpförfrågan. Gå till ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to download the invoice., för att ladda ner fakturan.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, has denied your purchase request., har nekat din köpförfrågan.,5
@@ -473,15 +471,15 @@ sb.web.app/src/components/Navbar/Notifications.vue:6, has sent a chat message., 
 sb.web.app/src/components/Navbar/Notifications.vue:6,Older,Tidigare,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,You have received a purchase request from,Du har fått en köpförfrågan från ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,. Go to,. Gå till ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, have sent, har skickat ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,, barterkronor. ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,Go to,Gå till,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, has approved your purchase request. Go to, har godkännt din köpförfrågan. Gå till ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,My account,Min sida,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to download the invoice., för att ladda ner fakturan.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, has denied your purchase request., har nekat din köpförfrågan.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, has sent a chat message., har skickat ett chatt-meddelande.,5
@@ -510,24 +508,24 @@ sb.web.app/src/components/Profile/MyEconomy.vue:6,Fees,Avgifter,5
 sb.web.app/src/components/Profile/MyEconomy.vue:6,,,5
 sb.web.app/src/components/Profile/MyProfile.vue:11,Business name, {{ $t('user.business') }} ,5
 sb.web.app/src/components/Profile/MyProfile.vue:11, Description, {{ $t('user.description') }} ,5
-sb.web.app/src/components/Profile/MyProfile.vue:11,Street address, Adress ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city, Stad/ort ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11, Billing information, Faktureringsuppgifter ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Street address, {{ $t('user.street_address') }} ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city, {{ $t('user.town') }} ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11, Billing information, {{ $t('user.billing') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Organization number:, Org. nummer: ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11, Contact information, Kontaktuppgifter ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11, Contact information, {{ $t('user.contact') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Edit, {{ $t('edit') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,General information,Allmänt,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Logo:,Logotyp:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Business name:,{{ $t('user.business') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Description:,{{ $t('user.description') }}:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Street address:,Adress:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city:,Stad/ort:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,Faktureringsuppgifter,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Street address:,{{ $t('user.street_address') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city:,{{ $t('user.town') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,{{ $t('user.billing') }},6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,Namn:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,ZIP code:,Box:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Address:,Adress:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Address:,{{ $t('user.street_address') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,Organisationsnummer:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Contact information,Kontaktuppgifter,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Contact information,{{ $t('user.contact') }},6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Email:,Epost:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Phone:,Telefon:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Save, Spara ,6
@@ -617,11 +615,11 @@ sb.web.app/src/components/Profile/Profile.vue:5,Purchases,Köp,7
 sb.web.app/src/components/Profile/Profile.vue:5,Items,Artiklar,7
 sb.web.app/src/components/Profile/Profile.vue:5,Requests,Behov,7
 sb.web.app/src/components/Profile/Profile.vue:5,MY ACCOUNT, MIN SIDA ,7
-sb.web.app/src/components/Profile/Profile.vue:5,My profile,Min profil,7
-sb.web.app/src/components/Profile/Profile.vue:5,My buying & selling,Mina köp & sälj,7
-sb.web.app/src/components/Profile/Profile.vue:5,My items,Mina artiklar,7
-sb.web.app/src/components/Profile/Profile.vue:5,My purchase requests,Mina köpförfrågningar,7
-sb.web.app/src/components/Profile/Profile.vue:5,Balance & limits,Min Ekonomi,7
+sb.web.app/src/components/Profile/Profile.vue:5,My profile, {{ $t('nav.my_profile') }} ,7
+sb.web.app/src/components/Profile/Profile.vue:5,My buying & selling, {{ $t('nav.my_buy_sell') }} ,7
+sb.web.app/src/components/Profile/Profile.vue:5,My items, {{ $t('nav.my_items') }} ,7
+sb.web.app/src/components/Profile/Profile.vue:5,My purchase requests, {{ $t('nav.my_purchase_requests') }} ,7
+sb.web.app/src/components/Profile/Profile.vue:5,Balance & limits, {{ $t('nav.balance') }} ,7
 sb.web.app/src/components/Profile/Profile.vue:5,,,7
 sb.web.app/src/components/Profile/temp.txt:2, Confirmed purchases, Bekräftade köp ,7
 sb.web.app/src/components/Profile/temp.txt:2,Business,Företag,7
@@ -638,7 +636,7 @@ sb.web.app/src/components/SharedComponents/Listing.vue:10,Send, Överföring,7
 sb.web.app/src/components/SharedComponents/Listing.vue:10,,,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Seller,Säljare,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Buyer,Köpare,7
-sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Location,Plats,7
+sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Location,{{ $t('location') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Type of item,Typ,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Product,Produkt,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Service,Service,7
@@ -651,7 +649,7 @@ sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Total price,Total
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,, Barter Kronor,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Close,Stäng,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Add to cart,Lägg i varukorg,7
-sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,<replaced>,Starta chatt,7
+sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,<replaced>,{{ $t('chat.start') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,,,7
 sb.web.app/src/components/Shop/Shop.vue:5,SHOP,SHOP,7
 sb.web.app/src/components/Shop/Shop.vue:5,What do you want to search for today?,Vad vill du söka efter idag?,7

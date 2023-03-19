@@ -29,7 +29,7 @@
           <h5 v-if="listingObj.status === 'buying'">Köpare</h5>    
           <p>{{listingObj.userUploader}}</p>
 
-          <h5>Plats</h5>  
+          <h5>{{ $t('location') }}</h5>  
           <p>{{listingObj.destination}}</p>
 
           <h5>Typ</h5> 

@@ -1,6 +1,6 @@
 {
     "chat": {
-        "title": "MESSAGES",
+        "title": "Messages",
         "start_new": "Start new chat",
         "start": "Start chat",
         "your_chats": "Your chats"
@@ -15,16 +15,51 @@
         "street_address": "Street address",
         "town": "Town/city",
         "billing": "Billing information",
-        "contact": "Contact information"
+        "contact": "Contact information",        
+        "edit_user": "Edit <br> User"
+    },
+    "event": {
+        "instructions": "Instructions",
+        "click_date": "Click on a date to create an event",
+        "click_event": "Click on an event to see details",
+        "show_weekends": "Show weekends",
+        "show_all": "All events",
+        "start": "Start time",
+        "end_time": "End time",
+        "event_info": "Event info" ,
+        "event_name": "Event name" ,
+        "event_loc": "Event location",
+        "event_contact": "Contact information",        
+        "url": "URL for more information",
+        "choose_start": "Choose start time",
+        "choose_end": "Choose end time",
+        "create_event": "Create event",
+        "event_description": "Event description"
     },
     "time": {
         "now": "Now",
         "today": "Today",
         "yesterday": "Yesterday",
         "never": "Never",
-        "days_ago": " days ago"
+        "days_ago": "days ago"
+    },
+    "nav": {
+        "shop": "Shop",
+        "cart": "Cart",
+        "new_item": "New item",
+        "members": "Members",
+        "messages": "Messages",
+        "my_account": "My account",
+        "my_profile": "My profile",
+        "my_buy_sell": "My buy & sell",
+        "my_items": "My items",
+        "my_purchase_requests": "My purchase requests",
+        "balance": "Balance & limits",
+        "events": "Events",
+        "sign_out": "Sign out"
     },
     "transactions":"Transactions",
+    "location": "Location",
     "number_of_transactions": "Number of transactions",
     "send": "Send",
     "edit": "Edit",

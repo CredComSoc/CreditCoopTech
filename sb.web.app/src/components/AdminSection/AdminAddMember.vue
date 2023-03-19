@@ -18,22 +18,22 @@
         <input type="text" id="name" v-model="profileData.name" required><br/>
         <label for="description">{{ $t('user.description') }}:</label><br/>
         <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
-        <label for="adress">Adress:</label><br/>
+        <label for="adress">{{ $t('user.street_address') }}:</label><br/>
         <input type="text" id="adress" v-model="profileData.adress" required><br/>
-        <label for="location">Stad/ort:</label><br/>
+        <label for="location">{{ $t('user.town') }}:</label><br/>
         <input type="text" id="location" v-model="profileData.city" required><br/>
       </div>
       <div className="container-item">
-        <h2>Faktureringsuppgifter</h2>
+        <h2>{{ $t('user.billing') }}</h2>
         <label for="billingName">Namn:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
         <input name="billingBox" v-model="profileData.billingBox" required><br/>
-        <label for="billingAdress">Adress:</label><br/>
+        <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
         <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
         <label for="orgNumber">Organisationsnummer:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-        <h2>Kontaktuppgifter</h2>
+        <h2>{{ $t('user.contact') }}</h2>
         <label for="email">E-post:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
         <label for="phone">Telefon:</label><br/>

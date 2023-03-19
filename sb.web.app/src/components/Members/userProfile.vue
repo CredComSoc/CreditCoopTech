@@ -17,18 +17,18 @@
         <h1> {{ $t('user.description') }} </h1>
         <p> {{profileData.description}} </p>
 
-        <h1> Adress </h1>
+        <h1> {{ $t('user.street_address') }} </h1>
         <p> {{profileData.adress}} </p>
 
-        <h1> Stad/ort </h1>
+        <h1> {{ $t('user.town') }} </h1>
         <p> {{profileData.city}} </p>
 
-        <h1> Faktureringsuppgifter </h1>
+        <h1> {{ $t('user.billing') }} </h1>
         <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
-          <h1> Kontaktuppgifter </h1>
+          <h1> {{ $t('user.contact') }} </h1>
           <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
         </div> 
       </div>
@@ -148,7 +148,7 @@ export default {
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + this.$i18n.t('time.days_ago')
+          return days + ' ' + this.$i18n.t('time.days_ago')
         }
       } else {
         return this.$i18n.t('time.never')

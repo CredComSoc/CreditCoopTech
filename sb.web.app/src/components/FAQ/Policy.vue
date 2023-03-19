@@ -18,7 +18,7 @@ och att texten ligger sparad i databasen istället för att vara hårdkodad här
             <p>Namn</p>
         </li>
         <li>
-            <p>Adress</p>
+            <p>{{ $t('user.street_address') }}</p>
         </li>
         <li>
             <p>E-postadress</p>

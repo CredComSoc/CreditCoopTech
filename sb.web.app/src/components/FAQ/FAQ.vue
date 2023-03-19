@@ -1,19 +1,19 @@
 <template>
   <div className="flexbox-container">
   <div>
-    <h1 className="title">HANDELSREGLER & TIPS</h1>
+    <h1 className="title"> {{ $t('faq.title') }} </h1>
   </div>
 
   <!--To add another link in the menybar, add another <a href... here and add this.tab!='namn' in the first href -->
   <div className='topnav flexbox-item' id='myTopnav'>
-      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information' && this.tab!='policy'}" id='questions'>Vanliga frågor</a>
-      <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>Bartertips</a>
-      <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>Handelsregler</a>
-      <a href='#' @click="this.tab='policy'" :class="{ active: this.tab==='policy' }" id='policy'>Integritetspolicy</a>
+      <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='questions' && this.tab!='information' && this.tab!='policy'}" id='questions'>{{ $t('faq.common_questions') }}</a>
+      <a href='#' @click="this.tab='trading_tips'" :class="{ active: this.tab==='trading_tips' }" id='trading_tips'>{{ $t('faq.trading_tips') }}</a>
+      <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>{{ $t('faq.association_information') }}</a>
+      <a href='#' @click="this.tab='policy'" :class="{ active: this.tab==='policy' }" id='policy'>{{ $t('faq.policy') }}</a>
     </div>
     <!--also, add another <NAME... here -->
     <div className="content flexbox-item">
-      <BarterTips v-if="this.tab==='bartertips'"/>
+      <TradingTips v-if="this.tab==='trading_tips'"/>
       <Information v-else-if="this.tab==='information'"/>
       <Policy v-else-if="this.tab==='policy'"/>
       <Questions v-else/>
@@ -25,7 +25,7 @@
 // @ is an alias to /src
 // to add another nav in the menybar, add import here 
 import Questions from '@/components/FAQ/Questions.vue'
-import BarterTips from '@/components/FAQ/BarterTips.vue'
+import TradingTips from '@/components/FAQ/TradingTips.vue'
 import Information from '@/components/FAQ/Information.vue'
 import Policy from '@/components/FAQ/Policy.vue'
 
@@ -37,7 +37,7 @@ export default {
   // to add another nav in the menybar, add the name here, and then move over to Navbar.vue in Navbar
   components: {
     Questions,
-    BarterTips,
+    TradingTips,
     Policy,
     Information
   },
