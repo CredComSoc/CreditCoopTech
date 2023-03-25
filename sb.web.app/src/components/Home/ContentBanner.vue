@@ -3,8 +3,8 @@
     <img src="../../assets/banner.jpg" alt="välkommen">
     <div class="welcome-container">
         <div class="text-container">
-            <h1 id="welcome-text">Välkommen {{ companyName }}</h1>
-            <h1 id="inspired-text">Bli inspirerad nedan</h1>
+            <h1 id="welcome-text">{{ $t('welcome') }} {{ companyName }}</h1>
+            <h1 id="inspired-text">{{ $t('get_inspired') }}</h1>
         </div>
     </div>
   </div>

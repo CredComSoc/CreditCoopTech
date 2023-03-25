@@ -321,8 +321,8 @@ sb.web.app/src/components/Footer/Footer.vue:4,,jonas.lagander@coompanion.se,4
 sb.web.app/src/components/Footer/Footer.vue:4,Contact,Kontakta oss,4
 sb.web.app/src/components/Footer/Footer.vue:4,,,4
 sb.web.app/src/components/Home/ContentBanner.vue:3,Welcome,välkommen,4
-sb.web.app/src/components/Home/ContentBanner.vue:3,Welcome,Välkommen,4
-sb.web.app/src/components/Home/ContentBanner.vue:3,Get inspired below,Bli inspirerad nedan,4
+sb.web.app/src/components/Home/ContentBanner.vue:3,Welcome,{{ $t('welcome') }},4
+sb.web.app/src/components/Home/ContentBanner.vue:3,Get inspired below,{{ $t('get_inspired') }},4
 sb.web.app/src/components/Home/ContentBanner.vue:3,,,4
 sb.web.app/src/components/Home/ContentList.vue:3,Browse right,rotera shop,4
 sb.web.app/src/components/Home/ContentList.vue:3,Browse left,rotera shop,4
@@ -341,7 +341,7 @@ sb.web.app/src/components/Home/ListElement.vue:8, is for sale or purchase, köpe
 sb.web.app/src/components/Home/ListElement.vue:8,,,4
 sb.web.app/src/components/Login/Forgot.vue:9,Go to shop,shop knapp,4
 sb.web.app/src/components/Login/Forgot.vue:9,Reset password,Återställ lösenord,4
-sb.web.app/src/components/Login/Forgot.vue:9,Email,E-postadress,4
+sb.web.app/src/components/Login/Forgot.vue:9,Email,{{ $t('login.email_label') }},4
 sb.web.app/src/components/Login/Forgot.vue:9,,e-postadress@hemsida.sv,4
 sb.web.app/src/components/Login/Forgot.vue:9,Reset,Återställ,4
 sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address exists,Det finns ingen användare med den e-postadressen,4
@@ -351,10 +351,10 @@ sb.web.app/src/components/Login/Forgot.vue:9,,,4
 sb.web.app/src/components/Login/Login.vue:10,Go to shop,shop knapp,4
 sb.web.app/src/components/Login/Login.vue:10,Sign in to,Logga in på ,4
 sb.web.app/src/components/Login/Login.vue:10,,Svensk Barter,4
-sb.web.app/src/components/Login/Login.vue:10,Email address,E-postadress,4
+sb.web.app/src/components/Login/Login.vue:10,Email address,{{ $t('login.email_label') }},4
 sb.web.app/src/components/Login/Login.vue:10,,e-postadress@hemsida.sv,4
-sb.web.app/src/components/Login/Login.vue:10,Password,Lösenord,4
-sb.web.app/src/components/Login/Login.vue:10,Password,Lösenord,4
+sb.web.app/src/components/Login/Login.vue:10,Password,{{ $t('login.password') }},4
+sb.web.app/src/components/Login/Login.vue:10,Password,{{ $t('login.password') }},4
 sb.web.app/src/components/Login/Login.vue:10,Sign in,Logga in,4
 sb.web.app/src/components/Login/Login.vue:10,Reset password,Återställ lösenord,4
 sb.web.app/src/components/Login/Login.vue:10,Invalid email or password,Fel epost eller lösenord ,4
@@ -501,7 +501,7 @@ sb.web.app/src/components/Profile/MyArticles.vue:3,Price,Pris,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Created,Skapad,5
 sb.web.app/src/components/Profile/MyArticles.vue:3, Edit ad, {{ $t('edit_ads') }} ,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,,,5
-sb.web.app/src/components/Profile/MyEconomy.vue:6,Balance,Saldo,5
+sb.web.app/src/components/Profile/MyEconomy.vue:6,Balance,{{ $t('balance') }},5
 sb.web.app/src/components/Profile/MyEconomy.vue:6,Credit limit,Kreditgräns,5
 sb.web.app/src/components/Profile/MyEconomy.vue:6,available balance,Tillgängligt belopp,5
 sb.web.app/src/components/Profile/MyEconomy.vue:6,Fees,Avgifter,5
@@ -544,11 +544,11 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,Ok,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,, bKr.,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,, {{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,Ok,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as the buyer does not have enough,"Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med ",6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,,bKr.,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,,{{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Pending purchases, Väntande köp ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, You have a pending purchase that must be approved by the buyer before completion. You will receive a notification when the buyer has approved the purchase., Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
@@ -604,11 +604,11 @@ sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any pur
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,Ok,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
-sb.web.app/src/components/Profile/MyRequests.vue:5,, bKr.,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,, {{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,Ok,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Purchase request cannot be approved as the buyer does not have enough,"Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med ",6
-sb.web.app/src/components/Profile/MyRequests.vue:5,,bKr.,7
+sb.web.app/src/components/Profile/MyRequests.vue:5,,{{ $t('org.tkn') }}.,7
 sb.web.app/src/components/Profile/MyRequests.vue:5,,,7
 sb.web.app/src/components/Profile/Profile.vue:5,Profile,{{ $t('user.profile') }},7
 sb.web.app/src/components/Profile/Profile.vue:5,Purchases,Köp,7
@@ -699,17 +699,17 @@ sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The seller,Säljaren ,
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3, has reached their upper limit for, har nått sin övre gräns för ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,,7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Current balance:,Nuvarande Saldo: ,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Current balance:,Nuvarande {{ $t('balance') }}: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Total:,Kostnad: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Balance after purchase:,Saldo efter Köp: ,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Balance after purchase:,{{ $t('balance') }} efter Köp: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Complete the purchase,Slutför köp,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,,,7
-sb.web.app/src/components/SaldoCard.vue:13,Balance:, Saldo: ,7
+sb.web.app/src/components/SaldoCard.vue:13,Balance:, {{ $t('balance') }}: ,7
 sb.web.app/src/components/SaldoCard.vue:13,, bKr,8
 sb.web.app/src/components/SaldoCard.vue:13, should be changed to connect to credit instead, ska ändras till att connecta till kredit istället,8
-sb.web.app/src/components/SaldoCard.vue:13, Credit:, Kredit: ,8
+sb.web.app/src/components/SaldoCard.vue:13, Credit:, {{ $t('credit') }}: ,8
 sb.web.app/src/components/SaldoCard.vue:13,, bKr,8
 sb.web.app/src/components/SaldoCard.vue:13,,,8

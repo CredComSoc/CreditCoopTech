@@ -3,7 +3,7 @@
         <div>
             <table style="hej">
                 <tr>
-                    <th><h1>Saldo</h1></th>
+                    <th><h1>{{ $t('balance') }}</h1></th>
                     <th><h1>Kreditgräns</h1></th>
                     <th><h1>Tillgängligt belopp</h1></th>
                     <th><h1>Avgifter</h1></th>

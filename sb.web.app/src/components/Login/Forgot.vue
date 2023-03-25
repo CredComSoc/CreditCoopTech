@@ -17,7 +17,7 @@
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
       <div class="box-text">Återställ lösenord</div>
       <div>
-        <label class="box-label">E-postadress</label>
+        <label class="box-label">{{ $t('login.email_label') }}</label>
         <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
       </div>
       <button id="reset-button" >Återställ</button>

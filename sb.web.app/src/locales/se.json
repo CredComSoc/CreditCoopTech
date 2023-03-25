@@ -1,4 +1,15 @@
 {
+    "login" : {
+        "login_to_label": "Logga in på",
+        "email_label": "E-postadress",
+        "email_placeholder": "e-postadress@hemsida.sv",
+        "password_label": "Lösenord",
+        "password_placeholder": "lösenord",
+        "login_button": "Logga in",
+        "need_help": "Behöver du hjälp?",
+        "contact_us": "Kontakta oss.",
+        "contact_us_email": "svenskbarter@gmail.com"
+    },
     "chat": {
         "title": "MEDDELANDEN",
         "start_new": "Starta ny chatt",
@@ -58,6 +69,10 @@
         "events": "Evenemang",
         "sign_out": "Logga Ut"
     },
+    "balance": "Saldo",
+    "credit": "Kredit",
+    "welcome": "Välkommen",
+    "get_inspired": "Bli inspirerad nedan",
     "transactions": "Transaktioner",
     "location": "Plats",
     "number_of_transactions": "Antal Transaktioner",

@@ -80,7 +80,7 @@
           <div id="navbar-home" class="navlogo">
             <figure>
               <router-link :to="{name:'Home'}" >
-                <img src="../../assets/navbar_logos/sb.png" />
+                <img src="/nav_logo.png" />
               </router-link>
             </figure>
           </div>
