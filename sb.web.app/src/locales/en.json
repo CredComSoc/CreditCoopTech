@@ -1,4 +1,14 @@
 {
+    "login" : {
+        "login_to_label": "Sign in to",
+        "email_label": "Email address",
+        "email_placeholder": "test@nowhere.com",
+        "password_label": "Password",
+        "password_placeholder": "testpassword",
+        "login_button": "Login",
+        "need_help": "Need help?",
+        "contact_us": "Contact us."
+    },
     "chat": {
         "title": "Messages",
         "start_new": "Start new chat",
@@ -58,6 +68,10 @@
         "events": "Events",
         "sign_out": "Sign out"
     },
+    "balance": "Balance",
+    "credit": "Credit",
+    "welcome": "Welcome",
+    "get_inspired": "Get inspired below",
     "transactions":"Transactions",
     "location": "Location",
     "number_of_transactions": "Number of transactions",

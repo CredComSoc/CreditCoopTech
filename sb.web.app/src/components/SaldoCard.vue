@@ -10,7 +10,7 @@
           <figure id='top-log'>
             <a href="#">
               <img src="../assets/sidecard_logos/Saldo.png"/>
-              <figcaption class="l-text" id='top-logo-text'> Saldo: {{ this.$store.state.saldo }} bKr</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> {{ $t('balance') }}: {{ this.$store.state.saldo }} {{ $t('org.tkn') }}</figcaption>
             </a>
           </figure>
       </div>
@@ -20,7 +20,7 @@
             <a href="#">
               <img src="../assets/sidecard_logos/credit-card.png"/>
               <!-- state.saldo ska ändras till att connecta till kredit istället-->
-              <figcaption class="l-text" id='top-logo-text'> Kredit: {{ this.$store.state.creditLine }} bKr</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> {{ $t('credit') }}: {{ this.$store.state.creditLine }} {{ $t('org.tkn') }}</figcaption>
             </a>
           </figure>
       </div>

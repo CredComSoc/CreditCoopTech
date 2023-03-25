@@ -1,5 +1,11 @@
 {
-  "name": "LCC",
+  "name": "Land Care Trade",
+  "org" : {
+    "name": "Land Care Trade",   
+    "contact_email": "contact email goes here",
+    "contact_link": "mailto:contact_email@gmail.com",
+    "tkn": "hny"
+  },
   "faq": {
     "faq": "FAQ",
     "title": "Trade rules & tips",
