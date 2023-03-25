@@ -79,6 +79,7 @@
       "no-console": "off"
     }
   },
+  "main" : "src/main.js",
   "browserslist": [
     "> 1%",
     "last 2 versions",
