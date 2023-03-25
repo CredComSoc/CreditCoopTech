@@ -2,7 +2,7 @@
     "login" : {
         "login_to_label": "Sign in to",
         "email_label": "Email address",
-        "email_placeholder": "test@nowhere.com",
+        "email_placeholder": "test nowhere.com",
         "password_label": "Password",
         "password_placeholder": "testpassword",
         "login_button": "Login",
