@@ -74,7 +74,7 @@
           <label for="orgNumber">Organisationsnummer:</label><br/>
           <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
           <h1>{{ $t('user.contact') }}</h1>
-          <label for="email">Epost:</label><br/>
+          <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
           <label for="phone">Telefon:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>

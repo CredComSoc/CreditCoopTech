@@ -28,6 +28,7 @@
         "billing": "Faktureringsuppgifter",
         "billingnamelabel": "Namn",
         "contact": "Kontaktuppgifter",
+        "emailcontactlabel": "Epost",
         "edit_user": "Redigera <br> användare"
     },
     "event": {      
