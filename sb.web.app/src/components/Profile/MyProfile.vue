@@ -71,12 +71,12 @@
           <input name="billingBox" v-model="profileData.billingBox" required><br/>
           <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
-          <label for="orgNumber">Organisationsnummer:</label><br/>
+          <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
           <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
           <h1>{{ $t('user.contact') }}</h1>
           <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">Telefon:</label><br/>
+          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
 
           <button @click="submit" class="buttonflex">
