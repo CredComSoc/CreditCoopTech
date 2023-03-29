@@ -26,7 +26,8 @@
         "town": "Town/city",
         "billing": "Billing information",
         "billingnamelabel": "Name",
-        "contact": "Contact information",        
+        "contact": "Contact information",
+        "emailcontactlabel": "Email",        
         "edit_user": "Edit <br> User"
     },
     "event": {
