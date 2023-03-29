@@ -43,7 +43,7 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,{{ $t('user.town') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,{{ $t('user.billing') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,Namn,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,{{ $t('user.billingnamelabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,ZIP code,Box,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,Organisationsnummer,1
@@ -65,7 +65,7 @@ sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Description,{{ $t('u
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Street address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Town/city,{{ $t('user.town') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Billing information,{{ $t('user.billing') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,Namn,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,{{ $t('user.billingnamelabel') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ZIP code,Box,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,Organisationsnummer,1
@@ -521,7 +521,7 @@ sb.web.app/src/components/Profile/MyProfile.vue:11,Description:,{{ $t('user.desc
 sb.web.app/src/components/Profile/MyProfile.vue:11,Street address:,{{ $t('user.street_address') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city:,{{ $t('user.town') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,{{ $t('user.billing') }},6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,Namn:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,{{ $t('user.billingnamelabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,ZIP code:,Box:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Address:,{{ $t('user.street_address') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,Organisationsnummer:,6
