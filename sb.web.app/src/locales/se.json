@@ -26,6 +26,7 @@
         "street_address": "Adress",
         "town": "Stad/ort",
         "billing": "Faktureringsuppgifter",
+        "billingnamelabel": "Namn",
         "contact": "Kontaktuppgifter",
         "edit_user": "Redigera <br> användare"
     },

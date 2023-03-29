@@ -150,7 +150,7 @@ sb.web.app/src/components/FAQ/Policy.vue:1,,"Vi beh&ouml;ver ocks&aring; dina pe
 sb.web.app/src/components/FAQ/Policy.vue:1,,Du har r&auml;tt att mots&auml;tta dig att vi anv&auml;nder personuppgifter f&ouml;r direktmarknadsf&ouml;ring. N&auml;r vi samlar in personuppgifter om dig f&ouml;r f&ouml;rsta g&aring;ngen f&aring;r du mer information om detta och hur du kan mots&auml;tta dig det.,2
 sb.web.app/src/components/FAQ/Policy.vue:1,,Vilka personuppgifter behandlar vi?,2
 sb.web.app/src/components/FAQ/Policy.vue:1,,Vi behandlar endast personuppgifter n&auml;r vi har laglig grund. Vi behandlar inte personuppgifter i annat fall &auml;n n&auml;r de beh&ouml;vs f&ouml;r att fullg&ouml;ra f&ouml;rpliktelser enligt avtal och lag. H&auml;r f&ouml;ljer exempel p&aring; personuppgifterna vi behandlar:,2
-sb.web.app/src/components/FAQ/Policy.vue:1,Name,Namn,2
+sb.web.app/src/components/FAQ/Policy.vue:1,Name,{{ $t('user.billingnamelabel') }},2
 sb.web.app/src/components/FAQ/Policy.vue:1,Address,Adress,2
 sb.web.app/src/components/FAQ/Policy.vue:1,Email,E-postadress,2
 sb.web.app/src/components/FAQ/Policy.vue:1,Phone,Telefonnummer,2
