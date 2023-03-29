@@ -46,10 +46,10 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing informa
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,{{ $t('user.billingnamelabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,ZIP code,Box,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Address,{{ $t('user.street_address') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,Organisationsnummer,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,{{ $t('user.orgnumberlabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Email,Epost,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Phone,Telefon,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Email,{{ $t('user.emailcontactlabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Phone,{{ $t('user.telephonecontaclabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Save,Spara,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Now,Nu,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Today,Idag,1
@@ -68,10 +68,10 @@ sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Billing information,
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,{{ $t('user.billingnamelabel') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ZIP code,Box,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Address,{{ $t('user.street_address') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,Organisationsnummer,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,{{ $t('user.orgnumberlabel') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Email:,E-post:,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Phone:,Telefon:,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Phone:,{{ $t('user.telephonecontaclabel') }}:,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Register,Registrera,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,The new member is now registered. An email with sign in details has been sent to the specified email address.,Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,,,1
@@ -524,10 +524,10 @@ sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,{{ $t('us
 sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,{{ $t('user.billingnamelabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,ZIP code:,Box:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Address:,{{ $t('user.street_address') }}:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,Organisationsnummer:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,{{ $t('user.orgnumberlabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Contact information,{{ $t('user.contact') }},6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Email:,Epost:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Phone:,Telefon:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Email:,{{ $t('user.emailcontactlabel') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Phone:,{{ $t('user.telephonecontaclabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Save, Spara ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Cancel, Avbryt ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,,,6
