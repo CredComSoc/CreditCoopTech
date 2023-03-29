@@ -86,7 +86,7 @@
           <h1>{{ $t('user.contact') }}</h1>
           <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">Telefon:</label><br/>
+          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
           <button @click="submit" class="buttonflex">
             <p style="padding-right:7px" > Spara </p>

@@ -24,11 +24,13 @@
         "business": "Företagsnamn",
         "description": "Beskrivning",
         "street_address": "Adress",
+        "orgnumberlabel": "Organisationsnummer",
         "town": "Stad/ort",
         "billing": "Faktureringsuppgifter",
         "billingnamelabel": "Namn",
         "contact": "Kontaktuppgifter",
         "emailcontactlabel": "Epost",
+        "telephonecontactlabel": "Telefon",
         "edit_user": "Redigera <br> användare"
     },
     "event": {      
