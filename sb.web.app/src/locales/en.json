@@ -25,6 +25,7 @@
         "street_address": "Street address",
         "town": "Town/city",
         "billing": "Billing information",
+        "billingnamelabel": "Name",
         "contact": "Contact information",        
         "edit_user": "Edit <br> User"
     },

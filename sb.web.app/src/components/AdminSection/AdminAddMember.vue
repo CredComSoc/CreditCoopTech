@@ -25,7 +25,7 @@
       </div>
       <div className="container-item">
         <h2>{{ $t('user.billing') }}</h2>
-        <label for="billingName">Namn:</label><br/>
+        <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
         <input name="billingBox" v-model="profileData.billingBox" required><br/>
