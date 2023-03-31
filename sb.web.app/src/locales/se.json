@@ -31,7 +31,9 @@
         "contact": "Kontaktuppgifter",
         "emailcontactlabel": "Epost",
         "telephonecontactlabel": "Telefon",
-        "edit_user": "Redigera <br> användare"
+        "edit_user": "Redigera <br> användare",
+        "sentMessagePopupTitle": "Förfrågan skickad",
+        "bkrSentMessageCardText": "You have sent  {bkr} barterkronor to {accountName} " 
     },
     "event": {      
         "instructions": "Instruktioner",
