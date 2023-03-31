@@ -15,7 +15,7 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing informa
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1 #3.30.23 not tested, can't use Admin Login 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent,Förfrågan skickad,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1

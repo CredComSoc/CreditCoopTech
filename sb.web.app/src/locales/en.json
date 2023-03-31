@@ -31,7 +31,9 @@
         "contact": "Contact information",
         "emailcontactlabel": "Email",
         "telephonecontactlabel": "Telephone",        
-        "edit_user": "Edit <br> User"
+        "edit_user": "Edit <br> User",
+        "sentMessagePopupTitle": "Message <br> sent",
+        "bkrSentMessageCardText": "You have sent  {bkr} barterkronor to {accountName}"      
     },
     "event": {
         "instructions": "Instructions",
