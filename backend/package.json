@@ -15,11 +15,13 @@
     "ajax": "0.0.4",
     "axios": "^0.26.1",
     "babel": "^6.23.0",
+    "chokidar": "^3.5.3",
     "constantinople": "^4.0.1",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "dicer": "^0.3.1",
     "dotenv": "^16.0.3",
     "dotenv-flow": "^3.2.0",
     "express": "^4.17.3",
@@ -47,6 +49,8 @@
     "promisify": "^0.0.3",
     "req-flash": "^0.0.3",
     "socket.io": "^4.5.1",
+    "source-map-resolve": "^0.6.0",
+    "urix": "^0.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
