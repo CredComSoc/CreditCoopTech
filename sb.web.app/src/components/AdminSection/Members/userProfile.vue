@@ -8,7 +8,7 @@
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
         <button @click="edit = !edit" id="edit-btn">
-          <span v-html="$t('edit.edit_user')"></span>
+          <span v-html="$t('edit_user')"></span>
          </button>
       </div>
 
