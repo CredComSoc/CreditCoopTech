@@ -85,7 +85,7 @@ module.exports = function() {
   });
 
   const storage = new GridFsStorage({
-    url: config.db,
+    url: dbUrl,
     file: (req, file) => {
       return new Promise((resolve, reject) => {
         crypto.randomBytes(16, (err, buf) => {
