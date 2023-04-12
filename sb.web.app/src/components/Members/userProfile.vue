@@ -49,10 +49,10 @@
       </form>
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.accountName + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrFailedTransactionUnderCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrFailedTransactionOverCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
-    <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.bkrFailedTransactionInvalidNumberCardText', {bkr: this.bkr, accountName: profileData.accountName})"  />
   </div>
 </template>
 

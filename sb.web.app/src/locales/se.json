@@ -33,7 +33,13 @@
         "telephonecontactlabel": "Telefon",
         "edit_user": "Redigera <br> användare",
         "sentMessagePopupTitle": "Förfrågan skickad",
-        "bkrSentMessageCardText": "You have sent  {bkr} barterkronor to {accountName} " 
+        "bkrSentMessageCardText": "You have sent  {bkr} barterkronor to {accountName} ", 
+        "failed_transaction_underMessagePopupTitle": "Överföringen kunde inte genomföras",
+        "bkrFailedTransactionUnderCardText": "Insufficient amount entered. You did not send {bkr} barterkronor to {accountName} ",
+        "failed_transaction_overMessagePopupTitle": "Överföringen kunde inte genomföras",
+        "bkrFailedTransactionOverCardText": "Excess amount entered. You did not send {bkr} barterkronor to {accountName} ",
+        "failed_transaction_invalid_numberMessagePopupTitle": "Överföringen kunde inte genomföras",
+        "bkrFailedTransactionInvalidNumberCardText": "Invalid Number. You did not send {bkr} barterkronor to {accountName}. Please enter valid number. "
     },
     "event": {      
         "instructions": "Instruktioner",
