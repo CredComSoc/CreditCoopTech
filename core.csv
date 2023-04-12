@@ -17,17 +17,17 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('mis
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent,Förfrågan skickad,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent,Förfrågan skickad,1  #jb to discuss with Miles.
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,Din förfrågan att överföra,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,Din förfrågan att överföra,1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor till,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,har mottagits.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1  #jb to discuss with Miles.
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough ,Du har inte tillräckligt med,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough ,Du har inte tillräckligt med,1   #jb to discuss with Miles.
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,för att genomföra överföringen.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,för att genomföra överföringen.,1 #jb to discuss with Miles.
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1  #jb to discuss with Miles.
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive,kan inte ta emot,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,bkr,1
