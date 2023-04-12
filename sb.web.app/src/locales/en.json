@@ -21,7 +21,7 @@
         "profile": "Profile",
         "email": "Email",
         "purchase_requests": "Purchase requests",
-        "business": "Business name",
+        "business": "Account name",
         "description": "Description",
         "street_address": "Street address",
         "orgnumberlabel": "Organization number",

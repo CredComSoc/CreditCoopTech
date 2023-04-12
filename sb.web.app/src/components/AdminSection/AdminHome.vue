@@ -4,7 +4,7 @@
       <h2 class="center-text">MEDLEMMAR</h2>
     </div>
     <div class="center">
-        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vem vill du söka efter idag?'"/>
+        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>
     </div>
     <br>
     <div class="main">
