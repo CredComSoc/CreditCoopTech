@@ -17,27 +17,27 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('mis
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent,Förfrågan skickad,1  #jb to discuss with Miles.
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent, {{ $('user.sentMessagePopupTitle') }},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,Din förfrågan att överföra,1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor till,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,har mottagits.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1  #jb to discuss with Miles.
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough ,Du har inte tillräckligt med,1   #jb to discuss with Miles.
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,för att genomföra överföringen.,1 #jb to discuss with Miles.
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1  #jb to discuss with Miles.
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive,kan inte ta emot,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,bkr,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,Anslutningsproblem,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed, {{$('user.failed_transaction_underMessagePopupTitle')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,Felaktigt antal,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,Allmänt,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},1
@@ -58,7 +58,7 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7, days ago, daga
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Never,Aldrig,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ADD MEMBER,LÄGG TILL MEDLEM,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,Allmänt,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Profile picture,Profilbild,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Description,{{ $t('user.description') }},1
@@ -392,24 +392,24 @@ sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Quantity,{{ $t('quantity') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Comment,Kommentar,4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
-sb.web.app/src/components/Members/userProfile.vue:8,Request sent,Förfrågan skickad,4
+sb.web.app/src/components/Members/userProfile.vue:8,Request sent,{{ $('user.sentMessagePopupTitle') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,Din förfrågan att överföra ,4
 sb.web.app/src/components/Members/userProfile.vue:8,, barterkronor till ,4
 sb.web.app/src/components/Members/userProfile.vue:8, has been received., har mottagits.,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,4
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough ,Du har inte tillräckligt med ,4
+sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,4
-sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,för att genomföra överföringen.,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,4
+sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},4
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, kan inte ta emot ,4
 sb.web.app/src/components/Members/userProfile.vue:8,, bkr.,4
 sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,Anslutningsproblem,4
 sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,5
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of ,Felaktigt antal,5
 sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,5
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,5
@@ -514,7 +514,7 @@ sb.web.app/src/components/Profile/MyProfile.vue:11, Billing information, {{ $t('
 sb.web.app/src/components/Profile/MyProfile.vue:11, Organization number:, Org. nummer: ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Contact information, {{ $t('user.contact') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Edit, {{ $t('edit') }} ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,General information,Allmänt,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,General information,{{ $t('user.general_information') }},6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Logo:,Logotyp:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Business name:,{{ $t('user.business') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Description:,{{ $t('user.description') }}:,6
@@ -690,9 +690,9 @@ sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Thank you for your pur
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,notification when the seller has approved your purchase request.,notis när säljaren bekräftat din köpförfrågan.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough ,Du har inte tillräckligt med ,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to make the purchase.,för att genomföra köpet.,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to carry out the transaction., {{$t('user.bkrFailedTransactionUnderCardText')}},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The seller,Säljaren ,7

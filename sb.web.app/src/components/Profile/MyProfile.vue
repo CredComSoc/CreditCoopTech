@@ -46,7 +46,7 @@
     <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
-          <h1>Allmänt</h1>
+          <h1>{{ $t('user.general_information') }}</h1>
           <label for="logo">Logotyp:</label><br/>
           <div class="image">
           <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
