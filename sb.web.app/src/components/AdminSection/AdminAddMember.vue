@@ -5,7 +5,7 @@
     </H1>
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">
-        <h2>Allmänt</h2>
+        <h2>{{ $t('user.general_information') }}</h2>
         <label for="logo">Profilbild:</label><br/> 
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
