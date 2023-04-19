@@ -6,7 +6,7 @@ sb.web.app/src/components/AdminSection/Members/member.vue:18,,,0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Last online,{{ $t('user.last_online')}},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,<replaced>,{{ $t('chat.start') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Edit,{{ $t('user.edit_user') }},0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,member,användare,0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,member,{{ $t('user.member_label') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Account name,{{ $t('user.business') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},0
@@ -19,9 +19,9 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Komment
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent, {{ $('user.sentMessagePopupTitle') }},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,Din förfrågan att överföra,1 
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,{{ $('user.bkrRequestToSendCardText') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor till,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,har mottagits.,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
@@ -31,8 +31,8 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive,kan inte ta emot,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,bkr,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,Anslutningsproblem,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,{{ $t('user.connectionProblemsCardText') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed, {{$('user.failed_transaction_underMessagePopupTitle')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,Felaktigt antal,1
@@ -344,7 +344,7 @@ sb.web.app/src/components/Login/Forgot.vue:9,Reset password,Återställ lösenor
 sb.web.app/src/components/Login/Forgot.vue:9,Email,{{ $t('login.email_label') }},4
 sb.web.app/src/components/Login/Forgot.vue:9,,e-postadress@hemsida.sv,4
 sb.web.app/src/components/Login/Forgot.vue:9,Reset,Återställ,4
-sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address exists,Det finns ingen användare med den e-postadressen,4
+sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address exists,Det finns ingen {{ $t('user.member_label') }} med den e-postadressen,4
 sb.web.app/src/components/Login/Forgot.vue:9,An email with password reset instructions has been sent!,Ett e-post med instruktioner för lösenordsåterställning har skickats!,4
 sb.web.app/src/components/Login/Forgot.vue:9,&larr; Sign in,&larr; Logga in,4
 sb.web.app/src/components/Login/Forgot.vue:9,,,4
@@ -394,9 +394,9 @@ sb.web.app/src/components/Members/userProfile.vue:8,Comment,Kommentar,4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Request sent,{{ $('user.sentMessagePopupTitle') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,Din förfrågan att överföra ,4
-sb.web.app/src/components/Members/userProfile.vue:8,, barterkronor till ,4
-sb.web.app/src/components/Members/userProfile.vue:8, has been received., har mottagits.,4
+sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,{{ $('user.bkrRequestToSendCardText') }},4
+sb.web.app/src/components/Members/userProfile.vue:8, barterkronor till ,4
+sb.web.app/src/components/Members/userProfile.vue:8, has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
@@ -406,8 +406,8 @@ sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, kan inte ta emot ,4
 sb.web.app/src/components/Members/userProfile.vue:8,, bkr.,4
-sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,Anslutningsproblem,4
-sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,4
+sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,{{ $t('user.connectionProblemsCardText') }},4
+sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of ,Felaktigt antal,5
