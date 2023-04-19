@@ -20,6 +20,7 @@
         "last_online": "Last Online",
         "profile": "Profile",
         "email": "Email",
+        "member_label": "Member",
         "purchase_requests": "Purchase requests",
         "general_information": "General information",
         "business": "Account name",
@@ -40,7 +41,10 @@
         "failed_transaction_overMessagePopupTitle": "Transaction <br> failed",
         "bkrFailedTransactionOverCardText": "Excess amount entered. You did not send {bkr} barterkronor to {accountName}",
         "failed_transaction_invalid_numberMessagePopupTitle": "Transaction <br> failed",
-        "bkrFailedTransactionInvalidNumberCardText": "Invalid Number. You did not send {bkr} barterkronor to {accountName}. Please enter valid number. "
+        "bkrFailedTransactionInvalidNumberCardText": "Invalid Number. You did not send {bkr} barterkronor to {accountName}. Please enter valid number. ",
+        "bkrRequestToSendCardText": "Your request to send",
+        "bkrRequestHasBeenReceivedCardText": "has been received",
+        "connectionProblemsCardText": "Connection problems"
     },
     "event": {
         "instructions": "Instructions",

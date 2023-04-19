@@ -441,7 +441,7 @@ module.exports = function() {
           db.close()
         }
       } else {
-        //Det finns redan en användare med namnet
+        //Det finns redan en {{ $t('user.member_label') }} med namnet
         res.status(500).send('Denhär medlemmen finns redan.')
       }
     })
