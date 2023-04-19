@@ -53,7 +53,7 @@
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionUnderCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionOverCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.bkrFailedTransactionInvalidNumberCardText', {bkr: this.bkr, accountName: profileData.accountName})"  />
   <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">

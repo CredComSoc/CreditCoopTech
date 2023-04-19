@@ -23,7 +23,7 @@
       <button id="reset-button" >Återställ</button>
     </form>
     <div class="box-error" v-if="error">
-      Det finns ingen användare med den e-postadressen
+      Det finns ingen {{ $t('user.member_label') }} med den e-postadressen
     </div>
     <div class="box-sent" v-if="sent">
       Ett e-post med instruktioner för lösenordsåterställning har skickats!

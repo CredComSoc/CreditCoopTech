@@ -20,6 +20,7 @@
         "last_online": "Senast Online",
         "profile": "Profil",
         "email": "E-mail",
+        "member": "användare",
         "purchase_requests": "Köpförfrågningar",
         "general_information": "Allmänt",
         "business": "Företagsnamn",
@@ -32,7 +33,7 @@
         "contact": "Kontaktuppgifter",
         "emailcontactlabel": "Epost",
         "telephonecontactlabel": "Telefon",
-        "edit_user": "Redigera <br> användare",
+        "edit_user": "Redigera <br> {{ $t('user.member_label') }}",
         "sentMessagePopupTitle": "Förfrågan skickad",
         "bkrSentMessageCardText": "You have sent  {bkr} barterkronor to {accountName} ", 
         "failed_transaction_underMessagePopupTitle": "Överföringen kunde inte genomföras",
@@ -40,7 +41,10 @@
         "failed_transaction_overMessagePopupTitle": "Överföringen kunde inte genomföras",
         "bkrFailedTransactionOverCardText": "Excess amount entered. You did not send {bkr} barterkronor to {accountName} ",
         "failed_transaction_invalid_numberMessagePopupTitle": "Överföringen kunde inte genomföras",
-        "bkrFailedTransactionInvalidNumberCardText": "Invalid Number. You did not send {bkr} barterkronor to {accountName}. Please enter valid number. "
+        "bkrFailedTransactionInvalidNumberCardText": "Invalid Number. You did not send {bkr} barterkronor to {accountName}. Please enter valid number. ",
+        "bkrRequestToSendCardText": "Din förfrågan att överföra",
+        "bkrRequestHasBeenReceivedCardText": "har mottagits av",
+        "connectionProblemsCardText": "Anslutningsproblem"
     },
     "event": {      
         "instructions": "Instruktioner",
