@@ -1,6 +1,6 @@
 <!--All text här är i nuläget hårdkodad och översatt till html via wordtohtml.net. 
 Detta kommer i framtiden behöva ändras så att admin kan ändra texten via adminpage,
-och att texten ligger sparad i databasen istället för att vara hårdkodad här.-->
+och att texten ligger {{ $t('user.saveLabel') }}d i databasen istället för att vara hårdkodad här.-->
 <template>  
   <div> 
     <ol>
@@ -170,7 +170,7 @@ och att texten ligger sparad i databasen istället för att vara hårdkodad här
       <ol style="font-weight: initial;">
           <li>Svensk Barter f&ouml;rbeh&aring;ller sig r&auml;tten att ensidigt besluta om att st&auml;nga av Kontoinnehavare fr&aring;n tj&auml;nsten. Avst&auml;ngning kan till exempel ske till f&ouml;ljd av klagom&aring;l, brott mot dessa anv&auml;ndarvillkor eller om tj&auml;nsten anv&auml;nds p&aring; ett s&auml;tt som kan orsaka Svensk Barter eller tredjeman skada.</li>
           <li>Att Svensk Barter underl&aring;ter att genomdriva en viss regel eller policy vid ett tillf&auml;lle eller mot en Kontoinnehavare utesluter inte att samma regel eller policy till&auml;mpas vid en annan tidpunkt eller mot en annan Kontoinnehavare.</li>
-          <li>&Ouml;vertr&auml;delser av dessa Anv&auml;ndarvillkor eller Svensk Barters stadgar &auml;r oetiska och kan vara brottsliga. Kontoinnehavare f&ouml;rv&auml;ntas rapportera till Svensk Barter om eventuella uppgifter som du kan ha ang&aring;ende fall d&auml;r denna &ouml;verenskommelse eller anv&auml;ndningsvillkoren har blivit &ouml;vertr&auml;dda eller brutits mot. N&auml;r Svensk Barter blir medveten om eventuella &ouml;vertr&auml;delser, kommer f&ouml;reningen att inleda en unders&ouml;kning. Samtidigt, f&ouml;r att f&ouml;rhindra ytterligare m&ouml;jlig obeh&ouml;rig verksamhet, kan Svensk Barter efter eget gottfinnande avbryta alla inblandade konton som har tillg&aring;ng till Tj&auml;nsten. Konstaterade &ouml;vertr&auml;delser kan leda till omedelbar upps&auml;gning av enskilda konton och/eller r&auml;ttsliga p&aring;f&ouml;ljder. Kontoupph&auml;vandet kan &aring;terst&auml;llas efter eget gottfinnande av Svensk Barter efter betalning av en &aring;terst&auml;llningsavgift.<br><br></li>
+          <li>&Ouml;vertr&auml;delser av dessa Anv&auml;ndarvillkor eller Svensk Barters stadgar &auml;r oetiska och kan vara brottsliga. Kontoinnehavare f&ouml;rv&auml;ntas rapportera till Svensk Barter om eventuella uppgifter som du kan ha ang&aring;ende fall d&auml;r denna &ouml;verenskommelse eller anv&auml;ndningsvillkoren har blivit &ouml;vertr&auml;dda eller brutits mot. N&auml;r Svensk Barter blir medveten om eventuella &ouml;vertr&auml;delser, kommer f&ouml;reningen att inleda en unders&ouml;kning. Samtidigt, f&ouml;r att f&ouml;rhindra ytterligare m&ouml;jlig obeh&ouml;rig verksamhet, kan Svensk Barter efter eget gottfinnande {{ $t('user.cancelLabel') }}a alla inblandade konton som har tillg&aring;ng till Tj&auml;nsten. Konstaterade &ouml;vertr&auml;delser kan leda till omedelbar upps&auml;gning av enskilda konton och/eller r&auml;ttsliga p&aring;f&ouml;ljder. Kontoupph&auml;vandet kan &aring;terst&auml;llas efter eget gottfinnande av Svensk Barter efter betalning av en &aring;terst&auml;llningsavgift.<br><br></li>
       </ol>
   </li>
   <li style="font-weight: bold;"><strong>UPPS&Auml;GNING AV HANDELSKONTO I BYTESRINGSSYSTEMET</strong>

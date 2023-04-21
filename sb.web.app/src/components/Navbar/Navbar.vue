@@ -118,7 +118,7 @@
                 </div>
               </div>
               <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap"> Min Sida </span>
+                <span class="mob-cap"> {{ $t('nav.my_account') }} </span>
               </router-link>
           </div>
           <div id="navbar-event" class="navlogo">

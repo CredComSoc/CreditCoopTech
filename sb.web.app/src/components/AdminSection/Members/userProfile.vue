@@ -44,7 +44,7 @@
           <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
-          <label class="box-label">Comment</label>
+          <label class="box-label">{{ $t('user.commentLabel') }}</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
         <button id="send-btn">{{ $t('send') }}</button>
@@ -90,7 +90,7 @@
           <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
           <button @click="submit" class="buttonflex">
-            <p style="padding-right:7px" > Spara </p>
+            <p style="padding-right:7px" > {{ $t('user.saveLabel') }}: </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
@@ -99,7 +99,7 @@
           </svg>
           </button>
           <button @click="edit = !edit" class="buttonflex"> 
-            <p style="padding-right:0px" > Avbryt </p>
+            <p style="padding-right:0px" > {{ $t('user.cancelLabel') }} </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <line x1="18" y1="6" x2="6" y2="18" />
