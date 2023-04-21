@@ -9,7 +9,7 @@
       </div>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
-      <h1 className="title" > MIN SIDA </h1>
+      <h1 className="title" > {{ $t('myAccountCAPS') }} </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
       <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'> {{ $t('nav.my_profile') }} </a>

@@ -42,7 +42,7 @@
           <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
-          <label class="box-label">Comment</label>
+          <label class="box-label">{{ $t('user.commentLabel') }}</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
         <button id="send-btn">{{ $t('misc.send') }}</button>
