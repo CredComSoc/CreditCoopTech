@@ -43,7 +43,7 @@ module.exports = function() {
   const dbFolder = config.dbFolder;
   const FRONTEND_URL = config.FRONTEND_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
-
+  const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
 
   /*****************************************************************************
@@ -177,6 +177,9 @@ module.exports = function() {
    *****************************************************************************/
 
   router.get("/data", async (req, res) => {
+
+    //FIXME: currently this cal gets made on a polling basis frequently, which is very inefficient
+
     let data = {
       user: {},
       myArticles: [],
@@ -255,6 +258,10 @@ module.exports = function() {
       data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
       try {
+        if (DISABLE_CC_NODE) {
+          data.saldo = 0
+          return res.status(200).json(data)
+        }
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
         headers: {
         'cc-user': userId,
