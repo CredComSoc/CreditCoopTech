@@ -8,7 +8,7 @@
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
         <button @click="edit = !edit" id="edit-btn">
-          <span v-html="$t('edit.edit_user')"></span>
+          <span v-html="$t('edit_user')"></span>
          </button>
       </div>
 
@@ -37,27 +37,28 @@
     </div>
     <div class="sendmoney-box" v-if="show_optional && !edit">
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
+        <h1 class="box-text">{{ $t('send') }} Barterkronor</h1>
         <h1 class="box-text">{{ $t('misc.send') }} Barterkronor</h1>
         <div>
           <label class="box-label">{{ $t('quantity') }}</label>
           <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
-          <label class="box-label">Kommentar</label>
+          <label class="box-label">{{ $t('user.commentLabel') }}</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="send-btn">{{ $t('misc.send') }}</button>
+        <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.accountName + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
-    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
-    <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionUnderCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionOverCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.bkrFailedTransactionInvalidNumberCardText', {bkr: this.bkr, accountName: profileData.accountName})"  />
   <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
-          <h1>Allmänt</h1>
+          <h1>{{ $t('user.general_information') }}</h1>
           <label for="logo">Logotyp:</label><br/>
           <div class="image">
           <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -75,21 +76,21 @@
         </div>
         <div className="container-item">
           <h1>{{ $t('user.billing') }}</h1>
-          <label for="billingName">Namn:</label><br/>
+          <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
           <input name="billingName" v-model="profileData.billing.name" required><br/>
           <label for="billingBox">Box:</label><br/>
           <input name="billingBox" v-model="profileData.billing.box" required><br/>
           <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAdress" v-model="profileData.billing.adress" required><br/>
-          <label for="orgNumber">Organisationsnummer:</label><br/>
+          <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
           <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br/><br/>
           <h1>{{ $t('user.contact') }}</h1>
-          <label for="email">Epost:</label><br/>
+          <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">Telefon:</label><br/>
+          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
           <button @click="submit" class="buttonflex">
-            <p style="padding-right:7px" > Spara </p>
+            <p style="padding-right:7px" > {{ $t('user.saveLabel') }}: </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
@@ -98,7 +99,7 @@
           </svg>
           </button>
           <button @click="edit = !edit" class="buttonflex"> 
-            <p style="padding-right:0px" > Avbryt </p>
+            <p style="padding-right:0px" > {{ $t('user.cancelLabel') }} </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <line x1="18" y1="6" x2="6" y2="18" />

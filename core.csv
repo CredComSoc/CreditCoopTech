@@ -5,9 +5,9 @@ sb.web.app/src/components/AdminSection/Members/member.vue:18,Purchase requests,{
 sb.web.app/src/components/AdminSection/Members/member.vue:18,,,0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Last online,{{ $t('user.last_online')}},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,<replaced>,{{ $t('chat.start') }},0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Edit,{{ $t('edit') }},0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,member,användare,0
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Edit,{{ $t('user.edit_user') }},0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,member,{{ $t('user.member_label') }},0
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Account name,{{ $t('user.business') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},0
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,{{ $t('user.town') }},1
@@ -15,63 +15,63 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing informa
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment,Kommentar,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment, {{ $t('user.commentLabel') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent,Förfrågan skickad,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent, {{ $('user.sentMessagePopupTitle') }},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,Din förfrågan att överföra,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,{{ $('user.bkrRequestToSendCardText') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor till,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,har mottagits.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough ,Du har inte tillräckligt med,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,för att genomföra överföringen.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive,kan inte ta emot,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive, {{$t('user.cannotReceiveCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,bkr,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,Anslutningsproblem,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,{{ $t('user.connectionProblemsCardText') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,Överföringen kunde inte genomföras,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,Felaktigt antal,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed, {{$('user.failed_transaction_underMessagePopupTitle')}},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,Allmänt,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Street address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Town/city,{{ $t('user.town') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Billing information,{{ $t('user.billing') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,Namn,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,ZIP code,Box,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Name,{{ $t('user.billingnamelabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Zip code,{{ $t('user.zipCodelabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Address,{{ $t('user.street_address') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,Organisationsnummer,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Organization number,{{ $t('user.orgnumberlabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Contact information,{{ $t('user.contact') }},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Email,Epost,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Phone,Telefon,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Save,Spara,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Now,Nu,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Today,Idag,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Yesterday,Igår,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7, days ago, dagar sedan,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Never,Aldrig,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Email,{{ $t('user.emailcontactlabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Phone,{{ $t('user.telephonecontaclabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Save,{{ $t('user.saveLabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Now, {{ $t('user.nowLabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Today, {{ $t('user.todayLabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Yesterday,{{ $t('user.yesterdayLabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7, days ago, {{ $t('user.daysAgoLabel') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Never, {{ $t('user.neverLabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ADD MEMBER,LÄGG TILL MEDLEM,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,Allmänt,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Profile picture,Profilbild,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Description,{{ $t('user.description') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Street address,{{ $t('user.street_address') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Town/city,{{ $t('user.town') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Billing information,{{ $t('user.billing') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,Namn,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ZIP code,Box,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Name,{{ $t('user.billingnamelabel') }},1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Zip code, {{ $t('user.zipCodelabel') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Address,{{ $t('user.street_address') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,Organisationsnummer,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Organization number,{{ $t('user.orgnumberlabel') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Contact information,{{ $t('user.contact') }},1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Email:,E-post:,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Phone:,Telefon:,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Email:,{{ $t('user.emailcontactlabel') }},1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Phone:,{{ $t('user.telephonecontaclabel') }}:,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Register,Registrera,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,The new member is now registered. An email with sign in details has been sent to the specified email address.,Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,,,1
@@ -107,7 +107,7 @@ sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Timestamp,Tidstämpel,
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download invoice,Ladda ner faktura,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,,,1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,MEDLEMMAR,1
-sb.web.app/src/components/AdminSection/AdminHome.vue:4,Who do you want to search for today?,Vem vill du söka efter idag?,1
+sb.web.app/src/components/AdminSection/AdminHome.vue:4,Who do you want to search for today?, {{$t('whoDoYouWantToSearchForToday)}},1 
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,,,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,2
@@ -344,7 +344,7 @@ sb.web.app/src/components/Login/Forgot.vue:9,Reset password,Återställ lösenor
 sb.web.app/src/components/Login/Forgot.vue:9,Email,{{ $t('login.email_label') }},4
 sb.web.app/src/components/Login/Forgot.vue:9,,e-postadress@hemsida.sv,4
 sb.web.app/src/components/Login/Forgot.vue:9,Reset,Återställ,4
-sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address exists,Det finns ingen användare med den e-postadressen,4
+sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address exists,Det finns ingen {{ $t('user.member_label') }} med den e-postadressen,4
 sb.web.app/src/components/Login/Forgot.vue:9,An email with password reset instructions has been sent!,Ett e-post med instruktioner för lösenordsåterställning har skickats!,4
 sb.web.app/src/components/Login/Forgot.vue:9,&larr; Sign in,&larr; Logga in,4
 sb.web.app/src/components/Login/Forgot.vue:9,,,4
@@ -371,14 +371,14 @@ sb.web.app/src/components/Login/Reset.vue:9,Passwords do not match.,Lösenorden 
 sb.web.app/src/components/Login/Reset.vue:9,,,4
 sb.web.app/src/components/Members/all_members.vue:15,Unknown city,Okänd Stad,4
 sb.web.app/src/components/Members/all_members.vue:15,,,4
-sb.web.app/src/components/Members/member.vue:38,Now,Nu,4
-sb.web.app/src/components/Members/member.vue:38,Today,Idag,4
-sb.web.app/src/components/Members/member.vue:38,Yesterday,Igår,4
-sb.web.app/src/components/Members/member.vue:38, days ago, dagar sedan,4
-sb.web.app/src/components/Members/member.vue:38,Never,Aldrig,4
+sb.web.app/src/components/Members/member.vue:38,Now, {{ $t('user.nowLabel') }},4
+sb.web.app/src/components/Members/member.vue:38,Today, {{ $t('user.todayLabel') }},4
+sb.web.app/src/components/Members/member.vue:38,Yesterday,{{ $t('user.yesterdayLabel') }},4
+sb.web.app/src/components/Members/member.vue:38, days ago, {{ $t('user.daysAgoLabel') }},4
+sb.web.app/src/components/Members/member.vue:38,Never,{{ $t('user.daysAgoLabel') }},4
 sb.web.app/src/components/Members/member.vue:38,,,4
 sb.web.app/src/components/Members/members.vue:5,MEMBERS,MEDLEMMAR,4
-sb.web.app/src/components/Members/members.vue:5,Who would you like to search for today? ',Vem vill du söka efter idag?',4
+sb.web.app/src/components/Members/members.vue:5,Who would you like to search for today? ', {{$t('whoDoYouWantToSearchForToday)}},4
 sb.web.app/src/components/Members/members.vue:5,,,4
 sb.web.app/src/components/Members/userProfile.vue:8,Last online:,{{ $t('user.last_online')}}:,4
 sb.web.app/src/components/Members/userProfile.vue:8, <replaced>, {{ $t('chat.start') }} ,4
@@ -390,34 +390,34 @@ sb.web.app/src/components/Members/userProfile.vue:8, Billing information, {{ $t(
 sb.web.app/src/components/Members/userProfile.vue:8, Contact information, {{ $t('user.contact') }} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Quantity,{{ $t('quantity') }},4
-sb.web.app/src/components/Members/userProfile.vue:8,Comment,Kommentar,4
+sb.web.app/src/components/Members/userProfile.vue:8,Comment, {{ $t('user.commentLabel') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
-sb.web.app/src/components/Members/userProfile.vue:8,Request sent,Förfrågan skickad,4
+sb.web.app/src/components/Members/userProfile.vue:8,Request sent,{{ $('user.sentMessagePopupTitle') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,Din förfrågan att överföra ,4
-sb.web.app/src/components/Members/userProfile.vue:8,, barterkronor till ,4
-sb.web.app/src/components/Members/userProfile.vue:8, has been received., har mottagits.,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,4
+sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,{{ $('user.bkrRequestToSendCardText') }},4
+sb.web.app/src/components/Members/userProfile.vue:8, barterkronor till ,4
+sb.web.app/src/components/Members/userProfile.vue:8, has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},4
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough ,Du har inte tillräckligt med ,4
+sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,4
-sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,för att genomföra överföringen.,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,4
+sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},4
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, kan inte ta emot ,4
+sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, {{$t('user.cannotReceiveCardText')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,, bkr.,4
-sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,Anslutningsproblem,4
-sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna användare. Försök igen senare.,4
+sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,{{ $t('user.connectionProblemsCardText') }},4
+sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
-sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,Överföringen kunde inte genomföras,5
-sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of ,Felaktigt antal,5
+sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},5
+sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,5
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,5
-sb.web.app/src/components/Members/userProfile.vue:8,Now,Nu,5
-sb.web.app/src/components/Members/userProfile.vue:8,Today,Idag,5
-sb.web.app/src/components/Members/userProfile.vue:8,Yesterday,Igår,5
-sb.web.app/src/components/Members/userProfile.vue:8, days ago, dagar sedan,5
-sb.web.app/src/components/Members/userProfile.vue:8,Never,Aldrig,5
+sb.web.app/src/components/Members/userProfile.vue:8,Now, {{ $t('user.nowLabel') }},5
+sb.web.app/src/components/Members/userProfile.vue:8,Today, {{ $t('user.todayLabel') }},5
+sb.web.app/src/components/Members/userProfile.vue:8,Yesterday,{{ $t('user.yesterdayLabel') }},5
+sb.web.app/src/components/Members/userProfile.vue:8, days ago, {{ $t('user.daysAgoLabel') }},5
+sb.web.app/src/components/Members/userProfile.vue:8,Never, {{ $t('user.neverLabel') }} ,5
 sb.web.app/src/components/Members/userProfile.vue:8,,,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,Shop,{{ $t('nav.shop') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,Shop,{{ $t('nav.shop') }} ,5
@@ -439,7 +439,7 @@ sb.web.app/src/components/Navbar/Navbar.vue:10,My buying & selling, {{ $t('nav.m
 sb.web.app/src/components/Navbar/Navbar.vue:10,My items, {{ $t('nav.my_items') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,My purchase requests,Mina köpförfrågningar,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,Balance & limits, {{ $t('nav.balance') }} ,5
-sb.web.app/src/components/Navbar/Navbar.vue:10, My account, Min Sida ,5
+sb.web.app/src/components/Navbar/Navbar.vue:10, My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10, Events,  {{ $t('nav.events') }}  ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,Events,  {{ $t('nav.events') }}  ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,Sign out,logut Ut,5
@@ -514,22 +514,22 @@ sb.web.app/src/components/Profile/MyProfile.vue:11, Billing information, {{ $t('
 sb.web.app/src/components/Profile/MyProfile.vue:11, Organization number:, Org. nummer: ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Contact information, {{ $t('user.contact') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Edit, {{ $t('edit') }} ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,General information,Allmänt,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,General information,{{ $t('user.general_information') }},6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Logo:,Logotyp:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Business name:,{{ $t('user.business') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Description:,{{ $t('user.description') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Street address:,{{ $t('user.street_address') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city:,{{ $t('user.town') }}:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,{{ $t('user.billing') }},6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,Namn:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,ZIP code:,Box:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Billing information,{{ $t('user.billing') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Name:,{{ $t('user.billingnamelabel') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Zip code:,{{ $t('user.zipCodelabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Address:,{{ $t('user.street_address') }}:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,Organisationsnummer:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Organization number:,{{ $t('user.orgnumberlabel') }}:,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Contact information,{{ $t('user.contact') }},6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Email:,Epost:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11,Phone:,Telefon:,6
-sb.web.app/src/components/Profile/MyProfile.vue:11, Save, Spara ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11, Cancel, Avbryt ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Email:,{{ $t('user.emailcontactlabel') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11,Phone:,{{ $t('user.telephonecontaclabel') }}:,6
+sb.web.app/src/components/Profile/MyProfile.vue:11, Save, {{ $t('user.saveLabel') }} ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,,,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchase requests, {{ $t('user.purchase_requests') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
@@ -539,7 +539,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Status,Status,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, Avbryt ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,Ok,6
@@ -557,7 +557,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, Avbryt ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchasing history, Köphistorik ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,Filtrera,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,From,Från och med,6
@@ -597,7 +597,7 @@ sb.web.app/src/components/Profile/MyRequests.vue:5,Price,Pris,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Status,Status,6
-sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, Avbryt ,6
+sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,GODKÄND,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., Du har inte fått några köpförfrågningar än. ,6
@@ -614,7 +614,7 @@ sb.web.app/src/components/Profile/Profile.vue:5,Profile,{{ $t('user.profile') }}
 sb.web.app/src/components/Profile/Profile.vue:5,Purchases,Köp,7
 sb.web.app/src/components/Profile/Profile.vue:5,Items,Artiklar,7
 sb.web.app/src/components/Profile/Profile.vue:5,Requests,Behov,7
-sb.web.app/src/components/Profile/Profile.vue:5,MY ACCOUNT, MIN SIDA ,7
+sb.web.app/src/components/Profile/Profile.vue:5,MY ACCOUNT, {{ $t('nav.myAccountCAPS') }},7
 sb.web.app/src/components/Profile/Profile.vue:5,My profile, {{ $t('nav.my_profile') }} ,7
 sb.web.app/src/components/Profile/Profile.vue:5,My buying & selling, {{ $t('nav.my_buy_sell') }} ,7
 sb.web.app/src/components/Profile/Profile.vue:5,My items, {{ $t('nav.my_items') }} ,7
@@ -652,7 +652,7 @@ sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Add to cart,Lägg
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,<replaced>,{{ $t('chat.start') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,,,7
 sb.web.app/src/components/Shop/Shop.vue:5,SHOP,SHOP,7
-sb.web.app/src/components/Shop/Shop.vue:5,What do you want to search for today?,Vad vill du söka efter idag?,7
+sb.web.app/src/components/Shop/Shop.vue:5,What do you want to search for today?, {{$t('whatDoYouWantToSearchForToday)}},7
 sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR CATEGORIES,KOLUMN FÖR KATERGORI,7
 sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR PRODUCTS,KOLYMN FÖR PRODUKTER,7
 sb.web.app/src/components/Shop/Shop.vue:5,Sell,Säljes,7
@@ -690,9 +690,9 @@ sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Thank you for your pur
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,notification when the seller has approved your purchase request.,notis när säljaren bekräftat din köpförfrågan.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough ,Du har inte tillräckligt med ,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to make the purchase.,för att genomföra köpet.,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to carry out the transaction., {{$t('user.bkrFailedTransactionUnderCardText')}},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The seller,Säljaren ,7

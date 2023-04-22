@@ -5,7 +5,7 @@
     </H1>
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">
-        <h2>Allmänt</h2>
+        <h2>{{ $t('user.general_information') }}</h2>
         <label for="logo">Profilbild:</label><br/> 
         <div class="image">
           <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -25,18 +25,18 @@
       </div>
       <div className="container-item">
         <h2>{{ $t('user.billing') }}</h2>
-        <label for="billingName">Namn:</label><br/>
+        <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
         <input name="billingBox" v-model="profileData.billingBox" required><br/>
         <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
         <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
-        <label for="orgNumber">Organisationsnummer:</label><br/>
+        <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
         <h2>{{ $t('user.contact') }}</h2>
         <label for="email">E-post:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
-        <label for="phone">Telefon:</label><br/>
+        <label for="phone">{{ $t('user.telephonecontaclabel') }}:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
         <div v-if="!registered && registered_fail">
           <p style="color: red">{{this.registeredText}}</p>
