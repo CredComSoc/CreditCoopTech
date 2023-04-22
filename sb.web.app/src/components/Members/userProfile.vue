@@ -45,7 +45,7 @@
           <label class="box-label">Kommentar</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="send-btn">{{ $t('misc.send') }}</button>
+        <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
     <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />

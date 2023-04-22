@@ -37,7 +37,7 @@
     </div>
     <div class="sendmoney-box" v-if="show_optional && !edit">
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
-        <h1 class="box-text">{{ $t('misc.send') }} Barterkronor</h1>
+        <h1 class="box-text">{{ $t('send') }} Barterkronor</h1>
         <div>
           <label class="box-label">{{ $t('quantity') }}</label>
           <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
@@ -46,11 +46,11 @@
           <label class="box-label">Kommentar</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="send-btn">{{ $t('misc.send') }}</button>
+        <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
+    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {brk: this.bkr, accountname: profileData.accountName}) " />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$t('user.bkrSentMessageCardText', {brk: this.bkr, accountname: profileData.accountName})" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {brk: this.bkr, accountname: profileData.accountName})" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.accountName + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />

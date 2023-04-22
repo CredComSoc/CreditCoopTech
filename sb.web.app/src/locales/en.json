@@ -16,6 +16,7 @@
         "your_chats": "Your chats"
     },
     "user": {
+        "bkrSentMessageCardText": "You have send this amount of  {bkr} barterkronor till {accountName} har mottagits.",
         "last_online": "Last Online",
         "profile": "Profile",
         "email": "Email",
