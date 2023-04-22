@@ -44,3 +44,5 @@ async function registerUser (isadmin, username, password, email) {
 
 // run async function to register users
 registerUser(false, "testuser", "testpassword", "test@nowhere.com")
+registerUser(false, "testuser2", "testpassword", "test2@nowhere.com")
+registerUser(true, "admintest", "testpassword", "admin@nowhere.com")
