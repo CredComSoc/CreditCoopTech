@@ -9,7 +9,7 @@
 <template>
   <div class="container_all_listings">
     <ul>
-      <li v-for="item in searchData" :key="item.title">
+      <li v-for="item in searchData" :key="item.title" style="margin: 0;">
         <Listing @togglePopupEvent="togglePopup" :listingObj="item"/>
       </li>
     </ul>

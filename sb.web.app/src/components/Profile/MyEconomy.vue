@@ -10,10 +10,10 @@
                 </tr>
                 <tr>
                     <td>100kr</td>
-                    <td>50kr</td>
-                    <td>50kr</td>
                     <td>5000kr</td>
-                    
+                    <td>50kr</td>
+                    <td>50kr</td>
+
                 </tr>
             </table>
         </div>

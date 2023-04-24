@@ -8,7 +8,7 @@
   <div className='topnav flexbox-item' id='myTopnav'>
       <a href='#' @click="this.tab='questions'" :class="{ active: this.tab!='bartertips' && this.tab!='information' && this.tab!='policy'}" id='questions'>Vanliga frågor</a>
       <a href='#' @click="this.tab='bartertips'" :class="{ active: this.tab==='bartertips' }" id='bartertips'>Bartertips</a>
-      <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>Föreningsinformation</a>
+      <a href='#' @click="this.tab='information'" :class="{ active: this.tab==='information' }" id='information'>Handelsregler</a>
       <a href='#' @click="this.tab='policy'" :class="{ active: this.tab==='policy' }" id='policy'>Integritetspolicy</a>
     </div>
     <!--also, add another <NAME... here -->
