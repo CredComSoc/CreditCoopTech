@@ -253,8 +253,8 @@ h5 {
 }
 
 .interactContent {
-  // position:absolute;
-  // text-align: right;
+  /* position:absolute; */
+  /* text-align: right; */
   bottom: 0;
   right: 1rem;
   /* width: 33%; */
@@ -273,7 +273,7 @@ h5 {
 }
 
 .cartBtn, .chattBtn {
-    // position:absolute;
+    /* position:absolute; */
     padding: 5px 15px 5px 15px;
     right: 0;
     bottom:0;
@@ -282,7 +282,7 @@ h5 {
 }
 
 .closeBtn {
-    // position:absolute;
+    /* position:absolute; */
     float: right;
     padding: 5px 15px 5px 15px;
     left: 1rem;
