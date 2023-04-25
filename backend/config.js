@@ -26,7 +26,7 @@ const DISABLE_CC_NODE = process.env.DISABLE_CC_NODE
 const mongoURL = dbUri + dbFolder + '?retryWrites=true&w=majority'
 console.log(mongoURL)
 // regex that a domain starts with "http://localhost" or ends with ".mutualcredit.services
-CORS_WHITE_LIST = [/^http:\/\/localhost/, /\.mutualcredit\.services$/]
+CORS_WHITE_LIST = [/^http:\/\/localhost/, /\.mutualcredit\.services$/, /\.landcaretrade\.com$/]
 
 
 module.exports = { mongoURL, FRONT_END_URL, CC_NODE_URL, DISABLE_CC_NODE, CORS_WHITE_LIST}
