@@ -103,6 +103,8 @@ export default {
     .element-title {
       margin-left: 8px;
       font-size: 20px
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .element-seller {
