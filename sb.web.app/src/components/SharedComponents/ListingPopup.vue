@@ -224,6 +224,8 @@ export default {
   z-index: 5;
   font-size: 1.4rem;
   text-align: center;
+  max-height: 100%;
+  overflow: scroll;
 }
 
 h5 {
@@ -251,8 +253,8 @@ h5 {
 }
 
 .interactContent {
-  position:absolute;
-  text-align: right;
+  /* position:absolute; */
+  /* text-align: right; */
   bottom: 0;
   right: 1rem;
   /* width: 33%; */
@@ -271,7 +273,7 @@ h5 {
 }
 
 .cartBtn, .chattBtn {
-    position:absolute;
+    /* position:absolute; */
     padding: 5px 15px 5px 15px;
     right: 0;
     bottom:0;
@@ -280,7 +282,8 @@ h5 {
 }
 
 .closeBtn {
-    position:absolute;
+    /* position:absolute; */
+    float: right;
     padding: 5px 15px 5px 15px;
     left: 1rem;
     bottom:0;
@@ -300,7 +303,8 @@ h5 {
 @media screen and (max-width: 860px) {
   .popup-inner {
     width: 80%;
-    height: 70%;
+    max-height: 70%;
+    overflow: scroll;
     font-size-adjust: 0.4;
   }
   .content-right {

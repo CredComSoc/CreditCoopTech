@@ -269,6 +269,11 @@ module.exports = function() {
         }})
         
         data.saldo = response.data[userId].completed.balance
+        if(data.saldo < 0)
+        {
+          // reduce credit line *only* if negative balance
+          data.creditLine += data.saldo
+        }
 
       } catch (error) {
         console.log(error)

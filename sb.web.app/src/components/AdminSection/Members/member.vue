@@ -112,10 +112,12 @@ export default {
     }
     .tre{
         width: 10%;
-    } 
+    }
     .imgContainer {
-      height: 3rem;
-      width: 3rem;
+        max-height: 2.5rem;
+        max-width: 2.5rem;
+        margin-top: 3px;
+        margin-left: 3px;
     }
 
     img {
