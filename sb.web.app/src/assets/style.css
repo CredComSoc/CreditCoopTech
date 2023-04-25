@@ -3,11 +3,19 @@
     max-height: 80px;
 }
 
+.login_page .navlogo img {
+    max-height: inherit;
+}
+
 
 /** for mobile browsers only */
 @media only screen and (max-width: 600px) {
 
     .navlogo img {
         max-height: 100px;
+    }
+
+    .login_page .navlogo img {
+        max-height: inherit;
     }
 }
