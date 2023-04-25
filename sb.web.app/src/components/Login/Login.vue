@@ -2,7 +2,7 @@
 
 <div>
   <div id="header-box" class="header-container">
-    <header>
+    <header class="login_page">
       <nav>
         <div class="middle-logo">
           <div class="navlogo">
