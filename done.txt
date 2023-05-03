@@ -16,14 +16,19 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('mis
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment, {{ $t('user.commentLabel') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }} till,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive, {{$t('user.cannotReceiveCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,{{ $t('user.connectionProblemsCardText') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},1
@@ -70,6 +75,7 @@ sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out, {{ $t('nav.
 sb.web.app/src/components/Chat/InputField.vue:17,Send,{{ $t('misc.send') }},2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Description,{{ $t('user.description') }},2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Location,{{ $t('location') }},2
+sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Okay,{{ $t(no_need_todo_this_actually) }},2
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Description,{{ $t('user.description') }},2
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Location,{{ $t('location') }},3
 sb.web.sb.web.app/src/components/Event/Event.vue:151,{{$t()}}
@@ -117,15 +123,20 @@ sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Quantity,{{ $t('quantity') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Comment, {{ $t('user.commentLabel') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8, {{ $t('org.token') }} till ,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, {{$t('user.cannotReceiveCardText')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,{{ $t('user.connectionProblemsCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},5
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Now, {{ $t('user.nowLabel') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Today, {{ $t('user.todayLabel') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Yesterday,{{ $t('user.yesterdayLabel') }},5
@@ -191,7 +202,9 @@ sb.web.app/src/components/Profile/MyProfile.vue:11, Cancel, {{ $t('user.cancelLa
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchase requests, {{ $t('user.purchase_requests') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, {{ $t('user.cancelLabel') }} ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,, {{ $t('org.tkn') }}.,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,,{{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
@@ -199,7 +212,9 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,, {{ $t('org.tkn') }}.,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,,{{ $t('org.tkn') }}.,7
 sb.web.app/src/components/Profile/Profile.vue:5,Profile,{{ $t('user.profile') }},7
 sb.web.app/src/components/Profile/Profile.vue:5,MY ACCOUNT, {{ $t('nav.myAccountCAPS') }},7
@@ -214,12 +229,16 @@ sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Description,{{ $t
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Quantity,{{ $t('quantity') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,<replaced>,{{ $t('chat.start') }},7
 sb.web.app/src/components/Shop/Shop.vue:5,What do you want to search for today?, {{$t('whatDoYouWantToSearchForToday)}},7
+sb.web.app/src/components/Shop/Shop.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4, Quantity, {{ $t('quantity') }} ,7
 sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7, Quantity, {{ $t('quantity') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,, {{ $t('tkn') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Quantity, {{ $t('quantity') }} ,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to carry out the transaction., {{$t('user.bkrFailedTransactionUnderCardText')}},7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Current balance:,Nuvarande {{ $t('balance') }}: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
