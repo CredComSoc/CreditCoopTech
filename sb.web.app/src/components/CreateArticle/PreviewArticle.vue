@@ -11,7 +11,7 @@
       <PreviewItem title='Kategori' :text='this.savedProgress.category' :images="null" />
       <PreviewItem title='Tid' :text='this.endDate' :images="null" />
       <PreviewItem title='Plats' :text='this.savedProgress.destination' :images="null" />
-      <PreviewItem title='Pris' :text='this.savedProgress.price' :images="null" />
+      <PreviewItem :title="$t('price')" :text='this.savedProgress.price' :images="null" />
       <PreviewItem title='Bilder' :text="null" :images='this.images' />
     </div>
     <PopupCard v-if="this.isPublished" title="Publiceringsbekräftelse" :cardText="`Tack!\n Din artikel är nu publicerad i shopen.`" btnLink='\' btnText="Ok" />

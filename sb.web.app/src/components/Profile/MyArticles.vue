@@ -9,7 +9,7 @@
         <tr>
           <th>Artikel</th>
           <th>Kategori</th>
-          <th>Pris</th>
+          <th>{{ $t('price') }}</th>
           <th>Skapad</th>
           <th>Status</th>
         </tr>
@@ -34,7 +34,7 @@
         <tr>
           <th>Artikel</th>
           <th>Kategori</th>
-          <th>Pris</th>
+          <th>{{ $t('price') }}</th>
           <th>Skapad</th>
         </tr>
         <tr v-for="(item) in inactiveArticles" :key="item">

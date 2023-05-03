@@ -3,7 +3,7 @@
         <a href="#">
         <figure id="bell-logo" :class="[`logo-click`,`notice`]" @click="setNotificationsToSeen">
             <img id="notice" class="notice" src="../../assets/navbar_logos/notice.png" v-if="this.$store.state.newNotifications.length > 0"/>
-            <img id="bell" class="notice" src="../../assets/navbar_logos/bell.png" alt="shop knapp"/>
+            <img id="bell" class="notice" src="../../assets/navbar_logos/bell.png" :alt="$t('shop.go_to_shop')"/>
             <figcaption :class=" [`l-text`,`notice`]"> Notiser </figcaption>
         </figure>
         </a>

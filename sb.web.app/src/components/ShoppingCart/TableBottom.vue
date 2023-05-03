@@ -12,7 +12,7 @@
       <span id="total-text">Saldo efter Köp: </span>
       <span >{{ this.$store.state.saldo - total }} {{ $t('tkn') }}</span>
     </div>
-    <button @click="completePurchase" id="confirm">Slutför köp</button>
+    <button @click="completePurchase" id="confirm">{{ $t('shop.complete_purchase') }}</button>
   </div>
 </template>
 

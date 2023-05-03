@@ -5,7 +5,7 @@
         <th>Företag</th>
         <th>Artikel</th>
         <th>{{ $t('quantity') }}</th>
-        <th>Pris</th>
+        <th>{{ $t('price') }}</th>
         <th>Summa</th>
         <th>Tidstämpel</th>
         <th>Status</th>

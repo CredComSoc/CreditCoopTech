@@ -33,7 +33,7 @@
           <p>{{listingObj.destination}}</p>
 
           <h5>Typ</h5> 
-          <p v-if="listingObj.article === 'product'">Produkt</p>
+          <p v-if="listingObj.article === 'product'">{{ $t('product') }}</p>
           <p v-if="listingObj.article === 'service'">Service</p>
 
           <h5>Kategori</h5> 

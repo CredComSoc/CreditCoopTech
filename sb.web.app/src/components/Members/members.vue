@@ -2,7 +2,7 @@
   <div class="wrapper">
 
     <div>
-      <h2 class="center-text">MEDLEMMAR</h2>
+      <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
     </div>
 
     <div class="center">

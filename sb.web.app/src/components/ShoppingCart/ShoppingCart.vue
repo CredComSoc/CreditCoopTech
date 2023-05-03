@@ -5,7 +5,7 @@
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" title="Tack för ditt köp" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />
     <PopupCard v-if="this.insufficientBalance" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra köpet.`" />
-    <PopupCard v-if="this.sellerLimitError" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="'Säljaren ' + this.seller + ` har nått sin övre gräns för barterkronor.`" />
+    <PopupCard v-if="this.sellerLimitError" title="Köpet kunde inte genomföras" btnLink="/" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller, 'token': $t('org.token')})" />
   </div>
 </template>
 

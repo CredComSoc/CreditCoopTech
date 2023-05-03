@@ -2,7 +2,7 @@
   <div>
     <!-- To change character limit on textfields change value for length prop  -->
     <div id="buy-or-sell" class="input">
-      <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['Köpes', 'Säljes']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
+      <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['purchase', 'sell']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
     </div>
     <div id="title-field" class="input">
       <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
@@ -78,7 +78,7 @@
       />
     </div>
     <div id="type" class="input">
-      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['Produkt', 'Tjänst']" placeholder="Är din artikel en produkt eller tjänst?" />
+      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['product', 'service']" :placeholder="$t('shop.is_item_product_or_service')" />
     </div>
   </div>
 </template>

@@ -4,7 +4,7 @@
     <p class="b-text"> {{ ind }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Produkt </h3> 
+    <h3 v-if="ind === 1"> {{ $t('product') }} </h3> 
     <img class="content-img" :src='this.getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
   </div>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="cart-col"> 
-    <h3 v-if="ind === 1"> Pris </h3>  
+    <h3 v-if="ind === 1"> {{ $t('price') }} </h3>  
     <p class="non-b-text"> {{ this.priceOfItem }} </p>
   </div>
   <div class="cart-col">
