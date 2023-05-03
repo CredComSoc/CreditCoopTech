@@ -18,25 +18,25 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Quantity,{{ $t(
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Comment, {{ $t('user.commentLabel') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('misc.send') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent, {{ $('user.sentMessagePopupTitle') }},1  
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,{{ $('user.bkrRequestToSendCardText') }},1 
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }} till,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,cannot receive, {{$t('user.cannotReceiveCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,bkr,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Connection problems,{{ $t('user.connectionProblemsCardText') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed, {{$('user.failed_transaction_underMessagePopupTitle')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},1
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,{{ $t(no_need_todo_this_actually) }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Business name,{{ $t('user.business') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Description,{{ $t('user.description') }},1
@@ -190,7 +190,7 @@ sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Images,Bilder,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Confirmation,Publiceringsbekräftelse,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Thanks!,Tack! ,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Your item is now visible in the shop.,Din artikel är nu publicerad i shopen.,2
-sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Okay,Ok,2
+sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Okay,{{ $t(no_need_todo_this_actually) }},2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Indefinitely.,På obestämd tid.,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,,,2
 sb.web.app/src/components/CreateArticle/PreviewItem.vue:6,Selected as a cover image,Vald som omslagsbild,2
@@ -393,26 +393,26 @@ sb.web.app/src/components/Members/userProfile.vue:8,Quantity,{{ $t('quantity') }
 sb.web.app/src/components/Members/userProfile.vue:8,Comment, {{ $t('user.commentLabel') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Request sent,{{ $('user.sentMessagePopupTitle') }},4
-sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,{{ $('user.bkrRequestToSendCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8, {{ $t('org.token') }} till ,4
 sb.web.app/src/components/Members/userProfile.vue:8, has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
-sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
 sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
-sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8, cannot receive, {{$t('user.cannotReceiveCardText')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,, bkr.,4
 sb.web.app/src/components/Members/userProfile.vue:8,Connection problems,{{ $t('user.connectionProblemsCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when connecting to chat with this member. Please try again later.,Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare.,4
-sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},5
-sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,5
+sb.web.app/src/components/Members/userProfile.vue:8,Okay,{{ $t(no_need_todo_this_actually) }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Now, {{ $t('user.nowLabel') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Today, {{ $t('user.todayLabel') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Yesterday,{{ $t('user.yesterdayLabel') }},5
@@ -542,11 +542,11 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,Ok,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,, {{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,Ok,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as the buyer does not have enough,"Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med ",6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,,{{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Pending purchases, Väntande köp ,6
@@ -602,11 +602,11 @@ sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,GODKÄND,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., Du har inte fått några köpförfrågningar än. ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
-sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,Ok,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
 sb.web.app/src/components/Profile/MyRequests.vue:5,, {{ $t('org.tkn') }}.,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
-sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,Ok,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Purchase request cannot be approved as the buyer does not have enough,"Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med ",6
 sb.web.app/src/components/Profile/MyRequests.vue:5,,{{ $t('org.tkn') }}.,7
 sb.web.app/src/components/Profile/MyRequests.vue:5,,,7
@@ -659,7 +659,7 @@ sb.web.app/src/components/Shop/Shop.vue:5,Sell,Säljes,7
 sb.web.app/src/components/Shop/Shop.vue:5,Purchase,Köpes,7
 sb.web.app/src/components/Shop/Shop.vue:5,No products found!,Inga produkter funna!,7
 sb.web.app/src/components/Shop/Shop.vue:5,Success!,Succé!,7
-sb.web.app/src/components/Shop/Shop.vue:5,Okay,Ok,7
+sb.web.app/src/components/Shop/Shop.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/Shop/Shop.vue:5,The item has been added to your cart.,Artikeln har lagts till i varukorgen.,7
 sb.web.app/src/components/Shop/Shop.vue:5,product or service,produkt eller tjänst,7
 sb.web.app/src/components/Shop/Shop.vue:5,is for sale or purchase,köpes eller säljes,7
@@ -685,16 +685,16 @@ sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Total:, Summa: 
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,,,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,CART, VARUKORG ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Thank you for your purchase,Tack för ditt köp,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Thank you for your purchase! The seller has been notified. You will get a,Tack för ditt köp! Säljaren har meddelats. Du kommer få en,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,notification when the seller has approved your purchase request.,notis när säljaren bekräftat din köpförfrågan.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to carry out the transaction., {{$t('user.bkrFailedTransactionUnderCardText')}},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,Ok,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The seller,Säljaren ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3, has reached their upper limit for, har nått sin övre gräns för ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor.,7
