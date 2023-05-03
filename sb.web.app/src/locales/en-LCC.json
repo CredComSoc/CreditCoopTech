@@ -4,7 +4,8 @@
     "name": "Land Care Trade",   
     "contact_email": "contact email goes here",
     "contact_link": "mailto:contact_email@gmail.com",
-    "tkn": "hny"
+    "tkn": "hny",
+    "token": "honey"
   },
   "faq": {
     "faq": "FAQ",

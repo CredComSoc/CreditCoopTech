@@ -4,7 +4,8 @@
         "name": "Svensk Barter",   
         "contact_email": "svenskbarter@gmail.com",
         "contact_link": "mailto:svenskbarter@gmail.com",
-        "tkn": "bKr"
+        "tkn": "bKr",
+        "token": "barterkroner"
     },
     "faq": {
         "faq": "FAQ",
