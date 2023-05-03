@@ -2,7 +2,7 @@
   <div class="wrapper">
 
     <div>
-      <h2 class="center-text">SHOP</h2>
+      <h2 class="center-text">{{ $t('shop.shopCAPS') }}</h2>
     </div>
 
     <div class="center" id="searchfield">
@@ -16,22 +16,22 @@
       <FilterButton v-if="filterButtonActive" @filterTrigger="triggerFilter" />
     </div> -->
 
-      <!-- KOLUMN FÖR KATERGORI
+      <!-- {{ $t('shop.column_categories') }}
       <div id="categories" class="categories">
         <Categories v-if="filterActive" @filterEvent="filteringMethod"/>
       </div> -->
 
-      <!-- KOLYMN FÖR PRODUKTER -->
+      <!-- {{ $t('shop.column_product') }} -->
       <div class="listings">
         <div v-if="this.sellingSearchData.length !== 0">
-          <h3 >Säljes</h3>
+          <h3 >{{ $t('sell') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=sellingSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.buyingSearchData.length !== 0">
-          <h3>Köpes</h3>
+          <h3>$t('purchase')</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
-        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">Inga produkter funna!</h3>
+        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found') }}</h3>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
         <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" title="Succé!" btnText="Ok" :cardText="'Artikeln har lagts till i varukorgen.'" />
       </div>
@@ -175,9 +175,9 @@ export default {
         coverImg: listingObj.coverImg,
         price: listingObj.price,
         quantity: amount, // number of items
-        article: listingObj.article, // produkt eller tjänst
+        article: listingObj.article, // product or service
         id: listingObj.id, // Id for the article
-        status: listingObj.status, // köpes eller säljes
+        status: listingObj.status, // is for sale
         userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
         'end-date': listingObj['end-date'] // end date for the article
       }

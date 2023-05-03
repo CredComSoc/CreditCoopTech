@@ -179,20 +179,20 @@ export default {
     sanitizeArticle () {
       // sanitize the article field
       switch (this.newArticle.article) {
-        case 'Produkt':
+        case 'product':
           this.newArticle.article = 'product'
           break
-        case 'Tjänst':
+        case 'service':
           this.newArticle.article = 'service'
           break
       }
 
       // sanitize the status field
       switch (this.newArticle.status) {
-        case 'Köpes':
+        case 'purchase':
           this.newArticle.status = 'buying'
           break
-        case 'Säljes':
+        case 'sell':
           this.newArticle.status = 'selling'
           break
       } 

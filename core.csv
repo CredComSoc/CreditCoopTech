@@ -94,19 +94,19 @@ sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Filter,Filtrera,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,From,Från och med,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,To,Till och med,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Business,Företag,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Product,Produkt,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Product,{{ $t('product') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Maximum number of lines,Max antal rader,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download as CSV,Ladda ner lista som CSV,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Buyer,Köpare,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Seller,Säljare,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Item,Artikel,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Quantity,{{ $t('quantity') }},1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Price,Pris,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Price,{{ $t('price') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Total,Summa,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Timestamp,Tidstämpel,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download invoice,Ladda ner faktura,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,,,1
-sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,MEDLEMMAR,1
+sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,{{ $t('memberCAPS') }},1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,Who do you want to search for today?, {{$t('whoDoYouWantToSearchForToday)}},1 
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,,,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,1
@@ -172,10 +172,10 @@ sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Next,Nästa,2
 sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Preview,Förhandsgranska,2
 sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Something went wrong when uploading the item.,Något gick fel när artikeln skulle laddas upp.,2
 sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Please try again later.,Var god försök igen senare.,2
-sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Product,Produkt,2
+sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Product,{{ $t('product') }},2
 sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Service,Tjänst,2
-sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Purchase,Köpes,2
-sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Sell,Säljes,2
+sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Purchase,{{ $t('purchase') }},2
+sb.web.app/src/components/CreateArticle/NewArticle.vue:3,Sell,{{ $t('sell') }},2
 sb.web.app/src/components/CreateArticle/NewArticle.vue:3,,,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,PREVIEW,FÖRHANDSGRANSKNING,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Make sure the data is correct,Kontrollera att uppgifterna stämmer,2
@@ -185,7 +185,7 @@ sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Type of item,Typ av
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Category,Kategori,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Time,Tid,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Location,{{ $t('location') }},2
-sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Price,Pris,2
+sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Price,{{ $t('price') }},2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Images,Bilder,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Confirmation,Publiceringsbekräftelse,2
 sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,Thanks!,Tack! ,2
@@ -196,8 +196,8 @@ sb.web.app/src/components/CreateArticle/PreviewArticle.vue:4,,,2
 sb.web.app/src/components/CreateArticle/PreviewItem.vue:6,Selected as a cover image,Vald som omslagsbild,2
 sb.web.app/src/components/CreateArticle/PreviewItem.vue:6,,,2
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Item purpose,Artikelns syfte,2
-sb.web.app/src/components/CreateArticle/StepOne.vue:5,Purchase,Köpes,2
-sb.web.app/src/components/CreateArticle/StepOne.vue:5,Sell,Säljes,2
+sb.web.app/src/components/CreateArticle/StepOne.vue:5,Purchase,{{ $t('purchase') }},2
+sb.web.app/src/components/CreateArticle/StepOne.vue:5,Sell,{{ $t('sell') }},2
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Are you looking to sell or purchase the item?,Önskas artikeln att köpas eller ska den säljas?,2
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,What is your item called?,Vad ska din artikel heta?,2
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Name,Rubrik,2
@@ -266,9 +266,9 @@ sb.web.app/src/components/CreateArticle/StepOne.vue:5,Charity & Sponsorship,Väl
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Other,Övrigt,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Which of the categories below describes your product or service?,Vilken av Kategorierna nedan tillhör din produkt?,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Type of item,Typ av artikel,3
-sb.web.app/src/components/CreateArticle/StepOne.vue:5,Product,Produkt,3
+sb.web.app/src/components/CreateArticle/StepOne.vue:5,Product,{{ $t('product') }},3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Service,Tjänst,3
-sb.web.app/src/components/CreateArticle/StepOne.vue:5,Is your item a product or service?,Är din artikel en produkt eller tjänst?,3
+sb.web.app/src/components/CreateArticle/StepOne.vue:5,Is your item a product or service?,$t('shop.product_or_service'),3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,,,3
 sb.web.app/src/components/CreateArticle/StepThree.vue:6,Choose file,Välj fil,3
 sb.web.app/src/components/CreateArticle/StepThree.vue:6,Browse,Bläddra,3
@@ -282,7 +282,7 @@ sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Linköping,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Norrköping,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Söderköping,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Where is it,Var finns din,3
-sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Price,Pris,3
+sb.web.app/src/components/CreateArticle/StepTwo.vue:4,Price,{{ $t('price') }},3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,How much is it,Hur mycket kostar din ,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,Bkr,3
 sb.web.app/src/components/CreateArticle/StepTwo.vue:4,,,3
@@ -327,19 +327,19 @@ sb.web.app/src/components/Home/ContentBanner.vue:3,,,4
 sb.web.app/src/components/Home/ContentList.vue:3,Browse right,rotera shop,4
 sb.web.app/src/components/Home/ContentList.vue:3,Browse left,rotera shop,4
 sb.web.app/src/components/Home/ContentList.vue:3,,,4
-sb.web.app/src/components/Home/Home.vue:4,SHOP,SHOP,4
-sb.web.app/src/components/Home/Home.vue:4,Browse the most recent products and services.,Bläddra bland senast upplagda produkter och tjänster.,4
+sb.web.app/src/components/Home/Home.vue:4,{{ $t('shop.shopCAPS') }},{{ $t('shop.shopCAPS') }},4
+sb.web.app/src/components/Home/Home.vue:4,Browse the most recent products and services.,$t('shop.shopSubtitle'),4
 sb.web.app/src/components/Home/Home.vue:4,See the shop,Till shoppen,4
-sb.web.app/src/components/Home/Home.vue:4,MEMBERS,MEDLEMMAR,4
+sb.web.app/src/components/Home/Home.vue:4,MEMBERS,{{ $t('memberCAPS') }},4
 sb.web.app/src/components/Home/Home.vue:4,See new members.,Bläddra bland nya medlemmar i nätverket.,4
 sb.web.app/src/components/Home/Home.vue:4,All members,Till medlemmar,4
 sb.web.app/src/components/Home/Home.vue:4,,,4
-sb.web.app/src/components/Home/ListElement.vue:8, Sell, Säljes  ,4
-sb.web.app/src/components/Home/ListElement.vue:8, Purchase, Köpes  ,4
-sb.web.app/src/components/Home/ListElement.vue:8, product or service, produkt eller tjänst,4
-sb.web.app/src/components/Home/ListElement.vue:8, is for sale or purchase, köpes eller säljes,4
+sb.web.app/src/components/Home/ListElement.vue:8, Sell, {{ $t('sell') }}  ,4
+sb.web.app/src/components/Home/ListElement.vue:8, Purchase, {{ $t('purchase') }}  ,4
+sb.web.app/src/components/Home/ListElement.vue:8, product or service, $t(no_need_todo_this_actually),4
+sb.web.app/src/components/Home/ListElement.vue:8, is for sale or purchase, $t(no_need_todo_this_actually),4
 sb.web.app/src/components/Home/ListElement.vue:8,,,4
-sb.web.app/src/components/Login/Forgot.vue:9,Go to shop,shop knapp,4
+sb.web.app/src/components/Login/Forgot.vue:9,Go to shop,{{ $t('shop.go_to_shop') }},4
 sb.web.app/src/components/Login/Forgot.vue:9,Reset password,Återställ lösenord,4
 sb.web.app/src/components/Login/Forgot.vue:9,Email,{{ $t('login.email_label') }},4
 sb.web.app/src/components/Login/Forgot.vue:9,,e-postadress@hemsida.sv,4
@@ -348,7 +348,7 @@ sb.web.app/src/components/Login/Forgot.vue:9,No member with that email address e
 sb.web.app/src/components/Login/Forgot.vue:9,An email with password reset instructions has been sent!,Ett e-post med instruktioner för lösenordsåterställning har skickats!,4
 sb.web.app/src/components/Login/Forgot.vue:9,&larr; Sign in,&larr; Logga in,4
 sb.web.app/src/components/Login/Forgot.vue:9,,,4
-sb.web.app/src/components/Login/Login.vue:10,Go to shop,shop knapp,4
+sb.web.app/src/components/Login/Login.vue:10,Go to shop,{{ $t('shop.go_to_shop') }},4
 sb.web.app/src/components/Login/Login.vue:10,Sign in to,Logga in på ,4
 sb.web.app/src/components/Login/Login.vue:10,,Svensk Barter,4
 sb.web.app/src/components/Login/Login.vue:10,Email address,{{ $t('login.email_label') }},4
@@ -359,7 +359,7 @@ sb.web.app/src/components/Login/Login.vue:10,Sign in,Logga in,4
 sb.web.app/src/components/Login/Login.vue:10,Reset password,Återställ lösenord,4
 sb.web.app/src/components/Login/Login.vue:10,Invalid email or password,Fel epost eller lösenord ,4
 sb.web.app/src/components/Login/Login.vue:10,,,4
-sb.web.app/src/components/Login/Reset.vue:9,Go to shop,shop knapp,4
+sb.web.app/src/components/Login/Reset.vue:9,Go to shop,{{ $t('shop.go_to_shop') }},4
 sb.web.app/src/components/Login/Reset.vue:9,Reset password,Återställ lösenord,4
 sb.web.app/src/components/Login/Reset.vue:9,New password,Nytt lösenord,4
 sb.web.app/src/components/Login/Reset.vue:9,New password,Nytt lösenord,4
@@ -377,7 +377,7 @@ sb.web.app/src/components/Members/member.vue:38,Yesterday,{{ $t('user.yesterdayL
 sb.web.app/src/components/Members/member.vue:38, days ago, {{ $t('user.daysAgoLabel') }},4
 sb.web.app/src/components/Members/member.vue:38,Never,{{ $t('user.daysAgoLabel') }},4
 sb.web.app/src/components/Members/member.vue:38,,,4
-sb.web.app/src/components/Members/members.vue:5,MEMBERS,MEDLEMMAR,4
+sb.web.app/src/components/Members/members.vue:5,MEMBERS,{{ $t('memberCAPS') }},4
 sb.web.app/src/components/Members/members.vue:5,Who would you like to search for today? ', {{$t('whoDoYouWantToSearchForToday)}},4
 sb.web.app/src/components/Members/members.vue:5,,,4
 sb.web.app/src/components/Members/userProfile.vue:8,Last online:,{{ $t('user.last_online')}}:,4
@@ -446,7 +446,7 @@ sb.web.app/src/components/Navbar/Navbar.vue:10,Sign out,logut Ut,5
 sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out,  {{ $t('nav.sign_out') }}  ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10, Sign out,  {{ $t('nav.sign_out') }} ,5
 sb.web.app/src/components/Navbar/Navbar.vue:10,,,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,Go to shop,shop knapp,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,Go to shop,{{ $t('shop.go_to_shop') }},5
 sb.web.app/src/components/Navbar/Notifications.vue:6, Notifications, Notiser ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New,Nya,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
@@ -489,7 +489,7 @@ sb.web.app/src/components/Profile/MyArticles.vue:3, Active items, Aktiva Artikla
 sb.web.app/src/components/Profile/MyArticles.vue:3, You have no active items right now., Du har inga aktiva artiklar just nu. ,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Item,Artikel,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Category,Kategori,5
-sb.web.app/src/components/Profile/MyArticles.vue:3,Price,Pris,5
+sb.web.app/src/components/Profile/MyArticles.vue:3,Price,{{ $t('price') }},5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Created,Skapad,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Status,Status,5
 sb.web.app/src/components/Profile/MyArticles.vue:3, Remove, Ta bort ,5
@@ -497,7 +497,7 @@ sb.web.app/src/components/Profile/MyArticles.vue:3, Edit ad, {{ $t('edit_ads') }
 sb.web.app/src/components/Profile/MyArticles.vue:3, Inactive items, Inaktiva Artiklar ,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Item,Artikel,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Category,Kategori,5
-sb.web.app/src/components/Profile/MyArticles.vue:3,Price,Pris,5
+sb.web.app/src/components/Profile/MyArticles.vue:3,Price,{{ $t('price') }},5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Created,Skapad,5
 sb.web.app/src/components/Profile/MyArticles.vue:3, Edit ad, {{ $t('edit_ads') }} ,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,,,5
@@ -535,7 +535,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchase requests, {{ $t('u
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Status,Status,6
@@ -554,7 +554,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5, You have a pending purchase
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
@@ -563,13 +563,13 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,Filtrera,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,From,Från och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,To,Till och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Product,Produkt,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Product,{{ $t('product') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download as CSV,Ladda ner lista som CSV,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,Köpare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
@@ -577,7 +577,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,Köpare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,Pris,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Invoice,Faktura,6
@@ -593,7 +593,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,,,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Quantity,{{ $t('quantity') }},6
-sb.web.app/src/components/Profile/MyRequests.vue:5,Price,Pris,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,Tidstämpel,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Status,Status,6
@@ -625,7 +625,7 @@ sb.web.app/src/components/Profile/temp.txt:2, Confirmed purchases, Bekräftade k
 sb.web.app/src/components/Profile/temp.txt:2,Business,Företag,7
 sb.web.app/src/components/Profile/temp.txt:2,Item,Artikel,7
 sb.web.app/src/components/Profile/temp.txt:2,Quantity,{{ $t('quantity') }},7
-sb.web.app/src/components/Profile/temp.txt:2,Price,Pris,7
+sb.web.app/src/components/Profile/temp.txt:2,Price,{{ $t('price') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Total,Summa,7
 sb.web.app/src/components/Profile/temp.txt:2,Timestamp,Tidstämpel,7
 sb.web.app/src/components/Profile/temp.txt:2,Invoice,Faktura,7
@@ -638,7 +638,7 @@ sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Seller,Säljare,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Buyer,Köpare,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Location,{{ $t('location') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Type of item,Typ,7
-sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Product,Produkt,7
+sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Product,{{ $t('product') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Service,Service,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Category,Kategori,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Description,{{ $t('user.description') }},7
@@ -651,35 +651,35 @@ sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Close,Stäng,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Add to cart,Lägg i varukorg,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,<replaced>,{{ $t('chat.start') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,,,7
-sb.web.app/src/components/Shop/Shop.vue:5,SHOP,SHOP,7
+sb.web.app/src/components/Shop/Shop.vue:5,{{ $t('shop.shopCAPS') }},{{ $t('shop.shopCAPS') }},7
 sb.web.app/src/components/Shop/Shop.vue:5,What do you want to search for today?, {{$t('whatDoYouWantToSearchForToday)}},7
-sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR CATEGORIES,KOLUMN FÖR KATERGORI,7
-sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR PRODUCTS,KOLYMN FÖR PRODUKTER,7
-sb.web.app/src/components/Shop/Shop.vue:5,Sell,Säljes,7
+sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR CATEGORIES,{{ $t('shop.column_categories') }},7
+sb.web.app/src/components/Shop/Shop.vue:5,COLUMN FOR PRODUCTS,{{ $t('shop.column_product') }},7
+sb.web.app/src/components/Shop/Shop.vue:5,Sell,{{ $t('sell') }},7
 sb.web.app/src/components/Shop/Shop.vue:5,Purchase,Köpes,7
-sb.web.app/src/components/Shop/Shop.vue:5,No products found!,Inga produkter funna!,7
+sb.web.app/src/components/Shop/Shop.vue:5,No products found!,{{ $t('shop.no_product_found') }},7
 sb.web.app/src/components/Shop/Shop.vue:5,Success!,Succé!,7
 sb.web.app/src/components/Shop/Shop.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/Shop/Shop.vue:5,The item has been added to your cart.,Artikeln har lagts till i varukorgen.,7
-sb.web.app/src/components/Shop/Shop.vue:5,product or service,produkt eller tjänst,7
-sb.web.app/src/components/Shop/Shop.vue:5,is for sale or purchase,köpes eller säljes,7
+sb.web.app/src/components/Shop/Shop.vue:5,product or service,$t(no_need_todo_this_actually),7
+sb.web.app/src/components/Shop/Shop.vue:5,is for sale or purchase,$t(no_need_todo_this_actually),7
 sb.web.app/src/components/Shop/Shop.vue:5,,,7
-sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4,Product, Produkt ,7
+sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4,Product, {{ $t('product') }} ,7
 sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4, Quantity, {{ $t('quantity') }} ,7
-sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4, Price, Pris ,7
+sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4, Price, {{ $t('price') }} ,7
 sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4,Total, Summa ,7
 sb.web.app/src/components/ShoppingCart/CartTableHeader.vue:4,,,7
-sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7,Product, Produkt ,7
+sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7,Product, {{ $t('product') }} ,7
 sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7, Quantity, {{ $t('quantity') }} ,7
-sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7, Price, Pris ,7
+sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7, Price, {{ $t('price') }} ,7
 sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7,Total, Summa ,7
 sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7,,,7
 sb.web.app/src/components/ShoppingCart/EmptyCart.vue:2,Your cart is empty,Din varukorg är tom,7
 sb.web.app/src/components/ShoppingCart/EmptyCart.vue:2,,,7
-sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price:, Pris: ,7
+sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price:, {{ $t('price') }}: ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,, {{ $t('tkn') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Quantity, {{ $t('quantity') }} ,7
-sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price, Pris ,7
+sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price, {{ $t('price') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Total, Summa ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Total:, Summa: ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,,,7
@@ -696,7 +696,7 @@ sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,to carry out the trans
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The purchase could not be completed,Köpet kunde inte genomföras,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,Okay,{{ $t(no_need_todo_this_actually) }},7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,The seller,Säljaren ,7
-sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3, has reached their upper limit for, har nått sin övre gräns för ,7
+sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3, has reached their upper limit for, {{ $t('has_reached_limit') }} ,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Current balance:,Nuvarande {{ $t('balance') }}: ,7
@@ -705,7 +705,7 @@ sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Total:,Kostnad: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Balance after purchase:,{{ $t('balance') }} efter Köp: ,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Complete the purchase,Slutför köp,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Complete the purchase,{{ $t('shop.complete_purchase') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,,,7
 sb.web.app/src/components/SaldoCard.vue:13,Balance:, {{ $t('balance') }}: ,7
 sb.web.app/src/components/SaldoCard.vue:13,, {{ $t('tkn') }},8

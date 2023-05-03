@@ -1,10 +1,10 @@
 <template>
   <div id="cart-header">
     <span></span>
-    <h3> Produkt </h3>
+    <h3> {{ $t('product') }} </h3>
     <span></span>
     <h3> {{ $t('quantity') }} </h3>
-    <h3> Pris </h3>
+    <h3> {{ $t('price') }} </h3>
     <h3> Summa </h3>
     <span></span>
   </div>

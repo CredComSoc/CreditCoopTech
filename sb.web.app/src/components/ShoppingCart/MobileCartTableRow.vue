@@ -3,10 +3,10 @@
   <div class="floating-left">
     <img class="content-img" :src="this.getImgURL()" />
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
-    <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} {{ $t('tkn') }} </p>
+    <p :class="[`non-b-text`, `price-text`]"> {{ $t('price') }}: {{ this.priceOfItem }} {{ $t('tkn') }} </p>
   </div>
   <!--<h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>-->  
-  <!--<h3 v-if="ind === 1"> Pris </h3>-->
+  <!--<h3 v-if="ind === 1"> {{ $t('price') }} </h3>-->
   <!--<h3 v-if="ind === 1"> Summa </h3>-->   
   <div class="right-part">
     <div type="button" class="g-can" @click="this.removeRow">

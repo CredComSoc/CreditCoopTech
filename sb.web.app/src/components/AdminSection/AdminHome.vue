@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div>
-      <h2 class="center-text">MEDLEMMAR</h2>
+      <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
     </div>
     <div class="center">
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>

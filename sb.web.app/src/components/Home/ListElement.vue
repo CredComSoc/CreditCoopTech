@@ -5,8 +5,8 @@
           <img v-if="elementInfo.coverImg.length === 0" class="regular" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
           <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
           <h4 class="element-title"> {{ elementInfo.title }} </h4>
-          <p v-if="elementInfo.status === 'selling'" class="element-desc"> Säljes  </p>
-          <p v-if="elementInfo.status === 'buying'" class="element-desc"> Köpes  </p>
+          <p v-if="elementInfo.status === 'selling'" class="element-desc"> {{ $t('sell') }}  </p>
+          <p v-if="elementInfo.status === 'buying'" class="element-desc"> {{ $t('purchase') }}  </p>
       </span>
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">
@@ -47,9 +47,9 @@ export default {
         coverImg: listingObj.coverImg,
         price: listingObj.price,
         quantity: amount, // number of items
-        article: listingObj.article, // produkt eller tjänst
+        article: listingObj.article, // product or service
         id: listingObj.id, // Id for the article
-        status: listingObj.status, // köpes eller säljes
+        status: listingObj.status, // is for sale
         userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
         'end-date': listingObj['end-date'] // end date for the article
       }
