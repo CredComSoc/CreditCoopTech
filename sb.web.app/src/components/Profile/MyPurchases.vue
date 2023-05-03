@@ -28,8 +28,8 @@
             </td>
           </tr>
         </table>
-        <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
-        <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
+        <PopupCard v-if="this.payeeTooMuchTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
+        <PopupCard v-if="this.payerNotEnoughTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
       </div>
     </div>
     <!--Gets all Pending purchases from the VueX store. -->
@@ -139,8 +139,8 @@ export default {
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       //requests: [],
       //componentKey: 0,
-      payerNotEnoughBkr: false,
-      payeeTooMuchBkr: false,
+      payerNotEnoughTkn: false,
+      payeeTooMuchTkn: false,
       max_limit: 0,
       default_min_date: 2020
     }
@@ -335,7 +335,7 @@ export default {
         getLimits().then((limits) => {
           this.max_limit = limits.max
           if (balance + limits.min + cost > limits.max) {
-            this.payeeTooMuchBkr = true
+            this.payeeTooMuchTkn = true
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
@@ -343,7 +343,7 @@ export default {
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
-                this.payerNotEnoughBkr = true
+                this.payerNotEnoughTkn = true
               } 
             })
           }
@@ -351,8 +351,8 @@ export default {
       })
     },
     closePopup () {
-      this.payerNotEnoughBkr = false
-      this.payeeTooMuchBkr = false
+      this.payerNotEnoughTkn = false
+      this.payeeTooMuchTkn = false
     },
     statusSwap (index, messagetext, list) {
       const tag = document.createElement('p')

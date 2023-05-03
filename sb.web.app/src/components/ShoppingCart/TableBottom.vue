@@ -2,15 +2,15 @@
   <div>
     <div class="saldo">
       <span id="total-text">Nuvarande Saldo: </span>
-      <span >{{ this.$store.state.saldo }} bKr</span>
+      <span >{{ this.$store.state.saldo }} {{ $t('tkn') }}</span>
     </div>
     <div class="total">
       <span id="total-text">Kostnad: </span>
-      <span >{{ total }} bKr</span>
+      <span >{{ total }} {{ $t('tkn') }}</span>
     </div>
     <div class="after">
       <span id="total-text">Saldo efter Köp: </span>
-      <span >{{ this.$store.state.saldo - total }} bKr</span>
+      <span >{{ this.$store.state.saldo - total }} {{ $t('tkn') }}</span>
     </div>
     <button @click="completePurchase" id="confirm">Slutför köp</button>
   </div>

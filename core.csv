@@ -20,12 +20,12 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Send,{{ $t('mis
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Request sent, {{ $('user.sentMessagePopupTitle') }},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Your request to send,{{ $('user.bkrRequestToSendCardText') }},1 
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor till,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }} till,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}},1  
-sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,barterkronor,1
+sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,{{ $t('org.token') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},1  
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Okay,Ok,1
@@ -395,12 +395,12 @@ sb.web.app/src/components/Members/userProfile.vue:8,Send,{{ $t('misc.send') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Request sent,{{ $('user.sentMessagePopupTitle') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,Your request to send,{{ $('user.bkrRequestToSendCardText') }},4
-sb.web.app/src/components/Members/userProfile.vue:8, barterkronor till ,4
+sb.web.app/src/components/Members/userProfile.vue:8, {{ $t('org.token') }} till ,4
 sb.web.app/src/components/Members/userProfile.vue:8, has been received.,{{ $('user.bkrRequestHasBeenReceivedCardText') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,You do not have enough, {{$t('user.bkrFailedTransactionUnderCardText')}} ,4
-sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,4
+sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},4
 sb.web.app/src/components/Members/userProfile.vue:8,to carry out the transaction.,{{$t('user.bkrFailedTransactionUnderCardText')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},4
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
@@ -411,7 +411,7 @@ sb.web.app/src/components/Members/userProfile.vue:8,Something went wrong when co
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,4
 sb.web.app/src/components/Members/userProfile.vue:8,The transaction could not be completed,{{$('user.failed_transaction_underMessagePopupTitle')}},5
 sb.web.app/src/components/Members/userProfile.vue:8,Incorrect number of,{{$t('user.incorrectNumberOfCardText')}},5
-sb.web.app/src/components/Members/userProfile.vue:8,,barterkronor,5
+sb.web.app/src/components/Members/userProfile.vue:8,,{{ $t('org.token') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Okay,Ok,5
 sb.web.app/src/components/Members/userProfile.vue:8,Now, {{ $t('user.nowLabel') }},5
 sb.web.app/src/components/Members/userProfile.vue:8,Today, {{ $t('user.todayLabel') }},5
@@ -456,7 +456,7 @@ sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_a
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,New notification,ny notis,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, have sent, har skickat ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,, barterkronor. ,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,, {{ $t('org.token') }}. ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,Go to,Gå till,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
@@ -474,7 +474,7 @@ sb.web.app/src/components/Navbar/Notifications.vue:6,. Go to,. Gå till ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, have sent, har skickat ,5
-sb.web.app/src/components/Navbar/Notifications.vue:6,, barterkronor. ,5
+sb.web.app/src/components/Navbar/Notifications.vue:6,, {{ $t('org.token') }}. ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,Go to,Gå till,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,My account, {{ $t('nav.my_account') }} ,5
 sb.web.app/src/components/Navbar/Notifications.vue:6, to approve or decline., för att godkänna eller ej.,5
@@ -677,7 +677,7 @@ sb.web.app/src/components/ShoppingCart/CartTableRow.vue:7,,,7
 sb.web.app/src/components/ShoppingCart/EmptyCart.vue:2,Your cart is empty,Din varukorg är tom,7
 sb.web.app/src/components/ShoppingCart/EmptyCart.vue:2,,,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price:, Pris: ,7
-sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,, bKr ,7
+sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6,, {{ $t('tkn') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Quantity, {{ $t('quantity') }} ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Price, Pris ,7
 sb.web.app/src/components/ShoppingCart/MobileCartTableRow.vue:6, Total, Summa ,7
@@ -700,16 +700,16 @@ sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3, has reached their upp
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,barterkronor.,7
 sb.web.app/src/components/ShoppingCart/ShoppingCart.vue:3,,,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Current balance:,Nuvarande {{ $t('balance') }}: ,7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Total:,Kostnad: ,7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Balance after purchase:,{{ $t('balance') }} efter Köp: ,7
-sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, bKr,7
+sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,, {{ $t('tkn') }},7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,Complete the purchase,Slutför köp,7
 sb.web.app/src/components/ShoppingCart/TableBottom.vue:4,,,7
 sb.web.app/src/components/SaldoCard.vue:13,Balance:, {{ $t('balance') }}: ,7
-sb.web.app/src/components/SaldoCard.vue:13,, bKr,8
+sb.web.app/src/components/SaldoCard.vue:13,, {{ $t('tkn') }},8
 sb.web.app/src/components/SaldoCard.vue:13, should be changed to connect to credit instead, ska ändras till att connecta till kredit istället,8
 sb.web.app/src/components/SaldoCard.vue:13, Credit:, {{ $t('credit') }}: ,8
-sb.web.app/src/components/SaldoCard.vue:13,, bKr,8
+sb.web.app/src/components/SaldoCard.vue:13,, {{ $t('tkn') }},8
 sb.web.app/src/components/SaldoCard.vue:13,,,8

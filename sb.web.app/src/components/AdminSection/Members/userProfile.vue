@@ -41,7 +41,7 @@
         <h1 class="box-text">{{ $t('misc.send') }} Barterkronor</h1>
         <div>
           <label class="box-label">{{ $t('quantity') }}</label>
-          <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
+          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
           <label class="box-label">{{ $t('user.commentLabel') }}</label>
@@ -50,11 +50,11 @@
         <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.bkrSentMessageCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionUnderCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.bkrFailedTransactionOverCardText', {bkr: this.bkr, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
     <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
-    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.bkrFailedTransactionInvalidNumberCardText', {bkr: this.bkr, accountName: profileData.accountName})"  />
+    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})"  />
   <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
@@ -131,9 +131,9 @@ export default {
       logoURL: '',
       profileData: [],
       updateuserProfile,
-      bkr: 0,
+      tkn: 0,
       comment: '',
-      bkrSentMsg: false,
+      tknSentMsg: false,
       notEnoughBkrMsg: false,
       tooMuchBkrMsg: false,
       chatError: false,
@@ -177,21 +177,21 @@ export default {
       }
     },
     async sendBkr () {
-      this.bkr = this.$refs.bkrInput.getInput()
+      this.tkn = this.$refs.tknInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
-      if (this.bkr && Number.isInteger(Number(this.bkr)) && Number(this.bkr) > 0) {
+      if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
         const saldo = await getAvailableBalance()
-        if (saldo < this.bkr) {
+        if (saldo < this.tkn) {
           this.notEnoughBkrMsg = true
         } else {
           const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
           const userLimits = await getUserLimits(this.profileData.accountName)
-          if (userSaldo + userLimits.min + Number(this.bkr) > userLimits.max) {
+          if (userSaldo + userLimits.min + Number(this.tkn) > userLimits.max) {
             this.tooMuchBkrMsg = true
           } else {
-            await sendMoney(this.bkr, this.comment, this.profileData.accountName)
-            postNotification('sendRequest', this.profileData.accountName, this.bkr)
-            this.bkrSentMsg = true
+            await sendMoney(this.tkn, this.comment, this.profileData.accountName)
+            postNotification('sendRequest', this.profileData.accountName, this.tkn)
+            this.tknSentMsg = true
           }
         }
       } else {
@@ -199,10 +199,10 @@ export default {
       }
     },
     closePopup () {
-      this.bkrSentMsh = false
+      this.tknSentMsh = false
       this.notEnoughBkrMsg = false
       this.tooMuchBkrMsg = false
-      this.bkr = 0
+      this.tkn = 0
       this.comment = ''
     },
     goToChat () {
