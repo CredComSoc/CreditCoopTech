@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="center-text">NY ARTIKEL</h2>
+    <h2 class="center-text">{{ $t('newItem') }} </h2>
   </div>
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >

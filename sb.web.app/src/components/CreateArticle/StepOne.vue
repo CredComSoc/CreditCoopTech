@@ -11,7 +11,7 @@
       <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
     </div>
     <div id="category" class="input">
-      <Combobox ref="categoryInput" name="category-type" label="Kategori" 
+      <Combobox ref="categoryInput" name="category-type" :label="$t('category')" 
         :options='[
           "Affärsnätverk",
           "Anläggning",
@@ -30,7 +30,7 @@
           "Fordon & Transport",
           "Foto, Film & Marknadsföring",
           "Fritid & Lek",
-          "Företagcoach",
+          "företagcoach",
           "Försäljning",
           "Hotell & Konferenser",
           "IT, Datorer & Telefoni",
@@ -60,7 +60,7 @@
           "Skönhet",
           "Smycken",
           "Snickeri & Trävaror",
-          "Sociala Företag",
+          "Sociala företag",
           "Spel & Gaming",
           "Städ, VVS & El",
           "Teknik, Elektronik & Vitvaror",

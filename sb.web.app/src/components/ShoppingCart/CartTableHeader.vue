@@ -5,7 +5,7 @@
     <span></span>
     <h3> {{ $t('quantity') }} </h3>
     <h3> {{ $t('price') }} </h3>
-    <h3> Summa </h3>
+    <h3> {{ $t('amount') }} </h3>
     <span></span>
   </div>
 </template>
