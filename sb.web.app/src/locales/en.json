@@ -133,6 +133,7 @@
     "status": "Status",
     "service": "Service",
     "purchase": "Purchase",
+    "buy": "Buy",
     "type": "Type",
     "sell": "Sell",
     "selling": "selling",
@@ -150,6 +151,7 @@
     "request_sent": "Request sent",
     "purchase_requests": "Purchase requests", 
     "item": "Item",
+    "newItem": "New Item",
     "price": "Price",
     "list_price": "List Price",
     "total_price": "Total Price",
@@ -162,6 +164,7 @@
     "business": "Business",
     "article": "Article",
     "amount": "Amount",
+    "needs": "Needs",
     "activeArticles": "Active Articles",
     "inActiveArticles": "Inactive Articles",
     "youHaveNoActiveArticles": "You currently have no Active Articles"
