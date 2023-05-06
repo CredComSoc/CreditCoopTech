@@ -23,7 +23,7 @@
                     <div v-if="item.type == 'sendRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" :alt="$t ('notifications.new_notification')"/>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" :alt="$t('notifications.new_notification')"/>
                         <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.have_sent') }}{{ item.amount }} {{ $t('org.token') }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
