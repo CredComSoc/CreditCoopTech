@@ -511,7 +511,7 @@ sb.web.app/src/components/Profile/MyProfile.vue:11, Description, {{ $t('user.des
 sb.web.app/src/components/Profile/MyProfile.vue:11,Street address, {{ $t('user.street_address') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,Town/city, {{ $t('user.town') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Billing information, {{ $t('user.billing') }} ,6
-sb.web.app/src/components/Profile/MyProfile.vue:11, Organization number:, Org. nummer: ,6
+sb.web.app/src/components/Profile/MyProfile.vue:11, Organization number:, {{ $t('user.orgnumberlabel') }},6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Contact information, {{ $t('user.contact') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11, Edit, {{ $t('edit') }} ,6
 sb.web.app/src/components/Profile/MyProfile.vue:11,General information,{{ $t('user.general_information') }},6

@@ -44,7 +44,7 @@
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
-          <th>Summa</th>
+          <th>{{ $t('amount') }}</th>
           <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->

@@ -21,7 +21,7 @@
           <p> {{profileData.city}} </p>
           
           <h1> {{ $t('user.billing') }} </h1>
-          <p> {{profileData.billingName}}<br/>Box: {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> Org. nummer: {{profileData.orgNumber}} </p>
+          <p> {{profileData.billingName}}<br/> {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{ $t('user.orgnumberlabel') }}: {{profileData.orgNumber}} </p>
         </div>
         <div className="right container-item">
           <div>

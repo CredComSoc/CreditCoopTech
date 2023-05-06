@@ -25,7 +25,7 @@
     <p class="non-b-text"> {{ this.priceOfItem }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Summa </h3>   
+    <h3 v-if="ind === 1"> {{ $t('amount') }} </h3>   
     <p class="non-b-text"> {{ this.totalPrice }} </p>
   </div>
   <div class="cart-col">    

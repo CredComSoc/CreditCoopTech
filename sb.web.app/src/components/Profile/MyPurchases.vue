@@ -10,7 +10,7 @@
             <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
-            <th>Summa</th>
+            <th>{{ $t('amount') }}</th>
             <th>{{ $t('timestamp') }}</th>
             <th>Status</th>
           </tr>
@@ -44,7 +44,7 @@
             <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
-            <th>Summa</th>
+            <th>{{ $t('amount') }}</th>
             <th>{{ $t('timestamp') }}</th>
             <!--<th>Status</th>-->
           </tr>
@@ -82,7 +82,7 @@
           <th>{{ $t('article')}}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
-          <th>Summa</th>
+          <th>{{ $t('amount') }}</th>
           <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item"><!--If the filter is not active, We get all completed transaction from the VueX store.  -->
@@ -104,7 +104,7 @@
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
-          <th>Summa</th>
+          <th>{{ $t('amount') }}</th>
           <th>{{ $t('timestamp') }}</th>
           <!--<th>Faktura</th>-->   
         </tr>
