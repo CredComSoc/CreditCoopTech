@@ -32,7 +32,7 @@
           <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="{{ $t('business') }}" id="company-input">
           <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$('product')" id="product-input">
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
           <button @click="downloadFilterView()">Ladda ner lista som CSV</button><!-- downloadFilterView handles the csv download. -->
@@ -41,11 +41,11 @@
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
-          <th>Artikel</th>
+          <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
           <th>Summa</th>
-          <th>Tidstämpel</th>   
+          <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
           <td>{{item.entries[0].payer}}</td>

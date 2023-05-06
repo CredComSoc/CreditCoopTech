@@ -7,7 +7,7 @@
     <div v-if="activeArticles.length!==0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
-          <th>Artikel</th>
+          <th>{{ $t('article')}}</th>
           <th>Kategori</th>
           <th>{{ $t('price') }}</th>
           <th>Skapad</th>
@@ -32,7 +32,7 @@
     <div v-if="inactiveArticles.length!==0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>
         <tr>
-          <th>Artikel</th>
+          <th>{{ $t('article') }}</th>
           <th>Kategori</th>
           <th>{{ $t('price') }}</th>
           <th>Skapad</th>

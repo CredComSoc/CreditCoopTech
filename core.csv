@@ -103,7 +103,7 @@ sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Item,Artikel,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Price,{{ $t('price') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Total,Summa,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Timestamp,Tidstämpel,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Timestamp,{{ $t('timestamp') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download invoice,Ladda ner faktura,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,,,1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,{{ $t('memberCAPS') }},1
@@ -537,7 +537,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, Godkänn ,6
@@ -556,7 +556,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchasing history, Köphistorik ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,Filtrera,6
@@ -571,7 +571,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,Köpare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
@@ -579,7 +579,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,Tidstämpel,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Invoice,Faktura,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,AVBRUTEN,6
@@ -595,12 +595,12 @@ sb.web.app/src/components/Profile/MyRequests.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Total,Summa,6
-sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,Tidstämpel,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, Godkänn ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,GODKÄND,6
-sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., Du har inte fått några köpförfrågningar än. ,6
+sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., {{ $t('youHaventReceivedAnyPurchaseRequestsYet')}} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
@@ -627,7 +627,7 @@ sb.web.app/src/components/Profile/temp.txt:2,Item,Artikel,7
 sb.web.app/src/components/Profile/temp.txt:2,Quantity,{{ $t('quantity') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Price,{{ $t('price') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Total,Summa,7
-sb.web.app/src/components/Profile/temp.txt:2,Timestamp,Tidstämpel,7
+sb.web.app/src/components/Profile/temp.txt:2,Timestamp,{{ $t('timestamp') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Invoice,Faktura,7
 sb.web.app/src/components/Profile/temp.txt:2,Download invoice,Ladda ner faktura,7
 sb.web.app/src/components/Profile/temp.txt:2,Download invoice,Ladda ner faktura,7

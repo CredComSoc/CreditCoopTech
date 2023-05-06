@@ -105,6 +105,7 @@
         "complete_purchase": "Complete the purchase",
         "go_to_shop": "Go to shop",
         "seller_has_reached_limit": "The seller {seller} has reached their upper limit for {token}.",
+        "purchaseRequestCannotBeApproved": "The purchase request cannot be approved",
         "is_for_sale": "is for sale or purchase",
         "no_product_found": "No products found!",
         "seller_has_approved_notification": "notification when the seller has approved your purchase request.",
@@ -118,7 +119,9 @@
         "thank_you_for_your_purchase": "Thank you for your purchase",
         "item_added": "The item has been added to your cart.",
         "purchase_could_not_complete": "The purchase could not be completed",
-        "the_seller": "The seller"
+        "the_seller": "The seller",
+        "youHaventReceivedAnyPurchaseRequestsYet": "You have not received any purchase requests yet",
+        "prohibitedrequest": "Prohibited Request"
     },
     "balance": "Balance",
     "credit": "Credit",
@@ -152,5 +155,8 @@
     "close": "close",
     "add_to_cart": "Add to cart",
     "exchange_currency": "Exchange Currency",
-    "transfer": "Transfer"
+    "transfer": "Transfer",
+    "business": "Business",
+    "article": "Article",
+    "amount": "Amount"
 }

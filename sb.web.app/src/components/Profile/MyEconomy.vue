@@ -5,7 +5,7 @@
                 <tr>
                     <th><h1>{{ $t('balance') }}</h1></th>
                     <th><h1>Kreditgräns</h1></th>
-                    <th><h1>Tillgängligt belopp</h1></th>
+                    <th><h1>Tillgängligt {{ $t('amount') }}</h1></th>
                     <th><h1>Avgifter</h1></th>
                 </tr>
                 <tr>
