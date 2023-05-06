@@ -32,18 +32,18 @@
           <h5>{{ $t('location') }}</h5>  
           <p>{{listingObj.destination}}</p>
 
-          <h5>Typ</h5> 
+          <h5>{{ $t('type') }}</h5> 
           <p v-if="listingObj.article === 'product'">{{ $t('product') }}</p>
-          <p v-if="listingObj.article === 'service'">Service</p>
+          <p v-if="listingObj.article === 'service'">{{ $t('service') }}</p>
 
-          <h5>Kategori</h5> 
+          <h5>{{listingObj.category}}</h5> 
           <p>{{listingObj.category}}</p>
 
           <h5>{{ $t('user.description') }}</h5> 
           <p>{{listingObj.longDesc}}</p>
           
-          <h5>Styckpris</h5> 
-          <p>{{listingObj.price}} Barter Kronor</p>
+          <h5>{{ $t('list_price') }}</h5> 
+          <p>{{listingObj.price}} {{ $t('exchange_currency') }}</p>
 
           <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
             <h5>{{ $t('quantity') }}</h5> 
@@ -57,17 +57,17 @@
               </div>
             </div>
 
-            <h5>Totalpris</h5> 
-            <p>{{amount * listingObj.price}} Barter Kronor</p>          
+            <h5>{{ $t('total_price') }}</h5> 
+            <p>{{amount * listingObj.price}} {{ $t('exchange_currency') }}</p>          
           </div>
         </div>
 
         <div class="spacing"></div>
 
-      <button class="closeBtn" @click="$emit('closePopup')">Stäng</button>
+      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'">
         <div>
-          <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">Lägg i varukorg</button>
+          <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
         </div>
       </div>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">

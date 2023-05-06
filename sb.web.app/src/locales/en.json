@@ -124,7 +124,9 @@
     "credit": "Credit",
     "welcome": "Welcome",
     "product": "Product",
+    "service": "Service",
     "purchase": "Purchase",
+    "type": "Type",
     "sell": "Sell",
     "selling": "selling",
     "buying": "buying",
@@ -142,7 +144,12 @@
     "purchase_requests": "Purchase requests", 
     "item": "Item",
     "price": "Price",
+    "list_price": "List Price",
+    "total_price": "Total Price",
     "total": "Total",
     "timestamp": "Timestamp",
-    "status": "Status"
+    "status": "Status",
+    "close": "close",
+    "add_to_cart": "Add to cart",
+    "exchange_currency": "Exchange Currency"
 }
