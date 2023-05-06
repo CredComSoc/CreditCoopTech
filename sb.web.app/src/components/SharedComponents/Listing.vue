@@ -7,7 +7,7 @@
       </div>
       <div v-if="listingId && listingId === '0'" class="element-container">
           <img src='../../assets/icons/transaction.png' style="object-fit:contain;max-width:240px;max-height:140px;"/>
-          <h4 class="element-title"> Överföring</h4>
+          <h4 class="element-title"> {{ $t('transfer') }}</h4>
           <p class="element-desc"> {{ comment }}  </p>
       </div>
     </div>

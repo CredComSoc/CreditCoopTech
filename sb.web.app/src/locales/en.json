@@ -151,5 +151,6 @@
     "status": "Status",
     "close": "close",
     "add_to_cart": "Add to cart",
-    "exchange_currency": "Exchange Currency"
+    "exchange_currency": "Exchange Currency",
+    "transfer": "Transfer"
 }
