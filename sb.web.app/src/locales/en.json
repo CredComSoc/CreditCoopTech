@@ -126,6 +126,8 @@
     "product": "Product",
     "purchase": "Purchase",
     "sell": "Sell",
+    "selling": "selling",
+    "buying": "buying",
     "memberCAPS": "MEMBERS",
     "get_inspired": "Get inspired below",
     "transactions":"Transactions",

@@ -25,8 +25,8 @@
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
         <div class="article-info">
-          <h5 v-if="listingObj.status === 'selling'">Säljare</h5>
-          <h5 v-if="listingObj.status === 'buying'">Köpare</h5>    
+          <h5 v-if="listingObj.status === 'selling'">{{ $t('selling') }}"</h5>
+          <h5 v-if="listingObj.status === 'buying'">{{ $t('buying') }}"</h5>    
           <p>{{listingObj.userUploader}}</p>
 
           <h5>{{ $t('location') }}</h5>  
