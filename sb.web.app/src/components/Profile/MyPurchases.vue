@@ -6,13 +6,13 @@
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
-            <th>Företag</th>
-            <th>Artikel</th>
+            <th>{{ $t('business') }}</th>
+            <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
-            <th>Summa</th>
-            <th>Tidstämpel</th>
-            <th>Status</th>
+            <th>{{ $t('amount') }}</th>
+            <th>{{ $t('timestamp') }}</th>
+            <th>{{ $t('status')}}</th>
           </tr>
           <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreq">
             <td>{{item.entries[0].payer}}</td>
@@ -40,12 +40,12 @@
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
           <tr>
-            <th>Företag</th>
-            <th>Artikel</th>
+            <th>{{ $t('business') }}</th>
+            <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
-            <th>Summa</th>
-            <th>Tidstämpel</th>
+            <th>{{ $t('amount') }}</th>
+            <th>{{ $t('timestamp') }}</th>
             <!--<th>Status</th>-->
           </tr>
           <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="inreq">
@@ -70,7 +70,7 @@
         <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
         <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
         <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>
@@ -79,11 +79,11 @@
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
-          <th>Artikel</th>
+          <th>{{ $t('article')}}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>   
+          <th>{{ $t('amount') }}</th>
+          <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item"><!--If the filter is not active, We get all completed transaction from the VueX store.  -->
           <td>{{item.entries[0].payer}}</td>
@@ -101,11 +101,11 @@
         <tr>
           <th>Köpare</th>
           <th>Säljare</th>
-          <th>Artikel</th>
+          <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>
+          <th>{{ $t('amount') }}</th>
+          <th>{{ $t('timestamp') }}</th>
           <!--<th>Faktura</th>-->   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"> <!--If the filter is active, We get view all transactions from filtered transactions found below.  -->

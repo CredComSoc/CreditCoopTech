@@ -18,7 +18,7 @@
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='soderkoping' title='Söderköping'/>
         <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='linkoping' title='Linköping'/>
 
-        <h1>Kategorier</h1>
+        <h1>{{ $t('category')}}er</h1>
         <CategoryButton v-for="data in this.categoriesJson.categories" :key="data.value" @filterEvent="triggerFilterEvent" type='category' :value="data.value" :title="data.title"/>
 
     </div>
