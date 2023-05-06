@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1><b> Skapad av </b></h1>
+    <h1><b> {{ $t('created')}} av </b></h1>
     <div>
       <p style="font-style: italic; width: 950px;"> Sidan skapades ursprunglingen för projektkursen TDP032: Agile System Development på Linköpings Universitet, av följande studenter:  </p>
     </div>

@@ -12,7 +12,7 @@
             <th>{{ $t('price') }}</th>
             <th>{{ $t('amount') }}</th>
             <th>{{ $t('timestamp') }}</th>
-            <th>Status</th>
+            <th>{{ $t('status')}}</th>
           </tr>
           <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreq">
             <td>{{item.entries[0].payer}}</td>

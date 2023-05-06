@@ -11,7 +11,7 @@
       <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
     </div>
     <div id="category" class="input">
-      <Combobox ref="categoryInput" name="category-type" label="Kategori" 
+      <Combobox ref="categoryInput" name="category-type" label="{{ $t('category')}}" 
         :options='[
           "Affärsnätverk",
           "Anläggning",

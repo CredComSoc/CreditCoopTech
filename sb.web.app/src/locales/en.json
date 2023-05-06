@@ -121,12 +121,16 @@
         "purchase_could_not_complete": "The purchase could not be completed",
         "the_seller": "The seller",
         "youHaventReceivedAnyPurchaseRequestsYet": "You have not received any purchase requests yet",
-        "prohibitedrequest": "Prohibited Request"
+        "prohibitedrequest": "Prohibited Request",
+        "remove": "Remove"
     },
     "balance": "Balance",
     "credit": "Credit",
     "welcome": "Welcome",
     "product": "Product",
+    "category": "Category",
+    "created": "Created",
+    "status": "Status",
     "service": "Service",
     "purchase": "Purchase",
     "type": "Type",
@@ -151,12 +155,14 @@
     "total_price": "Total Price",
     "total": "Total",
     "timestamp": "Timestamp",
-    "status": "Status",
     "close": "close",
     "add_to_cart": "Add to cart",
     "exchange_currency": "Exchange Currency",
     "transfer": "Transfer",
     "business": "Business",
     "article": "Article",
-    "amount": "Amount"
+    "amount": "Amount",
+    "activeArticles": "Active Articles",
+    "inActiveArticles": "Inactive Articles",
+    "youHaveNoActiveArticles": "You currently have no Active Articles"
 }
