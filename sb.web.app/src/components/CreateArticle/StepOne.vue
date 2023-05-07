@@ -2,83 +2,59 @@
   <div>
     <!-- To change character limit on textfields change value for length prop  -->
     <div id="buy-or-sell" class="input">
-      <Combobox ref="buyOrSellInput" name="butOrSell-type" label="Artikelns syfte" :options="['purchase', 'sell']" placeholder="Önskas artikeln att köpas eller ska den säljas?" />
+      <Combobox ref="buyOrSellInput" name="butOrSell-type" :label="$t('shop_items.need_or_offer')" :options="['purchase', 'sell']" :placeholder="$t('shop_items.to_buy_or_sell')" />
     </div>
     <div id="title-field" class="input">
-      <TextBox ref="titleInput" id='title' name="title" placeholder="Vad ska din artikel heta?" length="30" label="Rubrik"/>
+      <TextBox ref="titleInput" id='title' name="title" :placeholder="$t('shop_items.item_title_prompt')" length="30" :label="$t('shop_items.item_title')"/>
     </div>
     <div id="desc" class="input" >
-      <TextArea ref="descInput" name="description" label="Beskrivning" length="200" placeholder="Beskriv vad som ingår i din artikel"/>
+      <TextArea ref="descInput" name="description" :label="$t('shop_items.item_description')" length="200" :placeholder="$t('shop_items.item_description_short_prompt')"/>
     </div>
     <div id="category" class="input">
       <Combobox ref="categoryInput" name="category-type" :label="$t('category')" 
         :options='[
-          "Affärsnätverk",
-          "Anläggning",
-          "Antikviteter",
-          "Auktion",
-          "Bank & Försäkring",
-          "Begagnat & Återbruk",
-          "Bemanning",
-          "Butiker",
-          "Bygg och Fastighetsunderhåll",
-          "Café, Pub & Servering",
-          "Ekonomi, Juridik & Affärsutveckling",
-          "Energi",
-          "Engagemang & CSR",
-          "Entreprenad",
-          "Fordon & Transport",
-          "Foto, Film & Marknadsföring",
-          "Fritid & Lek",
-          "företagcoach",
-          "Försäljning",
-          "Hotell & Konferenser",
-          "IT, Datorer & Telefoni",
-          "Ideella Föreningar",
-          "Investeringar",
-          "Kaffe, Te & Fruktkorg",
-          "Kiosk",
-          "Kläder, Skor & Mode",
-          "Konst",
-          "Konsult",
-          "Kontorslokaler",
-          "Kontorsmaterial",
-          "Kroppsvård & Hälsa",
-          "Kultur",
-          "Lantbruk och Skog",
-          "Livsmedel",
-          "Metall & Plåt",
-          "Mäklare & Fastigheter",
-          "Mässor & Utställningar",
-          "Möbler & Inredning",
-          "Nattklubb & Barer",
-          "Nöjen & Underhållning",
-          "Presentkort",
-          "Psykolog",
-          "Reklam & Media",
-          "Restaurang & Catering",
-          "Skönhet",
-          "Smycken",
-          "Snickeri & Trävaror",
-          "Sociala företag",
-          "Spel & Gaming",
-          "Städ, VVS & El",
-          "Teknik, Elektronik & Vitvaror",
-          "Textil & Sömnad",
-          "Tolk & Översättning",
-          "Trycksaker & Presenter",
-          "Trädgård & Blommor",
-          "Turism & Resor",
-          "Tvätteri & Rengöring",
-          "Upplevelser & Evenemang",
-          "Välgörenhet & Sponsring",
-          "Övrigt"
+          "Facilities",
+          "Antiques",
+          "Business Networking",
+          "Used & Recycling",
+          "Staffing",
+          "Construction & Property Maintenance",
+          "Cafés, Restaurants, Bars",
+          "Finance, Law, Business Development",
+          "Fuel and Power",
+          "Photography, Film & Marketing",
+          "Leisure & Play",
+          "Coaching",
+          "Hotels & Conferences",
+          "IT, Computers & Telephony",
+          "Clothes, Shoes & Fashion",
+          "Art",
+          "Consultancy",
+          "Office Space",
+          "Office Supplies",
+          "Body Care, Beauty, Hair & Health",
+          "Agriculture & Forestry",
+          "Food",
+          "Metal & Sheet Metal",
+          "Brokerage & Real Estate",
+          "Furniture & Interiors",
+          "Entertainment",
+          "Jewelry",
+          "Carpentry & Wood Products",
+          "Sanitary, Plumbing & Electricity",
+          "Technology, Electronics & Appliances",
+          "Textiles & Sewing",
+          "Interpretation & Translation",
+          "Gardening & Flowers",
+          "Tourism & Travel",
+          "Laundry & Cleaning",
+          "Other"
         ]' 
-        placeholder="Vilken av Kategorierna nedan tillhör din produkt?" 
+        :placeholder="$t('shop_items.item_category_prompt')" 
       />
     </div>
     <div id="type" class="input">
-      <Combobox ref="typeInput" name="articale-type" label="Typ av artikel" :options="['product', 'service']" :placeholder="$t('shop.is_item_product_or_service')" />
+      <Combobox ref="typeInput" name="articale-type" :label="$t('shop_items.item_type')" :options="['product', 'service']" :placeholder="$t('shop.is_item_product_or_service')" />
     </div>
   </div>
 </template>
