@@ -55,7 +55,6 @@
         "daysAgoLabel": "days ago",
         "neverLabel": "Never",
         "whoDoYouWantToSearchForTodayLabel": "Who do you want to search for today?",
-        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?",
         "send_token": "Send {token}",
         "commentLabel": "Comment"
     },
@@ -124,7 +123,8 @@
         "the_seller": "The seller",
         "youHaventReceivedAnyPurchaseRequestsYet": "You have not received any purchase requests yet",
         "prohibitedrequest": "Prohibited Request",
-        "remove": "Remove"
+        "remove": "Remove",
+        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?"
     },
     "notifications": {
         "notifications_header_label": "Notifications",
@@ -195,10 +195,10 @@
     "exchange_currency": "Exchange Currency",
     "transfer": "Transfer",
     "business": "Business",
-    "article": "Article",
+    "article": "Item",
     "amount": "Amount",
     "needs": "Needs",
-    "activeArticles": "Active Articles",
-    "inActiveArticles": "Inactive Articles",
-    "youHaveNoActiveArticles": "You currently have no Active Articles"
+    "activeArticles": "Active items",
+    "inActiveArticles": "Inactive items",
+    "youHaveNoActiveArticles": "You currently have no active items"
 }
