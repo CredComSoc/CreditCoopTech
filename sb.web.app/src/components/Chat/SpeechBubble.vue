@@ -1,6 +1,6 @@
 <template>
     <div class="fill">
-       <!--Skriva ut meddelande/fil/bild i chatbubbla:-->
+       <!--Print message/file/image in chat bubble:-->
         <div v-if='sender === user' class="speech-bubble" id="blue-speech-bubble">
             <div v-if= 'messagetype === "image/jpeg" || messagetype === "image/png" || messagetype === "image/gif"'> <img :src= 'getImgURL(filename)' class= "image" alt="Picture"></div>
             <div v-else-if= 'messagetype === "file" || messagetype === "text/plain"|| messagetype === "application/pdf"'><a target="_blank" :href='getFileURL(filename)'>{{message}}</a></div>

@@ -12,7 +12,7 @@
       </div>
       <div v-for="city in searchData" :key="city">
         <div v-if="city[0] === ''">
-          <h3>Okänd Stad</h3>
+          <h3>{{ $t('user.unknown_city') }}</h3>
           <li v-for="member in city[1]" :key="member.title">
             <Member :listingObj="member"/>
           </li>

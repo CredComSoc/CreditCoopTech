@@ -1,16 +1,16 @@
 <template> 
 <div>
   <div id="title-field" class="input">
-    <DatePicker ref="endDateInput" name="end-date-picker" label="Tid" :placeholder="`Tills när kommer denna ` + this.chosenType.toLowerCase() + ` vara tillgänglig?`" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+    <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when') + this.chosenType.toLowerCase() + $t('shop_items.be_available')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
     <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
-    <label for="end-date"> På obestämd tid </label>
+    <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
   </div>
   <div class="input">
-    <Combobox ref="cityInput" name="city-new-article" label="Plats" :options="[`Linköping`, `Norrköping`, `Söderköping`]" :placeholder="`Var finns din ` + this.chosenType.toLowerCase() + `?`" />
+    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + this.chosenType.toLowerCase() + `?`" />
   </div>
   <div class="input" id="new-article-price">
-    <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="`Hur mycket kostar din ` + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
-    <h3> Bkr </h3>
+    <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="$t('shop_items.price_prompt') + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
+    <h3> {token} </h3>
   </div>
 </div>
 </template>
