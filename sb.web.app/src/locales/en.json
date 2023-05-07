@@ -8,7 +8,6 @@
         "login_button": "Login",
         "need_help": "Need help?",
         "contact_us": "Contact us."
-        
     },
     "chat": {
         "title": "Messages",
@@ -56,7 +55,9 @@
         "daysAgoLabel": "days ago",
         "neverLabel": "Never",
         "whoDoYouWantToSearchForTodayLabel": "Who do you want to search for today?",
-        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?"
+        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?",
+        "send_token": "Send {token}",
+        "commentLabel": "Comment"
     },
     "event": {
         "instructions": "Instructions",
@@ -88,6 +89,7 @@
         "cart": "Cart",
         "new_item": "New item",
         "members": "Members",
+        "all_members": "All members",
         "messages": "Messages",
         "my_account": "My account",
         "myAccountCAPS": "MY ACCOUNT",
@@ -124,13 +126,32 @@
         "prohibitedrequest": "Prohibited Request",
         "remove": "Remove"
     },
+    "notifications": {
+        "notifications_header_label": "Notifications",
+        "new_notification": "New notification",
+        "purchase_request": "You have received a purchase request from",
+        "go_to": ". Go to",
+        "approve_or_decline": "to approve or decline.",
+        "have_sent": "have sent",
+        "download_invoice": "to download the invoice.",
+        "denied_purchase": "has denied your purchase request.",
+        "older": "Older",
+        "no_notifications": "No notifications"
+    },
+    "cart": {
+        "cartCAPS": "CART",
+        "purchase_not_completed": "The purchase could not be completed",
+        "cart_empty": "Your cart is empty",
+        "current_balance": "Current balance:",
+        "total_cost": "Total cost:",
+        "balance_after": "Balance after purchase:"
+    },
     "balance": "Balance",
     "credit": "Credit",
     "welcome": "Welcome",
     "product": "Product",
     "category": "Category",
     "created": "Created",
-    "status": "Status",
     "service": "Service",
     "purchase": "Purchase",
     "buy": "Buy",
@@ -157,6 +178,18 @@
     "total_price": "Total Price",
     "total": "Total",
     "timestamp": "Timestamp",
+    "status": "Status",
+    "new": "New",
+    "credit_limit": "Credit limit",
+    "available_balance": "Available balance",
+    "fees": "Fees",
+    "description": "Description",
+    "about": "About",
+    "home": "Home",
+    "contact": "Contact",
+    "created_by": "Created by",
+    "initial_student_group": "The site was created for the course TDP032: Agile System Development at Linköping University, by the following students:",
+    "second_student_group": "The site was further developed for the course TDDI17: Programming projects at Linköping University, by the following students:",
     "close": "close",
     "add_to_cart": "Add to cart",
     "exchange_currency": "Exchange Currency",
