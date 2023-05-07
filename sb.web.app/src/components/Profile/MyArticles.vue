@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1><b> {{ $t('active.Articles')}} </b></h1>
+    <h1><b> {{ $t('activeArticles')}} </b></h1>
     <div v-if="activeArticles.length===0">
       <p style="font-style: italic;"> {{ $t('youHaveNoActiveArticles')}} </p>
     </div>

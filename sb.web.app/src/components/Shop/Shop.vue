@@ -6,7 +6,7 @@
     </div>
 
     <div class="center" id="searchfield">
-        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vad vill du söka efter idag?'" />
+        <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('shop.whatDoYouWantToSearchForTodayLabel')" />
     </div>
   
     <div class="main">

@@ -4,18 +4,18 @@
         <figure id="bell-logo" :class="[`logo-click`,`notice`]" @click="setNotificationsToSeen">
             <img id="notice" class="notice" src="../../assets/navbar_logos/notice.png" v-if="this.$store.state.newNotifications.length > 0"/>
             <img id="bell" class="notice" src="../../assets/navbar_logos/bell.png" :alt="$t('shop.go_to_shop')"/>
-            <figcaption :class=" [`l-text`,`notice`]"> {{ $t ('notifications.notifications_header_label') }} </figcaption>
+            <figcaption :class=" [`l-text`,`notice`]"> {{ $t('notifications.notifications_header_label') }} </figcaption>
         </figure>
         </a>
         <div id="bell-dropdown" class="dropdown-content">
             <div id="new-notice-list" v-if="this.$store.state.newNotifications.length > 0">
-                <p class="notice-title">{{ $t ('new') }}</p>
+                <p class="notice-title">{{ $t('new') }}</p>
                 <div v-for="item in this.$store.state.newNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t ('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ $t ('notifications.purchase_request') }} {{ item.fromUser }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
+                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -23,7 +23,7 @@
                     <div v-if="item.type == 'sendRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" :alt="$t ('notifications.new_notification')"/>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" :alt="$t('notifications.new_notification')"/>
                         <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.have_sent') }}{{ item.amount }} {{ $t('org.token') }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
@@ -32,8 +32,8 @@
                     <div v-if="item.type == 'saleRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t ('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} har godkänt din köpförfrågan{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t ('notifications.download_invoice') }}</p>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
+                        <p class="notice-desc">{{ item.fromUser }} har godkänt din köpförfrågan{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -41,8 +41,8 @@
                     <div v-if="item.type == 'saleRequestDenied'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t ('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.denied_purchase') }}</p>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -50,8 +50,8 @@
                     <div v-if="item.type == 'chatMessage'">
                     <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" @click.prevent="">
                         <div id="new-list-content">
-                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t ('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.have_sent') }}ett chatt-meddelande.</p>
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.have_sent') }}ett chatt-meddelande.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -59,12 +59,12 @@
                 </div>
             </div>
             <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length > 0">
-                <p class="notice-title">{{ $t ('notifications.older') }}</p>
+                <p class="notice-title">{{ $t('notifications.older') }}</p>
                 <div v-for="item in this.$store.state.oldNotifications" :key="item">
                     <div v-if="item.type == 'saleRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'requests'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ $t ('notifications.purchase_request') }} {{ item.fromUser }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -72,7 +72,7 @@
                     <div v-if="item.type == 'sendRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.have_sent') }}{{ item.amount }} {{ $t('org.token') }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.have_sent') }}{{ item.amount }} {{ $t('org.token') }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -80,7 +80,7 @@
                     <div v-if="item.type == 'saleRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t ('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} har godkännt din köpförfrågan{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -88,7 +88,7 @@
                     <div v-if="item.type == 'saleRequestDenied'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.denied_purchase') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -96,7 +96,7 @@
                     <div v-if="item.type == 'chatMessage'">
                     <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.have_sent') }}ett chatt-meddelande.</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.have_sent') }}ett chatt-meddelande.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length === 0 && this.$store.state.newNotifications.length === 0">
-                <p class="notice-title">{{ $t ('notifications.no_notifications') }}</p>
+                <p class="notice-title">{{ $t('notifications.no_notifications') }}</p>
             </div> 
         </div>
     </div>
