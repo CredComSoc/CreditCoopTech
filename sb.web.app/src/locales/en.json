@@ -165,7 +165,22 @@
         "be_available": " be available?",
         "indefinitely": "Indefinitely",
         "location": "Location",
-        "price_prompt": "What is the price of the "
+        "price_prompt": "What is the price of the ",
+        "new_articleCAPS": "NEW ARTICLE",
+        "invalid_date": "Invalid date",
+        "try_again": "Please try again.",
+        "price_positive_integer": "Price must be a positive integer",
+        "upload_images": "Upload images",
+        "at_least_one_image": "At least one image must be added.",
+        "choose_main_image": "A main image must be chosen.",
+        "invalid_entry": "Invalid entry",
+        "fields_left_empty": "One or more fields have been left empty.",
+        "fill_them_out": "Please fill them out",
+        "image_file_extension_must_be": "Image file extension must be .png, .jpeg or .gif",
+        "smaller_than_2mb": "and be smaller than 2 MB.",
+        "preview": "Preview",
+        "image_upload_failed": "Image upload failed",
+        "try_again_later": "Please try again later."
     },
     "balance": "Balance",
     "credit": "Credit",
@@ -223,6 +238,6 @@
     "inActiveArticles": "Inactive items",
     "youHaveNoActiveArticles": "You currently have no active items",
     "browse": "Browse",
-    "place": "Place"
-
+    "place": "Place",
+    "back": "Back"
 }
