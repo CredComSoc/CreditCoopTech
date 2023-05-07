@@ -34,7 +34,7 @@
         "billingnamelabel": "Name",
         "contact": "Contact information",
         "emailcontactlabel": "Email",
-        "telephonecontactlabel": "Telephone",        
+        "telephonecontactlabel": "Telephone",
         "edit_user": "Edit <br> User",
         "sentMessagePopupTitle": "Message <br> sent",
         "tknSentMessageCardText": "You have sent {amt} {token} to {accountName}",
@@ -72,7 +72,7 @@
         "event_info": "Event info" ,
         "event_name": "Event name" ,
         "event_loc": "Event location",
-        "event_contact": "Contact information",        
+        "event_contact": "Contact information",
         "url": "URL for more information",
         "choose_start": "Choose start time",
         "choose_end": "Choose end time",
@@ -129,6 +129,7 @@
         "prohibitedrequest": "Prohibited Request",
         "remove": "Remove",
         "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?"
+
     },
     "notifications": {
         "notifications_header_label": "Notifications",
@@ -158,19 +159,24 @@
         "item_title": "Title",
         "item_description": "Description",
         "item_category_prompt": "Which of the categories below describes your product or service?",
-        "item_type": "item type",
+        "item_type": "Item Type",
         "choose_file": "Choose file",
         "item_set_main_image": "Set as main image",
         "until_when": "Until when will this ",
         "be_available": " be available?",
         "indefinitely": "Indefinitely",
         "location": "Location",
-        "price_prompt": "What is the price of the "
+        "price_prompt": "What is the price of the ",
+        "selected_cover_image": "Selected as a cover image",
+        "preview": "PREVIEW",
+        "ensure_data_correct": "Make sure the data is correct",
+        "images": "Images"
     },
     "balance": "Balance",
     "credit": "Credit",
     "welcome": "Welcome",
     "product": "Product",
+    "services": "Services",
     "category": "Category",
     "created": "Created",
     "service": "Service",
@@ -191,7 +197,7 @@
     "quantity": "Quantity",
     "comment": "Comment",
     "request_sent": "Request sent",
-    "purchase_requests": "Purchase requests", 
+    "purchase_requests": "Purchase requests",
     "item": "Item",
     "newItem": "New Item",
     "price": "Price",
@@ -223,6 +229,9 @@
     "inActiveArticles": "Inactive items",
     "youHaveNoActiveArticles": "You currently have no active items",
     "browse": "Browse",
-    "place": "Place"
+    "place": "Place",
+    "success": "success",
+    "I_want_to": "I want to",
+    "confirmation": "Confirmation"
 
 }
