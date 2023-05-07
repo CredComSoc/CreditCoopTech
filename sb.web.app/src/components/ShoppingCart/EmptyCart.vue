@@ -1,5 +1,5 @@
 <template>
-  <p>{{ $t ('cart.cart_empty') }}</p>
+  <p>{{ $t('cart.cart_empty') }}</p>
 </template>
 
 <script>

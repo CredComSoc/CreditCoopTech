@@ -1,6 +1,6 @@
 <template>
   <div id="cart-container">
-    <h1> {{ $t ('cart.cartCAPS') }} </h1>
+    <h1> {{ $t('cart.cartCAPS') }} </h1>
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
     <PopupCard v-if="this.confirmPress" :title="$t('cart.thanks_purchase')" btnLink="/" btnText="Ok" :cardText="`Tack för ditt köp! Säljaren har meddelats. Du kommer få en\nnotis när säljaren bekräftat din köpförfrågan.`" />

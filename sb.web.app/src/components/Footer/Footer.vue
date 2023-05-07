@@ -1,9 +1,9 @@
 <template>
     <footer>
         <div class="footer-container">
-            <p class="side-items" id="om-sidan"><router-link :to="{name:'About'}">{{ $t ('about') }}</router-link></p>
-            <p id="middle-item"><a href="#">{{ $t ('home') }}</a></p>
-            <p class="side-items"><a href="mailto:abenewsoil@gmail.com">{{ $t ('contact') }}</a></p>
+            <p class="side-items" id="om-sidan"><router-link :to="{name:'About'}">{{ $t('about') }}</router-link></p>
+            <p id="middle-item"><a href="#">{{ $t('home') }}</a></p>
+            <p class="side-items"><a href="mailto:abenewsoil@gmail.com">{{ $t('contact') }}</a></p>
         </div>
     </footer>
 </template>
