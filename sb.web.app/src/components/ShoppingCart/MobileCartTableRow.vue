@@ -3,7 +3,7 @@
   <div class="floating-left">
     <img class="content-img" :src="this.getImgURL()" />
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
-    <p :class="[`non-b-text`, `price-text`]"> {{ $t('price') }}: {{ this.priceOfItem }} {{ $t('tkn') }} </p>
+    <p :class="[`non-b-text`, `price-text`]"> {{ $t('price') }}: {{ this.priceOfItem }} {{ $t('org.tkn') }} </p>
   </div>
   <!--<h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>-->  
   <!--<h3 v-if="ind === 1"> {{ $t('price') }} </h3>-->
