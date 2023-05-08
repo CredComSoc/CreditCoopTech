@@ -9,7 +9,7 @@
     </div>
     <div id="center">
       <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-      <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(  $t('shop_items.invalid_date')  + `\n` +  $t('shop_items.try_again')  )" @priceError="this.changePopupText(  $t('shop_items.price_positive_integer')  + `\n` +  $t('shop_items.try_again') )" />
+      <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(this.invalid_date_message)" @priceError="this.changePopupText(this.invalid_price_message)" />
       <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" :label="$t('shop_items.upload_images')" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText($t('shop_items.at_least_one_image'))" @emptyCoverImage="this.changePopupText($t('shop_items.choose_main_image'))" @fileSizeError='this.fileSizeError' />
       <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
     </div>
@@ -46,7 +46,11 @@ export default {
       newArticle: {},
       isPublished: false,
       error: false,
-      popupCardText: $t('shop_items.fields_left_empty') + '\n' + $t('shop_items.fill_them_out'),
+      popupCardText: this.$i18n.t('shop_items.fields_left_empty') + '\n' + this.$i18n.t('shop_items.fill_them_out'),
+      invalid_date_message: this.$i18n.t('shop_items.invalid_date') + '\n' + this.$i18n.t('shop_items.try_again'),
+      file_size_error_message: this.$i18n.t('shop_items.image_file_extension_must_be') + '\n' + this.$i18n.t('shop_items.smaller_than_2mb'),
+      image_upload_error_message: this.$i18n.t('shop_items.image_upload_failed') + '\n' + this.$i18n.t('shop_items.try_again_later'),
+      invalid_price_message: this.$i18n.t('shop_items.price_positive_integer') + '\n' + this.$i18n.t('shop_items.try_again'),
       inEditMode: false
     }
   },
@@ -83,7 +87,7 @@ export default {
     },
     fileSizeError () {
       this.error = true
-      this.changePopupText($t('§.image_file_extension_must_be') + '\n' + $t('shop_items.smaller_than_2mb'))
+      this.changePopupText(this.file_size_error_message)
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
@@ -144,7 +148,7 @@ export default {
       } else if (this.currentStep === 4) {
         this.currentStep = 3
         this.imgURL = 'three_three.png'
-        this.nextBtnText = $t('shop_items.preview')
+        this.nextBtnText = this.$i18n.t('shop_items.preview')
       }
     },
     uploadArticle () {
@@ -164,7 +168,7 @@ export default {
           this.isPublished = true // open popup with success message
         } else {
           this.error = true
-          this.popupCardText = $t('shop_items.image_upload_failed') + '\n' + $t('shop_items.try_again_later')
+          this.popupCardText = this.image_upload_error_message
         }
       })
     },
