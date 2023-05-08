@@ -19,7 +19,7 @@
              <router-link :to="{name:'AdminAddMember'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/add.png" />
-                  <figcaption class="l-text"> Lägg till medlem </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.addMember') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
@@ -30,11 +30,11 @@
              <router-link :to="{name:'AdminEconomy'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
-                  <figcaption class="l-text"> Ekonomisk översikt </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.financialOverview') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Ekonomi </span>
+              <span class="mob-cap"> {{ $t('Economy') }} </span>
             </router-link>
           </div>
         </div>
@@ -66,11 +66,11 @@
             <router-link :to="{name:'NetworkSetting'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/gear.png"/>
-                  <figcaption class="l-text"> Inställningar</figcaption>
+                  <figcaption class="l-text"> {{ $t('Preferences') }}</figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'NetworkSetting'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Inställningar</span>
+              <span class="mob-cap"> {{ $t('Preferences') }}</span>
             </router-link>
           </div>
         
