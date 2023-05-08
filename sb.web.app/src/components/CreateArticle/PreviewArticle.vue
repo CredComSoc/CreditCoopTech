@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       images: [],
-      endDate: '{{ $t('shop_items.indefinitely') }}'
+      endDate: this.$i18n.t('shop_items.indefinitely')
     }
   }
 }
