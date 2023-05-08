@@ -57,7 +57,7 @@ sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Yesterday,{{ $t
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7, days ago, {{ $t('user.daysAgoLabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,Never, {{ $t('user.neverLabel') }},1
 sb.web.app/src/components/AdminSection/Members/userProfile.vue:7,,,1
-sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ADD MEMBER,LÄGG TILL MEDLEM,1
+sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,ADD MEMBER,{{ $t('user.addMember') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,General information,{{ $t('user.general_information') }},1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Profile picture,Profilbild,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Business name,{{ $t('user.business') }},1
@@ -76,7 +76,7 @@ sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,Register,Registrera,
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,The new member is now registered. An email with sign in details has been sent to the specified email address.,Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.,1
 sb.web.app/src/components/AdminSection/AdminAddMember.vue:4,,,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Don't forget to protect /admineconomy link,Glöm inte att skydda /admineconomy länk,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Network overview,Ekonomisk Översikt,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Network overview,{{ $t('user.financialOverview') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Network statistics,EconomyStats,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Today,Dagens,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Number of transactions:,{{ $t('number_of_transactions') }}:,1
@@ -98,27 +98,27 @@ sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Product,{{ $t('product
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Maximum number of lines,Max antal rader,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download as CSV,Ladda ner lista som CSV,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Buyer,Köpare,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Seller,Säljare,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Seller,{{ $t('Salesperson') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Item,Artikel,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Quantity,{{ $t('quantity') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Price,{{ $t('price') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Total,Summa,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Timestamp,{{ $t('timestamp') }},1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download invoice,Ladda ner faktura,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download invoice,{{ $t('downloadInvoice') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,,,1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,MEMBERS,{{ $t('memberCAPS') }},1
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,Who do you want to search for today?, {{$t('whoDoYouWantToSearchForToday)}},1 
 sb.web.app/src/components/AdminSection/AdminHome.vue:4,,,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,1
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Shop,Shop,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Add member,Lägg till medlem,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Add member,{{ $t('user.addMember') }},2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Members, {{ $t('nav.members') }} ,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network overview,Ekonomisk översikt,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network,Ekonomi,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network overview,{{ $t('user.financialOverview') }},2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Network,{{ $t('Economy') }},2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages, {{ $t('nav.messages') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Messages, {{ $t('nav.messages') }} ,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,Inställningar,2
-sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,Inställningar,2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,{{ $t('Preferences') }},2
+sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,Settings,{{ $t('Preferences') }},2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out, {{ $t('nav.sign_out') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10, Sign out, {{ $t('nav.sign_out') }} ,2
 sb.web.app/src/components/AdminSection/AdminNavbar.vue:10,,,2
@@ -214,7 +214,7 @@ sb.web.app/src/components/CreateArticle/StepOne.vue:5,Staffing,Bemanning,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Shopping,Butiker,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Construction & Property Maintenance,Bygg och Fastighetsunderhåll,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Cafés & Pubs,Café Pub & Servering,3
-sb.web.app/src/components/CreateArticle/StepOne.vue:5,"Economics, Law & Business Development",Ekonomi Juridik & Affärsutveckling,3
+sb.web.app/src/components/CreateArticle/StepOne.vue:5,"Economics, Law & Business Development",{{ $t('Economy') }} Juridik & Affärsutveckling,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Energy,Energi,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,CSR,Engagemang & CSR,3
 sb.web.app/src/components/CreateArticle/StepOne.vue:5,Entrepreneurial,Entreprenad,3
@@ -566,29 +566,29 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Product,{{ $t('product') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download as CSV,Ladda ner lista som CSV,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,{{ $t('Buyer') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,{{ $t('Salesperson') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,{{ $t('downloadInvoice') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,{{ $t('Buyer') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,{{ $t('Salesperson') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Invoice,Faktura,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,AVBRUTEN,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,AVBRUTEN,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,GODKÄND,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,GODKÄND,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,{{ $t('downloadInvoice') }},6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,{{ $t('declined') }},6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,{{ $t('declined') }},6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,{{ $t('approved') }},6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,{{ $t('approved') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,godkänn,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,godkänn,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Cancelled,Avbruten,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Cancelled,{{ $t('declined') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,,,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Item,Artikel,6
@@ -599,7 +599,7 @@ sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,{{ $t('timestamp') 
 sb.web.app/src/components/Profile/MyRequests.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, Godkänn ,6
-sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,GODKÄND,6
+sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,{{ $t('approved') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., {{ $t('youHaventReceivedAnyPurchaseRequestsYet')}} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
@@ -629,12 +629,12 @@ sb.web.app/src/components/Profile/temp.txt:2,Price,{{ $t('price') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Total,Summa,7
 sb.web.app/src/components/Profile/temp.txt:2,Timestamp,{{ $t('timestamp') }},7
 sb.web.app/src/components/Profile/temp.txt:2,Invoice,Faktura,7
-sb.web.app/src/components/Profile/temp.txt:2,Download invoice,Ladda ner faktura,7
-sb.web.app/src/components/Profile/temp.txt:2,Download invoice,Ladda ner faktura,7
+sb.web.app/src/components/Profile/temp.txt:2,Download invoice,{{ $t('downloadInvoice') }},7
+sb.web.app/src/components/Profile/temp.txt:2,Download invoice,{{ $t('downloadInvoice') }},7
 sb.web.app/src/components/Profile/temp.txt:2,,,7
 sb.web.app/src/components/SharedComponents/Listing.vue:10,Send, Överföring,7
 sb.web.app/src/components/SharedComponents/Listing.vue:10,,,7
-sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Seller,Säljare,7
+sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Seller,{{ $t('Salesperson') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Buyer,{{ $t('Buyer') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Location,{{ $t('location') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Type of item,Typ,7

@@ -78,7 +78,7 @@
       <table v-if="(!this.filterActive)">
         <tr>
           <th>{{ $t('Buyer') }}</th>
-          <th>Säljare</th>
+          <th>{{ $t('Salesperson') }}</th>
           <th>{{ $t('article')}}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
@@ -94,13 +94,13 @@
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
-          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
+          <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
       </table>
       <table v-if="(this.filterActive)">
         <tr>
           <th>{{ $t('Buyer') }}</th>
-          <th>Säljare</th>
+          <th>{{ $t('Salesperson') }}</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
@@ -117,7 +117,7 @@
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
-          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
+          <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
       </table>
       </div>
@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, 'AVBRUTEN', 'in')
+      this.statusSwap(index, '{{ $t('declined') }}' + 'in'),
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, 'AVBRUTEN', 'out')
+      this.statusSwap(index, '{{ $t('declined') }}' + 'out')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -339,7 +339,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, 'GODKÄND')
+                this.statusSwap(index, '{{ $t('approved') }}')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {

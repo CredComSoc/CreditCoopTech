@@ -32,7 +32,7 @@
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
-        <td style="color: green;">GODKÄND</td>
+        <td style="color: green;">{{ $t('approved') }}</td>
       </tr>
     -->
     </table>

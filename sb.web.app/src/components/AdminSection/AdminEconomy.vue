@@ -3,7 +3,7 @@
 <template>
     <div class="wrapper">   
         <div style="display:flex; justify-content:center;">
-            <h2 class="center-text">Ekonomisk Översikt</h2>
+            <h2 class="center-text">{{ $t('user.financialOverview') }}</h2>
         </div>
         <div class="EconomyStats">
           <div><!--Displays the total number of trascations and their turnover this month-->
@@ -40,7 +40,7 @@
         <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
         <tr>
           <th>{{ $t('Buyer') }}</th>
-          <th>Säljare</th>
+          <th>{{ $t('Salesperson') }}</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>

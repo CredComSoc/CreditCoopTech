@@ -171,5 +171,12 @@
     "inActiveArticles": "Inactive Articles",
     "youHaveNoActiveArticles": "You currently have no Active Articles",
     "pendingPurchase": "Pending Purchase",
-    "purchaseHistory": "Purchase History"
+    "purchaseHistory": "Purchase History",
+    "downloadInvoice": "Download Invoice",
+    "declined": "DECLINED",
+    "approved": "APPROVED", 
+    "addMember": "Add Member",
+    "financialOverview": "Financial Overview",
+    "economy": "Economy",
+    "preferences": "preferences"
 }
