@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, '{{ $t('declined') }}' + 'in'),
+      this.statusSwap(index, this.$i18n.t('declined'), 'in')
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, '{{ $t('declined`) }}out`),
+      this.statusSwap(index, this.$i18n.t('declined'), 'out')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -339,7 +339,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, '{{ $t('approved') }}')
+                this.statusSwap(index, this.$i18n.t('approved'))
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
