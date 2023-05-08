@@ -36,7 +36,7 @@
     <div class="sendmoney-box" v-if="show_optional">
       
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
-        <h1 class="box-text">Skicka Barterkronor</h1>
+        <h1 class="box-text">{{ $t('user.send_token', {token: $t('org.token')} ) }}</h1>
         <div>
           <label class="box-label">{{ $t('quantity') }}</label>
           <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
@@ -48,10 +48,10 @@
         <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {tkn: this.tkn, token: $t('token'), accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {tkn: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
   </div>
 </template>

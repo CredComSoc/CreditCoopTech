@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1><b> {{ $t('created')}} av </b></h1>
+    <h1><b>{{ $t('created_by') }}</b></h1>
     <div>
-      <p style="font-style: italic; width: 950px;"> Sidan skapades ursprunglingen för projektkursen TDP032: Agile System Development på Linköpings Universitet, av följande studenter:  </p>
+      <p style="font-style: italic; width: 950px;">{{ $t('initial_student_group') }}</p>
     </div>
     <div style="max-height: 50em;">
       <table>
@@ -15,7 +15,7 @@
       </table>
     </div>
     <div>
-      <p style="font-style: italic; width: 950px;"> Sidan vidareutvecklades för projektkursen TDDI17: Programmeringsprojekt på Linköpings Universitet, av följande studenter:  </p>
+      <p style="font-style: italic; width: 950px;"> {{ $t('second_student_group') }}  </p>
     </div>
     <div style="max-height: 50em;">
       <table>

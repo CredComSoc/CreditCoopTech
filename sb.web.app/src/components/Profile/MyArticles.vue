@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1><b> {{ $t('active.Articles')}} </b></h1>
+    <h1><b> {{ $t('activeArticles')}} </b></h1>
     <div v-if="activeArticles.length===0">
-      <p style="font-style: italic;"> {{ $t('youHaveNoActive.Articles')}} </p>
+      <p style="font-style: italic;"> {{ $t('youHaveNoActiveArticles')}} </p>
     </div>
     <div v-if="activeArticles.length!==0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table>

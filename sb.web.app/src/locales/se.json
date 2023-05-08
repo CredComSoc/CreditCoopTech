@@ -55,8 +55,7 @@
         "yesterdayLabel": "Igår",
         "daysAgoLabel": "dagar sedan",
         "neverLabel": "Aldrig",
-        "whoDoYouWantToSearchForTodayLabel": "Vem vill du söka efter idag?",
-        "whatDoYouWantToSearchForTodayLabel": "Vad vill du söka efter idag?"
+        "whoDoYouWantToSearchForTodayLabel": "Vem vill du söka efter idag?"
     },
     "event": {      
         "instructions": "Instruktioner",
@@ -118,7 +117,8 @@
         "thank_you_for_your_purchase": "Tack för ditt köp",
         "item_added": "Artikeln har lagts till i varukorgen.",
         "purchase_could_not_complete": "Köpet kunde inte genomföras",
-        "the_seller": "Säljaren"
+        "the_seller": "Säljaren",
+        "whatDoYouWantToSearchForTodayLabel": "Vad vill du söka efter idag?"
     },
     "balance": "Saldo",
     "credit": "Kredit",

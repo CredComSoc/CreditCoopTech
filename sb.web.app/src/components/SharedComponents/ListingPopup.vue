@@ -36,7 +36,7 @@
           <p v-if="listingObj.article === 'product'">{{ $t('product') }}</p>
           <p v-if="listingObj.article === 'service'">{{ $t('service') }}</p>
 
-          <h5>{{listingObj.category}}</h5> 
+          <h5>{{$t('category')}}</h5> 
           <p>{{listingObj.category}}</p>
 
           <h5>{{ $t('user.description') }}</h5> 

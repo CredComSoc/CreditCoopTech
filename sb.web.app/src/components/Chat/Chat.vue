@@ -1,4 +1,4 @@
-<!--Vissa av funktionerna i denna fil leder till sb.web.app/src/serverfetch.js som i sin tur leder till backend/routes/index.js--> 
+<!--Some of the features of this file lead to sb.web.app/src/serverfetch.js which in turn leads to backend/routes/index.js--> 
 <template>
   <div>
     <h1 id="title">{{ $t('chat.title') }}</h1>
@@ -7,7 +7,7 @@
       <ChatBox ref="chatbox" :activeChat="activeChat" :reciever="this.reciever" :user="this.user" @sendMessage="this.sendMessage" @showMembers="this.showMembers"/>
     </div>
     <div v-if="this.showMemberlist" class="member-list-container">
-      <H4 v-if="this.allmembers.length === 0">Har startat chat med alla medlemmar</H4>
+      <H4 v-if="this.allmembers.length === 0">{{ $t('chat.started_all-member_chat') }}</H4>
       <div v-if="this.allmembers.length !== 0" class="member-list">
         <!--<input type="checkbox" :id="member.accountName"  :value="member.accountName" v-model="this.checkedNames">
         <label :for="member.accountName">{{member.accountName}}</label> -->

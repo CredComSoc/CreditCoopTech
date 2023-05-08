@@ -6,7 +6,7 @@
           <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
           <h4 class="element-title"> {{ elementInfo.title }} </h4>
           <p v-if="elementInfo.status === 'selling'" class="element-desc"> {{ $t('sell') }}  </p>
-          <p v-if="elementInfo.status === 'buying'" class="element-desc"> {{ $t('purchase') }}  </p>
+          <p v-if="elementInfo.status === 'buying'" class="element-desc">hi  {{ $t('purchase') }}  </p>
       </span>
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">

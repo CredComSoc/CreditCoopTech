@@ -485,8 +485,8 @@ sb.web.app/src/components/Navbar/Notifications.vue:6, has denied your purchase r
 sb.web.app/src/components/Navbar/Notifications.vue:6, has sent a chat message., har skickat ett chatt-meddelande.,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,No notifications,Inga notiser,5
 sb.web.app/src/components/Navbar/Notifications.vue:6,,,5
-sb.web.app/src/components/Profile/MyArticles.vue:3, Active items,{{ $t('active.Articles')}} ,5
-sb.web.app/src/components/Profile/MyArticles.vue:3, You have no active items right now.,  {{ $t('youHaveNoActive.Articles')}}. ,5
+sb.web.app/src/components/Profile/MyArticles.vue:3, Active items,{{ $t('activeArticles')}} ,5
+sb.web.app/src/components/Profile/MyArticles.vue:3, You have no active items right now.,  {{ $t('youHaveNoActiveArticles')}}. ,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Item,Artikel,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Category,Kategori,5
 sb.web.app/src/components/Profile/MyArticles.vue:3,Price,{{ $t('price') }},5

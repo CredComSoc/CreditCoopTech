@@ -70,7 +70,7 @@
         <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="{{ $t('business') }}" id="company-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
         <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
         <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>

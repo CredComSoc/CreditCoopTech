@@ -207,13 +207,13 @@ export default {
           <br><input v-model="eventLocation" placeholder="Plats" /> 
         </p>
         <p> {{ $t('event.contact') }}:
-          <br><input v-model="eventContacts" placeholder="Kontaktuppgifter" />
+          <br><input v-model="eventContacts" placeholder="{{ $t('event.event_contact') }}" />
         </p>
         <p> {{ $t('event.url') }}: {{eventURL}} 
           <br><input v-model="eventURL" placeholder="URL" />
         </p>
         <p> {{ $t('event.event_description') }}:  
-          <br><textarea v-model="eventDescription" placeholder="Beskrivning"> </textarea>
+          <br><textarea v-model="eventDescription" placeholder="{{ $t('description') }}"> </textarea>
         </p>
         <p> 
           {{ $t('event.choose_start') }}: 

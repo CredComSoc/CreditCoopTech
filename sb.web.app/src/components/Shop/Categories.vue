@@ -4,19 +4,19 @@
 
 <template>
     <div className="categories">
-      
-        <h1>Jag vill</h1>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='selling' title='Köpa'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='buying' title='Sälja'/>
 
-        <h1>Typ av artikel</h1>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' title='Produkter'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='service' title='Tjänster'/>
+        <h1>{{ $t('I_want_to') }}</h1>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='selling' :title="$t('buy')"/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='buying' :title="$t('sell')"/>
+
+        <h1>{{ $t('shop_items.item_type') }}</h1>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' :title="$t('product')"/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='service' :title="$t('services')"/>
 
         <h1>{{ $t('location') }}</h1>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='norrkoping' title='Norrköping'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='soderkoping' title='Söderköping'/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='linkoping' title='Linköping'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='burlington' title='Burlington'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='rutland' title='Rutland'/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='destination' value='montpelier' title='Montpelier'/>
 
         <h1>{{ $t('category')}}er</h1>
         <CategoryButton v-for="data in this.categoriesJson.categories" :key="data.value" @filterEvent="triggerFilterEvent" type='category' :value="data.value" :title="data.title"/>
