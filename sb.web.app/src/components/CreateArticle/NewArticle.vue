@@ -1,20 +1,20 @@
 <template>
   <div>
-    <h2 class="center-text">{{ $t('newItem') }} </h2>
+    <h2 class="center-text">{{ $t('shop_items.new_articleCAPS') }} </h2>
   </div>
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
       <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
-      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>Tillbaka</a>
+      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('back') }}</a>
     </div>
     <div id="center">
       <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
-      <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(`Datumet är felaktigt.\nVar god ändra detta och försök igen.`)" @priceError="this.changePopupText(`Pris måste anges som ett positivt heltal.\nVar god ändra detta och försök igen.`)" />
-      <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" label="Ladda upp bilder" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText(`Minst en bild måste läggas till innan du kan gå vidare.`)" @emptyCoverImage="this.changePopupText(`En omslagsbild måste väljas innan du kan gå vidare.`)" @fileSizeError='this.fileSizeError' />
+      <StepTwo v-if="this.currentStep === 2" ref='stepTwo' :chosenType="this.newArticle.article" :savedProgress="this.newArticle" @dateError="this.changePopupText(  $t('shop_items.invalid_date')  + `\n` +  $t('shop_items.try_again')  )" @priceError="this.changePopupText(  $t('shop_items.price_positive_integer')  + `\n` +  $t('shop_items.try_again') )" />
+      <StepThree v-if="this.currentStep === 3" ref='stepThree' name="image-selector" :label="$t('shop_items.upload_images')" :savedProgress="this.newArticle" @emptyImageError="this.changePopupText($t('shop_items.at_least_one_image'))" @emptyCoverImage="this.changePopupText($t('shop_items.choose_main_image'))" @fileSizeError='this.fileSizeError' />
       <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
     </div>
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
-    <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" title="Felaktig inmatning" :btnLink="null" :cardText="this.popupCardText" />
+    <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
       newArticle: {},
       isPublished: false,
       error: false,
-      popupCardText: 'Ett eller flera inmatningsfält har lämnats tomma.\n Var god fyll i dessa.',
+      popupCardText: $t('shop_items.fields_left_empty') + '\n' + $t('shop_items.fill_them_out'),
       inEditMode: false
     }
   },
@@ -83,7 +83,7 @@ export default {
     },
     fileSizeError () {
       this.error = true
-      this.changePopupText('Filen måste vara en bild med filändelse .png, .jpeg eller .gif\noch ha mindre storlek än maxgränsen på 2MB.\nVar god försök igen.')
+      this.changePopupText($t('§.image_file_extension_must_be') + '\n' + $t('shop_items.smaller_than_2mb'))
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
@@ -144,7 +144,7 @@ export default {
       } else if (this.currentStep === 4) {
         this.currentStep = 3
         this.imgURL = 'three_three.png'
-        this.nextBtnText = 'Förhandsgranska'
+        this.nextBtnText = $t('shop_items.preview')
       }
     },
     uploadArticle () {
@@ -164,7 +164,7 @@ export default {
           this.isPublished = true // open popup with success message
         } else {
           this.error = true
-          this.popupCardText = 'Något gick fel när artikeln skulle laddas upp.\nVar god försök igen senare.'
+          this.popupCardText = $t('shop_items.image_upload_failed') + '\n' + $t('shop_items.try_again_later')
         }
       })
     },
