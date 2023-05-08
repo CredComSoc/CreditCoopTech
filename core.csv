@@ -549,7 +549,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjude
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as the buyer does not have enough,"Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med ",6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,,{{ $t('org.tkn') }}.,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5, Pending purchases, Väntande köp ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5, Pending purchases, {{ $t('pendingPurchase') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, You have a pending purchase that must be approved by the buyer before completion. You will receive a notification when the buyer has approved the purchase., Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
@@ -558,14 +558,14 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchasing history, Köphistorik ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchasing history, {{ $t('purchaseHistory') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,Filtrera,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,From,Från och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,To,Till och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Product,{{ $t('product') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download as CSV,Ladda ner lista som CSV,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,Köpare,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,{{ $t('Buyer') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
@@ -573,7 +573,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Price,{{ $t('price') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Download invoice,Ladda ner faktura,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,Köpare,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,{{ $t('Buyer') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,Säljare,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Quantity,{{ $t('quantity') }},6
@@ -635,7 +635,7 @@ sb.web.app/src/components/Profile/temp.txt:2,,,7
 sb.web.app/src/components/SharedComponents/Listing.vue:10,Send, Överföring,7
 sb.web.app/src/components/SharedComponents/Listing.vue:10,,,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Seller,Säljare,7
-sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Buyer,Köpare,7
+sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Buyer,{{ $t('Buyer') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Location,{{ $t('location') }},7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Type of item,Typ,7
 sb.web.app/src/components/SharedComponents/ListingPopup.vue:28,Product,{{ $t('product') }},7

@@ -19,6 +19,8 @@
     "user": {
         "last_online": "Last Online",
         "profile": "Profile",
+        "buyer": "Buyer",
+        "salesperson": "Salesperson",
         "email": "Email",
         "member_label": "Member",
         "purchase_requests": "Purchase requests",
@@ -167,5 +169,7 @@
     "needs": "Needs",
     "activeArticles": "Active Articles",
     "inActiveArticles": "Inactive Articles",
-    "youHaveNoActiveArticles": "You currently have no Active Articles"
+    "youHaveNoActiveArticles": "You currently have no Active Articles",
+    "pendingPurchase": "Pending Purchase",
+    "purchaseHistory": "Purchase History"
 }

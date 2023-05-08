@@ -33,7 +33,7 @@
       </div>
     </div>
     <!--Gets all Pending purchases from the VueX store. -->
-    <h1><b> Väntande köp </b></h1>
+    <h1><b> {{ $t('pendingPurchase') }} </b></h1>
       <div>
         <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
@@ -62,7 +62,7 @@
           </tr>
         </table>
       </div>
-      <h1><b> Köphistorik </b></h1>
+      <h1><b> {{ $t('purchaseHistory') }} </b></h1>
       
     <div>
       <!--Filter buttons and fields-->
@@ -77,7 +77,7 @@
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
         <tr>
-          <th>Köpare</th>
+          <th>{{ $t('Buyer') }}</th>
           <th>Säljare</th>
           <th>{{ $t('article')}}</th>
           <th>{{ $t('quantity') }}</th>
@@ -99,7 +99,7 @@
       </table>
       <table v-if="(this.filterActive)">
         <tr>
-          <th>Köpare</th>
+          <th>{{ $t('Buyer') }}</th>
           <th>Säljare</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>

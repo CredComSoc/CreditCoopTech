@@ -39,7 +39,7 @@
         </div>
         <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
         <tr>
-          <th>Köpare</th>
+          <th>{{ $t('Buyer') }}</th>
           <th>Säljare</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
