@@ -8,7 +8,7 @@
     <div class="center" id="searchfield">
         <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('shop.whatDoYouWantToSearchForTodayLabel')" />
     </div>
-  
+
     <div class="main">
 
       <!--
@@ -33,10 +33,10 @@
         </div>
         <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found') }}</h3>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
-        <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" title="Succé!" btnText="Ok" :cardText="'Artikeln har lagts till i varukorgen.'" />
+        <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" :title="$t('success')" btnText="Ok" :cardText="$t('shop.item_added')" />
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -98,13 +98,13 @@ export default {
 
           let foundSearchword = true
           if (searchWord.length !== 0) {
-            if (!article.title.match(new RegExp(searchWord, 'i')) && 
+            if (!article.title.match(new RegExp(searchWord, 'i')) &&
                 !article.longDesc.match(new RegExp(searchWord, 'i')) &&
                 !article.userUploader.match(new RegExp(searchWord, 'i'))
             ) {
               foundSearchword = false
               continue
-            } 
+            }
           }
 
           // IMPLEMENT FILTERING HERE
@@ -204,7 +204,7 @@ export default {
       )
     }
   },
-  
+
   created: function () {
     this.triggerSearch('')
     window.addEventListener('resize', this.onResize)
@@ -234,13 +234,13 @@ export default {
 
 .center {
   justify-content: center;
-  
+
 }
 
 .main {
   display: flex;
   flex-direction: row;
-  
+
 }
 
 .categories {
