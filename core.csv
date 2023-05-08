@@ -369,7 +369,7 @@ sb.web.app/src/components/Login/Reset.vue:9,&larr; Sign in,&larr; Logga in,4
 sb.web.app/src/components/Login/Reset.vue:9,Something went wrong. Please try resetting your password again.,Något gick fel. Vänligen testa att återställa lösenordet på nytt.,4
 sb.web.app/src/components/Login/Reset.vue:9,Passwords do not match.,Lösenorden stämmer ej överens.,4
 sb.web.app/src/components/Login/Reset.vue:9,,,4
-sb.web.app/src/components/Members/all_members.vue:15,Unknown city,Okänd Stad,4
+sb.web.app/src/components/Members/all_members.vue:15,Unknown city,{{ $t('unknownCity') }},4
 sb.web.app/src/components/Members/all_members.vue:15,,,4
 sb.web.app/src/components/Members/member.vue:38,Now, {{ $t('user.nowLabel') }},4
 sb.web.app/src/components/Members/member.vue:38,Today, {{ $t('user.todayLabel') }},4

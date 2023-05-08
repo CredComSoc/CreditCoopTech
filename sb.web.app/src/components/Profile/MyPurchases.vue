@@ -326,7 +326,7 @@ export default {
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, '{{ $t('declined') }}' + 'out')
+      this.statusSwap(index, '{{ $t('declined`) }}out`),
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
