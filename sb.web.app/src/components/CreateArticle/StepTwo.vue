@@ -6,11 +6,11 @@
     <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
   </div>
   <div class="input">
-    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + this.chosenType.toLowerCase() + `?`" />
+    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + ' of ' + this.chosenType.toLowerCase() + `?`" />
   </div>
   <div class="input" id="new-article-price">
     <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="$t('shop_items.price_prompt') + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
-    <h3> {token} </h3>
+    <h3>{{ $t('org.token') }}</h3>
   </div>
 </div>
 </template>
@@ -118,7 +118,7 @@ export default {
 
 h3 {
   display: inline;
-  margin: 0;
+  margin: 5px -30px;
   padding: 0;
   position: absolute;
   bottom: 0;

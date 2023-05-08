@@ -42,7 +42,7 @@ export default {
       backLink: '#',
       currentStep: 1,
       imgURL: 'one_three.png',
-      nextBtnText: 'Nästa',
+      nextBtnText: this.$i18n.t('next'),
       newArticle: {},
       isPublished: false,
       error: false,
@@ -115,7 +115,7 @@ export default {
           this.saveSecondStep()
           this.currentStep = 3
           this.imgURL = 'three_three.png'
-          this.nextBtnText = 'Förhandsgranska'
+          this.nextBtnText = this.$i18n.t('shop_items.preview')
         } else {
           this.error = true
         }
@@ -124,7 +124,7 @@ export default {
           this.saveThreeStep()
           this.currentStep = 4
           this.imgURL = null
-          this.nextBtnText = 'Publicera'
+          this.nextBtnText = this.$i18n.t('shop_items.publish') //'Publicera'
         } else {
           this.error = true
         }
@@ -193,10 +193,10 @@ export default {
 
       // sanitize the status field
       switch (this.newArticle.status) {
-        case 'purchase':
+        case 'Need':
           this.newArticle.status = 'buying'
           break
-        case 'sell':
+        case 'Offer':
           this.newArticle.status = 'selling'
           break
       } 

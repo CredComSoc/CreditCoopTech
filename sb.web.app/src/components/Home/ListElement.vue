@@ -5,8 +5,8 @@
           <img v-if="elementInfo.coverImg.length === 0" class="regular" :src="require(`../../assets/list_images/event.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
           <img v-else class="regular" :src="getArticleImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
           <h4 class="element-title"> {{ elementInfo.title }} </h4>
-          <p v-if="elementInfo.status === 'selling'" class="element-desc"> {{ $t('sell') }}  </p>
-          <p v-if="elementInfo.status === 'buying'" class="element-desc">hi  {{ $t('purchase') }}  </p>
+          <p v-if="elementInfo.status === 'selling'" class="element-desc"> {{ $t('offer') }} </p>
+          <p v-if="elementInfo.status === 'buying'" class="element-desc">  {{ $t('need') }} </p>
       </span>
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">
