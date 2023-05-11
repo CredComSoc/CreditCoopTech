@@ -373,6 +373,7 @@ module.exports = function() {
   router.post("/register", upload.single('file'), (req, res) => { //register a new user
     console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
+
     const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
     getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
@@ -382,8 +383,8 @@ module.exports = function() {
           //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
           password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
-          min_limit: newPro.min_limit,
-          max_limit: newPro.max_limit,
+          min_limit: parseInt(newPro.min_limit),
+          max_limit: parseInt(newPro.max_limit),
           is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
