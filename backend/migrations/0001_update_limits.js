@@ -1,8 +1,8 @@
 const config = require('../config')
 const {MongoClient} = require('mongodb');
 
-min_limit_default = -1000;
-max_limit_default = 1000;
+min_limit_default = -500;
+max_limit_default = 500;
 
 // wrap in a closure to use await
 (async () => {
