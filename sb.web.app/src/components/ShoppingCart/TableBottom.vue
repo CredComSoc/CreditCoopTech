@@ -1,18 +1,18 @@
 <template>
   <div>
     <div class="saldo">
-      <span id="total-text">Nuvarande Saldo: </span>
-      <span >{{ this.$store.state.saldo }} bKr</span>
+      <span id="total-text">{{ $t('cart.current_balance') }} </span>
+      <span> {{ this.$store.state.saldo }} {{ $t('org.tkn') }}</span>
     </div>
     <div class="total">
-      <span id="total-text">Kostnad: </span>
-      <span >{{ total }} bKr</span>
+      <span id="total-text">{{ $t('cart.total_cost') }} </span>
+      <span> {{ total }} {{ $t('org.tkn') }}</span>
     </div>
     <div class="after">
-      <span id="total-text">Saldo efter Köp: </span>
-      <span >{{ this.$store.state.saldo - total }} bKr</span>
+      <span id="total-text">{{ $t('cart.balance_after') }} </span>
+      <span> {{ this.$store.state.saldo - total }} {{ $t('org.tkn') }}</span>
     </div>
-    <button @click="completePurchase" id="confirm">Slutför köp</button>
+    <button @click="completePurchase" id="confirm">{{ $t('shop.complete_purchase') }}</button>
   </div>
 </template>
 

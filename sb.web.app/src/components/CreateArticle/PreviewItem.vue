@@ -3,7 +3,7 @@
     <h3> {{ this.title }} </h3>
     <p v-if="this.images === null"> {{ this.text }} </p>
     <div v-if="this.images !== null" id="images-container">
-      <UploadedImage class="img" textboxLabel="Vald som omslagsbild" :isPreview="true"
+      <UploadedImage class="img" :textboxLabel="$t('shop_items.selected_cover_image')" :isPreview="true"
         v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"

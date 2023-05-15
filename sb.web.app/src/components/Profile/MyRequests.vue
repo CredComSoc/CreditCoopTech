@@ -2,12 +2,12 @@
   <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
     <table v-if="requests">
       <tr>
-        <th>Företag</th>
-        <th>Artikel</th>
-        <th>Antal</th>
-        <th>Pris</th>
-        <th>Summa</th>
-        <th>Tidstämpel</th>
+        <th>{{ $t('business') }}</th>
+        <th>{{ $t('article')}}</th>
+        <th>{{ $t('quantity') }}</th>
+        <th>{{ $t('price') }}</th>
+        <th>{{ $t('amount') }}</th>
+        <th>{{ $t('timestamp') }}</th>
         <th>Status</th>
       </tr>
       <tr v-for="(item, index) in this.$store.state.requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
@@ -19,7 +19,7 @@
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
         <td id="buttons">
-          <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button>
+          <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
           <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
         </td>
 
@@ -32,15 +32,15 @@
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
-        <td style="color: green;">GODKÄND</td>
+        <td style="color: green;">{{ $t('approved') }}</td>
       </tr>
     -->
     </table>
     <div v-if="!requests">
-      <h4> Du har inte fått några köpförfrågningar än. </h4>
+      <h4> {{ $t('youHaventReceivedAnyPurchaseRequestsYet')}} </h4>
     </div>
-    <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
-    <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
+    <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', din övre gräns är ' + this.max_limit + ' bKr.'" />
+    <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', köparen har inte tillräckligt med bKr.'" />
   </div>
 </template>
 

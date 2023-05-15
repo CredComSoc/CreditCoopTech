@@ -3,11 +3,11 @@
       <div v-if="listingObj" class="element-container" @click="togglePopup" type="button">
           <img :src='getImgURL()' style="object-fit:contain;max-width:240px;max-height:140px;"/>
           <h4 class="element-title"> {{ listingObj.title }} </h4>
-          <p class="element-desc"> {{ listingObj.longDesc }}  </p>
+          <p class="element-desc"> {{ formatDesc(listingObj.longDesc)}}  </p>
       </div>
       <div v-if="listingId && listingId === '0'" class="element-container">
           <img src='../../assets/icons/transaction.png' style="object-fit:contain;max-width:240px;max-height:140px;"/>
-          <h4 class="element-title"> Överföring</h4>
+          <h4 class="element-title"> {{ $t('transfer') }}</h4>
           <p class="element-desc"> {{ comment }}  </p>
       </div>
     </div>
@@ -50,6 +50,18 @@ export default {
       } else {
         return EXPRESS_URL + '/image/' + this.listingObj.coverImg
       }
+    },
+    // Set limits for number of chars depending on Upper or lower case for the title in list element
+    formatDesc (str) {
+      if (str.length >= 45) {
+        if (str.replace(/[a-z]/g, '').length > 10) {
+          return str.substring(0, 45) + '...'
+        } else {
+          return str
+        }
+      } else {
+        return str
+      }
     }
   }
 }
@@ -69,11 +81,14 @@ export default {
 
     .element-container {
         width: 200px;
-        height: 165px;
+        height: 230px;
         background: #FFFFFF;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         margin: 1rem;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .element-container:hover {
@@ -87,7 +102,9 @@ export default {
 
     .element-title {
       margin-left: 8px;
-      font-size: 20px
+      font-size: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .element-seller {
@@ -99,6 +116,7 @@ export default {
     .element-desc {
       color: grey;
       font-size: 14px;
+      min-height: 40px;
     }
 
     img {

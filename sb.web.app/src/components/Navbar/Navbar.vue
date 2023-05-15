@@ -7,19 +7,19 @@
               <router-link :to="{name:'Shop'}">
                 <figure class="logo-click">
                   <img src="../../assets/navbar_logos/shop.png" />
-                  <figcaption class="l-text"> Shop </figcaption>
+                  <figcaption class="l-text"> {{ $t('nav.shop') }} </figcaption>
                 </figure>
               </router-link>
-              <!-- Ta inte bort dessa, de är för mobil nav. -->
+              <!-- Do not remove these, they are for mobile nav. -->
               <router-link :to="{name:'Shop'}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap"> Shop </span>
+                <span class="mob-cap"> {{ $t('nav.shop') }} </span>
               </router-link>
             </div>
           <div id="navbar-cart" class="navlogo">
             <router-link :to="{name:'Cart'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/cart.png" />
-                  <figcaption class="l-text"> Varukorg </figcaption>
+                  <figcaption class="l-text">  {{ $t('nav.cart') }}  </figcaption>
               </figure>
               <div v-if="this.$store.state.myCartSize > 0" id="cart-notice-container">
                 <img v-if="!this.isActive" id="cart-notice" class="cart-notice" src="../../assets/navbar_logos/notice.png"/>
@@ -29,29 +29,29 @@
               </div>
             </router-link>
             <router-link :to="{name:'Cart'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Varukorg </span>
+              <span class="mob-cap">  {{ $t('nav.cart') }}  </span>
             </router-link>
           </div>
           <div id="navbar-article" class="navlogo">
             <router-link :to="{name:'New_Article'}">
                 <figure id="add-logo" :class="[`logo-click`,`add`]">
                     <img class="add" src="../../assets/navbar_logos/add.png" />
-                    <figcaption :class="[`l-text`,`add`]"> Ny Artikel </figcaption>
+                    <figcaption :class="[`l-text`,`add`]">  {{ $t('nav.new_item') }}  </figcaption>
                 </figure>
             </router-link>
             <router-link :to="{name:'New_Article'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Ny Artikel </span>
+              <span class="mob-cap">  {{ $t('nav.new_item') }}  </span>
             </router-link>
           </div>
           <div id="navbar-members" class="navlogo">
              <router-link :to="{name:'Members'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/members.png" />
-                  <figcaption class="l-text"> Medlemmar </figcaption>
+                  <figcaption class="l-text">  {{ $t('nav.members') }}  </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'Members'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Medlemmar </span>
+              <span class="mob-cap">  {{ $t('nav.members') }}  </span>
             </router-link>
           </div>
           <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
@@ -60,15 +60,15 @@
               <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
                   <img src="../../assets/navbar_logos/question.png" style="height:24px; width:24px" />
               
-                  <figcaption class="l-text"> FAQ </figcaption>
+                  <figcaption class="l-text"> {{ $t('faq.faq') }} </figcaption>
               </figure>
             </router-link>
             <!--To add another link in the dropdownmeny, add another router-link here, then follow the comments in FAQ.vue--> 
             <div id="faq-content" @mouseover="highlightFAQLogo" class="dropdown-content">
-                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">Vanliga frågor</router-link></div>
-                  <router-link :to="{name:'FAQ', params:{tab: 'bartertips'}}">Bartertips</router-link><!--FAQ/BarterTips.vue-->
-                  <router-link :to="{name:'FAQ', params:{tab: 'information'}}">Föreningsinformation</router-link> <!--FAQ/Information.vue-->
-                  <router-link :to="{name:'FAQ', params:{tab: 'policy'}}">Integritetspolicy</router-link><!--FAQ/Policy.vue-->
+                  <div id="navbar-faq-dropdown-faq"><router-link :to="{name:'FAQ', params:{tab: 'faq'}}">{{ $t('faq.common_questions') }}</router-link></div>
+                  <router-link :to="{name:'FAQ', params:{tab: 'trading_tips'}}">{{ $t('faq.trading_tips') }}</router-link><!--FAQ/TradingTips.vue-->
+                  <router-link :to="{name:'FAQ', params:{tab: 'information'}}">{{ $t('faq.association_information') }}</router-link> <!--FAQ/Information.vue-->
+                  <router-link :to="{name:'FAQ', params:{tab: 'policy'}}">{{ $t('faq.policy') }}</router-link><!--FAQ/Policy.vue-->
                 </div>
             <router-link :to="{name: 'FAQ'}" v-if="this.isActive" @click="openNav">
               <span class="mob-cap"> FAQ </span>
@@ -80,7 +80,7 @@
           <div id="navbar-home" class="navlogo">
             <figure>
               <router-link :to="{name:'Home'}" >
-                <img src="../../assets/navbar_logos/sb.png" />
+                <img src="/nav_logo.png" />
               </router-link>
             </figure>
           </div>
@@ -93,11 +93,11 @@
             <router-link :to="{name:'Chat'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/chat.png" />
-                  <figcaption class="l-text"> Meddelanden </figcaption>
+                  <figcaption class="l-text"> {{ $t('chat.title') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name: 'Chat'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Meddelanden </span>
+              <span class="mob-cap"> {{ $t('chat.title') }} </span>
             </router-link>
           </div>
 
@@ -106,41 +106,41 @@
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
                     <img src="../../assets/navbar_logos/profile.png" alt="profil knapp"/>
-                    <figcaption class="l-text"> Min sida </figcaption>
+                    <figcaption class="l-text">  {{ $t('nav.my_account') }}  </figcaption>
                   </figure>
                 </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
-                  <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}">Min profil</router-link></div>
-                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}">Mina köp & sälj</router-link>
-                  <router-link :to="{name:'Profile', params:{tab: 'articles'}}">Mina artiklar</router-link>
-                  <!--<router-link :to="{name:'Profile', params:{tab: 'requests'}}">Mina köpförfrågningar</router-link>-->
-                  <router-link :to="{name:'Profile', params:{tab: 'economy'}}">Min Ekonomi</router-link>
+                  <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}"> {{ $t('nav.my_profile') }} </router-link></div>
+                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}"> {{ $t('nav.my_buy_sell') }} </router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'articles'}}"> {{ $t('nav.my_items') }} </router-link>
+                  <!--<router-link :to="{name:'Profile', params:{tab: 'requests'}}"> {{ $t('nav.my_purchase_requests') }} </router-link>-->
+                  <router-link :to="{name:'Profile', params:{tab: 'economy'}}"> {{ $t('nav.balance') }} </router-link>
                 </div>
               </div>
               <router-link :to="{name:'Profile', params:{tab: 'profile'}}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap"> Min Sida </span>
+                <span class="mob-cap"> {{ $t('nav.my_account') }} </span>
               </router-link>
           </div>
           <div id="navbar-event" class="navlogo">
             <router-link :to="{name:'Event'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/events.png" />
-                  <figcaption class="l-text"> Evenemang </figcaption>
+                  <figcaption class="l-text">  {{ $t('nav.events') }}  </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name: 'Event'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Evenemang </span>
+              <span class="mob-cap">  {{ $t('nav.events') }}  </span>
             </router-link>
           </div>
           <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
-                  <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                  <figcaption class="l-text"> Logga Ut </figcaption>
+                  <img src="../../assets/link_arrow/popup_close.png" alt="$t('nav.sign_out')"/>
+                  <figcaption class="l-text">  {{ $t('nav.sign_out') }}  </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
-              <span class="mob-cap"> Logga Ut</span>
+              <span class="mob-cap">  {{ $t('nav.sign_out') }} </span>
             </router-link>
           </div>
         </div> 

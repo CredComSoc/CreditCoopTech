@@ -1,5 +1,5 @@
 <template>
-  <p>Din varukorg är tom</p>
+  <p>{{ $t('cart.cart_empty') }}</p>
 </template>
 
 <script>

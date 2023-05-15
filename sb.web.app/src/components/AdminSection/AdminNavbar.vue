@@ -7,34 +7,34 @@
               <router-link :to="{name:'AdminShop'}">
                 <figure class="logo-click">
                   <img src="../../assets/navbar_logos/shop.png" />
-                  <figcaption class="l-text"> Shop </figcaption>
+                  <figcaption class="l-text">{{ $t('nav.shop') }} </figcaption>
                 </figure>
               </router-link>
-              <!-- Ta inte bort dessa, de är för mobil nav. -->
+              <!-- Do not remove these, they are for mobile nav. -->
               <router-link :to="{name:'AdminShop'}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap"> Shop </span>
+                <span class="mob-cap">{{ $t('nav.shop') }} </span>
               </router-link>
             </div>
           <div id="navbar-members" class="navlogo">
              <router-link :to="{name:'AdminAddMember'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/add.png" />
-                  <figcaption class="l-text"> Lägg till medlem </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.addMember') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Medlemmar </span>
+              <span class="mob-cap">  {{ $t('nav.members') }}  </span>
             </router-link>
           </div>
           <div id="navbar-economy" class="navlogo">
              <router-link :to="{name:'AdminEconomy'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
-                  <figcaption class="l-text"> Ekonomisk översikt </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.financialOverview') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Ekonomi </span>
+              <span class="mob-cap"> {{ $t('Economy') }} </span>
             </router-link>
           </div>
         </div>
@@ -55,34 +55,34 @@
             <router-link :to="{name:'AdminChat'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/chat.png" />
-                  <figcaption class="l-text"> Meddelanden </figcaption>
+                  <figcaption class="l-text"> {{ $t('chat.title') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name: 'AdminChat'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Meddelanden </span>
+              <span class="mob-cap"> {{ $t('chat.title') }} </span>
             </router-link>
           </div>
           <div id="navbar-settings" class="navlogo">
             <router-link :to="{name:'NetworkSetting'}">
               <figure class="logo-click">
                   <img src="../../assets/navbar_logos/gear.png"/>
-                  <figcaption class="l-text"> Inställningar</figcaption>
+                  <figcaption class="l-text"> {{ $t('Preferences') }}</figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'NetworkSetting'}" v-if="this.isActive" @click="openNav">
-              <span class="mob-cap"> Inställningar</span>
+              <span class="mob-cap"> {{ $t('Preferences') }}</span>
             </router-link>
           </div>
         
         <div id="navbar-logout" class="navlogo">
             <router-link :to="{name:''}" @click="logOut">
               <figure class="logo-click">
-                  <img src="../../assets/link_arrow/popup_close.png" alt="logut knapp"/>
-                  <figcaption class="l-text"> Logga Ut </figcaption>
+                  <img src="../../assets/link_arrow/popup_close.png" alt="$t('nav.sign_out')"/>
+                  <figcaption class="l-text">  {{ $t('nav.sign_out') }}  </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
-              <span class="mob-cap"> Logga Ut</span>
+              <span class="mob-cap">  {{ $t('nav.sign_out') }} </span>
             </router-link>
           </div>
         </div> 

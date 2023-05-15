@@ -5,10 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test:open": "peeky open",
     "test": "peeky run",
-    "cypress": "./node_modules/.bin/cypress open"
+    "lint": "vue-cli-service lint",
+    "cypress": "./node_modules/.bin/cypress open",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
+    "test:open": "peeky open"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.0.0",
@@ -34,23 +35,26 @@
     "uuid4": "^2.0.2",
     "vue": "^3.2.31",
     "vue-hotjar-next": "^1.4.0",
+    "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.12",
     "vue-window-size": "^1.1.2",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/eslint-parser": "^7.21.3",
     "@peeky/test": "^0.13.5",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "^5.0.8",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "cypress": "^9.7.0",
-    "eslint": "^6.7.2",
+    "eslint": "^8.37.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
@@ -67,7 +71,7 @@
       "@vue/standard"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {
       "no-unused-vars": "off",
@@ -77,6 +81,7 @@
       "no-console": "off"
     }
   },
+  "main": "src/main.js",
   "browserslist": [
     "> 1%",
     "last 2 versions",

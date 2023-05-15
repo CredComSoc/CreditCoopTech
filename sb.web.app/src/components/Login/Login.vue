@@ -2,12 +2,12 @@
 
 <div>
   <div id="header-box" class="header-container">
-    <header>
+    <header class="login_page">
       <nav>
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <img src="../../assets/navbar_logos/sb.png" alt="shop knapp"/>
+              <img src="/logo.png" alt=""/>
             </figure>
           </div>
         </div>
@@ -16,21 +16,23 @@
   </div>
   <div class="login-box">
     <form @submit.prevent="handleSubmit">
-      <div class="box-text">Logga in på Svensk Barter</div>
+      <div class="box-text">{{ $t('login.login_to_label') }} {{ $t('org.name') }}</div>
       <div>
-        <label class="box-label">E-postadress</label>
-        <input class="box-input" type="text" v-model="username" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
+        <label class="box-label">{{ $t('login.email_label') }}</label>
+        <input class="box-input" type="text" v-model="username" :placeholder="$t('login.email_placeholder')" name="" id="email-input" required>
+        
       </div>
       <div>
-        <label class="box-label">Lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Lösenord" id="password-input" required>
+        <label class="box-label">{{ $t('login.password_label') }}</label>
+        <input class="box-input" type="password" v-model="password" :placeholder="$t('login.password_placeholder')" name="" id="password-input" required>
+        
       </div>
-      <button id="login-button" >Logga in</button>
+      <button id="login-button" >{{ $t('login.login_button')}}</button>
     </form>
     <div class="box-link">
-      <a href="#" @click="handleMailToClick('svenskbarter@gmail.com')">Behöver du hjälp?<br/>Kontakta oss.</a>
+      <a href="#" @click="handleMailToClick($t('org.contact_email'))">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
       <div class="box-msg" v-if="this.mailtoClicked">
-          <a href="mailto:svenskbarter@gmail.com">svenskbarter@gmail.com</a>
+          <a href="$t('org.contact_link'">{{ $t('org.contact_email') }}</a>
       </div>
       <!-- bring this back later -->
       <!-- <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link> -->

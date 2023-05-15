@@ -3,17 +3,17 @@
         <div>
             <table style="hej">
                 <tr>
-                    <th><h1>Saldo</h1></th>
-                    <th><h1>Kreditgräns</h1></th>
-                    <th><h1>Tillgängligt belopp</h1></th>
-                    <th><h1>Avgifter</h1></th>
+                    <th><h1>{{ $t('balance') }}</h1></th>
+                    <th><h1>{{ $t('credit_limit') }}</h1></th>
+                    <th><h1>{{ $t('available_balance') }}</h1></th>
+                    <th><h1>{{ $t('fees') }}</h1></th>
                 </tr>
                 <tr>
                     <td>100kr</td>
-                    <td>50kr</td>
-                    <td>50kr</td>
                     <td>5000kr</td>
-                    
+                    <td>50kr</td>
+                    <td>50kr</td>
+
                 </tr>
             </table>
         </div>

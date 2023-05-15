@@ -3,11 +3,11 @@
   <div class="floating-left">
     <img class="content-img" :src="this.getImgURL()" />
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
-    <p :class="[`non-b-text`, `price-text`]"> Pris: {{ this.priceOfItem }} bKr </p>
+    <p :class="[`non-b-text`, `price-text`]"> {{ $t('price') }}: {{ this.priceOfItem }} {{ $t('org.tkn') }} </p>
   </div>
-  <!--<h3 v-if="ind === 1"> Antal </h3>-->  
-  <!--<h3 v-if="ind === 1"> Pris </h3>-->
-  <!--<h3 v-if="ind === 1"> Summa </h3>-->   
+  <!--<h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>-->  
+  <!--<h3 v-if="ind === 1"> {{ $t('price') }} </h3>-->
+  <!--<h3 v-if="ind === 1"> {{ $t('total') }} </h3>-->   
   <div class="right-part">
     <div type="button" class="g-can" @click="this.removeRow">
       <img src="../../assets/cart_images/garbage.png">
@@ -22,7 +22,7 @@
           <img src="../../assets/cart_images/add.png">
         </div>
       </div>
-      <p :class="[`non-b-text`, `sum-text`]"> Summa: {{ this.totalPrice }} </p>   
+      <p :class="[`non-b-text`, `sum-text`]"> {{ $t('total') }}: {{ this.totalPrice }} </p>   
     </div>
   </div>
 </div>

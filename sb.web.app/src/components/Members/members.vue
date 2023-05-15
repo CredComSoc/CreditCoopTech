@@ -2,11 +2,11 @@
   <div class="wrapper">
 
     <div>
-      <h2 class="center-text">MEDLEMMAR</h2>
+      <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
     </div>
 
     <div class="center">
-        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Vem vill du söka efter idag?'"/>
+        <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('user.whoDoYouWantToSearchForTodayLabel')"/>
     </div>
     <br>
     <div class="main">

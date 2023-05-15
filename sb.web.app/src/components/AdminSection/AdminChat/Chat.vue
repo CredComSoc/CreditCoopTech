@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 id="title">MEDDELANDEN</h1>
+    <h1 id="title">{{ $t("chat.title") }}</h1>
     <div id="container-chat">
       <ChatHistory @openChat="this.openChat" :history="this.history" :chosenChat="this.chosenChat" @showHistory="this.showMembersList = true"/>
       <ChatBoxMult ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg"/>
@@ -12,7 +12,7 @@
           {{member}}
           <input type="checkbox" :id="index" :value="member" v-model="this.checkedNames">
         </label>
-        <button @click="openMultipleChat">Starta chatt</button>
+        <button @click="openMultipleChat">{{ $t('chat.start') }}</button>
       </div>
       <div class="overlaybg" @click="this.showMembersList = false, this.checkedNames = []"></div>
     </div>
@@ -213,6 +213,7 @@ export default {
   }
 
   #title {
+    font-variant: all-petite-caps;
     margin-top: 2rem;
     margin-bottom: 4rem;
     font-size: 2.2rem;
@@ -342,6 +343,7 @@ export default {
     }
 
     #title {
+      font-variant: all-petite-caps;
       margin-top: 5px;
       margin-bottom: 30px;
       font-size: 2.2em;
@@ -354,6 +356,7 @@ export default {
     }
 
     #title {
+      font-variant: all-petite-caps;
       margin-top: 5px;
       margin-bottom: 20px;
       font-size: 2.2em;

@@ -1,12 +1,12 @@
 <template>
     <div :id="name" class="list-container" >
-        <img class="arrow" src="../../assets/list_images/left_arrow.png" alt="rotera shop" @click="rotateRight"/>
+        <img class="arrow" src="../../assets/list_images/left_arrow.png" alt="Browse left" @click="rotateRight"/>
           <ListElement
           v-for="(el) in this.data.slice(0,endIndex)"
           :elementInfo="el"
           :key="el.id"
           ></ListElement>
-        <img class="arrow" src="../../assets/list_images/right_arrow.png" alt="rotera shop" @click="rotateLeft" />
+        <img class="arrow" src="../../assets/list_images/right_arrow.png" alt="Browse right" @click="rotateLeft" />
     </div>
 </template>
 

@@ -1,0 +1,18 @@
+{
+  "name": "Land Care Trade",
+  "org" : {
+    "name": "Land Care Trade",   
+    "contact_email": "contact email goes here",
+    "contact_link": "mailto:contact_email@gmail.com",
+    "tkn": "hny",
+    "token": "honey"
+  },
+  "faq": {
+    "faq": "FAQ",
+    "title": "Trade rules & tips",
+    "common_questions": "Common questions",
+    "trading_tips": "Trading tips",
+    "association_information": "Association information",
+    "policy": "Privacy Policy"
+  }
+}

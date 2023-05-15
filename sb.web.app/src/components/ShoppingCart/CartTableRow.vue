@@ -4,12 +4,12 @@
     <p class="b-text"> {{ ind }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Produkt </h3> 
+    <h3 v-if="ind === 1"> {{ $t('product') }} </h3> 
     <img class="content-img" :src='this.getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Antal </h3>   
+    <h3 v-if="ind === 1"> {{ $t('quantity') }} </h3>   
     <div class="item-controller">
         <div type="button" class="sub-item" @click="minItem">
             <img src="../../assets/cart_images/sub.png">
@@ -21,11 +21,11 @@
     </div>
   </div>
   <div class="cart-col"> 
-    <h3 v-if="ind === 1"> Pris </h3>  
+    <h3 v-if="ind === 1"> {{ $t('price') }} </h3>  
     <p class="non-b-text"> {{ this.priceOfItem }} </p>
   </div>
   <div class="cart-col">
-    <h3 v-if="ind === 1"> Summa </h3>   
+    <h3 v-if="ind === 1"> {{ $t('amount') }} </h3>   
     <p class="non-b-text"> {{ this.totalPrice }} </p>
   </div>
   <div class="cart-col">    

@@ -2,17 +2,17 @@
   <div>
     <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
     <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
-    <h1><b> Köpförfrågningar </b></h1>
+    <h1><b> {{ $t('user.purchase_requests') }} </b></h1>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
-            <th>Företag</th>
-            <th>Artikel</th>
-            <th>Antal</th>
-            <th>Pris</th>
-            <th>Summa</th>
-            <th>Tidstämpel</th>
-            <th>Status</th>
+            <th>{{ $t('business') }}</th>
+            <th>{{ $t('article')}}</th>
+            <th>{{ $t('quantity') }}</th>
+            <th>{{ $t('price') }}</th>
+            <th>{{ $t('amount') }}</th>
+            <th>{{ $t('timestamp') }}</th>
+            <th>{{ $t('status')}}</th>
           </tr>
           <tr v-for="(item, index) in this.$store.state.requests" :key="item" ref="outreq">
             <td>{{item.entries[0].payer}}</td>
@@ -23,29 +23,29 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> Avbryt </button> 
+              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button> 
               <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
             </td>
           </tr>
         </table>
-        <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
-        <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
+        <PopupCard v-if="this.payeeTooMuchTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
+        <PopupCard v-if="this.payerNotEnoughTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
       </div>
     </div>
     <!--Gets all Pending purchases from the VueX store. -->
-    <h1><b> Väntande köp </b></h1>
+    <h1><b> {{ $t('pendingPurchase') }} </b></h1>
       <div>
         <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
           <tr>
-            <th>Företag</th>
-            <th>Artikel</th>
-            <th>Antal</th>
-            <th>Pris</th>
-            <th>Summa</th>
-            <th>Tidstämpel</th>
+            <th>{{ $t('business') }}</th>
+            <th>{{ $t('article')}}</th>
+            <th>{{ $t('quantity') }}</th>
+            <th>{{ $t('price') }}</th>
+            <th>{{ $t('amount') }}</th>
+            <th>{{ $t('timestamp') }}</th>
             <!--<th>Status</th>-->
           </tr>
           <tr v-for="(item, index) in this.$store.state.pendingPurchases" :key="item" ref="inreq">
@@ -57,12 +57,12 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, index)" style="background-color: red;"> Avbryt </button>
+              <button @click="cancel(item.uuid, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
             </td>
           </tr>
         </table>
       </div>
-      <h1><b> Köphistorik </b></h1>
+      <h1><b> {{ $t('purchaseHistory') }} </b></h1>
       
     <div>
       <!--Filter buttons and fields-->
@@ -70,20 +70,20 @@
         <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
-        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
+        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
         <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
         <tr>
-          <th>Köpare</th>
-          <th>Säljare</th>
-          <th>Artikel</th>
-          <th>Antal</th>
-          <th>Pris</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>   
+          <th>{{ $t('Buyer') }}</th>
+          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('article')}}</th>
+          <th>{{ $t('quantity') }}</th>
+          <th>{{ $t('price') }}</th>
+          <th>{{ $t('amount') }}</th>
+          <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.$store.state.completedTransactions" :key="item"><!--If the filter is not active, We get all completed transaction from the VueX store.  -->
           <td>{{item.entries[0].payer}}</td>
@@ -94,18 +94,18 @@
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
-          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
+          <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
       </table>
       <table v-if="(this.filterActive)">
         <tr>
-          <th>Köpare</th>
-          <th>Säljare</th>
-          <th>Artikel</th>
-          <th>Antal</th>
-          <th>Pris</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>
+          <th>{{ $t('Buyer') }}</th>
+          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('article') }}</th>
+          <th>{{ $t('quantity') }}</th>
+          <th>{{ $t('price') }}</th>
+          <th>{{ $t('amount') }}</th>
+          <th>{{ $t('timestamp') }}</th>
           <!--<th>Faktura</th>-->   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"> <!--If the filter is active, We get view all transactions from filtered transactions found below.  -->
@@ -117,7 +117,7 @@
           <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
-          <!--<td><button className="red" @click="invoice('test.txt', item)">Ladda ner faktura</button></td>-->
+          <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
       </table>
       </div>
@@ -139,8 +139,8 @@ export default {
       filteredTransactions: [], //all transactions that pass trough the applied filter will be stored in this array
       //requests: [],
       //componentKey: 0,
-      payerNotEnoughBkr: false,
-      payeeTooMuchBkr: false,
+      payerNotEnoughTkn: false,
+      payeeTooMuchTkn: false,
       max_limit: 0,
       default_min_date: 2020
     }
@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, 'AVBRUTEN', 'in')
+      this.statusSwap(index, this.$i18n.t('declined'), 'in')
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, 'AVBRUTEN', 'out')
+      this.statusSwap(index, this.$i18n.t('declined'), 'out')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -335,15 +335,15 @@ export default {
         getLimits().then((limits) => {
           this.max_limit = limits.max
           if (balance + limits.min + cost > limits.max) {
-            this.payeeTooMuchBkr = true
+            this.payeeTooMuchTkn = true
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, 'GODKÄND')
+                this.statusSwap(index, this.$i18n.t('approved'))
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
-                this.payerNotEnoughBkr = true
+                this.payerNotEnoughTkn = true
               } 
             })
           }
@@ -351,8 +351,8 @@ export default {
       })
     },
     closePopup () {
-      this.payerNotEnoughBkr = false
-      this.payeeTooMuchBkr = false
+      this.payerNotEnoughTkn = false
+      this.payeeTooMuchTkn = false
     },
     statusSwap (index, messagetext, list) {
       const tag = document.createElement('p')

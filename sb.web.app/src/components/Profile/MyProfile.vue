@@ -8,29 +8,29 @@
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
-          <h1> Företagsnamn </h1>
+          <h1> {{ $t('user.business') }} </h1>
           <p> {{profileData.name}} </p>
 
-          <h1> Beskrivning </h1>
+          <h1> {{ $t('user.description') }} </h1>
           <p> {{profileData.description}} </p>
   
-          <h1> Adress </h1>
+          <h1> {{ $t('user.street_address') }} </h1>
           <p> {{profileData.adress}} </p>
 
-          <h1> Stad/ort </h1>
+          <h1> {{ $t('user.town') }} </h1>
           <p> {{profileData.city}} </p>
           
-          <h1> Faktureringsuppgifter </h1>
-          <p> {{profileData.billingName}}<br/>Box: {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> Org. nummer: {{profileData.orgNumber}} </p>
+          <h1> {{ $t('user.billing') }} </h1>
+          <p> {{profileData.billingName}}<br/> {{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{ $t('user.orgnumberlabel') }}: {{profileData.orgNumber}} </p>
         </div>
         <div className="right container-item">
           <div>
-            <h1> Kontaktuppgifter </h1>
+            <h1> {{ $t('user.contact') }} </h1>
             <p> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
           </div>
           <div>
             <button @click="edit = !edit" class="buttonflex"> 
-              <p style="padding-right:7px" > Redigera </p>
+              <p style="padding-right:7px" > {{ $t('edit') }} </p>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
@@ -46,7 +46,7 @@
     <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
-          <h1>Allmänt</h1>
+          <h1>{{ $t('user.general_information') }}</h1>
           <label for="logo">Logotyp:</label><br/>
           <div class="image">
           <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
@@ -54,33 +54,33 @@
           <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
-          <label for="name">Företagsnamn:</label><br/>
+          <label for="name">{{ $t('user.business') }}:</label><br/>
           <input type="text" id="name" v-model="profileData.name" required><br/>
-          <label for="description">Beskrivning:</label><br/>
+          <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="10" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="adress">Adress:</label><br/>
+          <label for="adress">{{ $t('user.street_address') }}:</label><br/>
           <input type="text" id="adress" v-model="profileData.adress" required><br/>
-          <label for="location">Stad/ort:</label><br/>
+          <label for="location">{{ $t('user.town') }}:</label><br/>
           <input type="text" id="location" v-model="profileData.city" required><br/>
         </div>
         <div className="container-item">
-          <h1>Faktureringsuppgifter</h1>
-          <label for="billingName">Namn:</label><br/>
+          <h1>{{ $t('user.billing') }}</h1>
+          <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
           <input name="billingName" v-model="profileData.billingName" required><br/>
           <label for="billingBox">Box:</label><br/>
           <input name="billingBox" v-model="profileData.billingBox" required><br/>
-          <label for="billingAdress">Adress:</label><br/>
+          <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
-          <label for="orgNumber">Organisationsnummer:</label><br/>
+          <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
           <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
-          <h1>Kontaktuppgifter</h1>
-          <label for="email">Epost:</label><br/>
+          <h1>{{ $t('user.contact') }}</h1>
+          <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
           <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">Telefon:</label><br/>
+          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
           <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
 
           <button @click="submit" class="buttonflex">
-            <p style="padding-right:7px" > Spara </p>
+            <p style="padding-right:7px" > {{ $t('user.saveLabel') }}: </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
@@ -89,7 +89,7 @@
           </svg>
           </button>
           <button @click="edit = !edit" class="buttonflex"> 
-            <p style="padding-right:0px" > Avbryt </p>
+            <p style="padding-right:0px" > {{ $t('user.cancelLabel') }} </p>
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <line x1="18" y1="6" x2="6" y2="18" />

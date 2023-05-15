@@ -2,7 +2,7 @@
   <div id="frame-chatbox">
     <p v-if="this.reciever.length > 0"> {{ this.reciever }} </p>
     <p v-else> &nbsp;</p>
-    <Button class="start-chat" @click="this.showMembers"> Starta ny chatt</Button>
+    <Button class="start-chat" @click="this.showMembers">{{ $t('chat.start_new')}}</Button>
     <div id="container-chatbox">
       <MessageDisplay ref="msgDisp" :messages="this.activeChat" :user="this.user" />
       <InputField v-if="this.reciever.length > 0" @sendMessage="this.sendMessage"/>

@@ -3,27 +3,27 @@
 <template>
     <div class="wrapper">   
         <div style="display:flex; justify-content:center;">
-            <h2 class="center-text">Ekonomisk Översikt</h2>
+            <h2 class="center-text">{{ $t('user.financialOverview') }}</h2>
         </div>
         <div class="EconomyStats">
           <div><!--Displays the total number of trascations and their turnover this month-->
             <b>Dagens</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesDay}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesDay}}<br>
             Omsättning: {{this.turnOverDay}}</p>
           </div>
           <div>
             <b>Veckans</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesWeek}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesWeek}}<br>
             Omsättning: {{this.turnOverWeek}}</p>
           </div>
           <div>
             <b>Månadens</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesMonth}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesMonth}}<br>
             Omsättning: {{this.turnOverMonth}}</p>
           </div>
           <div>
             <b>Årets</b>
-            <p>Antal Transaktioner: {{this.numberOfTradesYear}}<br>
+            <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesYear}}<br>
             Omsättning: {{this.turnOverYear}}</p>
           </div>
         </div>
@@ -32,20 +32,20 @@
           <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
-          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" placeholder="Företag" id="company-input">
-          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" placeholder="Produkt" id="product-input">
+          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
+          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$('product')" id="product-input">
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
           <button @click="downloadFilterView()">Ladda ner lista som CSV</button><!-- downloadFilterView handles the csv download. -->
         </div>
         <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
         <tr>
-          <th>Köpare</th>
-          <th>Säljare</th>
-          <th>Artikel</th>
-          <th>Antal</th>
-          <th>Pris</th>
-          <th>Summa</th>
-          <th>Tidstämpel</th>   
+          <th>{{ $t('Buyer') }}</th>
+          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('article') }}</th>
+          <th>{{ $t('quantity') }}</th>
+          <th>{{ $t('price') }}</th>
+          <th>{{ $t('amount') }}</th>
+          <th>{{ $t('timestamp') }}</th>   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
           <td>{{item.entries[0].payer}}</td>

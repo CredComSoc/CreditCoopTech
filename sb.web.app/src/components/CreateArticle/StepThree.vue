@@ -3,13 +3,13 @@
   <label :for="this.name" class="input-title"> {{ this.label }} </label>
   <div  class="input">
     <div id="pic">
-        <p>Välj fil</p>
+        <p>{{ $t('shop_items.choose_file') }}</p>
     </div>
-    <button ref="addFile" id="upload-button" @click=upload>Bläddra</button>
+    <button ref="addFile" id="upload-button" @click=upload>{{ $t('browse') }}</button>
     <input type='file' id="getFile" @change=getFile :name="this.name">
   </div>
   <div id="images"> 
-    <UploadedImage @removeImg="this.deleteImg" class="img" textboxLabel="Välj som omslagsbild" :isPreview="false"
+    <UploadedImage @removeImg="this.deleteImg" class="img" :textboxLabel="$t('shop_items.item_set_main_image')" :isPreview="false"
     v-for="(img) in this.images"
           :imageURL="img[0]"
           :key="img[0]"
@@ -89,7 +89,7 @@ export default {
       this.images.splice(imgId, 1)
       this.imageObjs.splice(imgId, 1)
       if (this.images.length === 0) {
-        this.$refs.addFile.innerText = 'Bläddra'
+        this.$refs.addFile.innerText = this.$i18n.t('browse')
       } 
 
       if (this.images.length < 5) {

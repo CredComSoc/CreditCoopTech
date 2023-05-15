@@ -1,0 +1,18 @@
+{
+    "name": "Svensk Barter",
+    "org" : {
+        "name": "Svensk Barter",   
+        "contact_email": "svenskbarter@gmail.com",
+        "contact_link": "mailto:svenskbarter@gmail.com",
+        "tkn": "bKr",
+        "token": "barterkroner"
+    },
+    "faq": {
+        "faq": "FAQ",
+        "title": "Handelsregler & Tips",
+        "common_questions": "Vanliga frågor",
+        "trading_tips": "Bartertips",
+        "association_information": "Föreningsinformation",
+        "policy": "Integritetspolicy"
+    }
+}

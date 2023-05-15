@@ -148,10 +148,10 @@ export default {
   <div class='demo-app'>
     <div class='demo-app-sidebar'>
         <div class='demo-app-sidebar-section'>
-        <h2>Instruktioner</h2>
+        <h2>{{ $t('event.instructions') }}</h2>
         <ul>
-            <li>Klicka på ett datum för att skapa ett evenemang</li>
-            <li>Klicka på ett evenemang för att se information</li>            
+            <li>{{ $t('event.click_date') }}</li>
+            <li>{{ $t('event.click_event') }}</li>            
         </ul>
         </div>
         <div class='demo-app-sidebar-section'>
@@ -161,11 +161,11 @@ export default {
             :checked='calendarOptions.weekends'
             @change='handleWeekendsToggle'
             />
-            Visa helgerna
+            {{ $t('event.show_weekends') }}
         </label>
         </div>
         <div class='demo-app-sidebar-section'>
-        <h3>Alla evenemang ({{ currentEvents.length }})</h3>
+        <h3>{{ $t('event.show_all') }} ({{ currentEvents.length }})</h3>
         <ul>
             <li v-for='event in currentEvents' :key='event.id'>
             <b>{{ event.startStr.slice(0, 10) }}</b>
@@ -187,11 +187,11 @@ export default {
     <!-- Modal to show events   -->
     <Modal :open="showModal" @close="showModal = !showModal">        
       <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
-      <b> Plats: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>            
-      <br><b>Starttid:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
-      <br><b>Sluttid: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._endTime}} </template>    
-      <br><b>Info om eventet: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
-      <br><b>URL: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
+      <b> {{ $t('location') }}: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>            
+      <br><b>{{ $t('event.start') }}:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
+      <br><b>{{ $t('event.end_time') }}: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._endTime}} </template>    
+      <br><b>{{ $t('event.event_info') }}: </b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps.description}} </template>
+      <br><b>{{ $t('event.url') }}: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
       <br>
       <br>          
       <button v-if="owner" class="button-modal" @click="removeEvent ()">Radera</button> 
@@ -200,28 +200,29 @@ export default {
     <!-- Modal to create events   -->
     <Modal :open="collectInfoModal" @close="collectInfoModal = !collectInfoModal">
       <div>
-        <p> Titel för eventet: 
+        <p> {{ $t('event.event_name') }}: 
           <br><input v-model="eventTitle" placeholder="Title"/> 
         </p>
-        <p> Plats för eventet: 
+        <p> {{ $t('event.event_loc') }}: 
           <br><input v-model="eventLocation" placeholder="Plats" /> 
         </p>
-        <p> Kontaktuppgifter:
-          <br><input v-model="eventContacts" placeholder="Kontaktuppgifter" />
+        <p> {{ $t('event.contact') }}:
+          <br><input v-model="eventContacts" placeholder="{{ $t('event.event_contact') }}" />
         </p>
-        <p> URL för att visa andra medlemmar mer information: {{eventURL}} 
+        <p> {{ $t('event.url') }}: {{eventURL}} 
           <br><input v-model="eventURL" placeholder="URL" />
         </p>
-        <p> Beskrivning av eventet:  
-          <br><textarea v-model="eventDescription" placeholder="Beskrivning"> </textarea>
+        <p> {{ $t('event.event_description') }}:  
+          <br><textarea v-model="eventDescription" placeholder="{{ $t('description') }}"> </textarea>
         </p>
-        <p> Välj starttid: 
+        <p> 
+          {{ $t('event.choose_start') }}: 
           <input type='time' id='eventTimeStart' name="EventTimeStart"/>
-          Välj sluttid: 
+          {{ $t('event.choose_end') }}: 
           <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
         </p>          
       </div>
-      <button @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal">Lägg till event</button>
+      <button @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal"> {{ $t('event.create_event') }}</button>
     </Modal> 
 
     </div>

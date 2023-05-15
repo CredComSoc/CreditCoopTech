@@ -6,7 +6,7 @@
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <img src="../../assets/navbar_logos/sb.png" alt="shop knapp"/>
+              <img src="../../assets/navbar_logos/sb.png" :alt="$t('shop.go_to_shop')"/>
             </figure>
           </div>
         </div>
@@ -17,13 +17,13 @@
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
       <div class="box-text">Återställ lösenord</div>
       <div>
-        <label class="box-label">E-postadress</label>
+        <label class="box-label">{{ $t('login.email_label') }}</label>
         <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
       </div>
       <button id="reset-button" >Återställ</button>
     </form>
     <div class="box-error" v-if="error">
-      Det finns ingen användare med den e-postadressen
+      Det finns ingen {{ $t('user.member_label') }} med den e-postadressen
     </div>
     <div class="box-sent" v-if="sent">
       Ett e-post med instruktioner för lösenordsåterställning har skickats!

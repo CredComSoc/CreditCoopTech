@@ -2,21 +2,21 @@
   <div className="flexbox-container">
     <div v-if="isMobile()">
       <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
-        <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>Profil</a>
-        <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>Köp</a>
-        <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>Artiklar</a>
-        <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>Behov</a>
+        <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>{{ $t('user.profile') }}</a>
+        <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>{{ $t('Buy') }}</a>
+        <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>{{ $t('article') }}</a>
+        <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('needs') }}</a>
       </div>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
-      <h1 className="title" > MIN SIDA </h1>
+      <h1 className="title" > {{ $t('nav.myAccountCAPS') }} </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
-      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'>Min profil</a>
-      <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'>Mina köp & sälj</a>
-      <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'>Mina artiklar</a>
-     <!-- <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'>Mina köpförfrågningar</a>-->
-      <a href='#' @click="this.tab='economy'" :class="{ active: this.tab==='economy' }" id='economy'>Min Ekonomi</a>
+      <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'> {{ $t('nav.my_profile') }} </a>
+      <a href='#' @click="this.tab='purchases'" :class="{ active: this.tab==='purchases' }" id='purchases'> {{ $t('nav.my_buy_sell') }} </a>
+      <a href='#' @click="this.tab='articles'" :class="{ active: this.tab==='articles' }" id='articles'> {{ $t('nav.my_items') }} </a>
+     <!-- <a href='#' @click="this.tab='requests'" :class="{ active: this.tab==='requests' }" id='requests'> {{ $t('nav.my_purchase_requests') }} </a>-->
+      <a href='#' @click="this.tab='economy'" :class="{ active: this.tab==='economy' }" id='economy'> {{ $t('nav.balance') }} </a>
     </div>
     <div className="content flexbox-item">
       <MyPurchases v-if="this.tab==='purchases'"/>

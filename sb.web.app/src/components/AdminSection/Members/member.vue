@@ -15,10 +15,10 @@ do not match the equivalent of the database.
         <h5 class="element-text two">Online: <br/>{{ getOnlineStatus() }}</h5>
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
         <div class="button-container">
-          <button @click="userselected">Profil</button>
-          <button @click="null">Transaktioner</button> <!--Inte implementerad ännu-->
-          <button @click="null">E-mail</button> <!--Inte implementerad ännu-->
-          <button @click="null">Köpförfrågningar</button> <!--Inte implementerad ännu-->
+          <button @click="userselected">{{ $t('user.profile') }}</button>
+          <button @click="null">{{ $t('transactions') }}</button> <!-- Not implemented yet-->
+          <button @click="null">{{ $t('user.email') }}</button> <!-- Not implemented yet-->
+          <button @click="null">{{ $t('user.purchase_requests') }}</button> <!-- Not implemented yet-->
         </div>
       </div>
       
@@ -48,18 +48,18 @@ export default {
       if (this.listingObj.last_online) {
         const lastOnline = new Date(this.listingObj.last_online)
         if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
-          return 'Nu'
+          return this.$i18n.t('time.now')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
-          return 'Idag'
+          return this.$i18n.t('time.today')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
-          return 'Igår'
+          return this.$i18n.t('time.yesterday')
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(Math.floor(days * 10) / 10)
-          return days + ' dagar sedan'
+          return days + ' ' + this.$i18n.t('time.days_ago')
         }
       } else {
-        return 'Aldrig'
+        return this.$i18n.t('time.never')
       } 
     },
     userselected () {
@@ -112,10 +112,12 @@ export default {
     }
     .tre{
         width: 10%;
-    } 
+    }
     .imgContainer {
-      height: 3rem;
-      width: 3rem;
+        max-height: 2.5rem;
+        max-width: 2.5rem;
+        margin-top: 3px;
+        margin-left: 3px;
     }
 
     img {

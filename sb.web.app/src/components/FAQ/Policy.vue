@@ -15,13 +15,13 @@ och att texten ligger sparad i databasen istället för att vara hårdkodad här
     <p>Vi behandlar endast personuppgifter n&auml;r vi har laglig grund. Vi behandlar inte personuppgifter i annat fall &auml;n n&auml;r de beh&ouml;vs f&ouml;r att fullg&ouml;ra f&ouml;rpliktelser enligt avtal och lag. H&auml;r f&ouml;ljer exempel p&aring; personuppgifterna vi behandlar:</p>
     <ul>
         <li>
-            <p>Namn</p>
+            <p>{{ $t('user.billingnamelabel') }}</p>
         </li>
         <li>
-            <p>Adress</p>
+            <p>{{ $t('user.street_address') }}</p>
         </li>
         <li>
-            <p>E-postadress</p>
+            <p>{{ $t('login.email_label') }}</p>
         </li>
         <li>
             <p>Telefonnummer</p>

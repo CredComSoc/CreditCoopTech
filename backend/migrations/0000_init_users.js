@@ -11,6 +11,8 @@ const express_url = 'http://localhost:' + test_port
 // const app = express()
 // let server_instance;
 
+min_limit_default = -1000;
+max_limit_default = 1000;
 
 async function registerUser (isadmin, username, password, email) {
     const data = new FormData()
@@ -18,6 +20,8 @@ async function registerUser (isadmin, username, password, email) {
         is_admin: isadmin,
         accountName: username,
         password: password,
+        min_limit: min_limit_default,
+        max_limit: max_limit_default,
         description: 'description',
         adress: 'adress',
         city: 'city',
@@ -43,4 +47,7 @@ async function registerUser (isadmin, username, password, email) {
 // const password = '123'
 
 // run async function to register users
-registerUser(false, "testuser", "testpassword", "test@nowhere.com")
+// registerUser(false, "testuser", "testpassword", "test@nowhere.com")
+// registerUser(false, "testuser2", "testpassword", "test2@nowhere.com")
+// registerUser(true, "admintest", "testpassword", "admin@nowhere.com")
+registerUser(false, "testuser3", "testpassword", "test3@nowhere.com")

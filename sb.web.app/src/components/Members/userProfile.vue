@@ -5,30 +5,30 @@
       <div className="image container-item">
         <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
         <img id="profile-img" v-if="profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <h5 >Senast Online:</h5>
+        <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
-        <button v-if="show_optional" id="chat-btn" @click="goToChat" > Starta chatt </button>
+        <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
         
       </div>
       <div className="right container-item">
-        <h1> Företagsnamn </h1>
+        <h1> {{ $t('user.business') }} </h1>
         <p> {{profileData.accountName}} </p>
 
-        <h1> Beskrivning </h1>
+        <h1> {{ $t('user.description') }} </h1>
         <p> {{profileData.description}} </p>
 
-        <h1> Adress </h1>
+        <h1> {{ $t('user.street_address') }} </h1>
         <p> {{profileData.adress}} </p>
 
-        <h1> Stad/ort </h1>
+        <h1> {{ $t('user.town') }} </h1>
         <p> {{profileData.city}} </p>
 
-        <h1> Faktureringsuppgifter </h1>
+        <h1> {{ $t('user.billing') }} </h1>
         <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
-          <h1> Kontaktuppgifter </h1>
+          <h1> {{ $t('user.contact') }} </h1>
           <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
         </div> 
       </div>
@@ -36,23 +36,23 @@
     <div class="sendmoney-box" v-if="show_optional">
       
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
-        <h1 class="box-text">Skicka Barterkronor</h1>
+        <h1 class="box-text">{{ $t('user.send_token', {token: $t('org.token')} ) }}</h1>
         <div>
-          <label class="box-label">Antal</label>
-          <TextBox class="box-input" placeholder="0" ref="bkrInput" id="bkr-input" pattern="\d*" disabled="true" required/>
+          <label class="box-label">{{ $t('quantity') }}</label>
+          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>
-          <label class="box-label">Kommentar</label>
+          <label class="box-label">{{ $t('user.commentLabel') }}</label>
           <TextArea class="box-textarea" ref="commentInput" length="200" placeholder="Text" />
         </div>
-        <button id="send-btn">Skicka</button>
+        <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.bkrSentMsg" @closePopup="this.closePopup" title="Förfrågan skickad" btnLink="" btnText="Ok" :cardText="`Din förfrågan att överföra ` + this.bkr + ` barterkronor till ` + profileData.accountName + ' har mottagits.'" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="`Du har inte tillräckligt med barterkronor för att genomföra överföringen.`" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" title="Överföringen kunde inte genomföras" btnText="Ok" :cardText="profileData.accountName + ` kan inte ta emot ` + this.bkr + ' bkr.'" />
-    <PopupCard v-if="this.chatError" title="Anslutningsproblem" cardText="Något gick fel vid anslutning till chatt med denna användare. Försök igen senare." btnLink="#" btnText="Ok" />
-    <PopupCard v-if="this.invalidNumberOfBkr" title="Överföringen kunde inte genomföras" cardText="Felaktigt antal barterkronor" btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {tkn: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
   </div>
 </template>
 
@@ -72,9 +72,9 @@ export default {
     return {
       logoURL: '',
       profileData: [],
-      bkr: 0,
+      tkn: 0,
       comment: '',
-      bkrSentMsg: false,
+      tknSentMsg: false,
       notEnoughBkrMsg: false,
       tooMuchBkrMsg: false,
       chatError: false,
@@ -91,21 +91,21 @@ export default {
       }
     },
     async sendBkr () {
-      this.bkr = this.$refs.bkrInput.getInput()
+      this.tkn = this.$refs.tknInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
-      if (this.bkr && Number.isInteger(Number(this.bkr)) && Number(this.bkr) > 0) {
+      if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
         const saldo = await getAvailableBalance()
-        if (saldo < this.bkr) {
+        if (saldo < this.tkn) {
           this.notEnoughBkrMsg = true
         } else {
           const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
           const userLimits = await getUserLimits(this.profileData.accountName)
-          if (userSaldo + userLimits.min + Number(this.bkr) > userLimits.max) {
+          if (userSaldo + userLimits.min + Number(this.tkn) > userLimits.max) {
             this.tooMuchBkrMsg = true
           } else {
-            await sendMoney(this.bkr, this.comment, this.profileData.accountName)
-            postNotification('sendRequest', this.profileData.accountName, this.bkr)
-            this.bkrSentMsg = true
+            await sendMoney(this.tkn, this.comment, this.profileData.accountName)
+            postNotification('sendRequest', this.profileData.accountName, this.tkn)
+            this.tknSentMsg = true
           }
         }
       } else {
@@ -113,10 +113,10 @@ export default {
       }
     },
     closePopup () {
-      this.bkrSentMsh = false
+      this.tknSentMsh = false
       this.notEnoughBkrMsg = false
       this.tooMuchBkrMsg = false
-      this.bkr = 0
+      this.tkn = 0
       this.comment = ''
     },
     goToChat () {
@@ -140,18 +140,18 @@ export default {
       if (this.profileData.last_online) {
         const lastOnline = new Date(this.profileData.last_online)
         if (Date.now() - lastOnline < 1000 * 60 * 3) { // 3 min
-          return 'Nu'
+          return this.$i18n.t('time.now')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * new Date().getHours() + 1) { // today
-          return 'Idag'
+          return this.$i18n.t('time.today')
         } else if (Date.now() - lastOnline < 1000 * 60 * 60 * (new Date().getHours() + 25)) { // yday
-          return 'Igår'
+          return this.$i18n.t('time.yesterday')
         } else {
           let days = ((Date.now() - lastOnline) / (1000 * 60 * 60 * 24)) + 1
           days = Math.floor(days * 10) / 10
-          return days + ' dagar sedan'
+          return days + ' ' + this.$i18n.t('time.days_ago')
         }
       } else {
-        return 'Aldrig'
+        return this.$i18n.t('time.never')
       } 
     }
   },

@@ -43,7 +43,7 @@ module.exports = function() {
   const dbFolder = config.dbFolder;
   const FRONTEND_URL = config.FRONTEND_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
-
+  const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
 
   /*****************************************************************************
@@ -177,6 +177,9 @@ module.exports = function() {
    *****************************************************************************/
 
   router.get("/data", async (req, res) => {
+
+    //FIXME: currently this cal gets made on a polling basis frequently, which is very inefficient
+
     let data = {
       user: {},
       myArticles: [],
@@ -255,6 +258,10 @@ module.exports = function() {
       data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
       try {
+        if (DISABLE_CC_NODE) {
+          data.saldo = 0
+          return res.status(200).json(data)
+        }
         const response = await axios.get(CC_NODE_URL + '/account/summary', { 
         headers: {
         'cc-user': userId,
@@ -262,6 +269,11 @@ module.exports = function() {
         }})
         
         data.saldo = response.data[userId].completed.balance
+        if(data.saldo < 0)
+        {
+          // reduce credit line *only* if negative balance
+          data.creditLine += data.saldo
+        }
 
       } catch (error) {
         console.log(error)
@@ -361,6 +373,7 @@ module.exports = function() {
   router.post("/register", upload.single('file'), (req, res) => { //register a new user
     console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
+
     const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
     getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
@@ -370,8 +383,8 @@ module.exports = function() {
           //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
           password: newPro.password, 
           is_active: req.body.is_active === "false" ? false : true,
-          min_limit: newPro.min_limit,
-          max_limit: newPro.max_limit,
+          min_limit: parseInt(newPro.min_limit),
+          max_limit: parseInt(newPro.max_limit),
           is_admin: newPro.is_admin ? true : false,  
           profile: {
             website: "",
@@ -441,7 +454,7 @@ module.exports = function() {
           db.close()
         }
       } else {
-        //Det finns redan en användare med namnet
+        //Det finns redan en {{ $t('user.member_label') }} med namnet
         res.status(500).send('Denhär medlemmen finns redan.')
       }
     })
