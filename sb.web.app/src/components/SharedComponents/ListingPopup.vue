@@ -43,7 +43,7 @@
           <p>{{listingObj.longDesc}}</p>
           
           <h5>{{ $t('list_price') }}</h5> 
-          <p>{{listingObj.price}} {{ $t('exchange_currency') }}</p>
+          <p>{{listingObj.price}} {{ $t('org.token') }}</p>
 
           <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
             <h5>{{ $t('quantity') }}</h5> 
@@ -58,7 +58,7 @@
             </div>
 
             <h5>{{ $t('total_price') }}</h5> 
-            <p>{{amount * listingObj.price}} {{ $t('exchange_currency') }}</p>          
+            <p>{{amount * listingObj.price}} {{ $t('org.token') }}</p>          
           </div>
         </div>
 
