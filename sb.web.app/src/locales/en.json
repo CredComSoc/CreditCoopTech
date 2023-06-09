@@ -160,7 +160,7 @@
         "item_description_short_prompt": "Short description of the item",
         "item_title": "Title",
         "item_description": "Description",
-        "item_category_prompt": "Which of the categories below describes your product or service?",
+        "item_category_prompt": "Which of these best describes your product or service?",
         "item_type": "item type",
         "choose_file": "Choose file",
         "item_set_main_image": "Set as main image",

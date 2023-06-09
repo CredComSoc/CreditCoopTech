@@ -62,6 +62,7 @@ module.exports = function() {
   })
 
   router.post("/createrequest", async (req, res) => {
+    
     const article = req.body
     const payer = await getUser({'profile.accountName': req.user})
     const payee = await getUser({'profile.accountName': article.userUploader})
@@ -69,39 +70,45 @@ module.exports = function() {
       res.sendStatus(500)
       return
     }
+    // create transaction
+    const transaction_url = CC_NODE_URL + '/transaction'
     let response
-    try {
-      response = await axios.post(CC_NODE_URL + '/transaction', 
-      {
+    try {      
+      payload = {
         "payee"       : payee._id.toString(), 
         "payer"       : payer._id.toString(),
         "quant"       : article.quantity * parseInt(article.price),
         "description" : article.article,
         "type"        : "credit",
         "metadata"    : {"id" : article.id, "quantity": article.quantity}
-      }, 
+      }
+      header =   
       {
-        headers: 
-        {
-          'cc-user': payer._id.toString(),
-          'cc-auth': '123'
-        }
-      })
+        'cc-user': payer._id.toString(),
+        'cc-auth': '123' //FIXME1 auth is ignored anyway
+      }
+      response = await axios.post(transaction_url, payload, { headers: header })
+
     } catch (error) {
-      console.log(error)
+      console.error("Error sending transaction to " + transaction_url)
+      console.error(error.response.status)
+      console.error(error.response.statusText)
+      console.error(error.response.data)
       res.sendStatus(500)
       return
     }
+
+    // update status to 'pending'
+    patch_url = CC_NODE_URL + '/transaction/' + response.data.data.uuid + '/pending'
     try {
-      await axios.patch(CC_NODE_URL + '/transaction/' + response.data.uuid + '/pending', {}, { 
-      headers: {
-       'cc-user': payer._id.toString(),
-       'cc-auth': '1'
-      }})
+      response = await axios.patch(patch_url, {}, { headers: auth_header})
       res.sendStatus(200)
     } catch (error) {
+      console.error("Error connecting with " + patch_url)
+      console.error(error.response.status)
+      console.error(error.response.statusText)
       res.sendStatus(500)
-    } 
+    }
   })
 
   router.post("/cancelrequest", async (req, res) => {

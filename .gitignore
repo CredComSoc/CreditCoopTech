@@ -33,3 +33,4 @@ notes.txt
 backend/.env.staging
 backend/.env.production
 backend/.env
+backend/migrations/test.js
