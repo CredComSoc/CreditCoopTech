@@ -6,14 +6,11 @@
                     <th><h1>{{ $t('balance') }}</h1></th>
                     <th><h1>{{ $t('credit_limit') }}</h1></th>
                     <th><h1>{{ $t('available_balance') }}</h1></th>
-                    <th><h1>{{ $t('fees') }}</h1></th>
                 </tr>
                 <tr>
-                    <td>100kr</td>
-                    <td>5000kr</td>
-                    <td>50kr</td>
-                    <td>50kr</td>
-
+                  <td>{{ this.$store.state.saldo }} {{ $t('org.token') }}</td>
+                  <td>{{ this.$store.state.creditLine }} {{ $t('org.token') }}</td>
+                  <td>{{ this.$store.state.creditLine - this.$store.state.saldo }} {{ $t('org.token') }}</td>
                 </tr>
             </table>
         </div>
