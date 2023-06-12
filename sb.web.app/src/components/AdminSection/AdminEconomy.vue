@@ -29,13 +29,13 @@
         </div>
         <!--This is a similar solution to the filter from profile->MyPurchases -->
         <div className='filter'>
-          <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
-          <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
-          <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
+          <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transcations. -->
+          <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
+          <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
           <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
           <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$('product')" id="product-input">
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
-          <button @click="downloadFilterView()">Ladda ner lista som CSV</button><!-- downloadFilterView handles the csv download. -->
+          <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button><!-- downloadFilterView handles the csv download. -->
         </div>
         <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
         <tr>
@@ -285,17 +285,17 @@ export default {
       }
     },
     downloadFilterView () { // takes the data, formats it into CSV form and downloads the csv as a file
-      var csv = 'Buyer;Seller;Title;Amount;Price;Sum;Timestamp\n' 
+      var csv = 'Buyer|Seller|Title|Amount|Price|Sum|Timestamp\n' 
       
       this.filteredTransactions.forEach((item) => { //takes from filtered transactions if filter is active
-        csv += item.entries[0].payer + ';' 
-        csv += item.entries[0].payee + ';' 
-        csv += this.getListing_title(item.entries[0]) + ';' 
-        csv += item.entries[0].metadata.quantity + ';' 
-        csv += (item.entries[0].quant / item.entries[0].metadata.quantity) + ';' 
-        csv += item.entries[0].quant + ';'  
+        csv += item.entries[0].payer + '|' 
+        csv += item.entries[0].payee + '|' 
+        csv += this.getListing_title(item.entries[0]) + '|' 
+        csv += item.entries[0].metadata.quantity + '|' 
+        csv += (item.entries[0].quant / item.entries[0].metadata.quantity) + '|' 
+        csv += item.entries[0].quant + '|'  
         csv += item.written.split('T')[0] 
-        //csv += item.written.join(','); 
+        //csv += item.written.join(',')| 
         csv += '\n' 
       })
       //Code for the download of the csv

@@ -69,7 +69,9 @@ const store = new Vuex.Store ({
     replaceCreditLine (state, payload) {
       state.creditLine = payload
     },
-
+    replaceCreditLimit (state, payload) {
+      state.creditLimit = payload
+    },
     replaceRequests (state, payload) {
       state.requests = payload
     },

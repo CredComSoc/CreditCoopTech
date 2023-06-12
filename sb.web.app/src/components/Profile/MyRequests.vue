@@ -20,7 +20,7 @@
         <th>{{item.written}}</th>
         <td id="buttons">
           <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
-          <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
+          <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> {{ $t('user.approveLabel') }} </button>
         </td>
 
       </tr>
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     cancel (id, payer, index) {
-      this.statusSwap(index, 'cancel')
+      this.statusSwap(index, this.$i18n.t('declined'), 'red')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -78,7 +78,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, 'accept')
+                this.statusSwap(index, this.$i18n.t('approved'), 'green')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
@@ -93,16 +93,10 @@ export default {
       this.payerNotEnoughBkr = false
       this.payeeTooMuchBkr = false
     },
-    statusSwap (index, answer) {
+    statusSwap (index, messageText, color) {
       var tag = document.createElement('p')
-      var text
-      if (answer === 'cancel') {
-        text = document.createTextNode('NEKAD')
-        tag.style.color = 'red'
-      } else {
-        text = document.createTextNode('GODKÄND')
-        tag.style.color = 'green'
-      }
+      var text = document.createTextNode(messageText)
+      tag.style.color = color
       tag.appendChild(text)
       const element = this.$refs.reqRefs[index]
       const child = element.lastElementChild

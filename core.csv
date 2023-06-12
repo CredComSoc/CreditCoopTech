@@ -90,13 +90,13 @@ sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Turnover/income:,Omsä
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,This year,Årets,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Number of transactions:,{{ $t('number_of_transactions') }}:,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Turnover/income:,Omsättning:,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Filter,Filtrera,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,From,Från och med,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,To,Till och med,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Filter,{{ $t('filter') }},1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,From,{{ $t('from_date') }},1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,To,{{ $t('to_date') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Business,Företag,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Product,{{ $t('product') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Maximum number of lines,Max antal rader,1
-sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download as CSV,Ladda ner lista som CSV,1
+sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Download as CSV{{ $t('download_as_csv') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Buyer,Köpare,1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Seller,{{ $t('Salesperson') }},1
 sb.web.app/src/components/AdminSection/AdminEconomy.vue:1,Item,Artikel,1
@@ -540,7 +540,7 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Decline, {{ $t('user.cancelLabel') }} ,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, Godkänn ,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5, Approve, {{ $t('user.approveLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Transaction denied,Förbjuden förfrågan,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Okay,{{ $t(no_need_todo_this_actually) }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Purchase request cannot be processed as your upper limit is,"Köpförfrågan kan inte godkännas, din övre gräns är ",6
@@ -559,12 +559,12 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5, Purchasing history, {{ $t('purchaseHistory') }} ,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,Filtrera,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Filter,{{ $t('filter') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,From,Från och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,To,Till och med,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Business,Företag,6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Product,{{ $t('product') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Download as CSV,Ladda ner lista som CSV,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Download as CSV,{{ $t('download_as_csv') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Buyer,{{ $t('Buyer') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Seller,{{ $t('Salesperson') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Item,Artikel,6
@@ -586,8 +586,8 @@ sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,{{ $t('declined') }
 sb.web.app/src/components/Profile/MyPurchases.vue:5,DECLINED,{{ $t('declined') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,{{ $t('approved') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,APPROVED,{{ $t('approved') }},6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,godkänn,6
-sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,godkänn,6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,{{ $t('user.approveLabel') }},6
+sb.web.app/src/components/Profile/MyPurchases.vue:5,Approve,{{ $t('user.approveLabel') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,Cancelled,{{ $t('declined') }},6
 sb.web.app/src/components/Profile/MyPurchases.vue:5,,,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Business,Företag,6
@@ -598,7 +598,7 @@ sb.web.app/src/components/Profile/MyRequests.vue:5,Total,Summa,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Timestamp,{{ $t('timestamp') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Status,Status,6
 sb.web.app/src/components/Profile/MyRequests.vue:5, Cancel, {{ $t('user.cancelLabel') }} ,6
-sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, Godkänn ,6
+sb.web.app/src/components/Profile/MyRequests.vue:5, Approve, {{ $t('user.approveLabel') }} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,APPROVED,{{ $t('approved') }},6
 sb.web.app/src/components/Profile/MyRequests.vue:5, You haven't received any purchase requests yet., {{ $t('youHaventReceivedAnyPurchaseRequestsYet')}} ,6
 sb.web.app/src/components/Profile/MyRequests.vue:5,Transaction denied,Förbjuden förfrågan,6
