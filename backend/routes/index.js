@@ -268,7 +268,9 @@ module.exports = function() {
         'cc-auth': '1'
         }})
         
-        data.saldo = response.data[userId].completed.balance
+        user_data = response.data.data[userId]
+        data.saldo = user_data.completed.balance
+        data.creditLimit = data.creditLine
         if(data.saldo < 0)
         {
           // reduce credit line *only* if negative balance
@@ -290,23 +292,24 @@ module.exports = function() {
         params: {
           'payee': userId
         }})
-        let userNames = {}
-        for (const entry of response.data) {
-          if(!(entry.entries[0].payee in userNames)) {
+        let users = {}
+        let entries = response.data.data || []
+        for (const entry of entries) {
+          if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName   
+            users[entry.entries[0].payee] = payee.profile.accountName   
           }
-          if(!(entry.entries[0].payer in userNames)) {
+          if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName   
+            users[entry.entries[0].payer] = payer.profile.accountName   
           }
-          if(!(entry.entries[0].author in userNames)) {
+          if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName   
+            users[entry.entries[0].author] = author.profile.accountName   
           }
-          entry.entries[0].payee = userNames[entry.entries[0].payee]
-          entry.entries[0].payer = userNames[entry.entries[0].payer]
-          entry.entries[0].author = userNames[entry.entries[0].author]
+          entry.entries[0].payee = users[entry.entries[0].payee]
+          entry.entries[0].payer = users[entry.entries[0].payer]
+          entry.entries[0].author = users[entry.entries[0].author]
           if (entry.state === 'completed') {
             data.completedTransactions.push(entry)
           } else if (entry.state === 'pending') {
@@ -317,6 +320,7 @@ module.exports = function() {
       } catch (error) {
         console.log(error)
       }
+
       // get transactions
       try {
         const response = await axios.get(CC_NODE_URL + '/transactions', { 
@@ -327,24 +331,25 @@ module.exports = function() {
         params: {
           'payer': userId
         }})
-        let userNames = {}
-        for (const entry of response.data) {
+        let users = {}
+        let entries = response.data.data || []
+        for (const entry of entries) {
           //console.log(entry)
-          if(!(entry.entries[0].payee in userNames)) {
+          if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName   
+            users[entry.entries[0].payee] = payee.profile.accountName   
           }
-          if(!(entry.entries[0].payer in userNames)) {
+          if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName   
+            users[entry.entries[0].payer] = payer.profile.accountName   
           }
-          if(!(entry.entries[0].author in userNames)) {
+          if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName   
+            users[entry.entries[0].author] = author.profile.accountName   
           }
-          entry.entries[0].payee = userNames[entry.entries[0].payee]
-          entry.entries[0].payer = userNames[entry.entries[0].payer]
-          entry.entries[0].author = userNames[entry.entries[0].author]
+          entry.entries[0].payee = users[entry.entries[0].payee]
+          entry.entries[0].payer = users[entry.entries[0].payer]
+          entry.entries[0].author = users[entry.entries[0].author]
 
           if (entry.state === 'completed') {
             data.completedTransactions.push(entry)
@@ -354,8 +359,9 @@ module.exports = function() {
         }
       
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
+
       db.close()
       res.status(200).send(data)
     } catch {
