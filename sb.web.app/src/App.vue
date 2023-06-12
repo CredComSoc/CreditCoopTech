@@ -109,6 +109,7 @@ export default {
           
           this.$store.commit('replaceSaldo', data.saldo)
           this.$store.commit('replaceCreditLine', data.creditLine)
+          this.$store.commit('replaceCreditLimit', data.creditLimit)
           if (data.requests) {
             this.$store.commit('replaceRequests', data.requests)            
           }

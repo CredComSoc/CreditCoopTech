@@ -23,8 +23,8 @@
           <td>{{item.entries[0].quant}}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button> 
-              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> Godkänn </button>
+              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;">  {{ $t('user.approveLabel') }}</button>
+              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.declineLabel') }} </button> 
             </td>
           </tr>
         </table>
@@ -33,14 +33,14 @@
       </div>
     </div>
     <!--Gets all Pending purchases from the VueX store. -->
-    <h1><b> {{ $t('pendingPurchase') }} </b></h1>
+    <h1><b> {{ $t('pending_purchases') }} </b></h1>
       <div>
         <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
         <table>
           <tr>
-            <th>{{ $t('business') }}</th>
+            <th>{{ $t('who') }}</th>
             <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
@@ -62,17 +62,17 @@
           </tr>
         </table>
       </div>
-      <h1><b> {{ $t('purchaseHistory') }} </b></h1>
+      <h1><b> {{ $t('sales_history') }} </b></h1>
       
     <div>
       <!--Filter buttons and fields-->
       <div className='filter flexbox-item' style ="padding-top: 20px;padding-bottom: 0px; margin-left: 15px;">
-        <button @click="filterTransactions()">Filtrera</button><!--filter transactions handles all transcations. -->
-        <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="`Från och med`" @click="handleDate()"/>
-        <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="`Till och med`" @click="handleDate()"/>
+        <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transactions. -->
+        <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
+        <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
         <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
         <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
-        <button @click="downloadFilterView()">Ladda ner lista som CSV</button> <!-- downloadFilterView handles the csv download. -->
+        <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
       <table v-if="(!this.filterActive)">
@@ -322,11 +322,11 @@ export default {
     },
     cancel (id, index) { //cancel order button
       console.log('Canceling order: ' + id)
-      this.statusSwap(index, this.$i18n.t('declined'), 'in')
+      this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
       cancelRequest(id)
     },
     startCancelRequest (id, payer, index) {
-      this.statusSwap(index, this.$i18n.t('declined'), 'out')
+      this.statusSwap(index, this.$i18n.t('declined'), 'out', 'red')
       cancelRequest(id)
       postNotification('saleRequestDenied', payer)
     },
@@ -339,7 +339,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance) {
-                this.statusSwap(index, this.$i18n.t('approved'))
+                this.statusSwap(index, this.$i18n.t('approved'), 'out', 'green')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {
@@ -354,28 +354,22 @@ export default {
       this.payerNotEnoughTkn = false
       this.payeeTooMuchTkn = false
     },
-    statusSwap (index, messagetext, list) {
+    statusSwap (index, messageText, list, color) {
       const tag = document.createElement('p')
-      const text = document.createTextNode(messagetext)
-      if (messagetext === 'GODKÄND') {
-        tag.style.color = 'green'
-      } else {
-        tag.style.color = 'red'
-      }
-      let length = this.$refs.outreq.length - 1 // get number of elements
-      let element = this.$refs.outreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      const text = document.createTextNode(messageText)
+      tag.style.color = color
       tag.appendChild(text)
-      if (list === 'in') { //choose which list of elements to operate on
-        length = this.$refs.inreq.length - 1 // get number of elements
-        element = this.$refs.inreq[length - index] //specific row. New items are added up top. thats why we go in revers order here. 
-      }
-      const child = element.lastElementChild //status element of selected row
-      let grandChild = child.lastElementChild //godkänn button in status element.
+
+      //choose which list of elements to operate on
+      const ref = (list === 'in') ? this.$refs.inreq : this.$refs.outreq
+      const targetElement = ref[ref.length - 1 - index] //specific row. New items are added up top. thats why we go in revers order here. 
+      const child = targetElement.lastElementChild //status element of selected row
+      let grandChild = child.lastElementChild // godkänn or cancel button in status element.
       while (grandChild) { 
-        child.removeChild(grandChild) //remove all buttons starting with godkänn
+        child.removeChild(grandChild) //remove all buttons s
         grandChild = child.lastElementChild
       }
-      child.appendChild(tag) //add the Avbruten tag to where the buttons where. 
+      child.appendChild(tag) //add the new tag to where the buttons where. 
     }
   }
 }

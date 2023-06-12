@@ -70,9 +70,16 @@ module.exports = function() {
       res.sendStatus(500)
       return
     }
+
+    auth_header =   
+    {
+      'cc-user': payer._id.toString(),
+      'cc-auth': '123' //FIXME1 auth is ignored anyway
+    }
+
     // create transaction
     const transaction_url = CC_NODE_URL + '/transaction'
-    let response
+    let transaction_uuid = null
     try {      
       payload = {
         "payee"       : payee._id.toString(), 
@@ -82,31 +89,25 @@ module.exports = function() {
         "type"        : "credit",
         "metadata"    : {"id" : article.id, "quantity": article.quantity}
       }
-      header =   
-      {
-        'cc-user': payer._id.toString(),
-        'cc-auth': '123' //FIXME1 auth is ignored anyway
-      }
-      response = await axios.post(transaction_url, payload, { headers: header })
+
+      const response = await axios.post(transaction_url, payload, { headers: auth_header })
+      transaction_uuid = response.data.data.uuid 
 
     } catch (error) {
       console.error("Error sending transaction to " + transaction_url)
-      console.error(error.response.status)
-      console.error(error.response.statusText)
-      console.error(error.response.data)
+      console.error(error)
       res.sendStatus(500)
       return
     }
-
+ 
     // update status to 'pending'
-    patch_url = CC_NODE_URL + '/transaction/' + response.data.data.uuid + '/pending'
     try {
+      patch_url = CC_NODE_URL + '/transaction/' + transaction_uuid + '/pending'
       response = await axios.patch(patch_url, {}, { headers: auth_header})
       res.sendStatus(200)
     } catch (error) {
       console.error("Error connecting with " + patch_url)
-      console.error(error.response.status)
-      console.error(error.response.statusText)
+      console.error(error)
       res.sendStatus(500)
     }
   })

@@ -3,7 +3,7 @@
     <h1> {{ $t('cart.cartCAPS') }} </h1>
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
-      <PopupCard v-if="this.confirmPress" :title="$t('cart.thanks_purchase')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified') + `\n` + $t('cart.seller_approval_will_come')" />
+      <PopupCard v-if="this.confirmPress" :title="$t('cart.purchase_thanks_header')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified')" />
     <PopupCard v-if="this.insufficientBalance" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('cart.not_enough_credit')" />
     <PopupCard v-if="this.sellerLimitError" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller, 'token': $t('org.token')})" />
   </div>

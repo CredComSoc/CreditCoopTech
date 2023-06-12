@@ -2,15 +2,15 @@
   <div>
     <div class="saldo">
       <span id="total-text">{{ $t('cart.current_balance') }} </span>
-      <span> {{ this.$store.state.saldo }} {{ $t('org.tkn') }}</span>
+      <span>&nbsp;{{ this.$store.state.saldo }} {{ $t('org.token') }}</span>
     </div>
     <div class="total">
       <span id="total-text">{{ $t('cart.total_cost') }} </span>
-      <span> {{ total }} {{ $t('org.tkn') }}</span>
+      <span>&nbsp;{{ total }} {{ $t('org.token') }}</span>
     </div>
     <div class="after">
-      <span id="total-text">{{ $t('cart.balance_after') }} </span>
-      <span> {{ this.$store.state.saldo - total }} {{ $t('org.tkn') }}</span>
+      <span id="total-text">{{ $t('cart.balance_after') }}</span>
+      <span>&nbsp;{{ this.$store.state.saldo - total }} {{ $t('org.token') }}</span>
     </div>
     <button @click="completePurchase" id="confirm">{{ $t('shop.complete_purchase') }}</button>
   </div>

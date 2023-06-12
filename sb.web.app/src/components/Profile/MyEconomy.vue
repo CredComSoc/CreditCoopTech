@@ -3,14 +3,14 @@
         <div>
             <table style="hej">
                 <tr>
-                    <th><h1>{{ $t('balance') }}</h1></th>
                     <th><h1>{{ $t('credit_limit') }}</h1></th>
+                    <th><h1>{{ $t('balance') }}</h1></th>
                     <th><h1>{{ $t('available_balance') }}</h1></th>
                 </tr>
                 <tr>
+                  <td>{{ this.$store.state.creditLimit }} {{ $t('org.token') }}</td>
                   <td>{{ this.$store.state.saldo }} {{ $t('org.token') }}</td>
-                  <td>{{ this.$store.state.creditLine }} {{ $t('org.token') }}</td>
-                  <td>{{ this.$store.state.creditLine - this.$store.state.saldo }} {{ $t('org.token') }}</td>
+                  <td>{{ this.availableBalance(this.$store.state) }} {{ $t('org.token') }}</td>
                 </tr>
             </table>
         </div>
@@ -28,6 +28,11 @@ export default {
   components: {
   },
   methods: {
+    availableBalance (state) {
+      const saldo = state.saldo
+      const creditLine = state.creditLine
+      return (saldo < 0) ? creditLine : saldo + creditLine
+    }
   }
 }
 </script>
