@@ -62,4 +62,4 @@ Backend can also be run manually as described above in /var/www/sb-web-app/backe
 
 ## License
 
-[GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl-3.0.html)
+[Mozilla MPL 2.0](LICENSE)

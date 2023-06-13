@@ -20,7 +20,7 @@
         </label>
         <input id="file-input" ref="fileValue" type="file" @change="addFile" class="file-input" accept=".jpg, .png, .jpeg, .pdf, .txt "/>
       </div>
-      <button id="send-message" @click="send()">{{ $t('misc.send') }}</button>
+      <button id="send-message" @click="send()">{{ $t('send') }}</button>
     </div>
   </div>
 </div>

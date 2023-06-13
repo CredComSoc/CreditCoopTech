@@ -38,6 +38,8 @@
         "edit_user": "Edit <br> User",
         "sentMessagePopupTitle": "Message <br> sent",
         "tknSentMessageCardText": "You have sent {amt} {token} to {accountName}",
+        "failed_chat_PopupTitle": "Chat failed",
+        "failed_chat_CardText": "Something went wrong when connecting to chat with {accountName}. Please try again later.",
         "failed_transaction_underMessagePopupTitle": "Transaction <br> failed",
         "tknFailedTransactionUnderCardText": "Insufficient amount entered. You did not send {amt} {token} to {accountName}",
         "failed_transaction_overMessagePopupTitle": "Transaction <br> failed",
