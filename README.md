@@ -1,6 +1,8 @@
-# Cooperative Barter Software e d
+# Cooperative Credit Software
 
-Cooperative Barter Software is an online trading post for entrepreneurs. Created with Vue.js and Express.js, and uses a [Credit Commons node](https://gitlab.com/credit-commons-software-stack/cc-node).  
+This software provides an online trading post for communities using mutual credit.
+
+Created with Vue.js and Express.js, and uses a [Credit Commons node](https://gitlab.com/credit-commons-software-stack/cc-node).  
 
 ## Requirements
 
@@ -10,12 +12,13 @@ Cooperative Barter Software is an online trading post for entrepreneurs. Created
 
 ## Local Installation
 
-### Install cc-node -- Optional: If you want to test the cc-node functionallity while running on your computer. Otherwise test functionallity regarding cc-node on the droplet.
+### Install cc-node 
+
+Optional: If you want to test the cc-node functionality while running on your computer. Otherwise test functionality regarding cc-node on the droplet.
 
 Follow the instructions in cc-node/INSTALL.md
 
-__Note:__
-The above instructions will probably result in a non-functional cc-node, as the latest (2022-08-29) version of cc-php-lib is not compatible with the cc-node version used in this project. The included cc-node.zip contains a pre-installed cc-node that can be used instead (PHP, MySQL, etc still needs to be installed).
+FIXME: Need to update with the latest instructions for installation using composer etc and the latest version of cc-node.
 
 ### Install Express.js backend
 
@@ -63,3 +66,40 @@ Backend can also be run manually as described above in /var/www/sb-web-app/backe
 ## License
 
 [Mozilla MPL 2.0](LICENSE)
+
+Please note this repo was previously on gitlab and prior to that on a private repo at university.
+
+## Contributors 
+
+(FIXME: Move this to [all-contributors](https://github.com/all-contributors/all-contributors) format.)
+
+First cohort
+- Vincent Ahlström
+- Alicia Bergman
+- Robin Jensen
+- Linus Johansson
+- Kasper Nilsson
+- Viktor Rösler
+
+Second cohort
+- Oscar Castenäs
+- Simon Jernström
+- Hanna Häger
+- Rojal Maharyan
+- Pernilla Ljungqvist
+- Alma Wärnsäter
+- Rikard Arnemo
+
+MCS 
+- Miles Thompson
+- Joyce Bowman
+- Dil Green
+- Tom Woodruff
+- Tom Newman
+
+Credit Commons (See Credit Commons repo for more details on contributors there):
+- Matthew Slater
+
+# Code of conduct
+
+Please review our [code of conduct](CODE_OF_CONDUCT.md) before contributing.
