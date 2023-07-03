@@ -35,3 +35,4 @@ backend/.env.production
 backend/.env
 backend/migrations/test.js
 bak
+backend/.ssh

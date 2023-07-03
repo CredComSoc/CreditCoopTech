@@ -25,7 +25,7 @@ const CC_NODE_URL = process.env.CC_NODE_URL
 const DISABLE_CC_NODE = ['true', 'yes', '1'].includes((process.env.DISABLE_CC_NODE || '').toLowerCase());
 
 const mongoURL = dbUri + dbFolder + '?retryWrites=true&w=majority'
-console.warn("Connected to " + mongoURL)
+console.warn("Connecting to " + mongoURL)
 // regex that a domain starts with "http://localhost" or ends with ".mutualcredit.services
 CORS_WHITE_LIST = [/^http:\/\/localhost/, /\.mutualcredit\.services$/, /\.landcaretrade\.com$/]
 
