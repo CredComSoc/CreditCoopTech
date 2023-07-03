@@ -97,6 +97,52 @@ I like to have this running locally. Needed to support the backend express app
 
 I start up two services - local express backend and vuejs front end. In this configuration the backend connects to cc-node in the cloud. 
 
+**Start backend**
+
+```
+> cd backend 
+> npm run start
+```
+
+```
+backend@1.0.0 start
+nodemon --exec babel-node app.js
+
+[nodemon] 1.19.4
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching dir(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `babel-node app.js`
+Connecting to mongodb://127.0.0.1:27017/vt-web-app?retryWrites=true&w=majority
+::
+Listening to http://:::3000
+listening on *:3001
+```
+
+**Start frontend**
+```
+➜ ✗ cd sb.web.app
+➜ ✗ npm run serve
+```
+
+```
+sb.web.app@0.1.0 serve
+vue-cli-service serve
+
+ INFO  Starting development server...
+98% after emitting CopyPlugin
+
+ DONE  Compiled successfully in 4765ms                                                                                                                                                12:14:28 AM
+
+
+  App running at:
+  - Local:   http://localhost:8080/ 
+  - Network: http://192.168.100.161:8080/
+
+  Note that the development build is not optimized.
+  To create a production build, run npm run build.
+```
+
 <!-- 
 ### Install cc-node -- Optional: If you want to test the cc-node functionallity while running on your computer. Otherwise test functionallity regarding cc-node on the droplet.
 
