@@ -39,27 +39,27 @@
     "vue-router": "^4.0.12",
     "vue-window-size": "^1.1.2",
     "vuex": "^4.0.0-0",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "webpack": "^4.39.3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
     "@babel/eslint-parser": "^7.21.3",
-    "@peeky/test": "^0.13.5",
+    "@peeky/test": "^0.12.0",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "^5.0.8",
+    "@vue/cli-service": "^4.5.19",
     "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/eslint-config-standard": "^8.0.1",
     "babel-eslint": "^10.1.0",
     "cypress": "^9.7.0",
     "eslint": "^8.37.0",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-node": "^1.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-standard": "^4.0.0"
   },
   "eslintConfig": {
     "root": true,
@@ -78,7 +78,12 @@
       "spaced-comment": "off",
       "no-trailing-spaces": "off",
       "func-call-spacing": "off",
-      "no-console": "off"
+      "no-console": "off",
+      "no-multiple-empty-lines": "off",
+      "vue/multi-word-component-names": "off",
+      "vue/no-reserved-component-names": "off",
+      "no-var": "off",
+      "object-shorthand": "off"
     }
   },
   "main": "src/main.js",
