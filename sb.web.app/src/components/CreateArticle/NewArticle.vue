@@ -5,7 +5,7 @@
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
       <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
-      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('back') }}</a>
+      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('Back') }}</a>
     </div>
     <div id="center">
       <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
@@ -42,7 +42,7 @@ export default {
       backLink: '#',
       currentStep: 1,
       imgURL: 'one_three.png',
-      nextBtnText: this.$i18n.t('next'),
+      nextBtnText: this.$i18n.t('Next'),
       newArticle: {},
       isPublished: false,
       error: false,

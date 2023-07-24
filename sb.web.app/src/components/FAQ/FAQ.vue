@@ -91,11 +91,16 @@ export default {
 }
 
 .topnav {
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 }
 
 .topnav a {
   text-align: center;
+  margin: 0.125em;
   padding: 8px 25px 8px 25px;
   text-decoration: none;
   font-size: 15px;
@@ -103,10 +108,6 @@ export default {
   border-style: solid;
   border-color: gainsboro;
   border-radius: 5px;
-  margin-top: -1px;
-  margin-bottom: 2px;
-  margin-left: 1px;
-  margin-right: -1px;
   border-width: 2px;
   font-size: 1.24rem;
 }

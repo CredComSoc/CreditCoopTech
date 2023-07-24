@@ -5,15 +5,14 @@
       <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
     </div>
 
-    <div class="center">
-        <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('user.whoDoYouWantToSearchForTodayLabel')"/>
-    </div>
+    <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('user.whoDoYouWantToSearchForTodayLabel')"/>
     <br>
     <div class="main">
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
           <AllMembers :key=SearchData :search-data=SearchData />
         </div>
+        <h3 v-if="this.allMembersArraySize === 0 && this.adminMembersArraySize === 0" class="text-center">{{ $t('user.no_users_found', {searchWord: this.searchWord}) }}</h3>
       </div>
     </div>
     
@@ -42,7 +41,10 @@ export default {
 
   methods: {
     triggerSearch (newSearchWord) {
+      console.log('search triggered')
+      this.searchWord = newSearchWord
       let searchWord = newSearchWord.split(' ')
+      
       searchWord = searchWord.filter(function (value) {
         return value !== ''
       })
@@ -80,12 +82,21 @@ export default {
         }
       }
 
+      // console.log(allMembersArray.values())
+
+      console.log(allMembersArray.size)
+      this.allMembersArraySize = allMembersArray.size
+      console.log(adminMembersArray.size)
+      this.adminMembersArraySize = adminMembersArray.size
+
       //Sort alphabetically by swedish.
       for (const value of allMembersArray.values()) {
         value.sort((a, b) => a.accountName.localeCompare(b.accountName))
       }
       const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
       const finishMap = new Map([...adminMembersArray, ...sortedMap])
+
+      console.log(finishMap)
 
       this.SearchData = finishMap
     }
@@ -109,11 +120,6 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
-}
-
-.center {
-  justify-content: center;
-  margin-bottom: 40px;
 }
 
 .main {
