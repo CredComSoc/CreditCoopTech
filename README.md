@@ -47,7 +47,7 @@ MCS
 - Miles Thompson
 - Joyce Bowman
 - Dil Green
-- Tom Woodruff
+- Tom Woodroof
 - Tom Newman
 
 Credit Commons (See Credit Commons repo for more details on contributors there):
