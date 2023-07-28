@@ -60,6 +60,12 @@ const routes = [
     props: true
   },
   {
+    path: '/edit/article/:artID',
+    name: 'Edit_Article',
+    component: NewArticle,
+    props: true
+  },
+  {
     path: '/members',
     name: 'Members',
     component: Members 

@@ -1,5 +1,6 @@
 <template>
   <div>
+  <div>
     <h2 class="center-text">{{ $t('shop_items.new_articleCAPS') }} </h2>
   </div>
   <div id="input-form">
@@ -16,6 +17,7 @@
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
   </div>
+  </div>
 </template>
 
 <script>
@@ -25,7 +27,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { uploadArticle, deleteCart, EXPRESS_URL } from '../../serverFetch'
+import { uploadArticle, editArticle, deleteCart, EXPRESS_URL } from '../../serverFetch'
 
 export default {
   name: 'NewArticle',
@@ -56,26 +58,45 @@ export default {
   },
   created () {
     if (this.$route.params.artID) {
-      fetch(EXPRESS_URL + '/post/' + this.$route.params.artID, {
+      console.log('ID: ', this.$route.params.artID)
+      fetch(EXPRESS_URL + '/article/' + this.$route.params.artID, {
         method: 'GET',
         credentials: 'include'
       }).then(
         success => {
           success.json().then(
             res => {
-              this.newArticle = res
+              //console.log(res)
+              if (res.listing) {
+                this.newArticle = res.listing
+              } else {
+                this.newArticle = res
+              }
+              
               // get print format from db object and assign to frontend
-              this.newArticle.destination = res.printFormat.destination
-              this.newArticle['end-date'] = res.printFormat['end-date']
-              this.newArticle.status = res.printFormat.status
-              this.newArticle.article = res.printFormat.article
-              this.newArticle.category = res.printFormat.category
+              if (typeof res.printFormat !== 'undefined') {
+                console.log('Assigning from res.printFormat')
+                this.newArticle.destination = res.printFormat.destination
+                this.newArticle['end-date'] = res.printFormat['end-date'] 
+                this.newArticle.status = res.printFormat.status
+                this.newArticle.article = res.printFormat.article
+                this.newArticle.category = res.printFormat.category
+              } else {
+                this.newArticle.destination = res.listing.destination
+                this.newArticle['end-date'] = res.listing['end-date'] 
+                this.newArticle.status = res.listing.status
+                this.newArticle.article = res.listing.article
+                this.newArticle.category = res.listing.category
+              }
+              console.log(this.newArticle)
             }
           )
         }
       ).catch(
-        error => console.log(error)
+        error => console.log('Error: ', error)
       )
+    } else {
+      console.log('Param artID not found!')
     }
   },
   methods: {
@@ -131,7 +152,11 @@ export default {
       } else if (this.currentStep === 4) {
         this.addUploadDate()
         this.sanitizeArticle()
-        this.uploadArticle()
+        if (this.$route.path.includes('edit')) {
+          this.editArticle()
+        } else {
+          this.uploadArticle()
+        }
       }
     },
     goBackStep () {
@@ -152,6 +177,7 @@ export default {
       }
     },
     uploadArticle () {
+      console.log('Article', this.newArticle)
       const data = new FormData()
       let index = 0
       for (const file of this.newArticle.img) {
@@ -171,6 +197,20 @@ export default {
           this.popupCardText = this.image_upload_error_message
         }
       })
+    },
+    editArticle () {
+      const data = new FormData()
+      let index = 0
+      for (const file of this.newArticle.img) {
+        if (file.isCoverImg) {
+          data.append('coverImgInd', index)
+        }
+        data.append('file', file, file.name)
+        ++index
+      }
+      data.append('article', JSON.stringify(this.newArticle))
+
+      editArticle(this.$route.params.artID, data)
     },
     addUploadDate () {
       const options = {

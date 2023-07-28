@@ -333,6 +333,20 @@ export async function uploadArticle (data) {
   }) 
 }
 
+export async function editArticle (id, data) {
+  return await fetch(EXPRESS_URL + '/edit/article/' + id, {
+    method: 'PATCH',
+    credentials: 'include',
+    body: data
+  })
+    .then((res) => {
+      return res.json()
+    })
+    .catch((error) => {
+      return error
+    })
+}
+
 export async function deactivateArticle (id) {
   return await fetch(EXPRESS_URL + '/article/remove/' + id, {
     method: 'POST',

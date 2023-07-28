@@ -743,10 +743,12 @@ module.exports = function() {
   })
 
     // create a article object in mongoDB
-    router.post('/upload/article', upload.array('file', 5), async (req, res) => {
+    router.post('/upload/article', async (req, res) => {
       if (!req.isAuthenticated()) {
         res.sendStatus(401)
       } else {
+        try {
+          console.log(req.body) 
         const newArticle = JSON.parse(req.body.article);
         if (req.files)
         {
@@ -783,8 +785,52 @@ module.exports = function() {
             res.status(404).send("No posts found.")
           }
         })
+        } catch (error) {
+          
+        console.error(error)
+        res.status(500).send(`Server error occured!\n${error}`)
+        }
       }
     });
+
+  router.patch('/edit/article/:id', upload.array('file', 5), async (req, res) => {
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      try {
+        
+        const editArticle = JSON.parse(req.body.article);
+        if (req.files) {
+          let images = req.files.map(obj => obj.filename);
+          editArticle.coverImg = images[req.body.coverImgInd];
+          images = images.filter((img) => { return img !== editArticle.coverImg })
+          editArticle.img = images;
+        }
+        editArticle['item_update_date'] = new Date();
+        const query = { id: req.params.id, _id: editArticle._id };
+        delete editArticle._id
+        const options = { returnNewDocument: true }
+        const db = await MongoClient.connect(dbUrl);
+        const dbo = db.db(dbFolder);
+        dbo.collection('posts').updateOne(query, {$set: editArticle}, options, (err, result) => {
+          if (err) {
+            res.sendStatus(500);
+            console.log(err)
+            db.close();
+          } else if (result != null) {
+            res.status(200).send(result);
+            db.close();
+          } else {
+            db.close();
+            res.status(404).send("No post found.");
+          }
+        });
+      } catch (error) {
+        console.error(error)
+        res.status(500).send("Server error occured!")
+      }
+    }
+  });
   
     router.post('/article/remove/:id', (req, res) => {
       const now = new Date
