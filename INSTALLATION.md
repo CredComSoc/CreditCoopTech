@@ -54,7 +54,7 @@ npm install
 
 **install pckages into backend node_modules**
 ````
-cd backend
+cd ../backend
 npm install 
 ````
 
