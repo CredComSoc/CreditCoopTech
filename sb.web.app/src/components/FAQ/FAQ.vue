@@ -56,14 +56,7 @@ export default {
 </script>
 
 <style scoped>
- * {
-  font-family: Ubuntu;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 0;
-  margin:0;
-}
+
 
 @media screen and (min-width: 860px) {
   .flexbox-container {

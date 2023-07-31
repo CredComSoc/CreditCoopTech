@@ -295,3 +295,15 @@ left: 0;
 background-color: green;
 }
 </style>
+
+<style scoped>
+/** for mobile browsers only */
+@media only screen and (max-width: 600px) {
+  .demo-app {
+    flex-direction: column;
+  }
+  .demo-app-sidebar {
+    width: auto;
+  }
+}
+</style>

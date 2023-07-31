@@ -246,48 +246,12 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html {
-  scroll-behavior: smooth;
-}
 
-#space {
-  height:80px;
-}
 
-.header-container {
-  width: 100%;
-  height: 80px;
-  top: 0;
-  z-index: 3;
-  position: fixed;
-  background: #fff;
-  border-bottom: 1px solid black;
-}
 
-header {
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
-  margin-bottom: 0;
-  margin-top: 0;
-  width: 75%;
-}
 
- nav {
-  background-color: white;
-  overflow: visible;
-  display: flex;
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
+
 
 #bell-container {
   position: absolute;

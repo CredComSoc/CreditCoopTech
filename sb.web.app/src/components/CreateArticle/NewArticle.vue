@@ -219,14 +219,7 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
-* {
-  font-family: Ubuntu;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 0;
-  margin:0;
-}
+  
 .center-text {
   text-align: center;
   margin-top: 4rem;

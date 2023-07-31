@@ -1,12 +1,10 @@
 <template> 
   <div className="flexbox-container">
-    <div v-if="isMobile()">
-      <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
-        <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>{{ $t('user.profile') }}</a>
-        <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>{{ $t('Buy') }}</a>
-        <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>{{ $t('article') }}</a>
-        <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('needs') }}</a>
-      </div>
+    <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
+      <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>{{ $t('user.profile') }}</a>
+      <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>{{ $t('Buy') }}</a>
+      <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>{{ $t('article') }}</a>
+      <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('needs') }}</a>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
       <h1 className="title" > {{ $t('nav.myAccountCAPS') }} </h1>
@@ -73,14 +71,7 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-* {
-  font-family: Ubuntu;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 0;
-  margin:0;
-}
+
 
 @media screen and (min-width: 860px) {
   .flexbox-container {
@@ -118,7 +109,7 @@ export default {
 .topnav a {
   text-align: center;
   margin: 0.125em;
-  padding: 8px 25px 8px 25px;
+  padding: 8px 17.5px 8px 17.5px;
   text-decoration: none;
   font-size: 15px;
   color: steelblue;
@@ -139,7 +130,11 @@ export default {
 }
 
 .mobnav {
-  position:fixed;
+  position: sticky;
+  z-index: 5;
+  height: fit-content;
+  overflow: inherit;
+  top: 130px;
 }
 
 .botnav a {

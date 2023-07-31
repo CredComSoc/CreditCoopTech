@@ -115,57 +115,15 @@
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html {
-  scroll-behavior: smooth;
-}
 
-#space {
-  height:75px;
-}
 
-.header-container {
-  width: 100%;
-  height: 80px;
-  top: 0;
-  z-index: 3;
-  position: fixed;
-  background: #fff;
-  border-bottom: 1px solid black;
-}
 
-header {
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
-  margin-bottom: 0;
-  margin-top: 0;
-  width: 75%;
-}
 
- nav {
-  background-color: white;
-  overflow: visible;
-  display: flex;
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
 
-a {
-  text-decoration: none;
-  color: black;
-}
 
-a:hover {
-  color: black;
-}
+
+
 
 .l-text {
   font-family: 'Roboto';
@@ -183,15 +141,6 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 40px;
-}
-
-.middle-logo {
-  flex-shrink: 0;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 3px;
-  margin-top: 3px;
-  height: 100%;
 }
 
 #notice {

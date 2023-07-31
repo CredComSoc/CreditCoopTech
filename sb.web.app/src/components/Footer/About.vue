@@ -2,7 +2,7 @@
   <div>
     <h1><b>{{ $t('created_by') }}</b></h1>
     <div>
-      <p style="font-style: italic; width: 950px;">{{ $t('initial_student_group') }}</p>
+      <p style="font-style: italic;">{{ $t('initial_student_group') }}</p>
     </div>
     <div style="max-height: 50em;">
       <table>
@@ -15,7 +15,7 @@
       </table>
     </div>
     <div>
-      <p style="font-style: italic; width: 950px;"> {{ $t('second_student_group') }}  </p>
+      <p style="font-style: italic;"> {{ $t('second_student_group') }}  </p>
     </div>
     <div style="max-height: 50em;">
       <table>
