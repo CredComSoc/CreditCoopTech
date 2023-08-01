@@ -29,6 +29,8 @@ import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { uploadArticle, editArticle, deleteCart, EXPRESS_URL } from '../../serverFetch'
 
+import { isProxy, toRaw } from 'vue'
+
 export default {
   name: 'NewArticle',
   components: {
@@ -72,18 +74,18 @@ export default {
               } else {
                 this.newArticle = res
               }
-              
+
               // get print format from db object and assign to frontend
               if (typeof res.printFormat !== 'undefined') {
                 console.log('Assigning from res.printFormat')
                 this.newArticle.destination = res.printFormat.destination
-                this.newArticle['end-date'] = res.printFormat['end-date'] 
+                this.newArticle['end-date'] = res.printFormat['end-date']
                 this.newArticle.status = res.printFormat.status
                 this.newArticle.article = res.printFormat.article
                 this.newArticle.category = res.printFormat.category
               } else {
                 this.newArticle.destination = res.listing.destination
-                this.newArticle['end-date'] = res.listing['end-date'] 
+                this.newArticle['end-date'] = res.listing['end-date']
                 this.newArticle.status = res.listing.status
                 this.newArticle.article = res.listing.article
                 this.newArticle.category = res.listing.category
@@ -153,6 +155,7 @@ export default {
         this.addUploadDate()
         this.sanitizeArticle()
         if (this.$route.path.includes('edit')) {
+          console.log('Editing Article')
           this.editArticle()
         } else {
           this.uploadArticle()
@@ -177,40 +180,51 @@ export default {
       }
     },
     uploadArticle () {
-      console.log('Article', this.newArticle)
+      const createdArticle = isProxy(this.newArticle) ? toRaw(this.newArticle) : this.newArticle
+      console.log('Created article: ', createdArticle)
       const data = new FormData()
       let index = 0
-      for (const file of this.newArticle.img) {
+      for (const file of createdArticle.img) {
         if (file.isCoverImg) {
           data.append('coverImgInd', index)
         } 
         data.append('file', file, file.name)
         ++index
       }
-      data.append('article', JSON.stringify(this.newArticle))
+      data.append('article', JSON.stringify(createdArticle))
+      console.log('Article', data)
       // This will upload the article to the server
       uploadArticle(data).then((res) => {
         if (res.status === 200) {
           this.isPublished = true // open popup with success message
         } else {
+          console.error(res)
           this.error = true
           this.popupCardText = this.image_upload_error_message
         }
       })
     },
     editArticle () {
-      const data = new FormData()
+      const newdata = new FormData()
       let index = 0
       for (const file of this.newArticle.img) {
         if (file.isCoverImg) {
-          data.append('coverImgInd', index)
+          newdata.append('coverImgInd', index)
         }
-        data.append('file', file, file.name)
+        newdata.append('file', file, file.name)
         ++index
       }
-      data.append('article', JSON.stringify(this.newArticle))
+      newdata.append('article', JSON.stringify(this.newArticle))
 
-      editArticle(this.$route.params.artID, data)
+      editArticle(this.$route.params.artID, newdata).then((res) => {
+        if (res.status === 200 || res.status === '200') {
+          console.log('Item edit successful')
+        } else {
+          console.error('Edit unsuccessful ', res.status, res)
+        }
+      }).catch((error) => {
+        console.log('Error: ', error)
+      })
     },
     addUploadDate () {
       const options = {

@@ -14,7 +14,10 @@
           <th>{{ $t('status')}}</th>
         </tr>
         <tr v-for="(item, index) in activeArticles" :key="item">
-          <td><Listing className='article' :listingObj="item" :hideSeller="true" /></td>
+          <td>
+            <Listing className='article' @togglePopupEvent='openPopUp' :listingObj="item" :hideSeller="true" />
+            <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
+          </td>
           <td>{{item.category}}</td>
           <td>{{item.price}}</td>
           <td>{{item.uploadDate}} </td>
@@ -56,6 +59,7 @@
 <script>
 import { getArticles, deactivateArticle } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
+import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 
 export default {
   data () {
@@ -63,7 +67,10 @@ export default {
       articles: [], 
       activeArticles: [],
       inactiveArticles: [],
-      date: new Date()
+      date: new Date(),
+      popupActive: false,
+      listingObjPopup: Object,
+      username: ''
     }
   },
   mounted () {
@@ -81,7 +88,8 @@ export default {
     })
   },
   components: {
-    Listing
+    Listing,
+    ListingPopup
   },
   methods: {
     remove (item, index) {
@@ -97,6 +105,14 @@ export default {
           }
         }
       })
+    },
+    openPopUp (listingObj) {
+      this.popupActive = true
+      this.listingObjPopup = listingObj
+    },
+    closePopup (listingObj) {
+      this.popupActive = false
+      //this.putInCart = false
     }
   }
 }

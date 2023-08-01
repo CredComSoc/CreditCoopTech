@@ -742,13 +742,17 @@ module.exports = function() {
     }
   })
 
-    // create a article object in mongoDB
-    router.post('/upload/article', async (req, res) => {
-      if (!req.isAuthenticated()) {
-        res.sendStatus(401)
-      } else {
-        try {
-          console.log(req.body) 
+
+  // create a article object in mongoDB
+  router.post('/upload/article', upload.array('file', 5), async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+
+      res.sendStatus(401)
+
+    } else {
+      try {
+        console.log(req.body)
         const newArticle = JSON.parse(req.body.article);
         if (req.files)
         {
@@ -761,9 +765,7 @@ module.exports = function() {
         newArticle.userUploader = req.user
 
         const user = await getUser({'profile.accountName': req.user})
-
         newArticle.userId = user._id
-        
         // for ttl index in posts
         if ('end-date' in newArticle) {
           newArticle['end-date'] = new Date(newArticle['end-date']);
@@ -772,6 +774,7 @@ module.exports = function() {
         const dbo = db.db(dbFolder);
         dbo.collection("posts").insertOne(newArticle, (err, result)=>{
           if (err) {
+            console.error(err)
             res.sendStatus(500)
             db.close()
           }
@@ -786,7 +789,7 @@ module.exports = function() {
           }
         })
         } catch (error) {
-          
+
         console.error(error)
         res.status(500).send(`Server error occured!\n${error}`)
         }
@@ -798,7 +801,7 @@ module.exports = function() {
       res.sendStatus(401)
     } else {
       try {
-        
+
         const editArticle = JSON.parse(req.body.article);
         if (req.files) {
           let images = req.files.map(obj => obj.filename);
@@ -807,7 +810,7 @@ module.exports = function() {
           editArticle.img = images;
         }
         editArticle['item_update_date'] = new Date();
-        const query = { id: req.params.id, _id: editArticle._id };
+        const query = { id: req.params.id };
         delete editArticle._id
         const options = { returnNewDocument: true }
         const db = await MongoClient.connect(dbUrl);
@@ -831,7 +834,7 @@ module.exports = function() {
       }
     }
   });
-  
+
     router.post('/article/remove/:id', (req, res) => {
       const now = new Date
       const past = new Date(now.getFullYear() - 50, now.getMonth(), now.getDate())
