@@ -22,7 +22,7 @@ import { EXPRESS_URL, getArticleWithId } from '../../serverFetch'
 export default {
   data () {
     return {
-      newListingObj: Object,
+      newListingObj: Object
     }
   },
   mounted () {
