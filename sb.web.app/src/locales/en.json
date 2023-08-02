@@ -61,6 +61,7 @@
         "daysAgoLabel": "days ago",
         "neverLabel": "Never",
         "whoDoYouWantToSearchForTodayLabel": "Who do you want to search for today?",
+        "no_users_found": "No members found for '{searchWord}'.",
         "send_token": "Send {token}",
         "commentLabel": "Comment",
         "unknown_city": "Unknown city"
@@ -116,7 +117,7 @@
         "seller_has_reached_limit": "The seller {seller} has reached their upper limit for {token}.",
         "purchaseRequestCannotBeApproved": "The purchase request cannot be approved",
         "is_for_sale": "is for sale or purchase",
-        "no_product_found": "No products found!",
+        "no_product_found": "No products found for '{searchWord}'.",
         "seller_has_approved_notification": "notification when the seller has approved your purchase request.",
         "is_item_product_or_service": "Is your item a product or service?",
         "see_the_shop": "See the shop",
@@ -165,7 +166,7 @@
         "item_title": "Title",
         "item_description": "Description",
         "item_category_prompt": "Which of these best describes your product or service?",
-        "item_type": "item type",
+        "item_type": "Item Type",
         "choose_file": "Choose file",
         "item_set_main_image": "Set as main image",
         "until_when": "Until when will this ",
@@ -187,7 +188,8 @@
         "smaller_than_2mb": "and be smaller than 2 MB.",
         "preview": "Preview",
         "image_upload_failed": "Image upload failed",
-        "try_again_later": "Please try again later."
+        "try_again_later": "Please try again later.",
+        "publish": "Publish"
     },
     "balance": "Balance",
     "credit": "Credit",

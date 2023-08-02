@@ -47,11 +47,6 @@ export default {
 
 <style scoped>
 
-* {
-  font-family: 'Ubuntu', sans-serif;
-  padding: 0;
-  margin: 0;
-}
 
 .wrapper {
   display: flex;

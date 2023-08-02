@@ -7,11 +7,9 @@
   <!-- < User page /> -->
   <div id="app" v-else-if="auth">
     <Navbar :screenWidth="windowWidth"/>
-      <div id="space">
-      </div>
-      <div className='body'>
-        <router-view :scrWidth="windowWidth"/>
-      </div>
+    <div className='body container'>
+      <router-view :scrWidth="windowWidth"/>
+    </div>
     <SaldoCard :screenWidth="windowWidth"/>
     <Footer id="footer" />
   </div>
@@ -151,18 +149,4 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-html, body {
-   margin: 0;
-   padding: 0;
-   height: 100%;
-}
-
-.body {  
-  min-height: calc(90vh - 70px);
-}
-
-#space {
-  height:65px;
-}
-
 </style>

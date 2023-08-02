@@ -3,15 +3,14 @@
     <div>
       <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
     </div>
-    <div class="center">
-        <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>
-    </div>
+    <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>
     <br>
     <div class="main">
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
           <AllMembers :key=SearchData :search-data=SearchData @openProfile="this.openProfile"/>
         </div>
+        <h3 v-if="this.allMembersArraySize === 0 && this.adminMembersArraySize === 0" class="text-center">No users found for '{{this.searchWord}}'</h3>
       </div>
     </div>
   </div>
@@ -36,7 +35,6 @@ export default {
       listingObjPopup: Object,
       showProfile: false,
       profileName: ''
-   
     }
   },
   components: {
@@ -49,6 +47,7 @@ export default {
     //filter and sorts according to list of cities
     //**to be implimented--{ to not sort according to cities and just according to alphabetical order}
     triggerSearch (newSearchWord) {
+      this.searchWord = newSearchWord
       let searchWord = newSearchWord.split(' ')
       searchWord = searchWord.filter(function (value) {
         return value !== ''
@@ -91,6 +90,8 @@ export default {
       for (const value of allMembersArray.values()) {
         value.sort((a, b) => a.accountName.localeCompare(b.accountName))
       }
+      this.allMembersArraySize = allMembersArray.size
+      this.adminMembersArraySize = adminMembersArray.size
       const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
       const finishMap = new Map([...adminMembersArray, ...sortedMap])
 
@@ -111,11 +112,6 @@ export default {
 
 <style scoped>
 
- * {
-    font-family: 'Ubuntu', sans-serif;
-    padding: 0;
-    margin: 0;
-  }
 
 .wrapper {
   display: flex;
@@ -148,7 +144,6 @@ export default {
 .center-text {
   text-align: center;
   margin: 2rem 0rem;
-  margin-left: -8rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;

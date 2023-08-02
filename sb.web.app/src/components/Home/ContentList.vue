@@ -84,14 +84,6 @@ export default {
 </script>
 
 <style scoped>
-    * {
-        font-family: Ubuntu;
-        font-style: normal;
-        font-weight: normal;
-        letter-spacing: 0.05em;
-        padding: 0;
-        margin:0;
-    }
 
     .list-container {
         margin-top: 20px;

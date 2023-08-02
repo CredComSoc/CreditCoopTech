@@ -5,7 +5,7 @@
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
       <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
-      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('back') }}</a>
+      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('Back') }}</a>
     </div>
     <div id="center">
       <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
@@ -42,7 +42,7 @@ export default {
       backLink: '#',
       currentStep: 1,
       imgURL: 'one_three.png',
-      nextBtnText: this.$i18n.t('next'),
+      nextBtnText: this.$i18n.t('Next'),
       newArticle: {},
       isPublished: false,
       error: false,
@@ -219,14 +219,7 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
-* {
-  font-family: Ubuntu;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 0;
-  margin:0;
-}
+  
 .center-text {
   text-align: center;
   margin-top: 4rem;
