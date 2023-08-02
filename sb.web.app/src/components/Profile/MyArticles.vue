@@ -4,7 +4,7 @@
     <div v-if="activeArticles.length===0">
       <p style="font-style: italic;"> {{ $t('youHaveNoActiveArticles')}} </p>
     </div>
-    <div v-if="activeArticles.length!==0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
+    <div v-if="activeArticles.length!==0" style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
       <table>
         <tr>
           <th>{{ $t('article')}}</th>
@@ -32,7 +32,7 @@
       </table>
     </div>
     <h1><b>{{ $t('inActiveArticles') }}</b></h1>
-    <div v-if="inactiveArticles.length!==0" style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
+    <div v-if="inactiveArticles.length!==0" style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
       <table>
         <tr>
           <th>{{ $t('article') }}</th>

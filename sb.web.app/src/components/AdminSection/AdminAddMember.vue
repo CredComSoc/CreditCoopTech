@@ -139,11 +139,7 @@ export default {
 </script>
 
 <style scoped>
-* {
-  font-family: 'Ubuntu', sans-serif;
-  padding: 0;
-  margin: 0;
-}
+
 
 @media screen and (min-width: 860px) {
   .container{

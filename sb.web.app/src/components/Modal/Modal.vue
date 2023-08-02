@@ -4,7 +4,8 @@
           <div class="vue-modal-inner">
             <div class="vue-modal-content">
               <slot />
-                <button type="button" class="button-close" @click="$emit('close')">Close</button>
+                  <button v-if="proceedText" type="button" class="button-proceed" @click="$emit('proceed')">{{proceedText}}</button>
+                  <button type="button" class="button-close" @click="$emit('close')">{{closeText}}</button>
                 <br>
             </div>
           </div>
@@ -18,6 +19,13 @@ export default {
     open: {
       type: Boolean,
       default: true
+    },
+    closeText: {
+      type: String,
+      default: 'Close'
+    },
+    proceedText: {
+      type: String
     }
   }
 }
@@ -49,6 +57,13 @@ export default {
   margin: 2rem auto;
 }
 
+.button-proceed {
+  position: absolute;
+  left: 5%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+}
 .button-close {
   position: absolute;
   right: 5%;

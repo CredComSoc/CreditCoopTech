@@ -25,8 +25,8 @@
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
         <div class="article-info">
-          <h5 v-if="listingObj.status === 'selling'">{{ $t('selling') }}"</h5>
-          <h5 v-if="listingObj.status === 'buying'">{{ $t('buying') }}"</h5>    
+          <h5 v-if="listingObj.status === 'selling'">{{ $t('Selling') }}</h5>
+          <h5 v-if="listingObj.status === 'buying'">{{ $t('Buying') }}</h5>    
           <p>{{listingObj.userUploader}}</p>
 
           <h5>{{ $t('location') }}</h5>  
@@ -64,7 +64,7 @@
 
         <div class="spacing"></div>
 
-      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
+      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('Close') }}</button>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'">
         <div>
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>

@@ -35,12 +35,8 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-family: 'Ubuntu', sans-serif;
-}
+
+
 
 h3 {
   font-weight: 700;

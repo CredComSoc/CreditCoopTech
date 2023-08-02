@@ -3,7 +3,7 @@
     <!--PAYEE AND PAYER NEEDS TO BE ADJUSTED SO ITS RIGHT-->
     <!--Gets all incomming requests from the Vuex store and displays them to the user. -->
     <h1><b> {{ $t('user.purchase_requests') }} </b></h1>
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden; padding-top: 20px; padding-bottom: 20px;">
+      <div style="max-height: 50em; overflow: scroll;  padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
             <th>{{ $t('business') }}</th>
@@ -37,7 +37,7 @@
       <div>
         <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
       </div>
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
+      <div style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
             <th>{{ $t('who') }}</th>
@@ -74,7 +74,7 @@
         <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
         <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button> <!-- downloadFilterView handles the csv download. -->
     </div>
-      <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
+      <div style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
       <table v-if="(!this.filterActive)">
         <tr>
           <th>{{ $t('Buyer') }}</th>
