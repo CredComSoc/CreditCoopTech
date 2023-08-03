@@ -20,7 +20,7 @@ describe('Create article', () => {
         cy.wait(1000)
       }) 
 
-    it('Create buying-article', { scrollBehavior: false }, () => {
+    it('Create request-article', { scrollBehavior: false }, () => {
         // stage 1
 
         cy.get('div[id="buy-or-sell"]').within(() => {
@@ -64,7 +64,7 @@ describe('Create article', () => {
         // confirm
     })
     
-    it('Create selling-article', () => {
+    it('Create offer-article', () => {
     
     })
     

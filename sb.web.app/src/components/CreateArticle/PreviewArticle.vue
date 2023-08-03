@@ -2,7 +2,7 @@
     <div>
     <div id="center-header">
       <h2> {{ $t('shop_items.preview') }} </h2>
-      <p> {{ $t('shop_items.ensure_data_correct') }} </p>
+      <p> {{ $t('shop_items.check_item_is_correct') }} </p>
     </div>
     <div id="items-container">
       <PreviewItem :title="$t('shop_items.item_title')" :text='this.savedProgress.title' :images="null" />

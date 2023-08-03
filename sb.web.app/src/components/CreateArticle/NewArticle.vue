@@ -248,10 +248,13 @@ export default {
       // sanitize the status field
       switch (this.newArticle.status) {
         case 'Need':
-          this.newArticle.status = 'buying'
+          this.newArticle.status = 'request'
+          break
+        case 'Request':
+          this.newArticle.status = 'request'
           break
         case 'Offer':
-          this.newArticle.status = 'selling'
+          this.newArticle.status = 'offer'
           break
       } 
 

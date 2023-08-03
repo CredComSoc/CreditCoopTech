@@ -663,7 +663,7 @@ describe('index routes', function () {
             category: categories[i],
             shortDesc: shortDescs[i],
             destination: destinations[i],
-            status: "selling"
+            status: "offer"
           }))
         const result = await createArticle(data)
       }

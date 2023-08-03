@@ -24,11 +24,11 @@
       <!-- {{ $t('shop.column_product') }} -->
       <div class="listings">
         <div v-if="this.sellingSearchData.length !== 0">
-          <h3 >{{ $t('sell') }}</h3>
+          <h3 >{{ $t('offer') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=sellingSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.buyingSearchData.length !== 0">
-          <h3>{{ $t('purchase') }}</h3>
+          <h3>{{ $t('request') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
         <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found', {searchWord: this.searchWord}) }}</h3>
@@ -116,9 +116,9 @@ export default {
             this.servicesSearchData.push(article)
           }
 
-          if (article.status === 'buying') {
+          if (article.status === 'offer') {
             this.buyingSearchData.push(article)
-          } else if (article.status === 'selling') {
+          } else if (article.status === 'request') {
             this.sellingSearchData.push(article)
           }
         }

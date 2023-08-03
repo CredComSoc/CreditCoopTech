@@ -6,8 +6,8 @@
     <div className="categories">
 
         <h1>{{ $t('I_want_to') }}</h1>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='selling' :title="$t('buy')"/>
-        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='buying' :title="$t('sell')"/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='offer' :title="$t('offer something')"/>
+        <CategoryButton @filterEvent="triggerFilterEvent" type='status' value='request' :title="$t('request something')"/>
 
         <h1>{{ $t('shop_items.item_type') }}</h1>
         <CategoryButton @filterEvent="triggerFilterEvent" type='article' value='product' :title="$t('product')"/>
