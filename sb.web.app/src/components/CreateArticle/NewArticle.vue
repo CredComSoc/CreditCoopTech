@@ -219,6 +219,7 @@ export default {
       editArticle(this.$route.params.artID, newdata).then((res) => {
         if (res.status === 200 || res.status === '200') {
           console.log('Item edit successful')
+          this.$router.push({ path: '/profile' })
         } else {
           console.error('Edit unsuccessful ', res.status, res)
         }
