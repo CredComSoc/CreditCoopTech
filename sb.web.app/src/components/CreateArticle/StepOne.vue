@@ -12,44 +12,7 @@
     </div>
     <div id="category" class="input">
       <Combobox ref="categoryInput" name="category-type" :label="$t('category')" 
-        :options='[
-          "Facilities",
-          "Antiques",
-          "Business Networking",
-          "Used & Recycling",
-          "Staffing",
-          "Construction & Property Maintenance",
-          "Cafés, Restaurants, Bars",
-          "Finance, Law, Business Development",
-          "Fuel and Power",
-          "Photography, Film & Marketing",
-          "Leisure & Play",
-          "Coaching",
-          "Hotels & Conferences",
-          "IT, Computers & Telephony",
-          "Clothes, Shoes & Fashion",
-          "Art",
-          "Consultancy",
-          "Office Space",
-          "Office Supplies",
-          "Body Care, Beauty, Hair & Health",
-          "Agriculture & Forestry",
-          "Food",
-          "Metal & Sheet Metal",
-          "Brokerage & Real Estate",
-          "Furniture & Interiors",
-          "Entertainment",
-          "Jewelry",
-          "Carpentry & Wood Products",
-          "Sanitary, Plumbing & Electricity",
-          "Technology, Electronics & Appliances",
-          "Textiles & Sewing",
-          "Interpretation & Translation",
-          "Gardening & Flowers",
-          "Tourism & Travel",
-          "Laundry & Cleaning",
-          "Other"
-        ]' 
+        :options='categories' 
         :placeholder="$t('shop_items.item_category_prompt')" 
       />
     </div>
@@ -63,6 +26,7 @@
 import Combobox from './Combobox.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
+import { getCategories } from '../../serverFetch'
 
 export default {
   name: 'UserInput',
@@ -72,6 +36,11 @@ export default {
     TextArea
   },
   props: ['savedProgress'],
+  data () {
+    return {
+      categories: []
+    }
+  },
   methods: {
     getStepOneInputs () {
       return { 
@@ -139,6 +108,9 @@ export default {
     if ('status' in this.savedProgress) {
       this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
+    getCategories().then((res) => {
+      this.categories = res.map(element => element.name)
+    })
   }
 }
 </script>

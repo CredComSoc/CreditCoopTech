@@ -364,7 +364,7 @@ module.exports = function() {
 
       db.close()
       res.status(200).send(data)
-    } catch {
+    } catch(e) {
       db.close()
       res.status(200).send(data)
     }
@@ -744,16 +744,26 @@ module.exports = function() {
 
     // create a article object in mongoDB
     router.post('/upload/article', upload.array('file', 5), async (req, res) => {
+      const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
       if (!req.isAuthenticated()) {
         res.sendStatus(401)
       } else {
         const newArticle = JSON.parse(req.body.article);
-        if (req.files)
+        if (req.files.length > 0)
         {
           let images = req.files.map(obj => obj.filename);
           newArticle.coverImg = images[req.body.coverImgInd];
           images = images.filter((img) => { return img !== newArticle.coverImg })
           newArticle.img = images;
+        }
+        else
+        {
+          dbo.collection("category").findOne({"name": newArticle.category}).then(res => 
+            {
+              newArticle.coverImg = res.defaultMainImage;
+              newArticle.img = res.defaultImage;
+            }) 
         }
         newArticle.id = uuid.v4().toString();
         newArticle.userUploader = req.user
@@ -766,8 +776,7 @@ module.exports = function() {
         if ('end-date' in newArticle) {
           newArticle['end-date'] = new Date(newArticle['end-date']);
         }
-        const db = await MongoClient.connect(dbUrl)
-        const dbo = db.db(dbFolder);
+        
         dbo.collection("posts").insertOne(newArticle, (err, result)=>{
           if (err) {
             res.sendStatus(500)
@@ -1269,5 +1278,55 @@ module.exports = function() {
     })
   })
 
+
+    //     Categories
+
+
+
+  router.post('/categories', upload.array('file', 5), (req, res) => {
+    let images = req.files.map(obj => obj.filename);
+    let coverImg = images[req.body.coverImgInd];
+    images = images.filter((img) => { return img !== coverImg })
+    let categories = {
+      name: req.body.name,
+      defaultImage: images,
+      defaultMainImage: coverImg
+    }
+    try {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection("category").insertOne(categories, (err, result) => {
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else if (result != null) {
+            res.sendStatus(200);
+            db.close()
+          }
+        })
+      })
+    }
+    catch (ex) {
+      res.status(500).send({ exception: ex });
+    }
+  })
+
+  router.get("/categories", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    const result = await dbo.collection("category").find({});
+    
+   result.toArray(function (err, categories) {
+    if (err) {
+      res.sendStatus(400)
+      db.close()
+    }
+    else {
+      res.status(200).json(categories)
+      db.close()
+    } 
+  })
+  })
 return { 'router': router, 'conn': conn }
 };

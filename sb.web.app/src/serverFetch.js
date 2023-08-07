@@ -863,3 +863,31 @@ export async function deleteEvent (id) {
 
   return promise
 }
+
+export async function createNewCategories (data) {
+  return await fetch(EXPRESS_URL + '/categories', { 
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}
+
+export async function getCategories () {
+  return fetch(EXPRESS_URL + '/categories', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}

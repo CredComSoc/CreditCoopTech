@@ -63,7 +63,9 @@
         "whoDoYouWantToSearchForTodayLabel": "Who do you want to search for today?",
         "send_token": "Send {token}",
         "commentLabel": "Comment",
-        "unknown_city": "Unknown city"
+        "unknown_city": "Unknown city",
+        "addMember": "Add Member",
+        "addCategory": "Add Category"
     },
     "event": {
         "instructions": "Instructions",

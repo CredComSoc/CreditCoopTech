@@ -69,16 +69,17 @@ export default {
       }
     },
     validateStepThree () {
-      if (this.imageObjs.length === 0) {
-        this.$emit('emptyImageError')
-        return false
-      } else {
-        const hasCoverImg = this.getStepThreeInputs().img.some((img) => img.isCoverImg === true)
-        if (!hasCoverImg) {
-          this.$emit('emptyCoverImage')
-        }
-        return hasCoverImg
-      }
+      return true
+      // if (this.imageObjs.length === 0) {
+      //   this.$emit('emptyImageError')
+      //   return false
+      // } else {
+      //   const hasCoverImg = this.getStepThreeInputs().img.some((img) => img.isCoverImg === true)
+      //   if (!hasCoverImg) {
+      //     this.$emit('emptyCoverImage')
+      //   }
+      //   return true
+      // }
     },
     deleteImg (imgId) {
       for (let i = imgId; i < this.images.length; i++) {

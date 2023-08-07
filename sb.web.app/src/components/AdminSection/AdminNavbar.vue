@@ -26,6 +26,17 @@
               <span class="mob-cap">  {{ $t('nav.members') }}  </span>
             </router-link>
           </div>
+          <div id="navbar-members" class="navlogo">
+             <router-link :to="{name:'AddCategories'}">
+              <figure class="logo-click">              
+                  <img src="../../assets/navbar_logos/add.png" />
+                  <figcaption class="l-text"> {{ $t('user.addCategory') }} </figcaption>
+              </figure>
+            </router-link>
+            <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">
+              <span class="mob-cap">  {{ $t('nav.members') }}  </span>
+            </router-link>
+          </div>
           <div id="navbar-economy" class="navlogo">
              <router-link :to="{name:'AdminEconomy'}">
               <figure class="logo-click">              
