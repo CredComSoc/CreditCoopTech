@@ -77,11 +77,6 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .reset-box {
     font-family: Ubuntu;
@@ -161,47 +156,9 @@ button:focus {
     outline: none;
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
-.header-container {
-  width: 100%;
-  height: 80px;
-  top: 0;
-  z-index: 3;
-  position: fixed;
-  background: #fff;
-  border-bottom: 1px solid black;
-}
 
- nav {
-  background-color: white;
-  overflow: visible;
-  display: flex;
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
 
-.middle-logo {
-  flex-shrink: 0;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 3px;
-  margin-top: 3px;
-  height: 100%;
-}
 
-a {
-  text-decoration: none;
-  color: black;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: black;
-}
 
 </style>

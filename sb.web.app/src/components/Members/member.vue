@@ -55,10 +55,6 @@ export default {
 
 <style scoped>
  * {
-        font-family: Ubuntu;
-        font-style: normal;
-        font-weight: normal;
-        letter-spacing: 0.05em;
         font-weight: 500;
         font-size: 12px;
     }

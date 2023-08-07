@@ -206,11 +206,8 @@ export default {
 <style scoped>
  @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
- * {
-    font-family: 'Ubuntu', sans-serif;
-    padding: 0;
-    margin: 0;
-  }
+
+ 
 
   #title {
     font-variant: all-petite-caps;

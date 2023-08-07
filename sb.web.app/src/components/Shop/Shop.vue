@@ -31,7 +31,7 @@
           <h3>{{ $t('purchase') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
-        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found') }}</h3>
+        <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found', {searchWord: this.searchWord}) }}</h3>
         <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
         <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" :title="$t('success')" btnText="Ok" :cardText="$t('shop.item_added')" />
       </div>
@@ -86,6 +86,7 @@ export default {
         this.servicesSearchData = []
         this.buyingSearchData = []
         this.sellingSearchData = []
+        this.searchWord = searchWord
 
         this.enableSearch = false
 
@@ -217,15 +218,6 @@ export default {
 </script>
 
 <style scoped>
-
-* {
-  font-family: Ubuntu;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 0;
-  margin:0;
-}
 .wrapper {
   display: flex;
   flex-direction: column;

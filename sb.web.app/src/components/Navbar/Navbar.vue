@@ -133,13 +133,13 @@
             </router-link>
           </div>
           <div id="navbar-logout" class="navlogo">
-            <router-link :to="{name:''}" @click="logOut">
+            <router-link :to="{name:''}" @click="this.showSignOutModal = true">
               <figure class="logo-click">
                   <img src="../../assets/link_arrow/popup_close.png" alt="$t('nav.sign_out')"/>
                   <figcaption class="l-text">  {{ $t('nav.sign_out') }}  </figcaption>
               </figure>
             </router-link>
-            <router-link :to="{name:''}" @click="logOut" v-if="this.isActive">
+            <router-link :to="{name:''}" @click="this.showSignOutModal = true" v-if="this.isActive">
               <span class="mob-cap">  {{ $t('nav.sign_out') }} </span>
             </router-link>
           </div>
@@ -152,6 +152,9 @@
           <i class="fa fa-bars"></i>
         </button>
       </nav>
+      <Modal :open="showSignOutModal" proceedText="Yes, please sign me out" @proceed="logOut" closeText="No, please go back" @close="showSignOutModal = !showSignOutModal">
+        <h4>Are you sure you want to sign out?</h4><br />
+      </Modal>
     </header>
     
   </div>
@@ -163,11 +166,14 @@
 import { useRouter } from 'vue-router'
 import { logout, setNotificationsToSeen, getCart } from '../../serverFetch.js'
 import Notifications from './Notifications.vue'
+import Modal from '../Modal/Modal.vue'
+import { ref } from 'vue'
 const router = useRouter()
 
 export default {
   components: {
-    Notifications
+    Notifications,
+    Modal
   },
   data () {
     return {
@@ -176,7 +182,8 @@ export default {
       dropdownActive: false, // if a dropdown menu is active
       newNotifications: [],
       oldNotifications: [],
-      componentKey: 0
+      componentKey: 0,
+      showSignOutModal: ref(false)
     }
   },
   name: 'Navbar',
@@ -322,44 +329,11 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-html {
-  scroll-behavior: smooth;
-}
 
-.header-container {
-  width: 100%;
-  height: 80px;
-  top: 0;
-  z-index: 3;
-  position: fixed;
-  background: #fff;
-  border-bottom: 1px solid black;
-}
 
-header {
-  margin-left: auto;
-  margin-right: auto;
-  height: 100%;
-  margin-bottom: 0;
-  margin-top: 0;
-  width: 75%;
-}
 
- nav {
-  background-color: white;
-  overflow: visible;
-  display: flex;
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
+
 
 #bell-container {
   position: absolute;

@@ -1,5 +1,5 @@
 <template>
-  <div class="item-center">
+  <div class="search-form-container">
     <form @submit.prevent="$emit('searchEvent', message)">
       <input :type="search" v-model="message" :placeholder="[[ placeHolderMessage ]]"/>
       <button class="d-inline-block">
@@ -27,13 +27,19 @@ export default {
 </script>
 <style scoped>
 
-.item-center {
+.search-form-container {
   display: flex;
   justify-content: center;
+  min-width: 300px;
+}
+  
+.search-form-container form {
+  width: max(22rem, 50%);
 }
 
 input {
-  width: 30rem;
+  width: calc(100% - 3rem);
+  padding: 0.25em 0.5em;
   border-radius: 10px 0px 0px 10px;
   border-color: black;
 }

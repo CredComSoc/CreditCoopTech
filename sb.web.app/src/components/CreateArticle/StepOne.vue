@@ -17,7 +17,7 @@
       />
     </div>
     <div id="type" class="input">
-      <Combobox ref="typeInput" name="articale-type" :label="$t('shop_items.item_type')" :options="['product', 'service']" :placeholder="$t('shop.is_item_product_or_service')" />
+      <Combobox ref="typeInput" name="articale-type" :label="$t('shop_items.item_type')" :options="['Product', 'Service']" :placeholder="$t('shop.is_item_product_or_service')" />
     </div>
   </div>
 </template>

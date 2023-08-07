@@ -1,5 +1,5 @@
 <template>
-  <div style="max-height: 50em; overflow: scroll; overflow-x: hidden;">
+  <div style="max-height: 50em; overflow: scroll; ">
     <table v-if="requests">
       <tr>
         <th>{{ $t('business') }}</th>

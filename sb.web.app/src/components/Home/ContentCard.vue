@@ -26,14 +26,7 @@ export default {
 </script>
 
 <style scoped>
-    * {
-        font-family: Ubuntu;
-        font-style: normal;
-        font-weight: normal;
-        letter-spacing: 0.05em;
-        padding: 0;
-        margin:0;
-    }
+
 
     h3 {
         padding-top: 30px;
