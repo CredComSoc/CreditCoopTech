@@ -402,8 +402,8 @@ module.exports = function() {
       }
 
       db.close()
-      console.log("Errors: ", errors)
-      console.log("Data: ", data)
+      //console.log("Errors: ", errors)
+      //console.log("Data: ", data)
       res.status(200).send(data)
     } catch (error) {
       console.log("Error occured: ", error)
@@ -514,35 +514,37 @@ module.exports = function() {
   router.get("/economy", async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder)
-    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-    const userId = user._id.toString()
-    delete user._id
-    delete user.password
     let allTransactions = []
-    try{
-      const response = await axios.get(CC_NODE_URL + '/transactions', { 
-        headers: {
-        'cc-user': userId,
-        'cc-auth': '123'
-        },
-        params: {
-          'state': 'completed'
-        }})
+    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+    if (user) {
+      const userId = user._id.toString()
+      delete user._id
+      delete user.password
+      try{
+        const response = await axios.get(CC_NODE_URL + '/transactions', {
+          headers: {
+            'cc-user': userId,
+            'cc-auth': '123'
+          },
+          params: {
+            'state': 'completed'
+          }
+        })
         console.log(response.data)
         let userNames = {}
         for (const entry of response.data) {
           //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName   
+            userNames[entry.entries[0].payee] = payee.profile.accountName
           }
           if(!(entry.entries[0].payer in userNames)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName   
+            userNames[entry.entries[0].payer] = payer.profile.accountName
           }
           if(!(entry.entries[0].author in userNames)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName   
+            userNames[entry.entries[0].author] = author.profile.accountName
           }
           console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
@@ -551,14 +553,15 @@ module.exports = function() {
           console.log(entry)
           allTransactions.push(entry)
         }
-    } catch (error) {
-      db.close()
-      console.log(error)
+      } catch (error) {
+        db.close()
+        console.log(error)
+      }
     }
-      db.close()
-      console.log(allTransactions)
-      res.status(200).send(allTransactions)
-    })
+    db.close()
+    //console.log(allTransactions)
+    res.status(200).send(allTransactions)
+  })
     /*try{
       const db = await MongoClient.connect(dbUrl)
       const dbo = db.db(dbFolder);
@@ -735,24 +738,29 @@ module.exports = function() {
       res.sendStatus(401)
     } else {
       const user = await getUser({'profile.accountName': req.user})
-      let products = [];
-      const db = await MongoClient.connect(dbUrl)
-      const dbo = db.db(dbFolder);
-      dbo.collection('posts').find({}).toArray(function (err, posts) {
-        if (err) {
-          res.sendStatus(500)
-          db.close()
-        }
-        else {
-          posts.forEach(listing => {
-            if(listing.userId.toString() === user._id.toString()) {
-              products.push(listing)
-            }
-          })
-          res.status(200).send({products})
-          db.close()
-        } 
-      })
+      if (user) {
+        let products = [];
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
+        dbo.collection('posts').find({}).toArray(function (err, posts) {
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else {
+            posts.forEach(listing => {
+              if(listing.userId.toString() === user._id.toString()) {
+                products.push(listing)
+              }
+            })
+            res.status(200).send({products})
+            db.close()
+          }
+        })
+      } else {
+        res.sendStatus(500)
+        db.close()
+      }
     }
   })
 
@@ -808,7 +816,9 @@ module.exports = function() {
         newArticle.userUploader = req.user
 
         const user = await getUser({'profile.accountName': req.user})
-        newArticle.userId = user._id
+        if (user) {
+          newArticle.userId = user._id
+        }
         // for ttl index in posts
         if ('end-date' in newArticle) {
           newArticle['end-date'] = new Date(newArticle['end-date']);
@@ -890,8 +900,6 @@ module.exports = function() {
             res.sendStatus(500);
           }
           else if (result.matchedCount != 0) {
-            
-
             db.close();
             res.sendStatus(200);
           }
@@ -1313,32 +1321,38 @@ module.exports = function() {
       }
       
       const user = await getUser({'profile.accountName': req.user})
-      
-      newEvent.userId = user._id
+
+      if (!user) {
+        newEvent.userId = user._id
+
       
       // for ttl index in posts
       //if ('end-date' in newArticle) {
       //newArticle['end-date'] = new Date(newArticle['end-date']);
       //}
-      const db = await MongoClient.connect(dbUrl)
-      const dbo = db.db(dbFolder);
-      dbo.collection("events").insertOne(newEvent, (err, result)=>{
-        if (err) {
-          res.sendStatus(500)
-          db.close()
-        }
-        else if (result != null) {
-          res.sendStatus(200);
-          db.close()
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.status(404).send("No posts found.")
-        }
-      })
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
+        dbo.collection("events").insertOne(newEvent, (err, result)=>{
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else if (result != null) {
+            res.sendStatus(200);
+            db.close()
+          }
+          else {
+            // If we dont find a result
+            db.close();
+            res.status(404).send("No posts found.")
+          }
+        })
+      } else {
+        res.status(500).send("User not found")
+      }
     }
   })
+
   router.post('/event/remove/:id', (req, res) => {
     const query = { _id: ObjectId(req.params.id) };
     MongoClient.connect(dbUrl, (err, db) => {
