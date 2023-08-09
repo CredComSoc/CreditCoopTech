@@ -1290,7 +1290,8 @@ module.exports = function() {
     let categories = {
       name: req.body.name,
       defaultImage: images,
-      defaultMainImage: coverImg
+      defaultMainImage: coverImg,
+      isActive: true
     }
     try {
       MongoClient.connect(dbUrl, (err, db) => {
@@ -1327,6 +1328,31 @@ module.exports = function() {
       db.close()
     } 
   })
+  })
+
+  router.post('/updateCategoryStatus', upload.none(),  (req, res) => {
+    console.log(req.body.id)
+    try {
+      let bodyData = req.body;
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        const query = { "_id": ObjectId(bodyData.id) };
+         dbo.collection("category").updateOne(query , {$set: {'isActive': bodyData.isActive.toString() == "true"?true:false}}, (err, result) => {
+          if (err) {
+            res.status(400).json(false)
+            db.close()
+          }
+          else {
+            res.status(200).json(true)
+            db.close()
+          } 
+         })
+      })
+    }
+    catch (ex) {
+      console.log(ex)
+      res.status(500).send({ exception: ex });
+    }
   })
 return { 'router': router, 'conn': conn }
 };

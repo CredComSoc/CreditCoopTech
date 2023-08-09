@@ -891,3 +891,18 @@ export async function getCategories () {
     return null
   })
 }
+export async function updateCategoryStatus (data) {
+  console.log(data)
+  return await fetch(EXPRESS_URL + '/updateCategoryStatus', { 
+    method: 'POST',
+    
+    credentials: 'include',
+    body: data 
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}

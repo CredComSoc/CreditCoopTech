@@ -21,9 +21,11 @@ import AdminAddMember from '../components/AdminSection/AdminAddMember.vue'
 import AdminEconomy from '../components/AdminSection/AdminEconomy.vue'
 import NetworkSetting from '../components/AdminSection/NetworkSettings.vue'
 import Event from '../components/Event/Event.vue'
-import CreateNewCategories from '../components/AdminSection/AddNewCategory.vue'
+import CreateNewCategories from '../components/AdminSection/Categories/AddNewCategory.vue'
+import CategoriesList from '../components/AdminSection/Categories/CategoriesList.vue'
+
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
-const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting', 'AddCategories']
+const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting', 'AddCategories', 'CategoriesList']
 
 const routes = [
   // USER ROUTES
@@ -153,6 +155,11 @@ const routes = [
     path: '/addCategories',
     name: 'AddCategories',
     component: CreateNewCategories
+  },
+  {
+    path: '/categories',
+    name: 'CategoriesList',
+    component: CategoriesList
   }
 ]
 

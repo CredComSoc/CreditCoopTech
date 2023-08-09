@@ -27,10 +27,10 @@
             </router-link>
           </div>
           <div id="navbar-members" class="navlogo">
-             <router-link :to="{name:'AddCategories'}">
+             <router-link :to="{name:'CategoriesList'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/add.png" />
-                  <figcaption class="l-text"> {{ $t('user.addCategory') }} </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.categories') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">

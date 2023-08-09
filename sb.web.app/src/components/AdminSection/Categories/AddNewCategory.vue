@@ -37,8 +37,8 @@
   
 <script>
 /* eslint-disable */
-import UploadedImage from "../CreateArticle/UploadedImage.vue"
-import { createNewCategories } from '../../serverFetch'
+import UploadedImage from "../../CreateArticle/UploadedImage.vue"
+import { createNewCategories } from '../../../serverFetch'
 import { useRouter } from 'vue-router'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 
@@ -131,7 +131,7 @@ const router = useRouter()
         data.append('name', this.name)
         createNewCategories(data).then((res) => {
         if (res.status === 200) {
-            this.$router.push({ name: 'AdminHome' }) 
+            this.$router.push({ name: 'CategoriesList' }) 
         } else {
             this.error = true
         }
