@@ -364,7 +364,7 @@ module.exports = function() {
 
       db.close()
       res.status(200).send(data)
-    } catch {
+    } catch (e) {
       db.close()
       res.status(200).send(data)
     }
@@ -485,21 +485,24 @@ module.exports = function() {
         params: {
           'state': 'completed'
         }})
-        console.log(response.data)
+        //console.log(response.data)
         let userNames = {}
-        for (const entry of response.data) {
-          //console.log(entry)
+        var arrayData = response.data;
+        if(arrayData.data)
+      {
+        for (const entry of arrayData.data) {
+          console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName   
+            userNames[entry.entries[0].payee] = payee? payee.profile.accountName: ""   
           }
           if(!(entry.entries[0].payer in userNames)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName   
+            userNames[entry.entries[0].payer] = payer ? payer.profile.accountName: ""
           }
           if(!(entry.entries[0].author in userNames)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName   
+            userNames[entry.entries[0].author] = author? author.profile.accountName: ""   
           }
           console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
@@ -508,6 +511,7 @@ module.exports = function() {
           console.log(entry)
           allTransactions.push(entry)
         }
+      }
     } catch (error) {
       db.close()
       console.log(error)

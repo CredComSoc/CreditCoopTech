@@ -64,7 +64,8 @@
         "no_users_found": "No members found for '{searchWord}'.",
         "send_token": "Send {token}",
         "commentLabel": "Comment",
-        "unknown_city": "Unknown city"
+        "unknown_city": "Unknown city",
+        "financialOverview": "Financial Overview"
     },
     "event": {
         "instructions": "Instructions",
@@ -190,6 +191,13 @@
         "image_upload_failed": "Image upload failed",
         "try_again_later": "Please try again later.",
         "publish": "Publish"
+    },
+    "financial" : {
+    "revenue": "Revenue",
+    "today": "Today",
+    "this_week": "This Week",
+    "this_month": "This Month",
+    "this_year": "This Year"
     },
     "balance": "Balance",
     "credit": "Credit",
