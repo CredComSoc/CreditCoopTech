@@ -19,7 +19,7 @@
              <router-link :to="{name:'AdminAddMember'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/add.png" />
-                  <figcaption class="l-text"> {{ $t('user.addMember') }} </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.add_member') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminAddMember'}" v-if="this.isActive" @click="openNav">

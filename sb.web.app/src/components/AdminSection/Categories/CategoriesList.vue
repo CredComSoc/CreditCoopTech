@@ -2,7 +2,7 @@
     <div>
         <button class="add_button">
             <router-link :to="{name:'AddCategories'}" >
-                Add Categories
+                {{$t('add_category')}}
             </router-link>
             </button>
       <table>

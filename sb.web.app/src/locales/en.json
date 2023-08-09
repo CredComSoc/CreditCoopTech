@@ -65,9 +65,9 @@
         "send_token": "Send {token}",
         "commentLabel": "Comment",
         "unknown_city": "Unknown city",
-        "addMember": "Add Member",
-        "addCategory": "Add Category",
-        "categoriesList": "Categories List",
+        "add_member": "Add Member",
+        "add_category": "Add Category",
+        "categories_list": "Categories List",
         "categories": "Categories"
     },
     "event": {
