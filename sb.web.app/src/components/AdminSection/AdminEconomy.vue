@@ -28,7 +28,7 @@
           </div>
         </div>
         <!--This is a similar solution to the filter from profile->MyPurchases -->
-        <div className='filter'>
+        <div className='filter' v-if="this.filteredTransactions.length > 0">
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
           <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
