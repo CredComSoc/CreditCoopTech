@@ -54,7 +54,7 @@ export default {
       const uri = window.location.href.split('/')
       const token = uri[4]
       if (this.password === this.password2) {
-        console.log('Token = ' + token)
+        //console.log('Token = ' + token)
         resetToken(token, this.password).then((response) => {
           if (response) {
             this.error = false

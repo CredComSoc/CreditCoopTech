@@ -1,7 +1,8 @@
 <template>
   <div>
   <div>
-    <h2 class="center-text">{{ $t('shop_items.new_articleCAPS') }} </h2>
+    <h2 v-if="!this.$route.path.includes('edit')" class="center-text">{{ $t('shop_items.new_articleCAPS') }}</h2>
+    <h2 v-else class="center-text">{{ $t('shop_items.edit_articleCAPS') }}</h2>
   </div>
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
@@ -60,7 +61,7 @@ export default {
   },
   created () {
     if (this.$route.params.artID) {
-      console.log('ID: ', this.$route.params.artID)
+      //console.log('ID: ', this.$route.params.artID)
       fetch(EXPRESS_URL + '/article/' + this.$route.params.artID, {
         method: 'GET',
         credentials: 'include'
@@ -77,7 +78,7 @@ export default {
 
               // get print format from db object and assign to frontend
               if (typeof res.printFormat !== 'undefined') {
-                console.log('Assigning from res.printFormat')
+                //console.log('Assigning from res.printFormat')
                 this.newArticle.destination = res.printFormat.destination
                 this.newArticle['end-date'] = res.printFormat['end-date']
                 this.newArticle.status = res.printFormat.status
@@ -90,7 +91,7 @@ export default {
                 this.newArticle.article = res.listing.article
                 this.newArticle.category = res.listing.category
               }
-              console.log(this.newArticle)
+              //console.log(this.newArticle)
             }
           )
         }
@@ -98,7 +99,7 @@ export default {
         error => console.log('Error: ', error)
       )
     } else {
-      console.log('Param artID not found!')
+      //console.log('Param artID not found!')
     }
   },
   methods: {
@@ -114,15 +115,15 @@ export default {
     },
     saveFirstStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
-      console.dir(this.newArticle)
+      //console.dir(this.newArticle)
     }, 
     saveSecondStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepTwo.getStepTwoInputs() }
-      console.dir(this.newArticle)
+      //console.dir(this.newArticle)
     },
     saveThreeStep () {
       this.newArticle = { ...this.newArticle, ...this.$refs.stepThree.getStepThreeInputs() }
-      console.dir(this.newArticle)
+      //console.dir(this.newArticle)
     },
     goForwardStep () {
       if (this.currentStep === 1) {
@@ -155,7 +156,7 @@ export default {
         this.addUploadDate()
         this.sanitizeArticle()
         if (this.$route.path.includes('edit')) {
-          console.log('Editing Article')
+          //console.log('Editing Article')
           this.editArticle()
         } else {
           this.uploadArticle()
@@ -167,12 +168,12 @@ export default {
         this.saveSecondStep()
         this.currentStep = 1
         this.imgURL = 'one_three.png'
-        this.nextBtnText = 'Nästa'
+        this.nextBtnText = 'Next'
       } else if (this.currentStep === 3) {
         this.saveThreeStep()
         this.currentStep = 2
         this.imgURL = 'two_three.png'
-        this.nextBtnText = 'Nästa'
+        this.nextBtnText = 'Next'
       } else if (this.currentStep === 4) {
         this.currentStep = 3
         this.imgURL = 'three_three.png'
@@ -181,7 +182,7 @@ export default {
     },
     uploadArticle () {
       const createdArticle = isProxy(this.newArticle) ? toRaw(this.newArticle) : this.newArticle
-      console.log('Created article: ', createdArticle)
+      //console.log('Created article: ', createdArticle)
       const data = new FormData()
       let index = 0
       for (const file of createdArticle.img) {
@@ -192,7 +193,7 @@ export default {
         ++index
       }
       data.append('article', JSON.stringify(createdArticle))
-      console.log('Article', data)
+      //console.log('Article', data)
       // This will upload the article to the server
       uploadArticle(data).then((res) => {
         if (res.status === 200) {
@@ -218,13 +219,14 @@ export default {
 
       editArticle(this.$route.params.artID, newdata).then((res) => {
         if (res.status === 200 || res.status === '200') {
-          console.log('Item edit successful')
-          this.$router.push({ path: '/profile' })
+          //console.log('Item edit successful')
+          this.$router.push({ path: '/shop' })
         } else {
           console.error('Edit unsuccessful ', res.status, res)
         }
       }).catch((error) => {
-        console.log('Error: ', error)
+        console.error('Error: ', error)
+        alert('A server error occured when editing the item.')
       })
     },
     addUploadDate () {

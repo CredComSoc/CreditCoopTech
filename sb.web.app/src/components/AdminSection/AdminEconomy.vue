@@ -130,7 +130,6 @@ export default {
       let transactionsMonth = []
       let transactionsYear = []
       //filter out transactions based on date from all transactions and fills arrays
-      console.log(this.allTransactions)
       transactionsDay = this.allTransactions.filter(item => todayday.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       transactionsWeek = this.allTransactions.filter(item => lastWeek.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       transactionsMonth = this.allTransactions.filter(item => lastMonth.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())

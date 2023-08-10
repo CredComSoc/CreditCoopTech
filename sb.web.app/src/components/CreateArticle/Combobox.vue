@@ -75,7 +75,7 @@ export default {
           day: '2-digit'
         }
       }
-      console.log(date)
+      //console.log(date)
       const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
       return now + ' - ' + new Date(date).toLocaleString('sv-SE', options).replaceAll('-', '/')
     },

@@ -216,7 +216,8 @@ export default {
           if (data !== false) {
             this.$router.push({ name: 'AdminChat', params: { chatID: data } })
           } else {
-            console.log('chat error!!')
+            //console.log('chat error!!')
+            alert('Chat error!')
             this.chatError = true
           }
         }).catch(err => console.log(err))
@@ -245,8 +246,8 @@ export default {
       if (member.accountName === this.userprofile) {
         this.profileData = member
         this.profileData.previousname = this.profileData.accountName
-        console.log(this.profileData.previousname)
-        console.log(this.profileData.accountName)
+        //console.log(this.profileData.previousname)
+        //console.log(this.profileData.accountName)
       }
     }
     this.getImgURL()

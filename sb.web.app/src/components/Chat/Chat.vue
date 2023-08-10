@@ -137,7 +137,7 @@ export default {
           this.allmembers.push(member.accountName)
         }
       }
-      console.log(this.allmembers)
+      //console.log(this.allmembers)
     },
     showMembers () {
       this.showMemberlist = true
@@ -155,7 +155,8 @@ export default {
             this.getChatHistories(data)
             this.showMemberlist = false
           } else {
-            console.log('chat error!!')
+            //console.log('chat error!!')
+            alert('Chat error!')
             this.chatError = true
           }
         }).catch(err => console.log(err))
@@ -171,7 +172,7 @@ export default {
     })
 
     this.socket.onAny((event, ...args) => {
-      console.log(event, args)
+      //console.log(event, args)
     })    
   },
   beforeUnmount () {

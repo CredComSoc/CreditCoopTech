@@ -135,8 +135,8 @@ export default {
       this.putInCart = false
     },
     filteringMethod (checked, type, value) {
-      console.log(value)
-      console.log(checked)
+      //console.log(value)
+      //console.log(checked)
 
       if (type === 'destination') {
         this.changeFiltering(checked, this.destinationsArray, value)
@@ -150,10 +150,10 @@ export default {
     },
     changeFiltering (checked, specificArray, value) {
       if (!checked) {
-        console.log('ADDED')
+        //console.log('ADDED')
         specificArray.push(value)
       } else {
-        console.log('removed')
+        //console.log('removed')
         specificArray.splice(specificArray.indexOf(value), 1)
       }
     },
@@ -198,7 +198,7 @@ export default {
         response => response
       ).then(
         success => {
-          console.log(success)
+          //console.log(success)
         } // Handle the success response object
       ).catch(
         error => console.log(error) // Handle the error response object

@@ -66,7 +66,7 @@ export default {
     },
     async handleSubmit () {
       login(this.username.toLowerCase(), this.password).then((response) => {
-        console.log(response)
+        //console.log(response)
         if (response) {
           this.error = false  
           this.loginCount = 0   

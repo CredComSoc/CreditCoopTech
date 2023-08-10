@@ -41,7 +41,7 @@ export default {
 
   methods: {
     triggerSearch (newSearchWord) {
-      console.log('search triggered')
+      //console.log('search triggered')
       this.searchWord = newSearchWord
       let searchWord = newSearchWord.split(' ')
       
@@ -74,7 +74,7 @@ export default {
           }
           adminMembersArray.get('Admin').push(member)
         } else {
-          console.log(member)
+          //console.log(member)
           if (!allMembersArray.has(member.city)) {
             allMembersArray.set(member.city, [])
           }
@@ -84,9 +84,9 @@ export default {
 
       // console.log(allMembersArray.values())
 
-      console.log(allMembersArray.size)
+      //console.log(allMembersArray.size)
       this.allMembersArraySize = allMembersArray.size
-      console.log(adminMembersArray.size)
+      //console.log(adminMembersArray.size)
       this.adminMembersArraySize = adminMembersArray.size
 
       //Sort alphabetically by swedish.
@@ -96,13 +96,13 @@ export default {
       const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
       const finishMap = new Map([...adminMembersArray, ...sortedMap])
 
-      console.log(finishMap)
+      //console.log(finishMap)
 
       this.SearchData = finishMap
     }
   },
   mounted: function () {
-    console.log(this.$store.state.allMembers)
+    //console.log(this.$store.state.allMembers)
     this.triggerSearch('')
   }
   

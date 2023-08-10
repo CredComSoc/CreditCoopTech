@@ -103,7 +103,7 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.$store.state.allMembers)
+    //console.log(this.$store.state.allMembers)
     this.triggerSearch('')
   }
   

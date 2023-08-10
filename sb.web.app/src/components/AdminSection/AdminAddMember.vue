@@ -104,7 +104,6 @@ export default {
         this.profileData.phone,
         this.profileData.logo
       )
-      console.log(res.ok)
       if (res.ok) {
         this.registered = true //could register
       } else {
