@@ -3,7 +3,7 @@
 <template>
     <div class="wrapper">   
         <div style="display:flex; justify-content:center;">
-            <h2 class="center-text">{{ $t('user.financialOverview') }}</h2>
+            <h2 class="center-text">{{ $t('user.financial_overview') }}</h2>
         </div>
         <div class="EconomyStats">
           <div><!--Displays the total number of trascations and their turnover this month-->

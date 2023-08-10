@@ -70,6 +70,11 @@
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
         </div>
       </div>
+      <div class="interactContent" v-else>
+        <div>
+          <button class="cartBtn" @click="editItem(); $emit('closePopup');">{{ $t('edit_item') }}</button>
+        </div>
+      </div>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">
         <div>
           <button class="chattBtn" @click="goToChat">{{ $t('chat.start') }}</button>
@@ -140,6 +145,10 @@ export default {
             this.chatError = true
           }
         }).catch(err => console.log(err))
+    },
+    editItem () {
+      // TODO: push to item editing page
+      this.$router.push({ name: 'Edit_Article', params: { artID: this.listingObj.id } })
     }
   },
   created: function () {

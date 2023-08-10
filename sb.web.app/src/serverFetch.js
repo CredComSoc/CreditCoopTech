@@ -320,7 +320,7 @@ export async function getArticleWithId (id) {
 }
 
 export async function uploadArticle (data) {
-  return await fetch(EXPRESS_URL + '/upload/article', { 
+  return await fetch(EXPRESS_URL + '/upload/article', {
     method: 'POST',
     credentials: 'include',
     body: data // This is your file object
@@ -331,6 +331,20 @@ export async function uploadArticle (data) {
   }).catch(error => {
     return error
   }) 
+}
+
+export async function editArticle (id, data) {
+  return await fetch(EXPRESS_URL + '/edit/article/' + id, {
+    method: 'PATCH',
+    credentials: 'include',
+    body: data
+  })
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      return error
+    })
 }
 
 export async function deactivateArticle (id) {
@@ -862,4 +876,47 @@ export async function deleteEvent (id) {
   }) 
 
   return promise
+}
+
+export async function createNewCategories (data) {
+  return await fetch(EXPRESS_URL + '/categories', { 
+    method: 'POST',
+    credentials: 'include',
+    body: data 
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}
+
+export async function getCategories () {
+  return fetch(EXPRESS_URL + '/categories', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+export async function updateCategoryStatus (data) {
+  console.log(data)
+  return await fetch(EXPRESS_URL + '/updateCategoryStatus', { 
+    method: 'POST',
+    
+    credentials: 'include',
+    body: data 
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
 }

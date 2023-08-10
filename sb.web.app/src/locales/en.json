@@ -65,7 +65,12 @@
         "send_token": "Send {token}",
         "commentLabel": "Comment",
         "unknown_city": "Unknown city",
-        "financialOverview": "Financial Overview"
+        "add_member": "Add Member",
+        "add_category": "Add Category",
+        "categories_list": "Categories List",
+        "categories": "Categories",
+        "financial_overview": "Financial Overview"
+
     },
     "event": {
         "instructions": "Instructions",
@@ -252,6 +257,8 @@
     "second_student_group": "The site was further developed for the course TDDI17: Programming projects at Linköping University, by the following students:",
     "close": "close",
     "add_to_cart": "Add to cart",
+    "edit_item": "Edit item",
+    "delete_item": "Delete item",
     "transfer": "Transfer",
     "business": "Business",
     "who": "Who",
