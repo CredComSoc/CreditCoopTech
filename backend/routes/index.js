@@ -531,13 +531,11 @@ module.exports = function() {
             'state': 'completed'
           }
         })
-        console.log(response.data)
         let userNames = {}
         var arrayData = response.data;
         if(arrayData.data)
       {
         for (const entry of arrayData.data) {
-          console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
             userNames[entry.entries[0].payee] = payee? payee.profile.accountName: ""   
@@ -550,11 +548,9 @@ module.exports = function() {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
             userNames[entry.entries[0].author] = author? author.profile.accountName: ""   
           }
-          console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
-          console.log(entry)
           allTransactions.push(entry)
         }
       }
