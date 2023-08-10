@@ -1417,7 +1417,7 @@ module.exports = function() {
   router.get("/categories", async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
-    const result = await dbo.collection("category").find({});
+    const result = await dbo.collection("category").find({isActive: true});
     
    result.toArray(function (err, categories) {
     if (err) {
