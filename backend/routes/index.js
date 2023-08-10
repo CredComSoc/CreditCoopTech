@@ -196,6 +196,8 @@ module.exports = function() {
       completedTransactions: [],
       allEvents: []
     }
+    let errors = []
+    let userId
 
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
@@ -206,53 +208,83 @@ module.exports = function() {
 
       // get current user data
       let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-      data.creditLine = user.min_limit*-1
-      const userId = user._id.toString()
-      delete user._id
-      delete user.password
-      data.user = user
+      if (user) {
+        data.creditLine = user.min_limit*-1
+        userId = user._id.toString()
+        delete user._id
+        delete user.password
+        data.user = user
+      }
 
       // get article data
       let articles = await dbo.collection("posts").find({}).toArray()
       const myArticles = []
       const allArticles = []
+      //console.log("Articles", articles)
       for (let article of articles) {
         const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
-        article.userUploader = articleUser.profile.accountName
+        try {
+          //console.log("User: ", articleUser.profile.accountName)
+          if (articleUser) {
+            article.userUploader = articleUser.profile.accountName
 
-        if(article.userId.toString() === userId.toString()) {
-          myArticles.push(article)
-        }
+            if(userId && article.userId.toString() === userId.toString()) {
+            //console.log("Owner found: ", articleUser.profile.accountName)
+              myArticles.push(article)
+            }
+          }
 
-        const now = new Date()
-        const chosenDate = article["end-date"]
-        if (now.getTime() < chosenDate.getTime()) {
-          allArticles.push(article)
+          const now = new Date()
+          const chosenDate = article["end-date"]
+          //console.log(now.getTime(), Date.parse(chosenDate))
+          if (now.getTime() < Date.parse(chosenDate)) {
+            //console.log("All article found:")
+            allArticles.push(article)
+          }
+
+        } catch (error) {
+          //console.log("Error: ", error)
+          errors.push("Error with processing articles/items")
         }
       }
       data.myArticles = myArticles
       data.allArticles = allArticles
 
+      //console.log("Retrieved articles")
+      //console.log(allArticles)
+      //console.log(myArticles)
       // get all members profile data
       const users = await dbo.collection("users").find({}).toArray()
       const allMembers = []
       for (const user of users) {
-        let userData = user.profile
-        userData.is_admin = user.is_admin
-        userData.email = user.email
-        allMembers.push(userData)
+        try {
+          let userData = user.profile
+          userData.is_admin = user.is_admin
+          userData.email = user.email
+          allMembers.push(userData)
+        } catch (error) {
+          //console.log("Error: ", error)
+          errors.push("Error with processing users")
+        }
       }
       data.allMembers = allMembers
+      //console.log("Users: ", data.allMembers)
 
       // get cart data
       const carts = await dbo.collection("carts").find({}).toArray()
       const myCart = []
       for (const cart of carts) {
-        if (cart.cartOwner === user.profile.accountName) {
-          myCart.push(cart)
+        try {
+          if (user && cart.cartOwner === user.profile.accountName) {
+            myCart.push(cart)
+          }
+        } catch (error) {
+          //console.log("Error: ", error)
+          errors.push("Error with processing carts")
         }
       }
       data.myCart = myCart
+      //console.log("Cart: ", data.myCart)
 
       // get event data
       data.allEvents = await dbo.collection("events").find({}).toArray()
@@ -262,109 +294,120 @@ module.exports = function() {
           data.saldo = 0
           return res.status(200).json(data)
         }
-        const response = await axios.get(CC_NODE_URL + '/account/summary', { 
-        headers: {
-        'cc-user': userId,
-        'cc-auth': '1'
-        }})
-        
-        user_data = response.data.data[userId]
-        data.saldo = user_data.completed.balance
-        data.creditLimit = data.creditLine
-        if(data.saldo < 0)
-        {
-          // reduce credit line *only* if negative balance
-          data.creditLine += data.saldo
-        }
+        if (userId) {
+          const response = await axios.get(CC_NODE_URL + '/account/summary', {
+            headers: {
+              'cc-user': userId,
+              'cc-auth': '1'
+          }})
 
+          user_data = response.data.data[userId]
+          data.saldo = user_data.completed.balance
+          data.creditLimit = data.creditLine
+          if(data.saldo < 0)
+          {
+            // reduce credit line *only* if negative balance
+            data.creditLine += data.saldo
+          }
+        }
       } catch (error) {
-        console.log(error)
+        //console.log("Error: ", error)
+        errors.push("Error processing CC_NODE events")
       }
       
 
       // get requests
       try {
-        const response = await axios.get(CC_NODE_URL + '/transactions', { 
-        headers: {
-        'cc-user': userId,
-        'cc-auth': '1'
-        },
-        params: {
-          'payee': userId
-        }})
-        let users = {}
-        let entries = response.data.data || []
-        for (const entry of entries) {
-          if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            users[entry.entries[0].payee] = payee.profile.accountName   
-          }
-          if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            users[entry.entries[0].payer] = payer.profile.accountName   
-          }
-          if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            users[entry.entries[0].author] = author.profile.accountName   
-          }
-          entry.entries[0].payee = users[entry.entries[0].payee]
-          entry.entries[0].payer = users[entry.entries[0].payer]
-          entry.entries[0].author = users[entry.entries[0].author]
-          if (entry.state === 'completed') {
-            data.completedTransactions.push(entry)
-          } else if (entry.state === 'pending') {
-            data.requests.push(entry)
+        if (userId) {
+          const response = await axios.get(CC_NODE_URL + '/transactions', {
+            headers: {
+              'cc-user': userId,
+              'cc-auth': '1'
+            },
+            params: {
+              'payee': userId
+          }})
+          let users = {}
+          let entries = response.data.data || []
+          for (const entry of entries) {
+            if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+              const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+              users[entry.entries[0].payee] = payee.profile.accountName
+            }
+            if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+              const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+              users[entry.entries[0].payer] = payer.profile.accountName
+            }
+            if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+              const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+              users[entry.entries[0].author] = author.profile.accountName
+            }
+            entry.entries[0].payee = users[entry.entries[0].payee]
+            entry.entries[0].payer = users[entry.entries[0].payer]
+            entry.entries[0].author = users[entry.entries[0].author]
+            if (entry.state === 'completed') {
+              data.completedTransactions.push(entry)
+            } else if (entry.state === 'pending') {
+              data.requests.push(entry)
+            }
           }
         }
         //data.requests = response.data
       } catch (error) {
-        console.log(error)
+        console.log("Error: ", error)
+        errors.push("Error processing CC_NODE payee transactions")
       }
 
       // get transactions
       try {
-        const response = await axios.get(CC_NODE_URL + '/transactions', { 
-        headers: {
-        'cc-user': userId,
-        'cc-auth': '1'
-        },
-        params: {
-          'payer': userId
-        }})
-        let users = {}
-        let entries = response.data.data || []
-        for (const entry of entries) {
-          //console.log(entry)
-          if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-            const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            users[entry.entries[0].payee] = payee.profile.accountName   
-          }
-          if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-            const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            users[entry.entries[0].payer] = payer.profile.accountName   
-          }
-          if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-            const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            users[entry.entries[0].author] = author.profile.accountName   
-          }
-          entry.entries[0].payee = users[entry.entries[0].payee]
-          entry.entries[0].payer = users[entry.entries[0].payer]
-          entry.entries[0].author = users[entry.entries[0].author]
+        if (userId) {
+          const response = await axios.get(CC_NODE_URL + '/transactions', {
+            headers: {
+              'cc-user': userId,
+              'cc-auth': '1'
+            },
+            params: {
+              'payer': userId
+          }})
+          let users = {}
+          let entries = response.data.data || []
+          for (const entry of entries) {
+            //console.log(entry)
+            if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+              const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+              users[entry.entries[0].payee] = payee.profile.accountName
+            }
+            if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+              const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+              users[entry.entries[0].payer] = payer.profile.accountName
+            }
+            if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+              const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+              users[entry.entries[0].author] = author.profile.accountName
+            }
+            entry.entries[0].payee = users[entry.entries[0].payee]
+            entry.entries[0].payer = users[entry.entries[0].payer]
+            entry.entries[0].author = users[entry.entries[0].author]
 
-          if (entry.state === 'completed') {
-            data.completedTransactions.push(entry)
-          } else if (entry.state === 'pending') {
-            data.pendingPurchases.push(entry)
+            if (entry.state === 'completed') {
+              data.completedTransactions.push(entry)
+            } else if (entry.state === 'pending') {
+              data.pendingPurchases.push(entry)
+            }
           }
         }
-      
       } catch (error) {
-        console.error(error)
+        //console.log("Error: ", error)
+        errors.push("Error processing CC_NODE payer transactions")
       }
 
       db.close()
+      //console.log("Errors: ", errors)
+      //console.log("Data: ", data)
       res.status(200).send(data)
-    } catch {
+    } catch (error) {
+      console.log("Error occured: ", error)
+      console.log("Errors: ", errors)
       db.close()
       res.status(200).send(data)
     }
@@ -471,35 +514,37 @@ module.exports = function() {
   router.get("/economy", async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder)
-    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-    const userId = user._id.toString()
-    delete user._id
-    delete user.password
     let allTransactions = []
-    try{
-      const response = await axios.get(CC_NODE_URL + '/transactions', { 
-        headers: {
-        'cc-user': userId,
-        'cc-auth': '123'
-        },
-        params: {
-          'state': 'completed'
-        }})
+    let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+    if (user) {
+      const userId = user._id.toString()
+      delete user._id
+      delete user.password
+      try{
+        const response = await axios.get(CC_NODE_URL + '/transactions', {
+          headers: {
+            'cc-user': userId,
+            'cc-auth': '123'
+          },
+          params: {
+            'state': 'completed'
+          }
+        })
         console.log(response.data)
         let userNames = {}
         for (const entry of response.data) {
           //console.log(entry)
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName   
+            userNames[entry.entries[0].payee] = payee.profile.accountName
           }
           if(!(entry.entries[0].payer in userNames)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName   
+            userNames[entry.entries[0].payer] = payer.profile.accountName
           }
           if(!(entry.entries[0].author in userNames)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName   
+            userNames[entry.entries[0].author] = author.profile.accountName
           }
           console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
@@ -508,14 +553,15 @@ module.exports = function() {
           console.log(entry)
           allTransactions.push(entry)
         }
-    } catch (error) {
-      db.close()
-      console.log(error)
+      } catch (error) {
+        db.close()
+        console.log(error)
+      }
     }
-      db.close()
-      console.log(allTransactions)
-      res.status(200).send(allTransactions)
-    })
+    db.close()
+    //console.log(allTransactions)
+    res.status(200).send(allTransactions)
+  })
     /*try{
       const db = await MongoClient.connect(dbUrl)
       const dbo = db.db(dbFolder);
@@ -692,24 +738,29 @@ module.exports = function() {
       res.sendStatus(401)
     } else {
       const user = await getUser({'profile.accountName': req.user})
-      let products = [];
-      const db = await MongoClient.connect(dbUrl)
-      const dbo = db.db(dbFolder);
-      dbo.collection('posts').find({}).toArray(function (err, posts) {
-        if (err) {
-          res.sendStatus(500)
-          db.close()
-        }
-        else {
-          posts.forEach(listing => {
-            if(listing.userId.toString() === user._id.toString()) {
-              products.push(listing)
-            }
-          })
-          res.status(200).send({products})
-          db.close()
-        } 
-      })
+      if (user) {
+        let products = [];
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
+        dbo.collection('posts').find({}).toArray(function (err, posts) {
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else {
+            posts.forEach(listing => {
+              if(listing.userId.toString() === user._id.toString()) {
+                products.push(listing)
+              }
+            })
+            res.status(200).send({products})
+            db.close()
+          }
+        })
+      } else {
+        res.sendStatus(500)
+        db.close()
+      }
     }
   })
 
@@ -744,32 +795,43 @@ module.exports = function() {
 
     // create a article object in mongoDB
     router.post('/upload/article', upload.array('file', 5), async (req, res) => {
+      const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
       if (!req.isAuthenticated()) {
         res.sendStatus(401)
       } else {
+        try {
         const newArticle = JSON.parse(req.body.article);
-        if (req.files)
+        if (req.files.length > 0)
         {
           let images = req.files.map(obj => obj.filename);
           newArticle.coverImg = images[req.body.coverImgInd];
           images = images.filter((img) => { return img !== newArticle.coverImg })
           newArticle.img = images;
         }
+        else
+        {
+          dbo.collection("category").findOne({"name": newArticle.category}).then(res => 
+            {
+              newArticle.coverImg = res.defaultMainImage;
+              newArticle.img = res.defaultImage;
+            }) 
+        }
         newArticle.id = uuid.v4().toString();
         newArticle.userUploader = req.user
 
         const user = await getUser({'profile.accountName': req.user})
-
-        newArticle.userId = user._id
-        
+        if (user) {
+          newArticle.userId = user._id
+        }
         // for ttl index in posts
         if ('end-date' in newArticle) {
           newArticle['end-date'] = new Date(newArticle['end-date']);
         }
-        const db = await MongoClient.connect(dbUrl)
-        const dbo = db.db(dbFolder);
+        
         dbo.collection("posts").insertOne(newArticle, (err, result)=>{
           if (err) {
+            console.error(err)
             res.sendStatus(500)
             db.close()
           }
@@ -783,9 +845,53 @@ module.exports = function() {
             res.status(404).send("No posts found.")
           }
         })
+        } catch (error) {
+
+        console.error(error)
+        res.status(500).send(`Server error occured!\n${error}`)
+        }
       }
     });
-  
+
+  router.patch('/edit/article/:id', upload.array('file', 5), async (req, res) => {
+    if (!req.isAuthenticated()) {
+      res.sendStatus(401)
+    } else {
+      try {
+
+        const editArticle = JSON.parse(req.body.article);
+        if (req.files) {
+          let images = req.files.map(obj => obj.filename);
+          editArticle.coverImg = images[req.body.coverImgInd];
+          images = images.filter((img) => { return img !== editArticle.coverImg })
+          editArticle.img = images;
+        }
+        editArticle['item_update_date'] = new Date();
+        const query = { id: req.params.id };
+        delete editArticle._id
+        const options = { returnNewDocument: true }
+        const db = await MongoClient.connect(dbUrl);
+        const dbo = db.db(dbFolder);
+        dbo.collection('posts').updateOne(query, {$set: editArticle}, options, (err, result) => {
+          if (err) {
+            res.sendStatus(500);
+            console.log(err)
+            db.close();
+          } else if (result != null) {
+            res.status(200).send(result);
+            db.close();
+          } else {
+            db.close();
+            res.status(404).send("No post found.");
+          }
+        });
+      } catch (error) {
+        console.error(error)
+        res.status(500).send("Server error occured!")
+      }
+    }
+  });
+
     router.post('/article/remove/:id', (req, res) => {
       const now = new Date
       const past = new Date(now.getFullYear() - 50, now.getMonth(), now.getDate())
@@ -798,8 +904,6 @@ module.exports = function() {
             res.sendStatus(500);
           }
           else if (result.matchedCount != 0) {
-            
-
             db.close();
             res.sendStatus(200);
           }
@@ -1221,32 +1325,38 @@ module.exports = function() {
       }
       
       const user = await getUser({'profile.accountName': req.user})
-      
-      newEvent.userId = user._id
+
+      if (!user) {
+        newEvent.userId = user._id
+
       
       // for ttl index in posts
       //if ('end-date' in newArticle) {
       //newArticle['end-date'] = new Date(newArticle['end-date']);
       //}
-      const db = await MongoClient.connect(dbUrl)
-      const dbo = db.db(dbFolder);
-      dbo.collection("events").insertOne(newEvent, (err, result)=>{
-        if (err) {
-          res.sendStatus(500)
-          db.close()
-        }
-        else if (result != null) {
-          res.sendStatus(200);
-          db.close()
-        }
-        else {
-          // If we dont find a result
-          db.close();
-          res.status(404).send("No posts found.")
-        }
-      })
+        const db = await MongoClient.connect(dbUrl)
+        const dbo = db.db(dbFolder);
+        dbo.collection("events").insertOne(newEvent, (err, result)=>{
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else if (result != null) {
+            res.sendStatus(200);
+            db.close()
+          }
+          else {
+            // If we dont find a result
+            db.close();
+            res.status(404).send("No posts found.")
+          }
+        })
+      } else {
+        res.status(500).send("User not found")
+      }
     }
   })
+
   router.post('/event/remove/:id', (req, res) => {
     const query = { _id: ObjectId(req.params.id) };
     MongoClient.connect(dbUrl, (err, db) => {
@@ -1269,5 +1379,81 @@ module.exports = function() {
     })
   })
 
+
+    //     Categories
+
+
+
+  router.post('/categories', upload.array('file', 5), (req, res) => {
+    let images = req.files.map(obj => obj.filename);
+    let coverImg = images[req.body.coverImgInd];
+    images = images.filter((img) => { return img !== coverImg })
+    let categories = {
+      name: req.body.name,
+      defaultImage: images,
+      defaultMainImage: coverImg,
+      isActive: true
+    }
+    try {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection("category").insertOne(categories, (err, result) => {
+          if (err) {
+            res.sendStatus(500)
+            db.close()
+          }
+          else if (result != null) {
+            res.sendStatus(200);
+            db.close()
+          }
+        })
+      })
+    }
+    catch (ex) {
+      res.status(500).send({ exception: ex });
+    }
+  })
+
+  router.get("/categories", async (req, res) => {
+    const db = await MongoClient.connect(dbUrl)
+    const dbo = db.db(dbFolder);
+    const result = await dbo.collection("category").find({isActive: true});
+    
+   result.toArray(function (err, categories) {
+    if (err) {
+      res.sendStatus(400)
+      db.close()
+    }
+    else {
+      res.status(200).json(categories)
+      db.close()
+    } 
+  })
+  })
+
+  router.post('/updateCategoryStatus', upload.none(),  (req, res) => {
+    console.log(req.body.id)
+    try {
+      let bodyData = req.body;
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        const query = { "_id": ObjectId(bodyData.id) };
+         dbo.collection("category").updateOne(query , {$set: {'isActive': bodyData.isActive.toString() == "true"?true:false}}, (err, result) => {
+          if (err) {
+            res.status(400).json(false)
+            db.close()
+          }
+          else {
+            res.status(200).json(true)
+            db.close()
+          } 
+         })
+      })
+    }
+    catch (ex) {
+      console.log(ex)
+      res.status(500).send({ exception: ex });
+    }
+  })
 return { 'router': router, 'conn': conn }
 };

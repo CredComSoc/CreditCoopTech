@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <H1 v-if="!registered" class="center-text">
-      {{ $t('user.addMember') }}
+      {{ $t('user.add_member') }}
     </H1>
     <form v-if="!registered" className="flexbox-container2" @submit.prevent="" @submit="submit">
       <div className="container-item">

@@ -149,6 +149,7 @@ In order to create a test user account that you can use to explore the app:
 ```
 > cd backend
 > node migrations/0000_init_users.js
+
 ```
 
 Open the `0000_init_users.js` file and navigate to the end to view the credentials for the newly-created account.

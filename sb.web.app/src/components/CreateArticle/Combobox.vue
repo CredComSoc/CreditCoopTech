@@ -61,7 +61,7 @@ export default {
       this.$refs.dateVal.blur()
       this.$emit('clearNoEndDateCheckbox')
     },
-    formatDate (Date) {
+    formatDate (date) {
       let options
       if (this.isDatePicker) {
         options = { 
@@ -75,9 +75,9 @@ export default {
           day: '2-digit'
         }
       }
-      console.log(Date)
+      console.log(date)
       const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
-      return now + ' - ' + new Date(Date).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      return now + ' - ' + new Date(date).toLocaleString('sv-SE', options).replaceAll('-', '/')
     },
     setValue (newValue) {
       if (this.isDatePicker || this.isDateFilter) {
