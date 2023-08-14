@@ -47,7 +47,7 @@ import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 import Categories from '@/components/Shop/Categories.vue'
 import FilterButton from '@/components/Shop/filterButton.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL } from './../../serverFetch.js'
+import { authenticate, checkAdminStatus, EXPRESS_URL } from './../../serverFetch.js'
 
 export default {
 
@@ -210,6 +210,16 @@ export default {
     this.triggerSearch('')
     window.addEventListener('resize', this.onResize)
     this.onResize()
+  },
+  mounted () {
+    authenticate().then((res) => {
+      if (res) {    
+        checkAdminStatus().then((res2) => {
+          this.auth = res
+          this.admin = res2
+        })
+      } 
+    })
   },
   unmounted () {
     window.removeEventListener('resize', this.onResize)
