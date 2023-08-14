@@ -142,7 +142,7 @@ export default {
 
     setInterval(async () => {
       this.setStoreData()
-    }, 2000)
+    }, 200000)
   }
 }
 </script>

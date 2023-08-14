@@ -93,6 +93,7 @@ export default {
     },
     completePurchase () {
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
+        console.log(this.total)
         if (res >= this.total) {
           const totalCosts = {}
           for (let i = 0; i < this.cart.length; i++) {
