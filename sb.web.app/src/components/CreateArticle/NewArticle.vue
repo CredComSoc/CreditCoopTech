@@ -1,8 +1,8 @@
 <template>
   <div>
   <div>
-    <h2 v-if="!this.$route.path.includes('edit')" class="center-text">{{ $t('shop_items.new_articleCAPS') }}</h2>
-    <h2 v-else class="center-text">{{ $t('shop_items.edit_articleCAPS') }}</h2>
+    <h2 v-if="!this.$route.path.includes('edit')" class="center-text">{{ $t('shop_items.new_article') }}</h2>
+    <h2 v-else class="center-text">{{ $t('shop_items.edit_article') }}</h2>
   </div>
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
@@ -168,7 +168,7 @@ export default {
         this.saveSecondStep()
         this.currentStep = 1
         this.imgURL = 'one_three.png'
-        this.nextBtnText = 'Next'
+        this.nextBtnText = this.$i18n.t("next")
       } else if (this.currentStep === 3) {
         this.saveThreeStep()
         this.currentStep = 2
@@ -226,7 +226,6 @@ export default {
         }
       }).catch((error) => {
         console.error('Error: ', error)
-        alert('A server error occured when editing the item.')
       })
     },
     addUploadDate () {
@@ -283,6 +282,7 @@ export default {
   margin-bottom: 0rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
  #input-form {

@@ -32,6 +32,7 @@ export default {
         padding-top: 30px;
         font-size: 24px;
         text-align: center;
+        text-transform: uppercase;
     }
 
     h4 {

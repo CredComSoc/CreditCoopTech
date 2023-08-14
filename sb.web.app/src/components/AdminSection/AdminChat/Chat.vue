@@ -178,7 +178,6 @@ export default {
           if (data !== false) {
             await this.getChatHistories(data)
           } else {
-            alert("Chat error!")
             //console.log('chat error!!')
           }
         }).catch(err => console.log(err))

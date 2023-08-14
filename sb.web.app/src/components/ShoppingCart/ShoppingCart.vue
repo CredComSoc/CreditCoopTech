@@ -1,6 +1,6 @@
 <template>
   <div id="cart-container">
-    <h1> {{ $t('cart.cartCAPS') }} </h1>
+    <h1 class="title"> {{ $t('cart.cart') }} </h1>
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
       <PopupCard v-if="this.confirmPress" :title="$t('cart.purchase_thanks_header')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified')" />
@@ -150,6 +150,10 @@ export default {
     font-size: 2.2rem;
     letter-spacing: 0.25em;
   }
+
+ .title {
+   text-transform: uppercase
+ }
 
   #cart-container{
     margin-top: 75px;

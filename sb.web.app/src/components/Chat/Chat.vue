@@ -156,7 +156,6 @@ export default {
             this.showMemberlist = false
           } else {
             //console.log('chat error!!')
-            alert('Chat error!')
             this.chatError = true
           }
         }).catch(err => console.log(err))

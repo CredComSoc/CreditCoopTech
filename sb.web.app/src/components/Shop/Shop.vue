@@ -2,7 +2,7 @@
   <div class="wrapper">
 
     <div>
-      <h2 class="center-text">{{ $t('shop.shopCAPS') }}</h2>
+      <h2 class="center-text">{{ $t('shop.shop') }}</h2>
     </div>
 
     <div class="center" id="searchfield">
@@ -253,6 +253,7 @@ export default {
   margin-bottom: 4rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 h2 {

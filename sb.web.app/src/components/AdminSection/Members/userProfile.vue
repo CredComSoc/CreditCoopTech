@@ -217,7 +217,6 @@ export default {
             this.$router.push({ name: 'AdminChat', params: { chatID: data } })
           } else {
             //console.log('chat error!!')
-            alert('Chat error!')
             this.chatError = true
           }
         }).catch(err => console.log(err))
