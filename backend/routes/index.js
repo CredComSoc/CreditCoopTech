@@ -465,6 +465,7 @@ module.exports = function() {
 
           if (sendWelcomeEmail) {
             try {
+              // TODO: May be change the language to english if that is the users are english speaking
               const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
                 from: ouremail, // sender address
 
@@ -530,30 +531,30 @@ module.exports = function() {
             'state': 'completed'
           }
         })
-        console.log(response.data)
         let userNames = {}
-        for (const entry of response.data) {
-          //console.log(entry)
+        var arrayData = response.data;
+        if(arrayData.data)
+      {
+        for (const entry of arrayData.data) {
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName
+            userNames[entry.entries[0].payee] = payee? payee.profile.accountName: ""   
           }
           if(!(entry.entries[0].payer in userNames)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName
+            userNames[entry.entries[0].payer] = payer ? payer.profile.accountName: ""
           }
           if(!(entry.entries[0].author in userNames)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName
+            userNames[entry.entries[0].author] = author? author.profile.accountName: ""   
           }
-          console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
-          console.log(entry)
           allTransactions.push(entry)
         }
-      } catch (error) {
+      }
+    } catch (error) {
         db.close()
         console.log(error)
       }

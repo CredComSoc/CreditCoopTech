@@ -41,7 +41,7 @@
              <router-link :to="{name:'AdminEconomy'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
-                  <figcaption class="l-text"> {{ $t('user.financialOverview') }} </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.financial_overview') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">

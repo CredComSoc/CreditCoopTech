@@ -122,9 +122,10 @@ export default {
       return EXPRESS_URL + '/image/' + img
     },
     placeInCart () {
+      this.$emit('placeInCart', this.amount, this.listingObj)
+
       profile().then(res => {
         // if (res.name !== this.listingObj.userUploader) {
-        this.$emit('placeInCart', this.amount, this.listingObj)
         // }
       })
     },

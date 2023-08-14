@@ -68,7 +68,9 @@
         "add_member": "Add Member",
         "add_category": "Add Category",
         "categories_list": "Categories List",
-        "categories": "Categories"
+        "categories": "Categories",
+        "financial_overview": "Financial Overview"
+
     },
     "event": {
         "instructions": "Instructions",
@@ -194,6 +196,13 @@
         "image_upload_failed": "Image upload failed",
         "try_again_later": "Please try again later.",
         "publish": "Publish"
+    },
+    "financial" : {
+    "revenue": "Revenue",
+    "today": "Today",
+    "this_week": "This Week",
+    "this_month": "This Month",
+    "this_year": "This Year"
     },
     "balance": "Balance",
     "credit": "Credit",
