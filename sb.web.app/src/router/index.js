@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { authenticate, checkAdminStatus } from '../serverFetch'
+import { authenticate, checkAdminStatus, setStoreData } from '../serverFetch'
 import store from '../store'
 import Home from '../components/Home/Home.vue'
 import Login from '../components/Login/Login.vue'
@@ -179,6 +179,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   //Navbar.forceRerender()
+  setStoreData()
+
   const auth = await authenticate()
   if (to.name !== 'Login' && to.name !== 'Forgot' && to.name !== 'Reset') {
     if (!auth) {

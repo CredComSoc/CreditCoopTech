@@ -1,4 +1,5 @@
 import JsSHA from 'jssha'
+import store from './store'
 
 export const EXPRESS_URL = process.env.VUE_APP_EXPRESS_URL
 export const CHAT_URL = process.env.VUE_APP_CHAT_URL
@@ -919,4 +920,86 @@ export async function updateCategoryStatus (data) {
   }).catch(error => {
     return error
   }) 
+}
+
+
+
+/*****************************************************************************
+* 
+*                                setStoreData
+*                 
+*****************************************************************************/
+
+export async function setStoreData () {
+  const data = await fetchData().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (data) { 
+    window.localStorage.removeItem('vuex')
+    if (data.user) {
+      store.commit('replaceUser', data.user)
+
+      const oldNotifications = []
+      const newNotifications = []
+
+      for (const notification of data.user.notifications) {
+        if (notification.seen) {
+          oldNotifications.push(notification)
+        } else {
+          newNotifications.push(notification)
+        }
+      }
+
+      oldNotifications.sort(function (a, b) {
+        return new Date(b.date) - new Date(a.date)
+      })
+
+      newNotifications.sort(function (a, b) {
+        return new Date(b.date) - new Date(a.date)
+      })
+
+      store.commit('replaceOldNotifications', oldNotifications)
+      store.commit('replaceNewNotifications', newNotifications)
+    }
+
+    if (data.allArticles) {
+      store.commit('replaceAllArticles', data.allArticles)
+    }
+
+    if (data.allMembers) {       
+      store.commit('replaceAllMembers', data.allMembers)
+    }
+
+    if (data.myCart) {
+      store.commit('replaceMyCart', data.myCart)
+
+      let cartSize = 0
+      for (const item of data.myCart) {
+        cartSize += item.quantity
+      }
+      store.commit('replaceMyCartSize', cartSize)
+    }
+    
+    store.commit('replaceSaldo', data.saldo)
+    store.commit('replaceCreditLine', data.creditLine)
+    store.commit('replaceCreditLimit', data.creditLimit)
+    if (data.requests) {
+      store.commit('replaceRequests', data.requests)            
+    }
+
+    if (data.pendingPurchases) {
+      store.commit('replacePendingPurchases', data.pendingPurchases)            
+    }    
+
+    if (data.completedTransactions) {
+      store.commit('replaceCompletedTransactions', data.completedTransactions)            
+    }           
+    
+    if (data.allEvents) {       
+      store.commit('replaceAllEvents', data.allEvents)
+    }
+    // console.log(store.state.user.email)
+  }
 }

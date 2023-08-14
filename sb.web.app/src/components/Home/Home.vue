@@ -103,12 +103,7 @@ export default {
     }
   },
   mounted: function () {
-    this.setStoreData()
-
-    setInterval(async () => {
-      this.setStoreData()
-    }, 2000)
-
+    setStoreData()
 
     this.shop = this.$store.state.allArticles
     this.members = this.$store.state.allMembers

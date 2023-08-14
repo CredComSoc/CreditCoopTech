@@ -25,7 +25,7 @@ import Navbar from './components/Navbar/Navbar.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
-import { authenticate, checkAdminStatus, getSaldo, fetchData } from './serverFetch'
+import { authenticate, checkAdminStatus, getSaldo, fetchData, setStoreData } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
 
 export default {
@@ -60,6 +60,8 @@ export default {
         })
       } 
     })
+
+    setStoreData()
   }
 }
 </script>
