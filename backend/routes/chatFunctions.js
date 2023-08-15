@@ -14,7 +14,6 @@ module.exports.initChat = async (sender, receiver) => {
             const res2 = await this.createChat(receiver, sender, chatID);
             if (!res2) {
                 this.deleteChat(sender, receiver, chatID);
-                //console.log("Kan inte skapa chatten just nu");
                 resolve(false);
             }
             else {
@@ -22,7 +21,7 @@ module.exports.initChat = async (sender, receiver) => {
                 const dbo = db.db();
                 dbo.collection('chats').insertOne({ [chatID] : [] }, (err, res) => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         db.close();
                         resolve(false);
                     } else {
@@ -45,7 +44,7 @@ module.exports.deleteChat = async (user, chatter, chatID) => {
     const key = 'chats.' + chatID;
     dbo.collection('users').updateOne({'profile.accountName': user}, { $unset: { [key]: 1 } }, (err, res) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             db.close(); 
         }
         else {
@@ -62,7 +61,7 @@ module.exports.createChat = (user, chatter, chatID) => {
         const key = 'chats.' + chatID;
         dbo.collection('users').updateOne({'profile.accountName': user}, { $set: { [key]: chatter } }, (err, res) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
                 resolve(false);
             } else if (res.matchedCount > 0) {
@@ -87,7 +86,7 @@ module.exports.chatExists = async (user, chatter) => {
     else {
         const chatID = await this.getChatID(user, chatter);
         if (chatID === false) {
-            console.log("Kan inte hämta chatten");
+            console.error("ChatID not found");
             return chatID;
         }   
         else {
@@ -102,11 +101,10 @@ module.exports.getAllChatIDs = async (user) => {
         const dbo = db.db();
         dbo.collection('users').findOne({'profile.accountName': user}, (err, res) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
                 resolve(false);
             } else if (res && res.chats) {
-                console.log(res.chats);
                 db.close();
                 resolve(res.chats);
             }
@@ -122,7 +120,7 @@ module.exports.getAllChatHistories = async (user) => {
     return new Promise( async (resolve, reject) => {
         const chatIDs = await this.getAllChatIDs(user);
         if (chatIDs === false) {
-            console.log("Kan inte hämta chattens historia");
+            console.error("Chat IDs not found");
             resolve(false);
         }
         else {
@@ -138,7 +136,7 @@ module.exports.getChatHistory = async (chatID) => {
         const dbo = db.db();
         dbo.collection('chats').findOne({[chatID]: {$exists: true}}, (err, res) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
                 resolve(false);
             } else if (res) {
@@ -159,7 +157,7 @@ module.exports.getChatID = async (user, chatter) => {
         const dbo = db.db();
         dbo.collection('users').findOne({ 'profile.accountName': user }, (err, res) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
                 resolve(false);
             } else if (res.chats) {
@@ -192,7 +190,7 @@ module.exports.checkChatStatus = async (user, chatter) => {
         const key = 'chats.' + chatter;
         dbo.collection('users').findOne({ 'profile.accountName': user } , (err, res) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
                 resolve(false);
             } else if (res) {
@@ -217,12 +215,11 @@ module.exports.storeChatMsg = async (chatID, msg) => {
     const dbo = db.db();
     dbo.collection('chats').updateOne({[chatID]: {$exists: true}}, { $push: { [chatID]: msg } }, (err, res) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             db.close();
         } else if (res) {
             db.close();
         } else {
-            console.log(res);
             db.close();
         }
     });
@@ -234,7 +231,7 @@ module.exports.storeNotification = async (notification) => {
    
     dbo.collection('users').findOne({ 'profile.accountName': notification.toUser }, (err, user) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             db.close();
         }  
         else if (user) {
@@ -253,7 +250,7 @@ module.exports.storeNotification = async (notification) => {
           }
           dbo.collection('users').updateOne({ 'profile.accountName': notification.toUser }, { $set: { notifications: notification_list } }, (err, query) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 db.close();
             }
             else if (query.acknowledged) {
@@ -275,7 +272,7 @@ module.exports.markNotification = async (chatID, username) => {
    
     dbo.collection('users').findOne({ 'profile.accountName': username }, (err, user) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             db.close();
         }
         else if (user) {
@@ -291,7 +288,7 @@ module.exports.markNotification = async (chatID, username) => {
             if (found_notice) {
                 dbo.collection('users').updateOne({ 'profile.accountName': username }, { $set: { notifications: notification_list } }, (err, query) => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         db.close();
                     }
                     else if (query.acknowledged) {

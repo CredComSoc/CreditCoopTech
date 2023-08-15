@@ -7,7 +7,7 @@
       <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('needs') }}</a>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
-      <h1 className="title" > {{ $t('nav.myAccountCAPS') }} </h1>
+      <h1 className="title" > {{ $t('nav.my_account') }} </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
       <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'> {{ $t('nav.my_profile') }} </a>
@@ -96,6 +96,7 @@ export default {
   margin-bottom: 4rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 .topnav {

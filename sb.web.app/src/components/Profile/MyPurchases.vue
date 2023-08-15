@@ -238,8 +238,8 @@ export default {
       if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //nothing is null print both 
         hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'  
       } else if (dateFilterEndDate.value === '' && dateFilterStartDate.value !== '') { //end date is null print start and today
-        console.log(dateFilterEndDate.value === '')
-        console.log(this.$refs.endDateInput.getInput() === null)
+        //console.log(dateFilterEndDate.value === '')
+        //console.log(this.$refs.endDateInput.getInput() === null)
         tmp = new Date()
         hiddenElement.download = 'Filtered_Transactions' + startDateValue.toISOString().split('T')[0] + '-' + tmp.toISOString().split('T')[0] + '.csv'
       } else if (dateFilterStartDate.value === '' && dateFilterEndDate.value !== '') { //start date is null print default start and end
@@ -248,9 +248,9 @@ export default {
         hiddenElement.download = 'Filtered_Transactions' + tmp.toISOString().split('T')[0] + '-' + endDateValue.toISOString().split('T')[0] + '.csv'
       } else { //both null print default to today
         const tmpstart = new Date()
-        console.log(tmpstart)
+        //console.log(tmpstart)
         tmpstart.setFullYear(this.default_min_date, 0, 1)
-        console.log(tmpstart)
+        //console.log(tmpstart)
         const tmpend = new Date()
         hiddenElement.download = 'Filtered_Transactions' + tmpstart.toISOString().split('T')[0] + '-' + tmpend.toISOString().split('T')[0] + '.csv'
       }
@@ -306,7 +306,7 @@ export default {
     },
     
     invoice (filename, item) { // not used atm. used for generating invoices
-      console.log(item.entries[0])
+      //console.log(item.entries[0])
       const pom = document.createElement('a')
       const text = 'hello'
       pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
@@ -321,7 +321,7 @@ export default {
       }
     },
     cancel (id, index) { //cancel order button
-      console.log('Canceling order: ' + id)
+      //console.log('Canceling order: ' + id)
       this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
       cancelRequest(id)
     },
