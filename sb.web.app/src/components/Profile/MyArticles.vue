@@ -78,7 +78,7 @@ export default {
       this.activeArticles = []
       this.inactiveArticles = []
       for (const article of res.products) {
-        console.log(article)
+        //console.log(article)
         if ((new Date(article['end-date'])).getTime() < Date.now()) {
           this.inactiveArticles.push(article)
         } else {

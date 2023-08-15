@@ -1,5 +1,5 @@
 {
-    "login" : {
+    "login": {
         "login_to_label": "Sign in to",
         "email_label": "Email address",
         "email_placeholder": "test nowhere.com",
@@ -106,7 +106,6 @@
         "all_members": "All members",
         "messages": "Messages",
         "my_account": "My account",
-        "myAccountCAPS": "MY ACCOUNT",
         "my_profile": "My profile",
         "my_buy_sell": "My sales & purchases",
         "my_items": "My items",
@@ -127,7 +126,7 @@
         "seller_has_approved_notification": "notification when the seller has approved your purchase request.",
         "is_item_product_or_service": "Is your item a product or service?",
         "see_the_shop": "See the shop",
-        "shopCAPS": "SHOP",
+        "shop": "shop",
         "shopSubtitle": "Browse the most recent products and services.",
         "NOTE2MILES": "YET_TO_DO_BELOW_HERE",
         "success": "Success!",
@@ -154,7 +153,7 @@
         "no_notifications": "No notifications"
     },
     "cart": {
-        "cartCAPS": "CART",
+        "cart": "cart",
         "purchase_not_completed": "The purchase could not be completed",
         "cart_empty": "Your cart is empty",
         "current_balance": "Current balance:",
@@ -175,12 +174,13 @@
         "item_type": "Item Type",
         "choose_file": "Choose file",
         "item_set_main_image": "Set as main image",
-        "until_when": "Until when will this ",
+        "until_when": "When do you need this item/service / until when will this item/service be available",
         "be_available": " be available?",
         "indefinitely": "Indefinitely",
         "location": "Location",
         "price_prompt": "What is the price of the ",
-        "new_articleCAPS": "NEW ARTICLE",
+        "new_article": "New Article",
+        "edit_article": "Edit Article",
         "invalid_date": "Invalid date",
         "try_again": "Please try again.",
         "price_positive_integer": "Price must be a positive integer",
@@ -193,7 +193,10 @@
         "image_file_extension_must_be": "Image file extension must be .png, .jpeg or .gif",
         "smaller_than_2mb": "and be smaller than 2 MB.",
         "preview": "Preview",
+        "ensure_data_correct": "Ensure you've entered the correct data",
+        "selected_cover_image": "Selected Cover Image",
         "image_upload_failed": "Image upload failed",
+        "images": "Images",
         "try_again_later": "Please try again later.",
         "publish": "Publish"
     },
@@ -217,7 +220,7 @@
     "sell": "Sell",
     "selling": "selling",
     "buying": "buying",
-    "memberCAPS": "MEMBERS",
+    "member": "members",
     "get_inspired": "Get inspired below",
     "transactions":"Transactions",
     "location": "Location",
@@ -270,5 +273,6 @@
     "youHaveNoActiveArticles": "You currently have no active items",
     "browse": "Browse",
     "place": "Place",
-    "back": "Back"
+    "back": "Back",
+    "next": "Next"
 }
