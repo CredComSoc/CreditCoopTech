@@ -61,7 +61,6 @@ export default {
   },
   created () {
     if (this.$route.params.artID) {
-      //console.log('ID: ', this.$route.params.artID)
       fetch(EXPRESS_URL + '/article/' + this.$route.params.artID, {
         method: 'GET',
         credentials: 'include'
@@ -69,7 +68,6 @@ export default {
         success => {
           success.json().then(
             res => {
-              //console.log(res)
               if (res.listing) {
                 this.newArticle = res.listing
               } else {
@@ -78,7 +76,6 @@ export default {
 
               // get print format from db object and assign to frontend
               if (typeof res.printFormat !== 'undefined') {
-                //console.log('Assigning from res.printFormat')
                 this.newArticle.destination = res.printFormat.destination
                 this.newArticle['end-date'] = res.printFormat['end-date']
                 this.newArticle.status = res.printFormat.status
@@ -91,7 +88,6 @@ export default {
                 this.newArticle.article = res.listing.article
                 this.newArticle.category = res.listing.category
               }
-              //console.log(this.newArticle)
             }
           )
         }
@@ -99,7 +95,7 @@ export default {
         error => console.log('Error: ', error)
       )
     } else {
-      //console.log('Param artID not found!')
+      console.log('Param artID not found!')
     }
   },
   methods: {
@@ -156,7 +152,6 @@ export default {
         this.addUploadDate()
         this.sanitizeArticle()
         if (this.$route.path.includes('edit')) {
-          //console.log('Editing Article')
           this.editArticle()
         } else {
           this.uploadArticle()
@@ -168,7 +163,7 @@ export default {
         this.saveSecondStep()
         this.currentStep = 1
         this.imgURL = 'one_three.png'
-        this.nextBtnText = this.$i18n.t("next")
+        this.nextBtnText = this.$i18n.t('next')
       } else if (this.currentStep === 3) {
         this.saveThreeStep()
         this.currentStep = 2
@@ -182,7 +177,6 @@ export default {
     },
     uploadArticle () {
       const createdArticle = isProxy(this.newArticle) ? toRaw(this.newArticle) : this.newArticle
-      //console.log('Created article: ', createdArticle)
       const data = new FormData()
       let index = 0
       for (const file of createdArticle.img) {
@@ -193,7 +187,6 @@ export default {
         ++index
       }
       data.append('article', JSON.stringify(createdArticle))
-      //console.log('Article', data)
       // This will upload the article to the server
       uploadArticle(data).then((res) => {
         if (res.status === 200) {

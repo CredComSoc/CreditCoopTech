@@ -170,7 +170,6 @@ export default {
       if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
         const minLimitDate = new Date()
         minLimitDate.setFullYear(this.default_min_date, 0, 1)
-        //console.log(minLimitDate)
         dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020-01-01
       } else {
         let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
@@ -247,37 +246,28 @@ export default {
 
       // date range search
       if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //if we have daterange filter for it. Save result in Filtered Transactions
-        //console.log('date range start and end')
         this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterEndDate.value !== '') {  
-        //console.log('date range end')
         this.filteredTransactions = this.allTransactions.filter(item => new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterStartDate.value !== '') { 
-        //console.log('date range start')
         this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf()) 
       }
       //company name search
       if (this.$refs.companyInput.value !== '' && (dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //if we have used a filter before, filter for company in filtered transactions and save in filteredTransactions
-        //console.log('company search with date range')
         this.filteredTransactions = this.filteredTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
       } else if (this.$refs.companyInput.value !== '') { // else filter in vuex store completedTransactions and save in filteredTransactions
-        //console.log('company search without date range')
         this.filteredTransactions = this.allTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
       }
       //procuct name search
 
       if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
-        //console.log('product search with date range and/or with company')
         this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
-        //console.log('product search without date range and company')
         this.filteredTransactions = this.allTransactions.filter(item => this.getListing_title(item.entries[0]) ? this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()) : false)
       }
       if (!(this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '')) { 
         this.filteredTransactions = this.allTransactions
       }
-
-      //console.log('found ' + this.allTransactions.length + ' elements')
     },
 
     getListing_title (item) { //get name of article from vuex store

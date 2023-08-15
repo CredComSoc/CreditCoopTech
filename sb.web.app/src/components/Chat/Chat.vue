@@ -137,7 +137,6 @@ export default {
           this.allmembers.push(member.accountName)
         }
       }
-      //console.log(this.allmembers)
     },
     showMembers () {
       this.showMemberlist = true
@@ -155,10 +154,9 @@ export default {
             this.getChatHistories(data)
             this.showMemberlist = false
           } else {
-            //console.log('chat error!!')
             this.chatError = true
           }
-        }).catch(err => console.log(err))
+        }).catch(err => console.error(err))
     }
   },
   created () {
