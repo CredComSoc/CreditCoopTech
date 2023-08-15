@@ -2,7 +2,7 @@
   <div class="home"> 
     <Banner :companyName="this.$store.state.user.profile.accountName"/>
     <ContentCard :title="$t('marketplace')" :description="$t('shop.shopSubtitle')" theme="blue-card" theme_btn="yellow-btn" :btn_txt="$t('shop.see_the_shop')" :data="this.shop" :screenWidth="scrWidth" name="Shop" />
-    <ContentCard :title="$t('memberCAPS')" :description="$t('shop.shopSubtitle')" theme="yellow-card" theme_btn="yellow-btn" :btn_txt="$t('nav.all_members')" :data="this.members" :screenWidth="scrWidth" name="Members" />
+    <ContentCard :title="$t('member')" :description="$t('shop.shopSubtitle')" theme="yellow-card" theme_btn="yellow-btn" :btn_txt="$t('nav.all_members')" :data="this.members" :screenWidth="scrWidth" name="Members" />
   </div>
 </template>
 
