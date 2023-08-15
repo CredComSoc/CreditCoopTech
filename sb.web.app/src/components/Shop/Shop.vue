@@ -2,7 +2,7 @@
   <div class="wrapper">
 
     <div>
-      <h2 class="center-text">{{ $t('shop.shopCAPS') }}</h2>
+      <h2 class="center-text">{{ $t('marketplace') }}</h2>
     </div>
 
     <div class="center" id="searchfield">
@@ -24,11 +24,11 @@
       <!-- {{ $t('shop.column_product') }} -->
       <div class="listings">
         <div v-if="this.sellingSearchData.length !== 0">
-          <h3 >{{ $t('sell') }}</h3>
+          <h3 >{{ $t('offer') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=sellingSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.buyingSearchData.length !== 0">
-          <h3>{{ $t('purchase') }}</h3>
+          <h3>{{ $t('want') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
         <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found', {searchWord: this.searchWord}) }}</h3>
@@ -116,9 +116,9 @@ export default {
             this.servicesSearchData.push(article)
           }
 
-          if (article.status === 'buying') {
+          if (article.status === 'buying' || article.status === 'want') {
             this.buyingSearchData.push(article)
-          } else if (article.status === 'selling') {
+          } else if (article.status === 'selling' || article.status === 'offer') {
             this.sellingSearchData.push(article)
           }
         }
@@ -134,20 +134,23 @@ export default {
       this.popupActive = false
       this.putInCart = false
     },
-    filteringMethod (checked, type, value) {
-      console.log(value)
-      console.log(checked)
 
-      if (type === 'destination') {
-        this.changeFiltering(checked, this.destinationsArray, value)
-      } else if (type === 'category') {
-        this.changeFiltering(checked, this.categoryArray, value)
-      } else if (type === 'article') {
-        this.changeFiltering(checked, this.articleArray, value)
-      } else if (type === 'status') {
-        this.changeFiltering(checked, this.statusArray, value)
-      }
-    },
+    // The below method is not being called any where
+
+    // filteringMethod (checked, type, value) {
+    //   console.log(value)
+    //   console.log(checked)
+
+    //   if (type === 'destination') {
+    //     this.changeFiltering(checked, this.destinationsArray, value)
+    //   } else if (type === 'category') {
+    //     this.changeFiltering(checked, this.categoryArray, value)
+    //   } else if (type === 'article') {
+    //     this.changeFiltering(checked, this.articleArray, value)
+    //   } else if (type === 'status') {
+    //     this.changeFiltering(checked, this.statusArray, value)
+    //   }
+    // },
     changeFiltering (checked, specificArray, value) {
       if (!checked) {
         console.log('ADDED')

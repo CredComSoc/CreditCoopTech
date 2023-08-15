@@ -108,17 +108,18 @@
         "my_account": "My account",
         "myAccountCAPS": "MY ACCOUNT",
         "my_profile": "My profile",
-        "my_buy_sell": "My sales & purchases",
+        "my_buy_sell": "My want and offers",
         "my_items": "My items",
         "my_purchase_requests": "My purchase requests",
         "balance": "Balance & limits",
         "events": "Events",
         "sign_out": "Sign out"
+
     },
     "shop": {
         "column_categories": "COLUMN FOR CATEGORIES",
         "column_product": "COLUMN FOR PRODUCTS",
-        "complete_purchase": "Complete the purchase",
+        "complete_purchase": "Complete the request",
         "go_to_shop": "Go to shop",
         "seller_has_reached_limit": "The seller {seller} has reached their upper limit for {token}.",
         "purchaseRequestCannotBeApproved": "The purchase request cannot be approved",
@@ -270,5 +271,11 @@
     "youHaveNoActiveArticles": "You currently have no active items",
     "browse": "Browse",
     "place": "Place",
-    "back": "Back"
+    "back": "Back",
+    "marketplace": "Marketplace",
+    "want": "want",
+    "Want": "Want",
+    "offer": "offer",
+    "Offer": "Offer",
+    "my_wants_and_offers": "My wants and offers"
 }
