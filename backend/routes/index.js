@@ -790,7 +790,14 @@ module.exports = function() {
         if (req.files.length > 0)
         {
           let images = req.files.map(obj => obj.filename);
-          newArticle.coverImg = images[req.body.coverImgInd];
+          if(req.body.coverImgInd)
+          {
+            newArticle.coverImg = images[req.body.coverImgInd];
+          }
+          else
+          {
+            newArticle.coverImg = images[0];
+          }
           images = images.filter((img) => { return img !== newArticle.coverImg })
           newArticle.img = images;
         }
