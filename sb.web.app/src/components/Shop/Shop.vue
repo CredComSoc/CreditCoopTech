@@ -24,11 +24,11 @@
       <!-- {{ $t('shop.column_product') }} -->
       <div class="listings">
         <div v-if="this.sellingSearchData.length !== 0">
-          <h3 >{{ $t('offer') }}</h3>
+          <h3 >{{ $t('Offers') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=sellingSearchData :search-data=sellingSearchData />
         </div>
         <div v-if="this.buyingSearchData.length !== 0">
-          <h3>{{ $t('want') }}</h3>
+          <h3>{{ $t('Wants') }}</h3>
           <Alllistings @togglePopupEvent="openPopUp" :key=buyingSearchData :search-data=buyingSearchData />
         </div>
         <h3 v-if="this.buyingSearchData.length === 0 && this.sellingSearchData.length === 0">{{ $t('shop.no_product_found', {searchWord: this.searchWord}) }}</h3>

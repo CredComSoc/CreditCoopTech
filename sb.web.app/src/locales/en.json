@@ -107,7 +107,7 @@
         "messages": "Messages",
         "my_account": "My account",
         "my_profile": "My profile",
-        "my_buy_sell": "My want and offers",
+        "my_buy_sell": "My Wants and Offers",
         "my_items": "My items",
         "my_purchase_requests": "My purchase requests",
         "balance": "Balance & limits",
@@ -128,7 +128,7 @@
         "is_item_product_or_service": "Is your item a product or service?",
         "see_the_shop": "See the shop",
         "shop": "shop",
-        "shopSubtitle": "Browse the most recent products and services.",
+        "shopSubtitle": "Browse the most recent wants and offers.",
         "NOTE2MILES": "YET_TO_DO_BELOW_HERE",
         "success": "Success!",
         "seller_has_been_notified": "Thank you for your purchase! The seller has been notified. You will get a",
@@ -166,6 +166,7 @@
     },
     "shop_items": {
         "need_or_offer": "Need or Offer?",
+        "want_or_offer": "Want or Offer?",
         "to_buy_or_sell": "Are you wanting to buy or offering to sell the item?",
         "item_title_prompt": "Give your item a strong title",
         "item_description_short_prompt": "Short description of the item",
@@ -175,13 +176,13 @@
         "item_type": "Item Type",
         "choose_file": "Choose file",
         "item_set_main_image": "Set as main image",
-        "until_when": "When do you need this item/service / until when will this item/service be available",
+        "until_when": "When do you need this item / until when will it be available?",
         "be_available": " be available?",
         "indefinitely": "Indefinitely",
         "location": "Location",
         "price_prompt": "What is the price of the ",
-        "new_article": "New Article",
-        "edit_article": "Edit Article",
+        "new_article": "New Item",
+        "edit_article": "Edit Item",
         "invalid_date": "Invalid date",
         "try_again": "Please try again.",
         "price_positive_integer": "Price must be a positive integer",
@@ -199,7 +200,8 @@
         "image_upload_failed": "Image upload failed",
         "images": "Images",
         "try_again_later": "Please try again later.",
-        "publish": "Publish"
+        "publish": "Publish",
+        "product_or_service": "Product Or Service"
     },
     "financial" : {
     "revenue": "Revenue",
@@ -281,5 +283,7 @@
     "Want": "Want",
     "offer": "offer",
     "Offer": "Offer",
+    "Wants": "Wants",
+    "Offers": "Offers",
     "my_wants_and_offers": "My wants and offers"
 }

@@ -242,7 +242,7 @@ export default {
 
       // sanitize the status field
       switch (this.newArticle.status) {
-        case 'Need':
+        case 'Want':
           this.newArticle.status = 'want'
           break
         case 'Offer':
