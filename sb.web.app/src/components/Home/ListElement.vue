@@ -23,7 +23,7 @@
 
 <script>
 
-import { EXPRESS_URL } from '../../serverFetch'
+import { EXPRESS_URL, setStoreData } from '../../serverFetch'
 import ListingPopup from '../SharedComponents/ListingPopup.vue'
 
 export default {
@@ -67,7 +67,8 @@ export default {
         credentials: 'include',
         body: JSON.stringify(cartItem) // This is your file object
       }).then(
-        response => response
+        response => response,
+        setStoreData()
       ).catch(
         error => console.log(error) // Handle the error response object
       )
