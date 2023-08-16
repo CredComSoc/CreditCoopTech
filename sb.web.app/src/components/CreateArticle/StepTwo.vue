@@ -1,7 +1,7 @@
 <template> 
 <div>
   <div id="title-field" class="input">
-    <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when') + this.chosenType.toLowerCase() + $t('shop_items.be_available')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+    <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
     <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
     <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
   </div>

@@ -25,7 +25,7 @@ export default {
     searchData: Map
   },
   mounted: function () {
-    console.log(this.searchData)
+    //console.log(this.searchData)
   },
   methods: {
     openProfile (message) {

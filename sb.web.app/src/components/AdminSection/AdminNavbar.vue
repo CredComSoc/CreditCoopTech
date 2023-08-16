@@ -7,12 +7,12 @@
               <router-link :to="{name:'AdminShop'}">
                 <figure class="logo-click">
                   <img src="../../assets/navbar_logos/shop.png" />
-                  <figcaption class="l-text">{{ $t('nav.shop') }} </figcaption>
+                  <figcaption class="l-text">{{ $t('marketplace') }} </figcaption>
                 </figure>
               </router-link>
               <!-- Do not remove these, they are for mobile nav. -->
               <router-link :to="{name:'AdminShop'}" v-if="this.isActive" @click="openNav">
-                <span class="mob-cap">{{ $t('nav.shop') }} </span>
+                <span class="mob-cap">{{ $t('marketplace') }} </span>
               </router-link>
             </div>
           <div id="navbar-members" class="navlogo">
@@ -41,7 +41,7 @@
              <router-link :to="{name:'AdminEconomy'}">
               <figure class="logo-click">              
                   <img src="../../assets/navbar_logos/economy.png" style='height: 25px; width: 25px;'/>
-                  <figcaption class="l-text"> {{ $t('user.financialOverview') }} </figcaption>
+                  <figcaption class="l-text"> {{ $t('user.financial_overview') }} </figcaption>
               </figure>
             </router-link>
             <router-link :to="{name:'AdminEconomy'}" v-if="this.isActive" @click="openNav">

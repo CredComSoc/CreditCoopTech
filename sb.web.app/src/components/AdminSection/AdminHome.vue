@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div>
-      <h2 class="center-text">{{ $t('memberCAPS') }}</h2>
+      <h2 class="center-text">{{ $t('member') }}</h2>
     </div>
     <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>
     <br>
@@ -103,7 +103,7 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.$store.state.allMembers)
+    //console.log(this.$store.state.allMembers)
     this.triggerSearch('')
   }
   
@@ -147,6 +147,7 @@ export default {
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;
+  text-transform: uppercase;
 }
 
 h2 {

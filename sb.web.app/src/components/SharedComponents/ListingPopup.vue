@@ -25,8 +25,8 @@
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
         <div class="article-info">
-          <h5 v-if="listingObj.status === 'selling'">{{ $t('Selling') }}</h5>
-          <h5 v-if="listingObj.status === 'buying'">{{ $t('Buying') }}</h5>    
+          <h5 v-if="listingObj.status === 'selling' || listingObj.status === 'offer'">{{ $t('Offer') }}</h5>
+          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('Want') }}</h5>    
           <p>{{listingObj.userUploader}}</p>
 
           <h5>{{ $t('location') }}</h5>  
@@ -45,7 +45,7 @@
           <h5>{{ $t('list_price') }}</h5> 
           <p>{{listingObj.price}} {{ $t('org.token') }}</p>
 
-          <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'" >
+          <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')" >
             <h5>{{ $t('quantity') }}</h5> 
             <div class="quant">
               <div @click="decreaseAmount">
@@ -65,7 +65,7 @@
         <div class="spacing"></div>
 
       <button class="closeBtn" @click="$emit('closePopup')">{{ $t('Close') }}</button>
-      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && listingObj.status === 'selling'">
+      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')">
         <div>
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
         </div>
@@ -75,7 +75,7 @@
           <button class="cartBtn" @click="editItem(); $emit('closePopup');">{{ $t('edit_item') }}</button>
         </div>
       </div>
-      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && listingObj.status === 'buying'">
+      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && (listingObj.status === 'buying' || listingObj.status === 'want')">
         <div>
           <button class="chattBtn" @click="goToChat">{{ $t('chat.start') }}</button>
         </div>
@@ -122,9 +122,10 @@ export default {
       return EXPRESS_URL + '/image/' + img
     },
     placeInCart () {
+      this.$emit('placeInCart', this.amount, this.listingObj)
+
       profile().then(res => {
         // if (res.name !== this.listingObj.userUploader) {
-        this.$emit('placeInCart', this.amount, this.listingObj)
         // }
       })
     },
@@ -140,7 +141,7 @@ export default {
           if (data !== false) {
             this.$router.push({ name: 'Chat', params: { chatID: data } })
           } else {
-            console.log('chat error!!')
+            //console.log('chat error!!')
             this.chatError = true
           }
         }).catch(err => console.log(err))

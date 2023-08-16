@@ -65,7 +65,6 @@ module.exports = function() {
     const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").updateOne(user_query, update_query)
     db.close()
-    //console.log(result)
     return result
   }
 
@@ -220,39 +219,31 @@ module.exports = function() {
       let articles = await dbo.collection("posts").find({}).toArray()
       const myArticles = []
       const allArticles = []
-      //console.log("Articles", articles)
       for (let article of articles) {
         const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
         try {
-          //console.log("User: ", articleUser.profile.accountName)
           if (articleUser) {
             article.userUploader = articleUser.profile.accountName
 
             if(userId && article.userId.toString() === userId.toString()) {
-            //console.log("Owner found: ", articleUser.profile.accountName)
               myArticles.push(article)
             }
           }
 
           const now = new Date()
           const chosenDate = article["end-date"]
-          //console.log(now.getTime(), Date.parse(chosenDate))
           if (now.getTime() < Date.parse(chosenDate)) {
-            //console.log("All article found:")
             allArticles.push(article)
           }
 
         } catch (error) {
-          //console.log("Error: ", error)
+          console.error(error)
           errors.push("Error with processing articles/items")
         }
       }
       data.myArticles = myArticles
       data.allArticles = allArticles
 
-      //console.log("Retrieved articles")
-      //console.log(allArticles)
-      //console.log(myArticles)
       // get all members profile data
       const users = await dbo.collection("users").find({}).toArray()
       const allMembers = []
@@ -263,13 +254,12 @@ module.exports = function() {
           userData.email = user.email
           allMembers.push(userData)
         } catch (error) {
-          //console.log("Error: ", error)
+          console.error(error)
           errors.push("Error with processing users")
         }
       }
       data.allMembers = allMembers
-      //console.log("Users: ", data.allMembers)
-
+      
       // get cart data
       const carts = await dbo.collection("carts").find({}).toArray()
       const myCart = []
@@ -279,13 +269,12 @@ module.exports = function() {
             myCart.push(cart)
           }
         } catch (error) {
-          //console.log("Error: ", error)
+          console.error(error)
           errors.push("Error with processing carts")
         }
       }
       data.myCart = myCart
-      //console.log("Cart: ", data.myCart)
-
+      
       // get event data
       data.allEvents = await dbo.collection("events").find({}).toArray()
       // get saldo
@@ -311,7 +300,7 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        //console.log("Error: ", error)
+        console.error(error)
         errors.push("Error processing CC_NODE events")
       }
       
@@ -354,7 +343,7 @@ module.exports = function() {
         }
         //data.requests = response.data
       } catch (error) {
-        console.log("Error: ", error)
+        console.error(error)
         errors.push("Error processing CC_NODE payee transactions")
       }
 
@@ -372,7 +361,6 @@ module.exports = function() {
           let users = {}
           let entries = response.data.data || []
           for (const entry of entries) {
-            //console.log(entry)
             if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
               const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
               users[entry.entries[0].payee] = payee.profile.accountName
@@ -397,17 +385,15 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        //console.log("Error: ", error)
+        console.error(error)
         errors.push("Error processing CC_NODE payer transactions")
       }
 
       db.close()
-      //console.log("Errors: ", errors)
-      //console.log("Data: ", data)
+      console.error(errors)
       res.status(200).send(data)
     } catch (error) {
-      console.log("Error occured: ", error)
-      console.log("Errors: ", errors)
+      console.error(error)
       db.close()
       res.status(200).send(data)
     }
@@ -465,6 +451,7 @@ module.exports = function() {
 
           if (sendWelcomeEmail) {
             try {
+              // TODO: May be change the language to english if that is the users are english speaking
               const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
                 from: ouremail, // sender address
 
@@ -530,36 +517,35 @@ module.exports = function() {
             'state': 'completed'
           }
         })
-        console.log(response.data)
         let userNames = {}
-        for (const entry of response.data) {
-          //console.log(entry)
+        var arrayData = response.data;
+        if(arrayData.data)
+      {
+        for (const entry of arrayData.data) {
           if(!(entry.entries[0].payee in userNames)) {
             const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-            userNames[entry.entries[0].payee] = payee.profile.accountName
+            userNames[entry.entries[0].payee] = payee? payee.profile.accountName: ""   
           }
           if(!(entry.entries[0].payer in userNames)) {
             const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-            userNames[entry.entries[0].payer] = payer.profile.accountName
+            userNames[entry.entries[0].payer] = payer ? payer.profile.accountName: ""
           }
           if(!(entry.entries[0].author in userNames)) {
             const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-            userNames[entry.entries[0].author] = author.profile.accountName
+            userNames[entry.entries[0].author] = author? author.profile.accountName: ""   
           }
-          console.log(entry)
           entry.entries[0].payee = userNames[entry.entries[0].payee]
           entry.entries[0].payer = userNames[entry.entries[0].payer]
           entry.entries[0].author = userNames[entry.entries[0].author]
-          console.log(entry)
           allTransactions.push(entry)
         }
-      } catch (error) {
+      }
+    } catch (error) {
         db.close()
         console.log(error)
       }
     }
     db.close()
-    //console.log(allTransactions)
     res.status(200).send(allTransactions)
   })
     /*try{
@@ -733,7 +719,6 @@ module.exports = function() {
    *****************************************************************************/
 
   router.get("/articles", async (req, res) => {
-    //console.log(req)
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
@@ -805,7 +790,14 @@ module.exports = function() {
         if (req.files.length > 0)
         {
           let images = req.files.map(obj => obj.filename);
-          newArticle.coverImg = images[req.body.coverImgInd];
+          if(req.body.coverImgInd)
+          {
+            newArticle.coverImg = images[req.body.coverImgInd];
+          }
+          else
+          {
+            newArticle.coverImg = images[0];
+          }
           images = images.filter((img) => { return img !== newArticle.coverImg })
           newArticle.img = images;
         }
@@ -1030,7 +1022,6 @@ module.exports = function() {
 
   router.post('/cart', (req, res) => {
     const cartItem = req.body;
-    //console.log(cartItem);
     cartItem.cartOwner = req.user;
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);

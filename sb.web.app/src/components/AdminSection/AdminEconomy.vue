@@ -3,42 +3,43 @@
 <template>
     <div class="wrapper">   
         <div style="display:flex; justify-content:center;">
-            <h2 class="center-text">{{ $t('user.financialOverview') }}</h2>
+            <h2 class="center-text">{{ $t('user.financial_overview') }}</h2>
         </div>
         <div class="EconomyStats">
           <div><!--Displays the total number of trascations and their turnover this month-->
-            <b>Dagens</b>
+            <b>{{ $t('financial.today') }}</b>
             <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesDay}}<br>
-            Omsättning: {{this.turnOverDay}}</p>
+            {{ $t('financial.revenue') }}: {{this.turnOverDay}}</p>
           </div>
           <div>
-            <b>Veckans</b>
+            <b>{{ $t('financial.this_week') }}</b>
             <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesWeek}}<br>
-            Omsättning: {{this.turnOverWeek}}</p>
+              {{ $t('financial.revenue') }}: {{this.turnOverWeek}}</p>
           </div>
           <div>
-            <b>Månadens</b>
+            <b>{{ $t('financial.this_month') }}</b>
             <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesMonth}}<br>
-            Omsättning: {{this.turnOverMonth}}</p>
+           {{ $t('financial.revenue') }}: {{this.turnOverMonth}}</p>
           </div>
           <div>
-            <b>Årets</b>
+            <b>{{ $t('financial.this_year') }}</b>
             <p>{{ $t('number_of_transactions') }}: {{this.numberOfTradesYear}}<br>
-            Omsättning: {{this.turnOverYear}}</p>
+           {{ $t('financial.revenue') }}: {{this.turnOverYear}}</p>
           </div>
         </div>
         <!--This is a similar solution to the filter from profile->MyPurchases -->
-        <div className='filter'>
-          <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transcations. -->
+        <div className='filter' v-if="this.filteredTransactions.length > 0">
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
           <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
-          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$('product')" id="product-input">
+          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
+          <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transcations. -->
           <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button><!-- downloadFilterView handles the csv download. -->
         </div>
-        <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->
+        <table v-if="(this.filterActive)"> <!--We dont display anything unless anyone has clicked the filter button-->   <!-- THis doesn't do anything because the data is already fetched from the backend  -->
         <tr>
+          <th></th>
           <th>{{ $t('Buyer') }}</th>
           <th>{{ $t('Salesperson') }}</th>
           <th>{{ $t('article') }}</th>
@@ -47,7 +48,8 @@
           <th>{{ $t('amount') }}</th>
           <th>{{ $t('timestamp') }}</th>   
         </tr>
-        <tr v-for="(item) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
+        <tr v-for="(item,index) in this.filteredTransactions" :key="item"><!--We get all transactions from the database. and display desired values-->
+          <td>{{ index }}</td>
           <td>{{item.entries[0].payer}}</td>
           <td>{{item.entries[0].payee}}</td>
           <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
@@ -61,9 +63,9 @@
         </tr>
       </table>
     </div>
-    <div class="chat">
+    <!-- <div class="chat">
       <p style="text-align: center;">chat goes here</p>
-    </div>
+    </div> -->
 </template>
 <script>
 import Listing from '@/components/SharedComponents/Listing.vue'
@@ -130,7 +132,6 @@ export default {
       let transactionsMonth = []
       let transactionsYear = []
       //filter out transactions based on date from all transactions and fills arrays
-      console.log(this.allTransactions)
       transactionsDay = this.allTransactions.filter(item => todayday.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       transactionsWeek = this.allTransactions.filter(item => lastWeek.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
       transactionsMonth = this.allTransactions.filter(item => lastMonth.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= todaynight.valueOf())
@@ -169,7 +170,6 @@ export default {
       if (dateFilterStartDate.value === '' || this.$refs.startDateInput.getInput() === null) { //if the Filter is cleared or not initialized
         const minLimitDate = new Date()
         minLimitDate.setFullYear(this.default_min_date, 0, 1)
-        //console.log(minLimitDate)
         dateFilterEndDate.setAttribute('min', minLimitDate.toISOString().split('T')[0]) //we set the date minimum date to 2020-01-01
       } else {
         let startDateValue = new Date(dateFilterStartDate.value) //Otherwise take the value just set by the user
@@ -230,11 +230,13 @@ export default {
       this.allTransactions = await fetchEconomy()
       this.calculateSTATS()
       this.filterActive = true
+      this.filteredTransactions = this.allTransactions 
     },
     filterTransactions () { //handles the filter
       this.filteredTransactions = []
       const dateFilterEndDate = document.getElementById('end-date-filter' + '-date-filter')
       const dateFilterStartDate = document.getElementById('start-date-filter' + '-date-filter')
+      console.log(dateFilterEndDate.value, dateFilterStartDate.value)
       let startDateValue = new Date(dateFilterStartDate.value)
       startDateValue = new Date(startDateValue.setDate(startDateValue.getDate()))
       startDateValue = startDateValue.setHours(0, 0, 0)
@@ -244,37 +246,28 @@ export default {
 
       // date range search
       if (dateFilterEndDate.value !== '' && dateFilterStartDate.value !== '') { //if we have daterange filter for it. Save result in Filtered Transactions
-        //console.log('date range start and end')
         this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf() && new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterEndDate.value !== '') {  
-        //console.log('date range end')
         this.filteredTransactions = this.allTransactions.filter(item => new Date(item.written).valueOf() <= endDateValue.valueOf()) 
       } else if (dateFilterStartDate.value !== '') { 
-        //console.log('date range start')
         this.filteredTransactions = this.allTransactions.filter(item => startDateValue.valueOf() <= new Date(item.written).valueOf()) 
       }
       //company name search
       if (this.$refs.companyInput.value !== '' && (dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //if we have used a filter before, filter for company in filtered transactions and save in filteredTransactions
-        //console.log('company search with date range')
         this.filteredTransactions = this.filteredTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase())) //check if whats written in company input exists in item title. 
       } else if (this.$refs.companyInput.value !== '') { // else filter in vuex store completedTransactions and save in filteredTransactions
-        //console.log('company search without date range')
         this.filteredTransactions = this.allTransactions.filter(item => item.entries[0].payee.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()) || item.entries[0].payer.toLowerCase().includes(this.$refs.companyInput.value.toLowerCase()))
       }
       //procuct name search
 
       if (this.$refs.productInput.value !== '' && (this.$refs.companyInput.value !== '' || dateFilterStartDate.value !== '' || dateFilterEndDate.value !== '')) { //same logic as above.
-        //console.log('product search with date range and/or with company')
         this.filteredTransactions = this.filteredTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase())) //check if whats written in product input exists in item title. 
       } else if (this.$refs.productInput.value !== '') {
-        //console.log('product search without date range and company')
-        this.filteredTransactions = this.allTransactions.filter(item => this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()))
+        this.filteredTransactions = this.allTransactions.filter(item => this.getListing_title(item.entries[0]) ? this.getListing_title(item.entries[0]).toLowerCase().includes(this.$refs.productInput.value.toLowerCase()) : false)
       }
       if (!(this.$refs.productInput.value !== '' || this.$refs.companyInput.value !== '' || dateFilterEndDate.value !== '' || dateFilterStartDate.value !== '')) { 
         this.filteredTransactions = this.allTransactions
       }
-
-      //console.log('found ' + this.allTransactions.length + ' elements')
     },
 
     getListing_title (item) { //get name of article from vuex store
@@ -345,9 +338,11 @@ export default {
   position: fixed;
 }
 .wrapper{
-  width: 75%;
-  float: left;
-  border-right: 2px solid;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  /* border-right: 2px solid; */
+  padding-left: 10%;
 }
 button {
   color: black;
@@ -438,7 +433,9 @@ margin-right:2%;
 table {
   margin-left: auto;
   margin-right: auto;
-  border-spacing:50px;
+  border: 1px solid;
+  margin-top: 15px;
+  /* border-spacing:50px; */
   width: 100%;
   text-align: center;
   font-size: 1.2rem;

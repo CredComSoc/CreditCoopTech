@@ -178,7 +178,7 @@ export default {
           if (data !== false) {
             await this.getChatHistories(data)
           } else {
-            console.log('chat error!!')
+            //console.log('chat error!!')
           }
         }).catch(err => console.log(err))
     }
@@ -193,7 +193,7 @@ export default {
     })
 
     this.socket.onAny((event, ...args) => {
-      console.log(event, args)
+      //console.log(event, args)
     })
   },
   beforeUnmount () {

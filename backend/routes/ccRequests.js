@@ -56,7 +56,7 @@ module.exports = function() {
       }
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       res.sendStatus(500)
     }
   })
@@ -123,7 +123,7 @@ module.exports = function() {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       res.sendStatus(500)
     }
   })

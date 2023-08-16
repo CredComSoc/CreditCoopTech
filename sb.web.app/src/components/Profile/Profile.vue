@@ -2,12 +2,12 @@
   <div className="flexbox-container">
     <div className='topnav mobnav' id='myMobnav' v-if="isMobile()">
       <a style="background-color:skyblue" href='#' @click="this.tab='profile'" :class="{ active: this.tab !== 'purchases' && this.tab !== 'articles' && this.tab!=='requests' }" id='profile'>{{ $t('user.profile') }}</a>
-      <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>{{ $t('Buy') }}</a>
+      <a style="background-color:antiquewhite" href='#' @click="this.tab='purchases'" :class="{ active: this.tab === 'purchases' }" id='purchases'>{{ $t('Wants') }}</a>
       <a style="background-color:#b3ffb3" href='#' @click="this.tab='articles'" :class="{ active: this.tab === 'articles' }" id='articles'>{{ $t('article') }}</a>
-      <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('needs') }}</a>
+      <a style="background-color:papayawhip" href='#' @click="this.tab='requests'" :class="{ active: this.tab === 'requests' }" id='requests'>{{ $t('Needs') }}</a>
     </div>
     <div className="title_container flexbox-item" v-if="!isMobile()">
-      <h1 className="title" > {{ $t('nav.myAccountCAPS') }} </h1>
+      <h1 className="title" > {{ $t('nav.my_account') }} </h1>
     </div>
     <div className='topnav flexbox-item' id='myTopnav' v-if="!isMobile()">
       <a href='#' @click="this.tab='profile'" :class="{ active: this.tab!='purchases' && this.tab!='articles' && this.tab!='requests' && this.tab!='economy' }" id='profile'> {{ $t('nav.my_profile') }} </a>
@@ -96,6 +96,7 @@ export default {
   margin-bottom: 4rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 .topnav {

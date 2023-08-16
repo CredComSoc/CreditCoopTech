@@ -131,7 +131,7 @@ export default {
           if (data !== false) {
             this.$router.push({ name: 'Chat', params: { chatID: data } })
           } else {
-            console.log('chat error!!')
+            //console.log('chat error!!')
             this.chatError = true
           }
         }).catch(err => console.log(err))
