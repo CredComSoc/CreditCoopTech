@@ -1048,6 +1048,11 @@ module.exports = function() {
             }
           })
         }
+        else
+        {
+          db.close();
+          res.sendStatus(200);
+        }
       })
     })
   });

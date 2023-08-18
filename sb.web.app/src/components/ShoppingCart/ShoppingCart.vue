@@ -13,7 +13,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits } from '../../serverFetch'
+import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -47,7 +47,8 @@ export default {
         credentials: 'include'
       }).then(
         this.cart.splice(ind - 1, 1),
-        this.calcTotal()
+        this.calcTotal(),
+        setStoreData()
       ).catch(
         error => console.log(error)
       )
@@ -62,7 +63,8 @@ export default {
         body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
         credentials: 'include'
       }).then(
-        this.calcTotal()
+        this.calcTotal(),
+        setStoreData()
       ).catch(
         error => console.log(error)
       )
@@ -78,7 +80,8 @@ export default {
           body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
           credentials: 'include'
         }).then(
-          this.calcTotal()
+          this.calcTotal(),
+          setStoreData()
         ).catch(
           error => console.log(error)
         )
@@ -120,7 +123,10 @@ export default {
           fetch(EXPRESS_URL + '/cart/remove', {
             method: 'POST',
             credentials: 'include'
-          }).catch(
+          }).then(
+            this.calcTotal(),
+            setStoreData()
+          ).catch(
             error => console.log(error)
           )
         } else {

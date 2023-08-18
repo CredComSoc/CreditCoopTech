@@ -201,7 +201,8 @@
         "images": "Images",
         "try_again_later": "Please try again later.",
         "publish": "Publish",
-        "product_or_service": "Product Or Service"
+        "product_or_service": "Product Or Service",
+        "item_available_in_shop": "Item is now available in shop"
     },
     "financial" : {
     "revenue": "Revenue",

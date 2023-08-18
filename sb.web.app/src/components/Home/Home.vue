@@ -10,6 +10,7 @@
 
 import Banner from './ContentBanner.vue'
 import ContentCard from './ContentCard.vue'
+import { setStoreData } from '../../serverFetch'
 
 export default {
   name: 'Home',
@@ -25,6 +26,8 @@ export default {
     }
   },
   mounted: function () {
+    setStoreData()
+
     this.shop = this.$store.state.allArticles
     this.members = this.$store.state.allMembers
   }
