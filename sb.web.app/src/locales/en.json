@@ -112,7 +112,11 @@
         "my_purchase_requests": "My purchase requests",
         "balance": "Balance & limits",
         "events": "Events",
-        "sign_out": "Sign out"
+        "sign_out": "Sign out",
+        "trades": "Trades",
+        "items": "Items",
+        "my_trades": "My Trades",
+        "my_balance": "Balance"
 
     },
     "shop": {

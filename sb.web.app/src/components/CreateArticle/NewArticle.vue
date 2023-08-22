@@ -84,7 +84,7 @@ export default {
               } else {
                 this.newArticle.destination = res.listing.destination
                 this.newArticle['end-date'] = res.listing['end-date']
-                this.newArticle.status = res.listing.status
+                this.newArticle.status = res.listing.status === 'buying' ? 'want' : res.listing.status === 'selling' ? 'offer' : res.listing.status
                 this.newArticle.article = res.listing.article
                 this.newArticle.category = res.listing.category
               }

@@ -1381,6 +1381,7 @@ module.exports = function() {
 
 
   router.post('/categories', upload.array('file', 5), (req, res) => {
+    // console.log('here', req)
     let images = req.files.map(obj => obj.filename);
     let coverImg = images[req.body.coverImgInd];
     images = images.filter((img) => { return img !== coverImg })

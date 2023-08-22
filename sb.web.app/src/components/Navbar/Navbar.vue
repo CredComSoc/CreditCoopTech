@@ -111,7 +111,7 @@
                 </router-link>
                 <div id="profile-content" @mouseover="highlightLogo" class="dropdown-content">
                   <div id="navbar-profile-dropdown-profile"><router-link :to="{name:'Profile', params:{tab: 'profile'}}"> {{ $t('nav.my_profile') }} </router-link></div>
-                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}"> {{ $t('nav.my_buy_sell') }} </router-link>
+                  <router-link :to="{name:'Profile', params:{tab: 'purchases'}}"> {{ $t('nav.my_trades') }} </router-link>
                   <router-link :to="{name:'Profile', params:{tab: 'articles'}}"> {{ $t('nav.my_items') }} </router-link>
                   <!--<router-link :to="{name:'Profile', params:{tab: 'requests'}}"> {{ $t('nav.my_purchase_requests') }} </router-link>-->
                   <router-link :to="{name:'Profile', params:{tab: 'economy'}}"> {{ $t('nav.balance') }} </router-link>
