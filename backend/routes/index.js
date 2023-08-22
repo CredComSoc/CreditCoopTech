@@ -390,7 +390,6 @@ module.exports = function() {
       }
 
       db.close()
-      console.error(errors)
       res.status(200).send(data)
     } catch (error) {
       console.error(error)
