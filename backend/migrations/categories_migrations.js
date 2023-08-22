@@ -107,3 +107,4 @@ console.log(count);
 // run this file in node js as 'node categories_migrations.js'
 // this will create categories in the database
 // finally check if the console log in the final is 17 other wise there is a category that is not saved
+// to run in production just change the url to the production deployed backend url
