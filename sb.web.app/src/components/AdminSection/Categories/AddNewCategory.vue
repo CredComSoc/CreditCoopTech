@@ -129,6 +129,7 @@ const router = useRouter()
           ++index;
         }
         data.append('name', this.name)
+        console.log(data)
         createNewCategories(data).then((res) => {
         if (res.status === 200) {
             this.$router.push({ name: 'CategoriesList' }) 

@@ -143,9 +143,11 @@ vue-cli-service serve
   To create a production build, run npm run build.
 ```
 
-**Creating test users**
+## Migrations
 
-In order to create a test user account that you can use to explore the app:
+** Init users
+
+In order to create some test user account that you can use to explore the app:
 ```
 > cd backend
 > node migrations/0000_init_users.js
@@ -153,6 +155,15 @@ In order to create a test user account that you can use to explore the app:
 ```
 
 Open the `0000_init_users.js` file and navigate to the end to view the credentials for the newly-created account.
+
+** Get some categories
+
+In order to create some categories into your data 
+```
+> cd backend
+> node migrations/0002_add_categories.js
+```
+
 
 <!-- 
 ### Install cc-node -- Optional: If you want to test the cc-node functionallity while running on your computer. Otherwise test functionallity regarding cc-node on the droplet.

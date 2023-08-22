@@ -13,19 +13,6 @@ const axios = require('axios').default;
 
 const config = require('../config');
 
-
-
-/*
-const transporter = nodemailer.createTransport({
-  service: 'Outlook365',
-  secure: true,
-  auth: {
-    user: 'sbwebapp@outlook.com',
-    pass: '@sbapp_KU5'
-  }
-})
-*/
-
 const ouremail = "sbwebapp@outlook.com"
 
 const transporter = nodemailer.createTransport({
@@ -390,7 +377,6 @@ module.exports = function() {
       }
 
       db.close()
-      console.error(errors)
       res.status(200).send(data)
     } catch (error) {
       console.error(error)
@@ -1395,11 +1381,11 @@ module.exports = function() {
         let dbo = db.db(dbFolder);
         dbo.collection("category").insertOne(categories, (err, result) => {
           if (err) {
-            res.sendStatus(500)
+            res.status(500).send({ error: err })
             db.close()
           }
           else if (result != null) {
-            res.sendStatus(200);
+            res.status(200).send("Category added");
             db.close()
           }
         })
