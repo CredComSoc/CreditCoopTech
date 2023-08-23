@@ -462,20 +462,24 @@ export async function deleteCart (id) {
 }
 
 export async function createTransactions (cart) {
-  cart.forEach(element => {
-    console.log(element)
-  })
-  for (const element of cart) {
-    fetch(EXPRESS_URL + '/createrequest', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(element),
-      credentials: 'include'
-    })
-    postNotification('saleRequest', element.userUploader) 
+  let value = true
+  try {
+    for (const element of cart) {
+      await fetch(EXPRESS_URL + '/createrequest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(element),
+        credentials: 'include'
+      }).then(postNotification('saleRequest', element.userUploader) // if the create transaction api fails the post notification should not be sent
+      ).catch (value = false) 
+    }
+    return value
+  } catch (ex) {
+    return false
   }
+  
   /*cart.forEach(element => {
     await fetch(EXPRESS_URL + '/createrequest', {
       method: 'POST',
@@ -943,12 +947,13 @@ export async function setStoreData () {
 
       const oldNotifications = []
       const newNotifications = []
-
-      for (const notification of data.user.notifications) {
-        if (notification.seen) {
-          oldNotifications.push(notification)
-        } else {
-          newNotifications.push(notification)
+      if (data.user.notifications) {
+        for (const notification of data.user.notifications) {
+          if (notification.seen) {
+            oldNotifications.push(notification)
+          } else {
+            newNotifications.push(notification)
+          }
         }
       }
 

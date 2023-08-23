@@ -152,7 +152,7 @@ module.exports = function() {
        'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
-      res.status(200).send(response.data[user._id.toString()])
+      res.status(200).send(response.data.data[user._id.toString()])
     } catch (error) {
       res.status(200).send({
         completed: {

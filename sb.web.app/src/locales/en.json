@@ -166,7 +166,8 @@
         "balance_after": "Balance after purchase:",
         "purchase_thanks_header": "Thank you for your purchase!",
         "purchase_thanks_notified": "Thank you for your purchase! The seller has been notified. You will get a notification when the seller has approved your purchase request.",
-        "not_enough_credit": "You do not have enough credit to make the purchase."
+        "not_enough_credit": "You do not have enough credit to make the purchase.",
+        "transaction_failed": "Unable to complete the transaction"
     },
     "shop_items": {
         "need_or_offer": "Need or Offer?",

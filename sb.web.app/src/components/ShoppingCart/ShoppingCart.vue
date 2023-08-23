@@ -6,6 +6,8 @@
       <PopupCard v-if="this.confirmPress" :title="$t('cart.purchase_thanks_header')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified')" />
     <PopupCard v-if="this.insufficientBalance" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('cart.not_enough_credit')" />
     <PopupCard v-if="this.sellerLimitError" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller, 'token': $t('org.token')})" />
+    <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/" btnText="Ok" :cardText="$t('cart.transaction_failed')" />
+
   </div>
 </template>
 
@@ -37,7 +39,8 @@ export default {
       confirmPress: false,
       insufficientBalance: false,
       sellerLimitError: false,
-      seller: ''
+      seller: '',
+      transactionFailed: false
     }
   },
   methods: {
@@ -116,19 +119,26 @@ export default {
             }
           }
 
-          this.confirmPress = true
-          createTransactions(this.cart)
-          this.cart = []
-          // remove all items from cart
-          fetch(EXPRESS_URL + '/cart/remove', {
-            method: 'POST',
-            credentials: 'include'
-          }).then(
-            this.calcTotal(),
-            setStoreData()
-          ).catch(
-            error => console.log(error)
-          )
+          const transactionValue = await createTransactions(this.cart)
+          if (transactionValue) {
+            this.confirmPress = true
+
+            // this.confirmPress = false
+            this.$store.commit('setMyCart', [])
+            this.cart = []
+            // remove all items from cart
+            fetch(EXPRESS_URL + '/cart/remove', {
+              method: 'POST',
+              credentials: 'include'
+            }).then(
+              this.calcTotal(),
+              setStoreData()
+            ).catch(
+              error => console.log(error)
+            )
+          } else {
+            this.transactionFailed = true
+          }
         } else {
           // display insufficient balance msg
           this.insufficientBalance = true
