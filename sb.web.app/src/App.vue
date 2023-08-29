@@ -61,7 +61,7 @@ export default {
       } 
     })
 
-    setStoreData()
+    // setStoreData()
   }
 }
 </script>

@@ -19,8 +19,10 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PreviewItem from './PreviewItem.vue'
 import PopupCard from '../SharedComponents/PopupCard.vue'
+import { getImg } from '../../serverFetch'
 
 export default {
   name: 'PreviewArticle',
@@ -29,12 +31,37 @@ export default {
     PopupCard
   },
   mounted () {
-    for (const img of this.savedProgress.img) {
-      const URLImg = URL.createObjectURL(img)
-      if (this.images.length % 2 === 0) {
-        this.images.push([URLImg, true, this.images.length, img.isCoverImg])
-      } else {
-        this.images.push([URLImg, false, this.images.length, img.isCoverImg])
+    if (this.savedProgress.img) {
+      for (const img of this.savedProgress.img) {
+        const URLImg = URL.createObjectURL(img)
+        if (this.images.length % 2 === 0) {
+          this.images.push([URLImg, true, this.images.length, img.isCoverImg])
+        } else {
+          this.images.push([URLImg, false, this.images.length, img.isCoverImg])
+        }
+      }
+    } else {
+      let categorySelected = this.savedProgress.categories.filter(el => el.name == this.savedProgress.category)[0]
+      getImg(categorySelected.defaultMainImage).then((res) => {
+        if (res.ok) {
+          return res.blob()
+        }
+      }).then(data => {
+        const URLImg = URL.createObjectURL(data)
+        this.images.push([URLImg, true, this.images.length, true])
+      })
+      // multiple images uploaded
+      if ('defaultImage' in categorySelected) {
+        for (const img of categorySelected.defaultImage) {
+          getImg(img).then((res) => {
+            if (res.ok) {
+              return res.blob()
+            }
+          }).then(data => {
+            const URLImg = URL.createObjectURL(data)
+            this.images.push([URLImg, true, this.images.length, false])
+          })
+        }
       }
     }
     if (this.savedProgress['end-date'] !== null) {
@@ -44,7 +71,7 @@ export default {
         day: '2-digit'
       }
 
-      this.endDate = new Date().toLocaleString('sv-SE', options) + ' - ' + this.savedProgress['end-date']
+      this.endDate = this.savedProgress['end-date']
     }
   },
   props: ['savedProgress', 'isPublished'],

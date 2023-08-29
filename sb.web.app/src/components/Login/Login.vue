@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { login } from '../../serverFetch'
+import { login, setStoreData } from '../../serverFetch'
 
 export default {
   name: 'Login',
@@ -65,13 +65,14 @@ export default {
       window.location.href = 'mailto:' + emailAddress
     },
     async handleSubmit () {
-      login(this.username.toLowerCase(), this.password).then((response) => {
-        //console.log(response)
+      login(this.username.toLowerCase(), this.password).then(async (response) => {
         if (response) {
           this.error = false  
           this.loginCount = 0   
-          window.location.reload()
           this.error = false 
+          // TODO: Add a loading component here so tht while it awaits the data endpoint. to make it more user friendly
+          await setStoreData()
+          window.location.href = '/'
         } else {
           this.error = true
           this.loginCount += 1

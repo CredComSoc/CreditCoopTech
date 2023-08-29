@@ -19,7 +19,7 @@
       <div>
     <label class="select-label" for="my-select">{{ $t('category') }}</label>
   </div>
-    <select class="select" id="my-select" v-model="categorySelected" :placeholder="$t('shop_items.item_category_prompt')">
+    <select ref="categories" class="select" id="my-select" v-model="categorySelected" :placeholder="$t('shop_items.item_category_prompt')">
       <option v-for="option in categories" :key="option" :value="option"><p class="options">{{  option }}</p></option>
     </select>
   </div>
@@ -48,6 +48,7 @@ export default {
   data () {
     return {
       categories: [],
+      categoriesObject: [],
       categorySelected: ''
     }
   },
@@ -103,6 +104,10 @@ export default {
     }
   },
   mounted () {
+    getCategories().then((res) => {
+      this.categoriesObject = res
+      this.categories = res.map(element => element.name)
+    })
     if ('title' in this.savedProgress) {
       this.$refs.titleInput.setValue(this.savedProgress.title) 
     } 
@@ -118,9 +123,6 @@ export default {
     if ('status' in this.savedProgress) {
       this.$refs.buyOrSellInput.setValue(this.savedProgress.status)
     }
-    getCategories().then((res) => {
-      this.categories = res.map(element => element.name)
-    })
   }
 }
 </script>

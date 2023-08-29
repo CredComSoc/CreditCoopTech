@@ -17,11 +17,21 @@
           :isCoverImg="img[2]"
     />
   </div>
+  <div id="images_default" v-if="this.imageObjs.length == 0"> 
+    <h3>{{ $t('default_images') }}</h3>
+    <UploadedImage  class="img" :textboxLabel="$t('shop_items.item_set_main_image')" :isPreview="true"
+    v-for="(img) in this.imagesDefault"
+          :imageURL="img[0]"
+          :key="img[0]"
+          :id="img[1]"
+          :isCoverImg="img[2]"
+    />
+  </div>
 </div> 
 </template>
 
 <script>
-
+/* eslint-disable */
 import UploadedImage from './UploadedImage.vue'
 import { EXPRESS_URL, getImg } from '../../serverFetch'
 
@@ -34,12 +44,15 @@ export default {
   data () {
     return {
       images: [],
-      imageObjs: []
+      imageObjs: [],
+      imagesDefault: []
     }
   },
   methods: {
     getStepThreeInputs () {
-      const cbs = document.getElementsByClassName('cb')
+      if(this.imageObjs.length>0)
+      {
+        const cbs = document.getElementsByClassName('cb')
       for (var i = 0; i < cbs.length; i++) {
         if (cbs[i].checked) {
           this.imageObjs[i].isCoverImg = true
@@ -50,6 +63,8 @@ export default {
       return { 
         img: this.imageObjs
       }
+      }
+
     },
     upload () {
       document.getElementById('getFile').click()
@@ -110,6 +125,7 @@ export default {
   },
   mounted () {
     // in edit mode
+    console.log(this.l=this.imageObjs.length == 0)
     if ('coverImg' in this.savedProgress) {
       if (this.savedProgress.img.length > 0) {
         if (typeof this.savedProgress.img[0] === 'object') {
@@ -146,6 +162,29 @@ export default {
       }     
     } else if ('img' in this.savedProgress) { // not in edit mode
       this.displayImg()
+    } else {
+      let categorySelected = this.savedProgress.categories.filter(el => el.name == this.savedProgress.category)[0]
+      getImg(categorySelected.defaultMainImage).then((res) => {
+        if (res.ok) {
+          return res.blob()
+        }
+      }).then(data => {
+        const URLImg = URL.createObjectURL(data)
+        this.imagesDefault.push([URLImg, this.images.length, true])
+      })
+      // multiple images uploaded
+      if ('defaultImage' in categorySelected) {
+        for (const img of categorySelected.defaultImage) {
+          getImg(img).then((res) => {
+            if (res.ok) {
+              return res.blob()
+            }
+          }).then(data => {
+            const URLImg = URL.createObjectURL(data)
+            this.imagesDefault.push([URLImg, this.images.length, false])
+          })
+        }
+      } 
     }
   }
 }
@@ -191,6 +230,16 @@ p{
     gap: 40px;
     flex-wrap: wrap;
     max-width: 480px;
+}
+#images_default
+{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 480px;
+  margin-top: 30%;
 }
 
 input{

@@ -26,7 +26,7 @@ export default {
     }
   },
   mounted: function () {
-    setStoreData()
+    // setStoreData()  //unnecessary call because it is called in the router index
 
     this.shop = this.$store.state.allArticles
     this.members = this.$store.state.allMembers

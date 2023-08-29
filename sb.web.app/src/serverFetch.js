@@ -462,7 +462,6 @@ export async function deleteCart (id) {
 }
 
 export async function createTransactions (cart) {
-  let value = true
   try {
     for (const element of cart) {
       await fetch(EXPRESS_URL + '/createrequest', {
@@ -473,9 +472,9 @@ export async function createTransactions (cart) {
         body: JSON.stringify(element),
         credentials: 'include'
       }).then(postNotification('saleRequest', element.userUploader) // if the create transaction api fails the post notification should not be sent
-      ).catch (value = false) 
+      )
     }
-    return value
+    return true
   } catch (ex) {
     return false
   }
