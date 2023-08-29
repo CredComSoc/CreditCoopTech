@@ -188,7 +188,7 @@
         "price_prompt": "What is the price of the ",
         "new_article": "New Item",
         "edit_article": "Edit Item",
-        "invalid_date": "Invalid date",
+        "invalid_date": "Date Range Can not be more than one year",
         "try_again": "Please try again.",
         "price_positive_integer": "Price must be a positive integer",
         "upload_images": "Upload images",
@@ -207,7 +207,8 @@
         "try_again_later": "Please try again later.",
         "publish": "Publish",
         "product_or_service": "Product Or Service",
-        "item_available_in_shop": "Item is now available in shop"
+        "item_available_in_shop": "Item is now available in shop",
+        "default_images": "Default Images"
     },
     "financial" : {
     "revenue": "Revenue",
@@ -291,5 +292,6 @@
     "Offer": "Offer",
     "Wants": "Wants",
     "Offers": "Offers",
-    "my_wants_and_offers": "My wants and offers"
+    "my_wants_and_offers": "My wants and offers",
+    "default_images": "Default images"
 }

@@ -199,6 +199,7 @@ export default {
         body: JSON.stringify(cartItem) // This is your file object
       }).then(
         response => response,
+        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
         setStoreData()
       ).then(
         success => {

@@ -741,6 +741,7 @@ module.exports = function() {
     } else {
       const db = await MongoClient.connect(dbUrl)
       const dbo = db.db(dbFolder);
+      // TODO instead of finding all posts then filter them it should be done with query
       dbo.collection('posts').find({}).toArray(function (err, posts) {
         if (err) {
           res.sendStatus(500)

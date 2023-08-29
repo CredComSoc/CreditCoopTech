@@ -16,6 +16,7 @@
       <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
     </div>
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
+    <button v-if="this.isEdit" @click="returnHome()" class="edit_button">Cancel</button>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
   </div>
   </div>
@@ -56,11 +57,13 @@ export default {
       file_size_error_message: this.$i18n.t('shop_items.image_file_extension_must_be') + '\n' + this.$i18n.t('shop_items.smaller_than_2mb'),
       image_upload_error_message: this.$i18n.t('shop_items.image_upload_failed') + '\n' + this.$i18n.t('shop_items.try_again_later'),
       invalid_price_message: this.$i18n.t('shop_items.price_positive_integer') + '\n' + this.$i18n.t('shop_items.try_again'),
-      inEditMode: false
+      inEditMode: false,
+      isEdit: false
     }
   },
   created () {
     if (this.$route.params.artID) {
+      this.isEdit = true
       fetch(EXPRESS_URL + '/article/' + this.$route.params.artID, {
         method: 'GET',
         credentials: 'include'
@@ -99,6 +102,9 @@ export default {
     }
   },
   methods: {
+    returnHome () {
+      this.$router.push({ path: '/shop' })
+    },
     closePopup () {
       this.error = false
     },
@@ -110,7 +116,7 @@ export default {
       this.changePopupText(this.file_size_error_message)
     },
     saveFirstStep () {
-      this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs() }
+      this.newArticle = { ...this.newArticle, ...this.$refs.stepOne.getStepOneInputs(), categories: [...this.$refs.stepOne.categoriesObject] }
       //console.dir(this.newArticle)
     }, 
     saveSecondStep () {
@@ -177,14 +183,17 @@ export default {
     },
     uploadArticle () {
       const createdArticle = isProxy(this.newArticle) ? toRaw(this.newArticle) : this.newArticle
+      console.log(createdArticle, this.newArticle)
       const data = new FormData()
       let index = 0
-      for (const file of createdArticle.img) {
-        if (file.isCoverImg) {
-          data.append('coverImgInd', index)
-        } 
-        data.append('file', file, file.name)
-        ++index
+      if (createdArticle.img) {
+        for (const file of createdArticle.img) {
+          if (file.isCoverImg) {
+            data.append('coverImgInd', index)
+          }
+          data.append('file', file, file.name)
+          ++index
+        }
       }
       data.append('article', JSON.stringify(createdArticle))
       // This will upload the article to the server
@@ -303,7 +312,11 @@ export default {
     width: 12px;
     margin-left: 2px;
   }
-
+  .edit_button {
+    /* float: right; */
+    border-radius: 10%;
+    background-color: transparent;
+  }
   .step-indicator-img {
     width: 80px;
     float: right;

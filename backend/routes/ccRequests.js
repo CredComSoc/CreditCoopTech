@@ -154,6 +154,7 @@ module.exports = function() {
       }})
       res.status(200).send(response.data.data[user._id.toString()])
     } catch (error) {
+      // TODO While catching an error shouldn't respond default values this will lead to miss calculations and error on the create transaction api of the cc-server
       res.status(200).send({
         completed: {
           balance: 0,
@@ -185,8 +186,9 @@ module.exports = function() {
        'cc-user': user._id.toString(),
        'cc-auth': '1'
       }})
-      res.status(200).send(response.data[user._id.toString()])
+      res.status(200).send(response.data.data[user._id.toString()])
     } catch (error) {
+      // TODO While catching an error shouldn't respond default values this will lead to miss calculations and error on the create transaction api of the cc-server
       res.status(200).send({
         completed: {
           balance: 0,

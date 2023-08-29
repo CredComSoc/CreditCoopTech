@@ -51,6 +51,7 @@ export default {
       }).then(
         this.cart.splice(ind - 1, 1),
         this.calcTotal(),
+        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
         setStoreData()
       ).catch(
         error => console.log(error)
@@ -67,6 +68,7 @@ export default {
         credentials: 'include'
       }).then(
         this.calcTotal(),
+        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
         setStoreData()
       ).catch(
         error => console.log(error)
@@ -84,6 +86,7 @@ export default {
           credentials: 'include'
         }).then(
           this.calcTotal(),
+          // TODO: get the cart data endpoint only and replace it with the whole data endpoint
           setStoreData()
         ).catch(
           error => console.log(error)

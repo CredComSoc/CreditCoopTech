@@ -54,7 +54,7 @@ export default {
       
       this.selectedValue = this.$refs.dateVal.value
       if (this.isDatePicker) {
-        this.$refs.dateVal.value = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/') + ' - ' + new Date(this.$refs.dateVal.value).toLocaleString('sv-SE', options).replaceAll('-', '/')
+        this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
       } else {
         this.$refs.dateVal.value = new Date(this.$refs.dateVal.value).toISOString().split('T')[0].replaceAll('-', '/') // used for dateFilter to set the date
       }
@@ -75,8 +75,7 @@ export default {
           day: '2-digit'
         }
       }
-      const now = new Date().toLocaleString('sv-SE', options).replaceAll('-', '/')
-      return now + ' - ' + new Date(date).toLocaleString('sv-SE', options).replaceAll('-', '/')
+      return new Date(date.split('T')[0]).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
     },
     setValue (newValue) {
       if (this.isDatePicker || this.isDateFilter) {
