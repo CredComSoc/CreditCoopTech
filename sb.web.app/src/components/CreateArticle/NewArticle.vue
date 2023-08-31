@@ -280,7 +280,7 @@ export default {
   
 .center-text {
   text-align: center;
-  margin-top: 4rem;
+  magin-top: 4rem;
   margin-bottom: 0rem;
   font-size: 2.2rem;
   letter-spacing: 0.3em;

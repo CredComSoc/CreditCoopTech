@@ -33,7 +33,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_purchase')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} has approved your purchase request{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
