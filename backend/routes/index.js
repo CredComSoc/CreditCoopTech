@@ -1363,8 +1363,11 @@ module.exports = function() {
   })
 
 
-    //     Categories
-
+  /*****************************************************************************
+  * 
+  *                                Categories
+  *                 
+  *****************************************************************************/
 
 
   router.post('/categories', upload.array('file', 5), (req, res) => {
@@ -1438,5 +1441,27 @@ module.exports = function() {
       res.status(500).send({ exception: ex });
     }
   })
+
+  /*****************************************************************************
+  * 
+  *                                Cart
+  *                 
+  *****************************************************************************/
+
+  router.get("/cart/byUser", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        console.log(req.user)
+        // get current user data
+        const carts = await dbo.collection("carts").find({ "cartOwner": req.user }).toArray()
+        res.status(200).send(carts)
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching cart data' })
+      console.log(ex)
+    }
+  });
+
 return { 'router': router, 'conn': conn }
 };

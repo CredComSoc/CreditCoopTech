@@ -139,6 +139,7 @@ module.exports = function() {
           "max"     : result.max_limit,
           "admin"   : result.is_admin
         }
+        // The CC-server verifies the user through this endpoint
         res.status(200).send(userData)     
       }
       else {

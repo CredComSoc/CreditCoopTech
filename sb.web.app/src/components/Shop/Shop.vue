@@ -47,7 +47,7 @@ import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 import Categories from '@/components/Shop/Categories.vue'
 import FilterButton from '@/components/Shop/filterButton.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { authenticate, checkAdminStatus, EXPRESS_URL, setStoreData } from './../../serverFetch.js'
+import { authenticate, checkAdminStatus, EXPRESS_URL, setStoreData, setCartData } from './../../serverFetch.js'
 
 export default {
 
@@ -200,7 +200,9 @@ export default {
       }).then(
         response => response,
         // TODO: get the cart data endpoint only and replace it with the whole data endpoint
-        setStoreData()
+        setTimeout(() => {
+          setCartData()
+        })
       ).then(
         success => {
           //console.log(success)

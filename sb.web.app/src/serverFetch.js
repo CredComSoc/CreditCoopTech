@@ -462,6 +462,7 @@ export async function deleteCart (id) {
 }
 
 export async function createTransactions (cart) {
+  let value = true
   try {
     for (const element of cart) {
       await fetch(EXPRESS_URL + '/createrequest', {
@@ -471,12 +472,18 @@ export async function createTransactions (cart) {
         },
         body: JSON.stringify(element),
         credentials: 'include'
-      }).then(postNotification('saleRequest', element.userUploader) // if the create transaction api fails the post notification should not be sent
-      )
+      }).then(res => {
+        if (res.status === 200) {
+          value = true
+          postNotification('saleRequest', element.userUploader)
+        } else {
+          value = false
+        }
+      })
     }
-    return true
+    return value
   } catch (ex) {
-    return false
+    return value
   }
   
   /*cart.forEach(element => {
@@ -925,7 +932,35 @@ export async function updateCategoryStatus (data) {
   }) 
 }
 
+export async function getCartByUser () {
+  return fetch(EXPRESS_URL + '/cart/byUser', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+export async function setCartData () {
+  const cart = await getCartByUser().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (cart !== null) {
+    store.commit('replaceMyCart', cart)
 
+    let cartSize = 0
+    for (const item of cart) {
+      cartSize += item.quantity
+    }
+    store.commit('replaceMyCartSize', cartSize)
+  }
+}
 
 /*****************************************************************************
 * 

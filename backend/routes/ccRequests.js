@@ -95,7 +95,7 @@ module.exports = function() {
 
     } catch (error) {
       console.error("Error sending transaction to " + transaction_url)
-      console.error(error)
+      console.error(error.response.data)
       res.sendStatus(500)
       return
     }

@@ -38,8 +38,9 @@
       <!-- <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link> -->
     </div> 
     <div class="box-error" v-if="this.error">
-      Fel epost eller lösenord ({{ loginCount }})
+      {{ $t('wrong_email_password') }} ({{ loginCount }})
     </div>
+    <LoadingComponent ref="loadingComponent" />
   </div>
 </div>
 
@@ -47,9 +48,13 @@
 
 <script>
 import { login, setStoreData } from '../../serverFetch'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 
 export default {
   name: 'Login',
+  components: {
+    LoadingComponent
+  },
   data () {
     return {
       username: '',
@@ -65,6 +70,7 @@ export default {
       window.location.href = 'mailto:' + emailAddress
     },
     async handleSubmit () {
+      this.$refs.loadingComponent.showLoading()
       login(this.username.toLowerCase(), this.password).then(async (response) => {
         if (response) {
           this.error = false  
@@ -72,6 +78,8 @@ export default {
           this.error = false 
           // TODO: Add a loading component here so tht while it awaits the data endpoint. to make it more user friendly
           await setStoreData()
+          this.$refs.loadingComponent.hideLoading()
+
           window.location.href = '/'
         } else {
           this.error = true
