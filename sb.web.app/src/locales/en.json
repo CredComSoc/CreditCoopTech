@@ -123,6 +123,8 @@
         "column_categories": "COLUMN FOR CATEGORIES",
         "column_product": "COLUMN FOR PRODUCTS",
         "complete_purchase": "Complete the request",
+        "complete_purchase_thank_you": "Thank you for your purchase request.",
+        "complete_purchase_user_notified": "has been notified, and you will receive a notification as soon as they have either approved or declined the request", 
         "go_to_shop": "Go to marketplace",
         "seller_has_reached_limit": "The seller {seller} has reached their upper limit for {token}.",
         "purchaseRequestCannotBeApproved": "The purchase request cannot be approved",
@@ -293,5 +295,6 @@
     "Wants": "Wants",
     "Offers": "Offers",
     "my_wants_and_offers": "My wants and offers",
-    "default_images": "Default images"
+    "default_images": "Default images", 
+    "wrong_email_password": "Wrong email or password"
 }

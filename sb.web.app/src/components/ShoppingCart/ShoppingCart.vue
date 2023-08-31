@@ -15,7 +15,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData } from '../../serverFetch'
+import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData, setCartData } from '../../serverFetch'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -51,8 +51,10 @@ export default {
       }).then(
         this.cart.splice(ind - 1, 1),
         this.calcTotal(),
-        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
-        setStoreData()
+        setTimeout(() => {
+          setCartData()
+        })
+        
       ).catch(
         error => console.log(error)
       )
@@ -68,8 +70,9 @@ export default {
         credentials: 'include'
       }).then(
         this.calcTotal(),
-        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
-        setStoreData()
+        setTimeout(() => {
+          setCartData()
+        })
       ).catch(
         error => console.log(error)
       )
@@ -86,8 +89,9 @@ export default {
           credentials: 'include'
         }).then(
           this.calcTotal(),
-          // TODO: get the cart data endpoint only and replace it with the whole data endpoint
-          setStoreData()
+          setTimeout(() => {
+            setCartData()
+          })
         ).catch(
           error => console.log(error)
         )
@@ -135,7 +139,9 @@ export default {
               credentials: 'include'
             }).then(
               this.calcTotal(),
-              setStoreData()
+              setTimeout(() => {
+                setCartData()
+              })
             ).catch(
               error => console.log(error)
             )
