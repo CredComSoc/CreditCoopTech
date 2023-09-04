@@ -23,6 +23,7 @@
         "email": "Email",
         "member_label": "Member",
         "purchase_requests": "Purchase requests",
+        "profile_picture": "Profile Picture",
         "general_information": "General information",
         "business": "Account name",
         "description": "Description",
@@ -156,6 +157,8 @@
         "have_sent": "has sent",
         "download_invoice": "to download the invoice.",
         "denied_purchase": "has denied your purchase request.",
+        "approved_purchase": " has approved your purchase request",
+        "chat_message": "a chat message",
         "older": "Older",
         "no_notifications": "No notifications"
     },
