@@ -1069,11 +1069,11 @@ module.exports = function() {
 
 
   router.post('/cart/remove/item/:id', (req, res) => {
-    const query = { cartOwner: req.user };
     const id = req.params.id;
+    const query = { cartOwner: req.user, id:id };
     MongoClient.connect(dbUrl, (err, db) => {
       let dbo = db.db(dbFolder);
-      dbo.collection('carts').deleteOne(query, { id: id }, function (err, result) {
+      dbo.collection('carts').deleteOne(query, function (err, result) {
         if (err) {
           db.close();
           res.sendStatus(500);
