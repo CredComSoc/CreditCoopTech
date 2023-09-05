@@ -28,7 +28,6 @@ export default {
   },
   mounted () {
     if (this.$store.state.myCart) {
-      
       this.calcTotal()
     }
     this.gotCartRes = true
