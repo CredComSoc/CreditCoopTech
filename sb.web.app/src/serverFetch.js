@@ -462,7 +462,11 @@ export async function deleteCart (id) {
 }
 
 export async function createTransactions (cart) {
-  let value = true
+  // eslint-disable-next-line
+  let transactionResults = {
+    successResults: [],
+    failedResults: []
+  }
   try {
     for (const element of cart) {
       await fetch(EXPRESS_URL + '/createrequest', {
@@ -474,16 +478,16 @@ export async function createTransactions (cart) {
         credentials: 'include'
       }).then(res => {
         if (res.status === 200) {
-          value = true
+          transactionResults.successResults.push(element)
           postNotification('saleRequest', element.userUploader)
         } else {
-          value = false
+          transactionResults.failedResults.push(element)
         }
       })
     }
-    return value
+    return transactionResults
   } catch (ex) {
-    return value
+    return transactionResults
   }
   
   /*cart.forEach(element => {
@@ -1011,15 +1015,17 @@ export async function setStoreData () {
       store.commit('replaceAllMembers', data.allMembers)
     }
 
-    if (data.myCart) {
-      store.commit('replaceMyCart', data.myCart)
+    // removed this because all cart store data's are handled by the setCartData function
 
-      let cartSize = 0
-      for (const item of data.myCart) {
-        cartSize += item.quantity
-      }
-      store.commit('replaceMyCartSize', cartSize)
-    }
+    // if (data.myCart) {
+    //   store.commit('replaceMyCart', data.myCart)
+
+    //   let cartSize = 0
+    //   for (const item of data.myCart) {
+    //     cartSize += item.quantity
+    //   }
+    //   store.commit('replaceMyCartSize', cartSize)
+    // }
     
     store.commit('replaceSaldo', data.saldo)
     store.commit('replaceCreditLine', data.creditLine)

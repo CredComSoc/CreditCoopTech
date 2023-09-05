@@ -76,7 +76,6 @@ export default {
           this.error = false  
           this.loginCount = 0   
           this.error = false 
-          // TODO: Add a loading component here so tht while it awaits the data endpoint. to make it more user friendly
           await setStoreData()
           this.$refs.loadingComponent.hideLoading()
 
@@ -84,6 +83,7 @@ export default {
         } else {
           this.error = true
           this.loginCount += 1
+          this.$refs.loadingComponent.hideLoading()
         } 
       })
     }
