@@ -89,13 +89,11 @@ module.exports = function() {
         "type"        : "credit",
         "metadata"    : {"id" : article.id, "quantity": article.quantity}
       }
-
       const response = await axios.post(transaction_url, payload, { headers: auth_header })
       transaction_uuid = response.data.data.uuid 
 
     } catch (error) {
       console.error("Error sending transaction to " + transaction_url)
-      console.error(error.response.data)
       res.sendStatus(500)
       return
     }
@@ -123,8 +121,8 @@ module.exports = function() {
       }})
       res.status(200).send(response.data)
     } catch (error) {
-      console.error(error)
-      res.sendStatus(500)
+      console.error(error.response.data)
+      res.status(400).send(error.response.data)
     }
   })
   
