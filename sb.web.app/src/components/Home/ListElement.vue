@@ -23,7 +23,7 @@
 
 <script>
 
-import { EXPRESS_URL, setStoreData } from '../../serverFetch'
+import { EXPRESS_URL, setStoreData, setCartData } from '../../serverFetch'
 import ListingPopup from '../SharedComponents/ListingPopup.vue'
 
 export default {
@@ -68,8 +68,9 @@ export default {
         body: JSON.stringify(cartItem) // This is your file object
       }).then(
         response => response,
-        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
-        setStoreData()
+        setTimeout(() => {
+          setCartData()
+        })
       ).catch(
         error => console.log(error) // Handle the error response object
       )

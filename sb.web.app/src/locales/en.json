@@ -127,7 +127,7 @@
         "complete_purchase_thank_you": "Thank you for your purchase request.",
         "complete_purchase_user_notified": "has been notified, and you will receive a notification as soon as they have either approved or declined the request", 
         "go_to_shop": "Go to marketplace",
-        "seller_has_reached_limit": "The seller {seller} has reached their upper limit for {token}.",
+        "seller_has_reached_limit": "This purchase request cannot be completed, as it would take {seller} beyond their positive credit limit. {seller} has been notified, but please consider following up with them about your intended purchase.",
         "purchaseRequestCannotBeApproved": "The purchase request cannot be approved",
         "is_for_sale": "is for sale or purchase",
         "no_product_found": "No products found for '{searchWord}'.",
@@ -146,7 +146,8 @@
         "youHaventReceivedAnyPurchaseRequestsYet": "You have not received any purchase requests yet",
         "prohibitedrequest": "Prohibited Request",
         "remove": "Remove",
-        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?"
+        "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?",
+        "seller_balance_too_high": "Seller balance too high"
     },
     "notifications": {
         "notifications_header_label": "Notifications",
@@ -169,10 +170,13 @@
         "current_balance": "Current balance:",
         "total_cost": "Total cost:",
         "balance_after": "Balance after purchase:",
-        "purchase_thanks_header": "Thank you for your purchase!",
-        "purchase_thanks_notified": "Thank you for your purchase! The seller has been notified. You will get a notification when the seller has approved your purchase request.",
-        "not_enough_credit": "You do not have enough credit to make the purchase.",
-        "transaction_failed": "Unable to complete the transaction"
+        "purchase_thanks_header": "Purchase Request Sent",
+        "purchase_thanks_notified": "Thank you for your purchase request. The seller(s) have been notified, and you will receive a notification as soon as they have either approved or declined the request",
+        "not_enough_credit": "You do not have enough credit to request this purchase, as the total price is",
+        "transaction_failed": "Unable to complete the transaction",
+        "insufficient_credit": "Insufficient Credit",
+        "available_credit": "and your available credit is",
+        "transactions_failed_for_items": "Transactions Failed for few Items and those items are still in your cart"
     },
     "shop_items": {
         "need_or_offer": "Need or Offer?",

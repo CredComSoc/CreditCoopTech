@@ -4,10 +4,10 @@
     <EmptyCart v-if="this.gotCartRes && this.cart.length === 0" />
     <FilledCart v-if="this.gotCartRes && this.cart.length > 0" :total="this.total" :cart="this.cart" @remove-row="this.removeRow"  @add-item="this.addItem" @min-item="this.minItem" @complete-purchase="this.completePurchase"/>
       <PopupCard v-if="this.confirmPress" :title="$t('cart.purchase_thanks_header')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified')" />
-    <PopupCard v-if="this.insufficientBalance" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('cart.not_enough_credit')" />
-    <PopupCard v-if="this.sellerLimitError" :title="$t('cart.purchase_not_completed')" btnLink="/" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller, 'token': $t('org.token')})" />
-    <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/" btnText="Ok" :cardText="$t('cart.transaction_failed')" />
-
+    <PopupCard v-if="this.insufficientBalance" :title="$t('cart.insufficient_credit')" btnLink="/cart" btnText="Ok" :cardText="this.insufficientBalanceMessage"/>
+    <PopupCard v-if="this.sellerLimitError" :title="$t('shop.seller_balance_too_high')" btnLink="/cart" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller})" />
+    <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.transactions_failed_for_items')" />
+    <LoadingComponent ref="loadingComponent" />
   </div>
 </template>
 
@@ -16,17 +16,18 @@ import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData, setCartData } from '../../serverFetch'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 export default {
   name: 'ShoppingCart',
   props: [],
   components: {
     EmptyCart,
     FilledCart,
-    PopupCard
+    PopupCard,
+    LoadingComponent
   },
   mounted () {
     if (this.$store.state.myCart) {
-      this.cart = this.$store.state.myCart
       this.calcTotal()
     }
     this.gotCartRes = true
@@ -40,7 +41,10 @@ export default {
       insufficientBalance: false,
       sellerLimitError: false,
       seller: '',
-      transactionFailed: false
+      transactionFailed: false,
+      insufficientBalanceMessage: '',
+      availableBalance: 0,
+      failedTransactionsMessage: ''
     }
   },
   methods: {
@@ -49,10 +53,9 @@ export default {
         method: 'POST',
         credentials: 'include'
       }).then(
-        this.cart.splice(ind - 1, 1),
-        this.calcTotal(),
-        setTimeout(() => {
-          setCartData()
+        setTimeout(async () => {
+          await setCartData()
+          this.calcTotal()
         })
         
       ).catch(
@@ -69,9 +72,9 @@ export default {
         body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
         credentials: 'include'
       }).then(
-        this.calcTotal(),
-        setTimeout(() => {
-          setCartData()
+        setTimeout(async () => {
+          await setCartData()
+          this.calcTotal()
         })
       ).catch(
         error => console.log(error)
@@ -88,9 +91,9 @@ export default {
           body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
           credentials: 'include'
         }).then(
-          this.calcTotal(),
-          setTimeout(() => {
-            setCartData()
+          setTimeout(async () => {
+            await setCartData()
+            this.calcTotal()
           })
         ).catch(
           error => console.log(error)
@@ -98,6 +101,7 @@ export default {
       }
     },
     calcTotal () {
+      this.cart = this.$store.state.myCart
       let total = 0
       for (let i = 0; i < this.cart.length; i++) {
         total += this.cart[i].price * this.cart[i].quantity
@@ -105,8 +109,10 @@ export default {
       this.total = total
     },
     completePurchase () {
+      this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
         console.log(this.total)
+        this.availableBalance = res
         if (res >= this.total) {
           const totalCosts = {}
           for (let i = 0; i < this.cart.length; i++) {
@@ -120,14 +126,22 @@ export default {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
             if (userSaldo + userLimits.min + value > userLimits.max) {
-              this.seller = key
-              this.sellerLimitError = true
-              return
+              if (!this.seller) {
+                this.seller = key
+              } else {
+                this.seller = this.seller + ', ' + key
+              }    
             }
+          }
+          if (this.seller) {
+            this.sellerLimitError = true
+            this.$refs.loadingComponent.hideLoading()
+            return
           }
 
           const transactionValue = await createTransactions(this.cart)
-          if (transactionValue) {
+
+          if (transactionValue.successResults.length === this.cart.length) { // if success transactions is equal to the cart means all carts transactions were a success so continue with the normal flow
             this.confirmPress = true
 
             // this.confirmPress = false
@@ -138,19 +152,38 @@ export default {
               method: 'POST',
               credentials: 'include'
             }).then(
-              this.calcTotal(),
-              setTimeout(() => {
-                setCartData()
+              setTimeout(async () => {
+                await setCartData()
+                this.calcTotal()
               })
             ).catch(
               error => console.log(error)
             )
+            this.$refs.loadingComponent.hideLoading()
           } else {
+            const failedResults = this.cart.filter(item => !transactionValue.failedResults.some(innerItem => innerItem.id === item.id))
+            transactionValue.successResults.forEach(e => {
+              fetch(EXPRESS_URL + '/cart/remove/item/' + e.id, {
+                method: 'POST',
+                credentials: 'include'
+              }).then(
+              ).catch(
+                error => console.log(error)
+              )
+            })
+            this.cart = failedResults
+            setTimeout(() => {
+              setCartData()
+            })
+            this.calcTotal()
+            this.$refs.loadingComponent.hideLoading()
             this.transactionFailed = true
           }
         } else {
           // display insufficient balance msg
+          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total} ${this.$t('cart.available_credit')} ${this.availableBalance}`
           this.insufficientBalance = true
+          this.$refs.loadingComponent.hideLoading()
         }
       })
     }
