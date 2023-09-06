@@ -287,7 +287,7 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error.response.data)
         errors.push("Error processing CC_NODE events")
       }
       
@@ -1451,13 +1451,33 @@ module.exports = function() {
     try {
       MongoClient.connect(dbUrl, async (err, db) => {
         let dbo = db.db(dbFolder);
-        console.log(req.user)
-        // get current user data
         const carts = await dbo.collection("carts").find({ "cartOwner": req.user }).toArray()
         res.status(200).send(carts)
       })
     } catch (ex) {
       res.status(400).send({ error: 'Error while fetching cart data' })
+      console.log(ex)
+    }
+  });
+
+
+  /*****************************************************************************
+  * 
+  *                                Notification
+  *                 
+  *****************************************************************************/
+
+  router.get("/notifications/byUser", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
+        const user = await dbo.collection("users").find({ "profile.accountName": req.user }).toArray()
+        const notifications = user.map(us => us = us.notifications)
+        res.status(200).send(notifications[0])
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching notifications' })
       console.log(ex)
     }
   });
