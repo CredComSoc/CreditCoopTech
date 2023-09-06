@@ -143,6 +143,15 @@ vue-cli-service serve
   To create a production build, run npm run build.
 ```
 
+**Start cc-server**
+You need to ensure you've installed php@8.0 on your machine
+```
+> cd cc-server/
+> bash comp.install 
+> cd ./docker
+> docker compose up
+```
+Ensure you've set your `CC_NODE_URL` to `localhost:8000` to connect to the locally-running version of cc-server
 ## Migrations
 
 ** Init users

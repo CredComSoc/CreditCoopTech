@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteRule ^ index.php [L]\
+
+order deny,allow
+deny from all
+# uncomment this out if you are configuring from somewhere other than localhost
+# allow from 127.0.0.1

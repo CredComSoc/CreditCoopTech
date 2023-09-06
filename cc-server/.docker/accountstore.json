@@ -1,0 +1,16 @@
+{
+  "fees": {
+    "key": "123",
+    "min": "0",
+    "max": "100",
+    "admin": false,
+    "id": "fees"
+  },
+  "admin": {
+    "key": "123",
+    "min": "-1000",
+    "max": "1000",
+    "admin": true,
+    "id": "admin"
+  }
+}

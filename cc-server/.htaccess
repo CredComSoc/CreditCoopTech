@@ -1,0 +1,10 @@
+Options +FollowSymLinks
+RewriteEngine on
+# Allow navigation to the following
+RewriteRule ^config - [L,NC]
+RewriteRule ^index.html - [L,NC]
+RewriteRule ^ui - [L,NC]
+
+#Everything else goes to index.php
+RewriteRule ^ index.php [L]
+RewriteRule ^/$ index.php [R,L]
