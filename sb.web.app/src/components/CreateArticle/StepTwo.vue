@@ -82,24 +82,18 @@ export default {
   },
   computed: {
     locationPlaceholder () {
-      let placeholder = ''
       if (this.chosenType.toLowerCase() === 'product') {
-        placeholder = ' where product is wanted'
+        return this.$t('shop_items.product_placeholder')
       } else {
-        placeholder = ' where service is to be performed'
+        return this.$t('shop_items.service_placeholder')
       }
-
-      return placeholder
     },
     pricePlaceholder () {
-      let placeholder = ''
       if (this.savedProgress.status === 'Offer') {
-        placeholder = ' of this ' + this.chosenType.toLowerCase() + '?'
+        return this.$t('shop_items.offer_placeholder')
       } else {
-        placeholder = ' you are looking to pay?'
+        return this.$t('shop_items.want_placeholder')
       }
-
-      return placeholder
     }
   },
   mounted () {
