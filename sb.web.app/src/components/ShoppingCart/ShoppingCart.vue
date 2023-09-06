@@ -121,12 +121,11 @@ export default {
             }
             totalCosts[this.cart[i].userUploader] += Number(this.cart[i].price) * this.cart[i].quantity
           }
-
           for (const [key, value] of Object.entries(totalCosts)) {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
             if (userSaldo + userLimits.min + value > userLimits.max) {
-              if (!this.seller) {
+              if (this.seller === '') {
                 this.seller = key
               } else {
                 this.seller = this.seller + ', ' + key
@@ -181,7 +180,7 @@ export default {
           }
         } else {
           // display insufficient balance msg
-          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total} ${this.$t('cart.available_credit')} ${this.availableBalance}`
+          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total} ${this.$t('cart.available_credit')} ${this.availableBalance} ${this.$t('org.token')}`
           this.insufficientBalance = true
           this.$refs.loadingComponent.hideLoading()
         }
