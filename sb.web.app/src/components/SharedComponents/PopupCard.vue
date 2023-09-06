@@ -93,10 +93,11 @@ h3 {
 
 #popup-middle {
   background: white;
-  height: 110px;
+  height: fit-content;
   width: 100%;
   border-top: 1px solid #CED4DA;
   border-bottom: 1px solid #CED4DA;
+
 }
 
 p {
