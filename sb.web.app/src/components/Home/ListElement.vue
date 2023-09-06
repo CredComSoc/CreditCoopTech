@@ -7,7 +7,7 @@
           <h4 class="element-title"> {{ elementInfo.title }} </h4>
           <!-- TODO: Remove the fist parameter of the below two if statement oly checking offer and want only -->
           <p v-if="elementInfo.status === 'selling' || elementInfo.status === 'offer' " class="element-desc"> {{ $t('offer') }} </p>
-          <p v-if="elementInfo.status === 'buying' || elementInfo.status === 'want'" class="element-desc">  {{ $t('need') }} </p>
+          <p v-if="elementInfo.status === 'buying' || elementInfo.status === 'want'" class="element-desc">  {{ $t('want') }} </p>
       </span>
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">

@@ -146,7 +146,7 @@
         "prohibitedrequest": "Prohibited Request",
         "remove": "Remove",
         "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?",
-        "seller_balance_too_high": "Seller balance too high"
+        "seller_balance_too_high": "Seller(s) balance too high"
     },
     "notifications": {
         "notifications_header_label": "Notifications",
@@ -171,7 +171,7 @@
         "purchase_thanks_notified": "Thank you for your purchase request. The seller(s) have been notified, and you will receive a notification as soon as they have either approved or declined the request",
         "not_enough_credit": "You do not have enough credit to request this purchase, as the total price is",
         "transaction_failed": "Unable to complete the transaction",
-        "insufficient_credit": "Insufficient Credit",
+        "insufficient_credit": "Insufficient credit",
         "available_credit": "and your available credit is",
         "transactions_failed_for_items": "Transactions Failed for few Items and those items are still in your cart"
     },

@@ -966,6 +966,51 @@ export async function setCartData () {
   }
 }
 
+
+export async function getNotificationsByUser () {
+  return fetch(EXPRESS_URL + '/notifications/byUser', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+export async function setNotificationsData () {
+  const notifications = await getNotificationsByUser().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (notifications !== null) {
+    const oldNotifications = []
+    const newNotifications = []
+    if (notifications) {
+      for (const notification of notifications) {
+        if (notification.seen) {
+          oldNotifications.push(notification)
+        } else {
+          newNotifications.push(notification)
+        }
+      }
+    }
+
+    oldNotifications.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date)
+    })
+
+    newNotifications.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date)
+    })
+
+    store.commit('replaceOldNotifications', oldNotifications)
+    store.commit('replaceNewNotifications', newNotifications)
+  }
+}
 /*****************************************************************************
 * 
 *                                setStoreData
