@@ -442,19 +442,18 @@ module.exports = function() {
                 from: ouremail, // sender address
 
                 to: newUser.email, 
-                subject: 'Medlem i Svensk Barter', // Subject line
+                subject: 'Welcome to Land Care Trade', // Subject line
                 text: `
-                Du får det här mailet för att du har begärt att vara medlem hos Svensk Barter.
-                Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
-                
+                You are receiving this email because you have requested to join Land Care Trade.
+                Please click the following link or paste it into a browser to complete the sign up process:
                 ${FRONTEND_URL}/login
 
-                Dina inloggningsuppgifter är:
-                E-postaddress: ${newPro.email}
-                Lösenord: ${newPro.password}
+                Your login details are:
+                Email address: ${newPro.email}
+                Password: ${newPro.password}
                 
-                Med vänliga hälsningar,
-                Svensk Barter
+                Best wishes,
+                Land Care Trade
                 `
               })
               console.log(reponse)
@@ -464,20 +463,21 @@ module.exports = function() {
               if (!result.acknowledged) {
                 console.log("could not delete user " + result)
               }
-              res.status(404).send('Det gick inte att skicka e-postmeddelandet till denna medlemmen')
+              res.status(404).send('Email could not be sent to this member.')
+
               db.close()
               return
             }
           }
-          res.status(200).send('Den nya medlemmen är nu registrerad!')
+          res.status(200).send('The new member is now registered!')
           db.close()
         } else {
-          res.sendStatus(404).send('Det gick inte att registrera medlemmen.')
+          res.sendStatus(404).send('The new member could not be registered.')
           db.close()
         }
       } else {
         //Det finns redan en {{ $t('user.member_label') }} med namnet
-        res.status(500).send('Denhär medlemmen finns redan.')
+        res.status(500).send('This member already exists.')
       }
     })
   })
@@ -943,10 +943,10 @@ module.exports = function() {
           newFile.message = req.file.originalname
           res.status(200).json(newFile)
         } else {
-          res.status(404).send("The file doesnot exists.")
+          res.status(404).send("The file does not exists.")
         }
       } else {
-        res.status(404).send("The profile doesn't exist.")
+        res.status(404).send("The profile does not exist.")
       }
     })
   })
@@ -1211,14 +1211,13 @@ module.exports = function() {
     await transporter.sendMail({
       from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
       to: user.email, // list of receivers
-      subject: 'Återställning av lösenord', // Subject line
+      subject: 'Reset your password for Land Care Trade', // Subject line
       text: `
-      Du får det här mailet för att du (eller någon annan) har begärt att ditt lösenord hos Svensk Barter ska återställas.
-      Vänligen klicka på följande länk eller klistra in den i en webbläsare för att slutföra processen:
-      
+      You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
+      Please click the following link or paste it into your browser to complete the process:
       ${FRONTEND_URL}/reset/${token}
 
-      Om du inte har begärt detta, vänligen ignorera detta mail så kommer ditt lösenord förbli oförändrat.
+      If you have not requested this reset, please ignore this email and your password will remain unchanged.
     `
     })
     return res.status(200).send("Email successfully sent")
@@ -1245,9 +1244,9 @@ module.exports = function() {
     const resetEmail = {
       to: user.email,
       from: ouremail, //'svenskbarter.reset@outlook.com'
-      subject: 'Ditt lösenord har ändrats',
+      subject: 'Your password for Land Care Trade has been updated',
       text: `
-      Det här är en bekräftelse på att lösenordet för ditt konto "${user.profile.accountName}" hos Svensk Barter har ändrats.
+      This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
       `,
     };
     await transporter.sendMail(resetEmail);

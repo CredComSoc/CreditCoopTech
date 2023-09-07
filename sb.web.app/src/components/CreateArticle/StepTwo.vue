@@ -6,10 +6,10 @@
     <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
   </div>
   <div class="input">
-    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + ' of ' + this.chosenType.toLowerCase() + `?`" />
+    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + locationPlaceholder" />
   </div>
   <div class="input" id="new-article-price">
-    <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="$t('shop_items.price_prompt') + this.chosenType.toLowerCase() + `?`" :disabled='true' length="20" />
+    <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="$t('shop_items.price_prompt') + pricePlaceholder" :disabled='true' length="20" />
     <h3>{{ $t('org.token') }}</h3>
   </div>
 </div>
@@ -78,6 +78,22 @@ export default {
       const chosenDate = new Date(date)
       const oneMonthFromNow = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate() + 1)
       return now.getTime() <= chosenDate.getTime() && chosenDate.getTime() <= oneMonthFromNow.getTime()
+    }
+  },
+  computed: {
+    locationPlaceholder () {
+      if (this.chosenType.toLowerCase() === 'product') {
+        return this.$t('shop_items.product_placeholder')
+      } else {
+        return this.$t('shop_items.service_placeholder')
+      }
+    },
+    pricePlaceholder () {
+      if (this.savedProgress.status === 'Offer') {
+        return this.$t('shop_items.offer_placeholder')
+      } else {
+        return this.$t('shop_items.want_placeholder')
+      }
     }
   },
   mounted () {

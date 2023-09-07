@@ -73,7 +73,7 @@ export default {
       const imageObj = e.target.files[0]
       if (this.validateImageFile(imageObj) && this.validatedFileSize(imageObj.size)) {
         const URLImg = URL.createObjectURL(imageObj)
-        this.$refs.addFile.innerText = 'Välj fler'
+        this.$refs.addFile.innerText = 'Choose more'
         this.images.push([URLImg, this.images.length, false])
         this.imageObjs.push(imageObj)
         if (this.images.length === 5) {
@@ -111,7 +111,7 @@ export default {
       return validImageTypes.includes(file.type)
     },
     displayImg () {
-      this.$refs.addFile.innerText = 'Välj fler'
+      this.$refs.addFile.innerText = 'Choose more'
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
@@ -141,7 +141,7 @@ export default {
         const URLImg = URL.createObjectURL(data)
         this.imageObjs.push(new File([data], this.savedProgress.coverImg, { type: 'image/' + this.savedProgress.coverImg.split('.').pop() }))
         this.images.push([URLImg, this.images.length, true])
-        this.$refs.addFile.innerText = 'Välj fler'
+        this.$refs.addFile.innerText = 'Choose more'
       })
       // multiple images uploaded
       if ('img' in this.savedProgress) {

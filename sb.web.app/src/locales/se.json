@@ -22,6 +22,7 @@
         "email": "E-mail",
         "member": "användare",
         "purchase_requests": "Köpförfrågningar",
+        "profile_picture": "Logotyp",
         "general_information": "Allmänt",
         "business": "Företagsnamn",
         "description": "Beskrivning",
@@ -118,6 +119,10 @@
         "purchase_could_not_complete": "Köpet kunde inte genomföras",
         "the_seller": "Säljaren",
         "whatDoYouWantToSearchForTodayLabel": "Vad vill du söka efter idag?"
+    },
+    "notifications": {
+        "approved_purchase": "har godkänt din köpförfrägan",
+        "chat_message": "ett chatt-meddelande"
     },
     "balance": "Saldo",
     "credit": "Kredit",
