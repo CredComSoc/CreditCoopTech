@@ -5,7 +5,7 @@
       <span>&nbsp;{{ this.$store.state.saldo }} {{ $t('org.token') }}</span>
     </div>
     <div class="total">
-      <span id="total-text">{{ $t('cart.total_cost') }} </span>
+      <span id="total-text">{{ $t('cart.total_price') }} </span>
       <span>&nbsp;{{ total }} {{ $t('org.token') }}</span>
     </div>
     <div class="after">
