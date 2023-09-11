@@ -642,22 +642,6 @@ export async function getUserLimits (user) {
  *                 
  *****************************************************************************/
 
-export function getPurchases () {
-  const promise = fetch(EXPRESS_URL + '/purchases', {
-    method: 'GET',
-    credentials: 'include'
-  })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      return (data)
-    })
-    .catch(() => {
-      return false
-    })
-  return promise
-}
 
 export function cancelRequest (id) {
   const data = { uuid: id }

@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { getPurchases, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData } from '../../serverFetch'
+import { cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import DateFilter from './DateFilter.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
