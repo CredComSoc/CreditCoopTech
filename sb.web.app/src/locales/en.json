@@ -1,5 +1,5 @@
 {
-   "login": {
+    "login": {
         "login_to_label": "Log in to",
         "email_label": "Email address",
         "email_placeholder": "test nowhere.com",
@@ -107,9 +107,9 @@
         "all_members": "All members",
         "messages": "Messages",
         "my_account": "My account",
-        "my_profile": "My profile",
+        "my_profile": "My Profile",
         "my_buy_sell": "My Wants and Offers",
-        "my_items": "My items",
+        "my_items": "My Items",
         "my_purchase_requests": "My purchase requests",
         "balance": "Balance & limits",
         "events": "Events",
