@@ -15,7 +15,7 @@
 import EmptyCart from './EmptyCart.vue'
 import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData, setCartData } from '../../serverFetch'
+import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData, setCartData, postNotification } from '../../serverFetch'
 import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 export default {
   name: 'ShoppingCart',
@@ -26,7 +26,8 @@ export default {
     PopupCard,
     LoadingComponent
   },
-  mounted () {
+  async mounted () {
+    await setCartData()
     if (this.$store.state.myCart) {
       this.calcTotal()
     }
@@ -48,56 +49,56 @@ export default {
     }
   },
   methods: {
-    removeRow (ind) {
-      fetch(EXPRESS_URL + '/cart/remove/item/' + this.cart[ind - 1].id, {
+    async removeRow (ind) {
+      await fetch(EXPRESS_URL + '/cart/remove/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
       }).then(
-        setTimeout(async () => {
-          await setCartData()
-          this.calcTotal()
-        })
-        
       ).catch(
         error => console.log(error)
       )
+      setTimeout(async () => {
+        await setCartData()
+        this.calcTotal()
+      })
     },
-    addItem (ind) {
-      this.cart[ind - 1].quantity++
-      fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
+    async addItem (ind) {
+      const quant = this.cart[ind - 1].quantity
+      await fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
+        body: JSON.stringify({ quantity: quant + 1 }),
         credentials: 'include'
       }).then(
-        setTimeout(async () => {
-          await setCartData()
-          this.calcTotal()
-        })
       ).catch(
         error => console.log(error)
       )
+      setTimeout(async () => {
+        await setCartData()
+        this.calcTotal()
+      })
     },
-    minItem (ind) {
+    async minItem (ind) {
       if (this.cart[ind - 1].quantity > 1) {
-        this.cart[ind - 1].quantity--
-        fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
+        const quant = this.cart[ind - 1].quantity
+        await fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ quantity: this.cart[ind - 1].quantity }),
+          body: JSON.stringify({ quantity: quant - 1 }),
           credentials: 'include'
         }).then(
-          setTimeout(async () => {
-            await setCartData()
-            this.calcTotal()
-          })
         ).catch(
           error => console.log(error)
         )
+    
+        setTimeout(async () => {
+          await setCartData()
+          this.calcTotal()
+        })
       }
     },
     calcTotal () {
@@ -108,7 +109,7 @@ export default {
       }
       this.total = total
     },
-    completePurchase () {
+    async completePurchase () {
       this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
         console.log(this.total)
@@ -125,6 +126,7 @@ export default {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
             if (userSaldo + userLimits.min + value > userLimits.max) {
+              await postNotification('sellerLimitExceeded', key, value)
               if (this.seller === '') {
                 this.seller = key
               } else {
@@ -147,22 +149,22 @@ export default {
             this.$store.commit('setMyCart', [])
             this.cart = []
             // remove all items from cart
-            fetch(EXPRESS_URL + '/cart/remove', {
+            await fetch(EXPRESS_URL + '/cart/remove', {
               method: 'POST',
               credentials: 'include'
             }).then(
-              setTimeout(async () => {
-                await setCartData()
-                this.calcTotal()
-              })
             ).catch(
               error => console.log(error)
             )
+            setTimeout(async () => {
+              await setCartData()
+              this.calcTotal()
+            })
             this.$refs.loadingComponent.hideLoading()
           } else {
             const failedResults = this.cart.filter(item => !transactionValue.failedResults.some(innerItem => innerItem.id === item.id))
-            transactionValue.successResults.forEach(e => {
-              fetch(EXPRESS_URL + '/cart/remove/item/' + e.id, {
+            transactionValue.successResults.forEach(async (e) => {
+              await fetch(EXPRESS_URL + '/cart/remove/item/' + e.id, {
                 method: 'POST',
                 credentials: 'include'
               }).then(

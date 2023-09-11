@@ -28,14 +28,14 @@
             </td>
           </tr>
         </table>
-        <PopupCard v-if="this.payeeTooMuchTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, din övre gräns är ` + this.max_limit + ' bKr.'" />
-        <PopupCard v-if="this.payerNotEnoughTkn" @closePopup="this.closePopup" title="Förbjuden förfrågan" btnLink="" btnText="Ok" :cardText="`Köpförfrågan kan inte godkännas, köparen har inte tillräckligt med bKr.`" />
+        <PopupCard v-if="this.payeeTooMuchTkn" @closePopup="this.closePopup" :title="$t('shop.invalid_approval')" btnLink="" btnText="Ok" :cardText="$t('shop.purchase_request_cannot_be_approved_buyer',  {excess_credit: this.max_limit, credit_unit:  $t('org.token') } )" />
+        <PopupCard v-if="this.payerNotEnoughTkn" @closePopup="this.closePopup" :title="$t('shop.invalid_approval')" btnLink="" btnText="Ok" :cardText="$t('shop.purchase_request_cannot_be_approved_buyer',  {buyer_username: this.payer})" />
       </div>
     </div>
     <!--Gets all Pending purchases from the VueX store. -->
     <h1><b> {{ $t('pending_purchases') }} </b></h1>
       <div>
-        <p v-if="this.$store.state.pendingPurchases.length > 0"> Du har väntande köp som ska godkännas av köparen innan köpet genomförs. Du kommer få en notis när köparen godkänt köpet. </p>
+        <p v-if="this.$store.state.pendingPurchases.length > 0"> {{ $t('shop.pending_purchases') }} </p>
       </div>
       <div style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
         <table>
@@ -122,17 +122,23 @@
       </table>
       </div>
     </div>
-    
+    <LoadingComponent ref="loadingComponent" />
+
 </template>
 
 <script>
-import { getPurchases, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits } from '../../serverFetch'
+import { getPurchases, cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import DateFilter from './DateFilter.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 
 export default {
-
+  async mounted () {
+    this.$refs.loadingComponent.showLoading()
+    await setTransactionsData()
+    this.$refs.loadingComponent.hideLoading()
+  },
   data () {
     return {
       filterActive: false, //used to check if any filter is applied.
@@ -142,13 +148,15 @@ export default {
       payerNotEnoughTkn: false,
       payeeTooMuchTkn: false,
       max_limit: 0,
-      default_min_date: 2020
+      default_min_date: 2020,
+      payer: ''
     }
   },
   components: {
     Listing,
     DateFilter,
-    PopupCard
+    PopupCard,
+    LoadingComponent
   },
   methods: {
     mounted () {
@@ -320,29 +328,41 @@ export default {
         pom.click()
       }
     },
-    cancel (id, index) { //cancel order button
+    async cancel (id, index) { //cancel order button
       //console.log('Canceling order: ' + id)
+      this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
-      cancelRequest(id)
+      await cancelRequest(id)
+      await setTransactionsData()
+      this.$refs.loadingComponent.hideLoading()
     },
-    startCancelRequest (id, payer, index) {
+    async startCancelRequest (id, payer, index) {
+      this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('declined'), 'out', 'red')
-      cancelRequest(id)
-      postNotification('saleRequestDenied', payer)
+      await cancelRequest(id)
+      await postNotification('saleRequestDenied', payer)
+      await setTransactionsData()
+      this.$refs.loadingComponent.hideLoading()
     },
     accept (id, payer, index, cost) { 
+      this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then((balance) => {
         getLimits().then((limits) => {
           this.max_limit = limits.max
           if (balance + limits.min + cost > limits.max) {
+            this.$refs.loadingComponent.hideLoading()
             this.payeeTooMuchTkn = true
           } else {
-            getUserAvailableBalance(payer).then((payerBalance) => {
+            getUserAvailableBalance(payer).then(async (payerBalance) => {
               if (cost <= payerBalance) {
                 this.statusSwap(index, this.$i18n.t('approved'), 'out', 'green')
-                acceptRequest(id)
-                postNotification('saleRequestAccepted', payer)
+                await acceptRequest(id)
+                await postNotification('saleRequestAccepted', payer)
+                await setTransactionsData()
+                this.$refs.loadingComponent.hideLoading()
               } else {
+                this.$refs.loadingComponent.hideLoading()
+                this.payer = payer
                 this.payerNotEnoughTkn = true
               } 
             })

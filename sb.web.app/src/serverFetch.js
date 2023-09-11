@@ -937,7 +937,7 @@ export async function updateCategoryStatus (data) {
 }
 
 export async function getCartByUser () {
-  return fetch(EXPRESS_URL + '/cart/byUser', { 
+  return await fetch(EXPRESS_URL + '/cart/byUser', { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -1011,6 +1011,43 @@ export async function setNotificationsData () {
     store.commit('replaceNewNotifications', newNotifications)
   }
 }
+
+
+export async function getTransactionsByUser () {
+  return await fetch(EXPRESS_URL + '/transactions', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+export async function setTransactionsData () {
+  const notifications = await getTransactionsByUser().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (notifications !== null) {
+    if (notifications.requests) {
+      store.commit('replaceRequests', notifications.requests)            
+    }
+
+    if (notifications.pendingPurchases) {
+      store.commit('replacePendingPurchases', notifications.pendingPurchases)            
+    }    
+
+    if (notifications.completedTransactions) {
+      store.commit('replaceCompletedTransactions', notifications.completedTransactions)            
+    } 
+  }
+}
+
+
 /*****************************************************************************
 * 
 *                                setStoreData
@@ -1075,17 +1112,17 @@ export async function setStoreData () {
     store.commit('replaceSaldo', data.saldo)
     store.commit('replaceCreditLine', data.creditLine)
     store.commit('replaceCreditLimit', data.creditLimit)
-    if (data.requests) {
-      store.commit('replaceRequests', data.requests)            
-    }
+    // if (data.requests) {
+    //   store.commit('replaceRequests', data.requests)            
+    // }
 
-    if (data.pendingPurchases) {
-      store.commit('replacePendingPurchases', data.pendingPurchases)            
-    }    
+    // if (data.pendingPurchases) {
+    //   store.commit('replacePendingPurchases', data.pendingPurchases)            
+    // }    
 
-    if (data.completedTransactions) {
-      store.commit('replaceCompletedTransactions', data.completedTransactions)            
-    }           
+    // if (data.completedTransactions) {
+    //   store.commit('replaceCompletedTransactions', data.completedTransactions)            
+    // }           
     
     if (data.allEvents) {       
       store.commit('replaceAllEvents', data.allEvents)
