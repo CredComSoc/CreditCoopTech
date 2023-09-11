@@ -330,7 +330,7 @@ module.exports = function() {
         }
         //data.requests = response.data
       } catch (error) {
-        console.error(error)
+        console.error(error.response.data)
         errors.push("Error processing CC_NODE payee transactions")
       }
 
@@ -372,7 +372,7 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error.response.data)
         errors.push("Error processing CC_NODE payer transactions")
       }
 
@@ -1478,6 +1478,122 @@ module.exports = function() {
       })
     } catch (ex) {
       res.status(400).send({ error: 'Error while fetching notifications' })
+      console.log(ex)
+    }
+  });
+
+
+   /*****************************************************************************
+  * 
+  *                                Transactions
+  *                 
+  *****************************************************************************/
+
+  router.get("/transactions", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        const allUsers = await dbo.collection("users").find({}).toArray(); // created this variables of users because the old implementation loops through all the transactions that it got from the cc-node and to map the users every time it called the get user api but now it gets it from this variable
+        const user = await dbo.collection("users").findOne({ "profile.accountName": req.user })
+        const userId = user._id.toString()
+        let transactions = {
+          requests: [],
+          pendingPurchases: [],
+          completedTransactions: [],
+        }
+        // get requests
+        try {
+            const response = await axios.get(CC_NODE_URL + '/transactions', {
+              headers: {
+                'cc-user': userId,
+                'cc-auth': '1'
+              },
+              params: {
+                'payee': userId
+              }
+            })
+            let users = {}
+            let entries = response.data.data || []
+            for (const entry of entries) {
+              if ((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+                const payee = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payee)[0]
+                // const payee = await getUser({ '_id': ObjectId(entry.entries[0].payee) })
+                users[entry.entries[0].payee] = payee.profile.accountName
+              }
+              if ((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+                const payer = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payer)[0]
+                // const payer = await getUser({ '_id': ObjectId(entry.entries[0].payer) })
+                users[entry.entries[0].payer] = payer.profile.accountName
+              }
+              if ((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+                const author = allUsers.filter(us => us["_id"].toString() == entry.entries[0].author)[0]
+                // const author = await getUser({ '_id': ObjectId(entry.entries[0].author) })
+                users[entry.entries[0].author] = author.profile.accountName
+              }
+              entry.entries[0].payee = users[entry.entries[0].payee]
+              entry.entries[0].payer = users[entry.entries[0].payer]
+              entry.entries[0].author = users[entry.entries[0].author]
+              if (entry.state === 'completed') {
+                // this is the new cc-server returns quantity with display format so removing the display format is done below to send integer value to the front end 
+                entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+                transactions.completedTransactions.push(entry)
+              } else if (entry.state === 'pending') {
+                entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+                transactions.requests.push(entry)
+              }
+            }
+        } catch (error) {
+          console.error(error)
+        }
+        // get transactions
+        try {
+          const response = await axios.get(CC_NODE_URL + '/transactions', {
+            headers: {
+              'cc-user': userId,
+              'cc-auth': '1'
+            },
+            params: {
+              'payer': userId
+            }
+          })
+          let users = {}
+          let entries = response.data.data || []
+          for (const entry of entries) {
+            if ((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+              const payee = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payee)[0]
+              // const payee = await getUser({ '_id': ObjectId(entry.entries[0].payee) })
+              users[entry.entries[0].payee] = payee.profile.accountName
+            }
+            if ((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+              const payer = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payer)[0]
+              // const payer = await getUser({ '_id': ObjectId(entry.entries[0].payer) })
+              users[entry.entries[0].payer] = payer.profile.accountName
+            }
+            if ((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+              const author = allUsers.filter(us => us["_id"].toString() == entry.entries[0].author)[0]
+              // const author = await getUser({ '_id': ObjectId(entry.entries[0].author) })
+              users[entry.entries[0].author] = author.profile.accountName
+            }
+            entry.entries[0].payee = users[entry.entries[0].payee]
+            entry.entries[0].payer = users[entry.entries[0].payer]
+            entry.entries[0].author = users[entry.entries[0].author]
+
+            if (entry.state === 'completed') {
+              entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+              transactions.completedTransactions.push(entry)
+            } else if (entry.state === 'pending') {
+              entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+              transactions.pendingPurchases.push(entry)
+            }
+          }
+
+        } catch (error) {
+          console.error(error)
+        } 
+        res.status(200).send(transactions)
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching Transactions' })
       console.log(ex)
     }
   });
