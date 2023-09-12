@@ -153,7 +153,7 @@
         </button>
       </nav>
       <Modal :open="showSignOutModal" proceedText="Yes, please sign me out" @proceed="logOut" closeText="No, please go back" @close="showSignOutModal = !showSignOutModal">
-        <h4>Are you sure you want to sign out?</h4><br />
+        <h4>{{ $t('nav.confirm_sign_out') }}</h4><br />
       </Modal>
     </header>
     

@@ -142,6 +142,7 @@ export default {
   font-size: 2.2rem;
   letter-spacing: 0.3em;  
   text-align: center;
+  text-transform: uppercase;
 }
 
 h2 {
