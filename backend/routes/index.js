@@ -55,6 +55,15 @@ module.exports = function() {
     return result
   }
 
+  function cleanQuantityData(quant) {
+    if(quant.toString().split('$').length > 1) {
+      return parseInt(quant.toString().split('$')[1])
+    }
+    else {
+      return quant
+    }
+  }
+
   /*****************************************************************************
    * 
    *                                   Images
@@ -335,46 +344,46 @@ module.exports = function() {
       }
 
       // get transactions
-      try {
-        if (userId) {
-          const response = await axios.get(CC_NODE_URL + '/transactions', {
-            headers: {
-              'cc-user': userId,
-              'cc-auth': '1'
-            },
-            params: {
-              'payer': userId
-          }})
-          let users = {}
-          let entries = response.data.data || []
-          for (const entry of entries) {
-            if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-              const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-              users[entry.entries[0].payee] = payee.profile.accountName
-            }
-            if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-              const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-              users[entry.entries[0].payer] = payer.profile.accountName
-            }
-            if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-              const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-              users[entry.entries[0].author] = author.profile.accountName
-            }
-            entry.entries[0].payee = users[entry.entries[0].payee]
-            entry.entries[0].payer = users[entry.entries[0].payer]
-            entry.entries[0].author = users[entry.entries[0].author]
+      // try {
+      //   if (userId) {
+      //     const response = await axios.get(CC_NODE_URL + '/transactions', {
+      //       headers: {
+      //         'cc-user': userId,
+      //         'cc-auth': '1'
+      //       },
+      //       params: {
+      //         'payer': userId
+      //     }})
+      //     let users = {}
+      //     let entries = response.data.data || []
+      //     for (const entry of entries) {
+      //       if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+      //         const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
+      //         users[entry.entries[0].payee] = payee.profile.accountName
+      //       }
+      //       if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+      //         const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
+      //         users[entry.entries[0].payer] = payer.profile.accountName
+      //       }
+      //       if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+      //         const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
+      //         users[entry.entries[0].author] = author.profile.accountName
+      //       }
+      //       entry.entries[0].payee = users[entry.entries[0].payee]
+      //       entry.entries[0].payer = users[entry.entries[0].payer]
+      //       entry.entries[0].author = users[entry.entries[0].author]
 
-            if (entry.state === 'completed') {
-              data.completedTransactions.push(entry)
-            } else if (entry.state === 'pending') {
-              data.pendingPurchases.push(entry)
-            }
-          }
-        }
-      } catch (error) {
-        console.error(error.response.data)
-        errors.push("Error processing CC_NODE payer transactions")
-      }
+      //       if (entry.state === 'completed') {
+      //         data.completedTransactions.push(entry)
+      //       } else if (entry.state === 'pending') {
+      //         data.pendingPurchases.push(entry)
+      //       }
+      //     }
+      //   }
+      // } catch (error) {
+      //   console.error(error.response.data)
+      //   errors.push("Error processing CC_NODE payer transactions")
+      // }
 
       db.close()
       res.status(200).send(data)
@@ -1535,10 +1544,10 @@ module.exports = function() {
               entry.entries[0].author = users[entry.entries[0].author]
               if (entry.state === 'completed') {
                 // this is the new cc-server returns quantity with display format so removing the display format is done below to send integer value to the front end 
-                entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
+                entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
                 transactions.completedTransactions.push(entry)
               } else if (entry.state === 'pending') {
-                entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
+                entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
                 transactions.requests.push(entry)
               }
             }
@@ -1579,10 +1588,10 @@ module.exports = function() {
             entry.entries[0].author = users[entry.entries[0].author]
 
             if (entry.state === 'completed') {
-              entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
+              entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
               transactions.completedTransactions.push(entry)
             } else if (entry.state === 'pending') {
-              entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
+              entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
               transactions.pendingPurchases.push(entry)
             }
           }
@@ -1597,6 +1606,7 @@ module.exports = function() {
       console.log(ex)
     }
   });
+
 
 return { 'router': router, 'conn': conn }
 };
