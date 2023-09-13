@@ -148,6 +148,7 @@
         "prohibitedrequest": "Prohibited Request",
         "remove": "Remove",
         "whatDoYouWantToSearchForTodayLabel": "What do you want to search for today?",
+
         "seller_balance_too_high": "Seller(s) balance too high",
         "invalid_approval": "Invalid approval",
         "purchase_request_cannot_be_approved_buyer": "The purchase request cannot be approved, as it would take {buyer_username} below their negative credit limit. Please consider following up with them.",
