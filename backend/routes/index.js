@@ -1535,10 +1535,10 @@ module.exports = function() {
               entry.entries[0].author = users[entry.entries[0].author]
               if (entry.state === 'completed') {
                 // this is the new cc-server returns quantity with display format so removing the display format is done below to send integer value to the front end 
-                entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+                entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
                 transactions.completedTransactions.push(entry)
               } else if (entry.state === 'pending') {
-                entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+                entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
                 transactions.requests.push(entry)
               }
             }
@@ -1579,10 +1579,10 @@ module.exports = function() {
             entry.entries[0].author = users[entry.entries[0].author]
 
             if (entry.state === 'completed') {
-              entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+              entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
               transactions.completedTransactions.push(entry)
             } else if (entry.state === 'pending') {
-              entry.entries[0].quant = entry.entries[0].quant.split('$').length > 1 ?parseInt(entry.entries[0].quant.split('$')[1]) : entry.entries[0].quant
+              entry.entries[0].quant = entry.entries[0].quant.toString().split('$').length > 1 ?parseInt(entry.entries[0].quant.toString().split('$')[1]) : entry.entries[0].quant
               transactions.pendingPurchases.push(entry)
             }
           }
