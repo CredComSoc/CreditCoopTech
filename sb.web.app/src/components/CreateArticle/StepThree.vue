@@ -111,7 +111,7 @@ export default {
       return validImageTypes.includes(file.type)
     },
     displayImg () {
-      this.$refs.addFile.innerText = 'Choose more'
+      this.$refs.addFile.innerText = this.$i18n.$t('choose_more')
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
