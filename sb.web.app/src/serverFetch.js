@@ -959,7 +959,7 @@ export async function getNotificationsByUser () {
     },
     credentials: 'include'
   }).then((response) => {
-    let notifications = response.json();
+    const notifications = response.json();
     if (Array.isArray(notifications)) {
       return notifications;
     }
