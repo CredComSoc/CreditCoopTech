@@ -1017,11 +1017,23 @@ module.exports = function() {
 
   router.get("/notifications/byUser", (req, res) => {
     try {
-      MongoClient.connect(dbUrl, async (err, db) => {
+      MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder);
         // TODO: Fix this when eugene creates a new notification table so get that information to from that table
-        const notifications = await dbo.collection("notifications").find({ "toUser": req.user })
-        res.status(200).send(notifications)
+        const notifications = dbo.collection("notifications").find({ "toUser": req.user }).toArray(function (err, result) {
+          if (err) {
+            db.close();
+            res.status(500).send("Error in retrieving notifications")
+          }
+          else if (result != null) {
+            db.close();
+            res.status(200).send(notifications)
+          }
+          else {
+            db.close();
+            res.status(204).send("No matching notifications found")
+          }
+        })
       })
     } catch (ex) {
       res.status(400).send({ error: 'Error while fetching notifications' })
