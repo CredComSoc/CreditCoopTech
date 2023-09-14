@@ -433,7 +433,7 @@ module.exports = function() {
             logo_id: ""
           },
           messages: {},
-          notifications: [],
+          //notifications: [],
         }
         if (req.file) {
           newUser.logo = req.file.filename
@@ -966,49 +966,68 @@ module.exports = function() {
    *                 
    *****************************************************************************/
 
-  router.post("/notification", (req, res) => {
+  router.post('/notification', (req, res) => {
     let notification = req.body
     notification.date = new Date()
     notification.fromUser = req.user
+    notification.seen = false
 
-    getUser({ 'profile.accountName': notification.toUser }).then((user) => {
-      if (user != null) {
-        let notification_list = user.notifications
-        if (notification_list.length >= 4) {
-          notification_list = [notification, notification_list[0], notification_list[1], notification_list[2]]
-        } else {
-          notification_list.push(notification)
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('notifications').insertOne(notification, (err, result) => {
+        if (err) {
+          db.close();
+          res.status(500).send("Error in adding new record")
         }
-        updateUser({ 'profile.accountName': notification.toUser }, { $set: { notifications: notification_list } }).then((query) => {
-          if (query.acknowledged) {
-            res.sendStatus(200)
-          } else {
-            res.status(404).send("User not found.")
-          }
-        })
-      } else {
-        res.status(404).send("User not found.")
-      }
+        else if (result != null) {
+          console.log(result)
+          db.close();
+          res.sendStatus(200)
+        }
+        else {
+          db.close();
+          res.status(404).send("Error in adding new record")
+        }
+      })
     })
   })
 
   router.patch("/notification", (req, res) => {
-    getUser({ "profile.accountName": req.user }).then((user) => {
-      if (user != null) {
-        let notification_list = user.notifications
-        notification_list.forEach(notification => notification.seen = true)
-        updateUser({ "profile.accountName": req.user }, { $set: { notifications: notification_list } }).then((query) => {
-          if (query.acknowledged) {
-            res.sendStatus(200)
-          } else {
-            res.status(404).send("User not found.")
+    MongoClient.connect(dbUrl, (err, db) => {
+      let dbo = db.db(dbFolder);
+      dbo.collection('notifications').updateMany(
+        { 'fromUser': req.user },
+        { $set: { 'seen': true }}, function (err, result) {
+          if (err) {
+            db.close();
+            res.status(500).send("Error in updating notifications' seen status")
           }
-        })
-      } else {
-        res.status(404).send("User not found.")
-      }
+          else if (result.matchedCount != 0) {
+            db.close();
+            res.status(200).send("Notifications marked as seen");
+          }
+          else {
+            db.close();
+            res.status(204).send("No matching notifications found")
+          }
+        }
+      )
     })
   })
+
+  router.get("/notifications/byUser", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
+        const notifications = await dbo.collection("notifications").find({ "toUser": req.user })
+        res.status(200).send(notifications)
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching notifications' })
+      console.log(ex)
+    }
+  });
 
   /*****************************************************************************
    * 
@@ -1468,29 +1487,6 @@ module.exports = function() {
       console.log(ex)
     }
   });
-
-
-  /*****************************************************************************
-  * 
-  *                                Notification
-  *                 
-  *****************************************************************************/
-
-  router.get("/notifications/byUser", (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
-        const user = await dbo.collection("users").find({ "profile.accountName": req.user }).toArray()
-        const notifications = user.map(us => us = us.notifications)
-        res.status(200).send(notifications[0])
-      })
-    } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching notifications' })
-      console.log(ex)
-    }
-  });
-
 
    /*****************************************************************************
   * 
