@@ -17,6 +17,7 @@ import FilledCart from './FilledCart.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { EXPRESS_URL, createTransactions, getAvailableBalance, getUserAvailableBalance, getUserLimits, setStoreData, setCartData, postNotification } from '../../serverFetch'
 import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
+import store from '@/store'
 export default {
   name: 'ShoppingCart',
   props: [],
@@ -28,6 +29,8 @@ export default {
   },
   async mounted () {
     await setCartData()
+    this.cart = this.$store.state.myCart
+    console.log(this.cart)
     if (this.$store.state.myCart) {
       this.calcTotal()
     }
@@ -50,6 +53,7 @@ export default {
   },
   methods: {
     async removeRow (ind) {
+      this.$refs.loadingComponent.showLoading()
       await fetch(EXPRESS_URL + '/cart/remove/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         credentials: 'include'
@@ -57,13 +61,21 @@ export default {
       ).catch(
         error => console.log(error)
       )
-      setTimeout(async () => {
-        await setCartData()
-        this.calcTotal()
-      })
+      await setCartData()
+      this.cart = this.$store.state.myCart
+      this.calcTotal()
+    
+      this.$refs.loadingComponent.hideLoading()
     },
     async addItem (ind) {
       const quant = this.cart[ind - 1].quantity
+      this.cart[ind - 1].quantity += 1
+      let cartSize = 0
+      for (const item of this.cart) {
+        cartSize += item.quantity
+      }
+      store.commit('replaceMyCartSize', cartSize)
+      this.calcTotal()
       await fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
         method: 'POST',
         headers: {
@@ -72,17 +84,22 @@ export default {
         body: JSON.stringify({ quantity: quant + 1 }),
         credentials: 'include'
       }).then(
-      ).catch(
-        error => console.log(error)
-      )
-      setTimeout(async () => {
+      ).catch(async err => {
         await setCartData()
-        this.calcTotal()
+        console.log(err)
+        this.cart = this.$store.state.myCart
       })
     },
     async minItem (ind) {
       if (this.cart[ind - 1].quantity > 1) {
         const quant = this.cart[ind - 1].quantity
+        this.cart[ind - 1].quantity -= 1
+        let cartSize = 0
+        for (const item of this.cart) {
+          cartSize += item.quantity
+        }
+        store.commit('replaceMyCartSize', cartSize)
+        this.calcTotal()
         await fetch(EXPRESS_URL + '/cart/set/item/' + this.cart[ind - 1].id, {
           method: 'POST',
           headers: {
@@ -91,18 +108,14 @@ export default {
           body: JSON.stringify({ quantity: quant - 1 }),
           credentials: 'include'
         }).then(
-        ).catch(
-          error => console.log(error)
-        )
-    
-        setTimeout(async () => {
+        ).catch(async err => {
           await setCartData()
-          this.calcTotal()
+          console.log(err)
+          this.cart = this.$store.state.myCart
         })
       }
     },
     calcTotal () {
-      this.cart = this.$store.state.myCart
       let total = 0
       for (let i = 0; i < this.cart.length; i++) {
         total += this.cart[i].price * this.cart[i].quantity
@@ -182,7 +195,7 @@ export default {
           }
         } else {
           // display insufficient balance msg
-          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total} ${this.$t('cart.available_credit')} ${this.availableBalance} ${this.$t('org.token')}`
+          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total}  ${this.$t('org.token')} ${this.$t('cart.available_credit')} ${this.availableBalance} ${this.$t('org.token')}`
           this.insufficientBalance = true
           this.$refs.loadingComponent.hideLoading()
         }

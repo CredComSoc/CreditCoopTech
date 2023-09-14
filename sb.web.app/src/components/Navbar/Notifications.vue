@@ -64,6 +64,15 @@
                         </div>
                     </router-link> 
                     </div>
+                    <!-- TODO: Add item name on the notifications tab when the notification table is complete -->
+                    <div v-if="item.type == 'transactionCancelled'">
+                    <router-link :to="{name:'Chat'}" >
+                        <div id="new-list-content">
+                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser }) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
                 </div>
             </div>
             <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length > 0">
@@ -113,6 +122,15 @@
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
                         <p class="notice-desc"> {{ $t('notifications.seller_limit_exceeded', {'buyer_username': item.fromUser, total_price: item.amount, unit_price:  $t('org.token')  }) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
+                    <!-- TODO: Add item name on the notifications tab when the notification table is complete -->
+                    <div v-if="item.type == 'transactionCancelled'">
+                    <router-link :to="{name:'Chat'}" >
+                        <div id="new-list-content">
+                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 

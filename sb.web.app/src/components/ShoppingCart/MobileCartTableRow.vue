@@ -1,7 +1,10 @@
 <template>
 <div class="table-row">
   <div class="floating-left">
+    <diV>
     <img class="content-img" :src="this.getImgURL()" />
+    <p class="b-text"> {{ userUploader }} </p>
+  </diV>
     <p :class="[`non-b-text`,`title-text`]"> {{ title }} </p>
     <p :class="[`non-b-text`, `price-text`]"> {{ $t('price') }}: {{ this.priceOfItem }} {{ $t('org.tkn') }} </p>
   </div>
@@ -33,7 +36,7 @@
 import { EXPRESS_URL } from '../../serverFetch'
 export default {
   name: 'MobileCartTableRow',
-  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg'],
+  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg', 'userUploader'],
   data () {
     return {
       numberOfItems: this.items,
@@ -168,6 +171,7 @@ h3 {
     margin-top: 5px;
     margin-left: 5px;
 }
+
 
 @media (max-width: 860px) {
   .title-text{

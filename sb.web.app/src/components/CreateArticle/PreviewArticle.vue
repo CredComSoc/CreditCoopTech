@@ -11,10 +11,10 @@
       <PreviewItem :title="$t('category')" :text='this.savedProgress.category' :images="null" />
       <PreviewItem :title="$t('time.time')" :text='this.endDate' :images="null" />
       <PreviewItem :title="$t('shop_items.location')" :text='this.savedProgress.destination' :images="null" />
-      <PreviewItem :title="$t('price')" :text='this.savedProgress.price' :images="null" />
+      <PreviewItem :title="$t('price')" :text="this.savedProgress.price +  '  ' + $t('org.token')" :images="null" />
       <PreviewItem :title="$t('shop_items.images')" :text="null" :images='this.images' />
     </div>
-    <PopupCard v-if="this.isPublished" :title="$t('confirmation')" :cardText="$t('shop_items.item_available_in_shop')" btnLink='\' btnText="Ok" />
+    <PopupCard v-if="this.isPublished" :title="$t('confirmation')" :cardText="$t('shop_items.item_available_in_shop')" btnLink='/shop' btnText="Ok" />
   </div>
 </template>
 
