@@ -83,16 +83,16 @@ export default {
   computed: {
     locationPlaceholder () {
       if (this.chosenType.toLowerCase() === 'product') {
-        return this.$t('shop_items.product_placeholder')
+        return this.$i18n.t('shop_items.product_placeholder')
       } else {
-        return this.$t('shop_items.service_placeholder')
+        return this.$i18n.t('shop_items.service_placeholder')
       }
     },
     pricePlaceholder () {
       if (this.savedProgress.status === 'Offer') {
-        return this.$t('shop_items.offer_placeholder')
+        return this.$i18n.t('shop_items.offer_placeholder')
       } else {
-        return this.$t('shop_items.want_placeholder')
+        return this.$i18n.t('shop_items.want_placeholder')
       }
     }
   },
