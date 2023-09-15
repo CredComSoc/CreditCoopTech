@@ -89,8 +89,8 @@ export default {
         this.searchWord = searchWord
 
         this.enableSearch = false
-
-        for (const article of this.$store.state.allArticles) {
+        const otherItems = this.$store.state.allArticles.filter(it => it.userUploader !== this.$store.state.user.profile.accountName)
+        for (const article of otherItems) {
           const now = new Date()
           const chosenDate = new Date(article['end-date'])
           if (now.getTime() > chosenDate.getTime()) {

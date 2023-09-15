@@ -3,6 +3,11 @@
   <div class="cart-col">  
     <p class="b-text"> {{ ind }} </p>
   </div>
+
+ <div class="cart-col">  
+  <h3>{{ $t('seller_name') }}</h3>
+  <p class="b-text"> {{ userUploader }} </p>
+  </div>
   <div class="cart-col">
     <h3 v-if="ind === 1"> {{ $t('product') }} </h3> 
     <img class="content-img" :src='this.getImgURL()' style="object-fit:contain;max-width:240px;max-height:240px;"/>
@@ -22,11 +27,11 @@
   </div>
   <div class="cart-col"> 
     <h3 v-if="ind === 1"> {{ $t('price') }} </h3>  
-    <p class="non-b-text"> {{ this.priceOfItem }} </p>
+    <p class="non-b-text"> {{ this.priceOfItem }} {{ $t('org.token') }} </p>
   </div>
   <div class="cart-col">
     <h3 v-if="ind === 1"> {{ $t('amount') }} </h3>   
-    <p class="non-b-text"> {{ this.totalPrice }} </p>
+    <p class="non-b-text"> {{ this.totalPrice }} {{ $t('org.token') }} </p>
   </div>
   <div class="cart-col">    
     <div type="button" class="g-can" @click="this.removeRow">
@@ -40,7 +45,7 @@
 import { EXPRESS_URL } from '../../serverFetch'
 export default {
   name: 'CartTableRow',
-  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg'],
+  props: ['ind', 'image', 'title', 'items', 'price', 'sum', 'coverImg', 'userUploader'],
   data () {
     return {
       numberOfItems: this.items,

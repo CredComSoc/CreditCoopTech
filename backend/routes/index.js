@@ -854,6 +854,7 @@ module.exports = function() {
           images = images.filter((img) => { return img !== editArticle.coverImg })
           editArticle.img = images;
         }
+        editArticle['end-date'] = new Date(editArticle['end-date']);
         editArticle['item_update_date'] = new Date();
         const query = { id: req.params.id };
         delete editArticle._id
@@ -1606,6 +1607,53 @@ module.exports = function() {
       console.log(ex)
     }
   });
+
+  
+  /*****************************************************************************
+  * 
+  *                                Article
+  *                 
+  *****************************************************************************/
+
+  router.get("/articles/all", async (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+      let data = {}
+      let userId;
+      let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+      if (user) {
+        userId = user._id.toString()
+      }
+     // get article data
+     let articles = await dbo.collection("posts").find({}).toArray()
+     const myArticles = []
+     const allArticles = []
+     for (let article of articles) {
+       const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
+         if (articleUser) {
+           article.userUploader = articleUser.profile.accountName
+
+           if(userId && article.userId.toString() === userId.toString()) {
+             myArticles.push(article)
+           }
+         }
+         const now = new Date()
+         const chosenDate = article["end-date"]
+         if (now.getTime() < Date.parse(chosenDate)) {
+           allArticles.push(article)
+         }
+     }
+     data.myArticles = myArticles
+     data.allArticles = allArticles
+     res.status(200).send(data);
+    })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching notifications' })
+      console.log(ex)
+    }
+  });
+
 
 
 return { 'router': router, 'conn': conn }

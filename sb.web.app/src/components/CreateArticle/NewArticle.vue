@@ -18,6 +18,8 @@
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
     <button v-if="this.isEdit" @click="returnHome()" class="edit_button">Cancel</button>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
+    <!-- add my loading component -->
+    <LoadingComponent ref="loadingComponent" />
   </div>
   </div>
 </template>
@@ -29,9 +31,10 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { uploadArticle, editArticle, deleteCart, EXPRESS_URL } from '../../serverFetch'
+import { uploadArticle, editArticle, deleteCart, EXPRESS_URL, setArticles } from '../../serverFetch'
 
 import { isProxy, toRaw } from 'vue'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 
 export default {
   name: 'NewArticle',
@@ -41,7 +44,8 @@ export default {
     StepThree,
     PreviewArticle,
     NewArticleFooter,
-    PopupCard
+    PopupCard,
+    LoadingComponent
   },
   data () {
     return {
@@ -182,6 +186,7 @@ export default {
       }
     },
     uploadArticle () {
+      this.$refs.loadingComponent.showLoading()
       const createdArticle = isProxy(this.newArticle) ? toRaw(this.newArticle) : this.newArticle
       console.log(createdArticle, this.newArticle)
       const data = new FormData()
@@ -197,17 +202,21 @@ export default {
       }
       data.append('article', JSON.stringify(createdArticle))
       // This will upload the article to the server
-      uploadArticle(data).then((res) => {
+      uploadArticle(data).then(async (res) => {
         if (res.status === 200) {
+          await setArticles()
+          this.$refs.loadingComponent.hideLoading()
           this.isPublished = true // open popup with success message
         } else {
           console.error(res)
           this.error = true
+          this.$refs.loadingComponent.hideLoading()
           this.popupCardText = this.image_upload_error_message
         }
       })
     },
     editArticle () {
+      this.$refs.loadingComponent.showLoading()
       const newdata = new FormData()
       let index = 0
       for (const file of this.newArticle.img) {
@@ -218,12 +227,16 @@ export default {
         ++index
       }
       newdata.append('article', JSON.stringify(this.newArticle))
+      console.log(this.newArticle)
 
-      editArticle(this.$route.params.artID, newdata).then((res) => {
+      editArticle(this.$route.params.artID, newdata).then(async (res) => {
         if (res.status === 200 || res.status === '200') {
           //console.log('Item edit successful')
+          await setArticles()
+          this.$refs.loadingComponent.hideLoading()
           this.$router.push({ path: '/shop' })
         } else {
+          this.$refs.loadingComponent.hideLoading()
           console.error('Edit unsuccessful ', res.status, res)
         }
       }).catch((error) => {

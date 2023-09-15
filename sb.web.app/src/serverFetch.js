@@ -286,8 +286,8 @@ export async function updateuserProfile (previousname, accountName, description,
  *                 
  *****************************************************************************/
 
-export function getArticles () {
-  const promise = fetch(EXPRESS_URL + '/articles', {
+export function getAllArticles () {
+  const promise = fetch(EXPRESS_URL + '/articles/all', {
     method: 'GET',
     credentials: 'include'
   })
@@ -1031,6 +1031,32 @@ export async function setTransactionsData () {
   }
 }
 
+
+export async function getArticles () {
+  return await fetch(EXPRESS_URL + '/articles', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+
+export async function setArticles () {
+  const articles = await getAllArticles().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (articles !== null) {
+    store.commit('replaceAllArticles', articles.allArticles)
+    store.commit('replaceMyArticles', articles.myArticles)
+  }
+}
 
 /*****************************************************************************
 * 

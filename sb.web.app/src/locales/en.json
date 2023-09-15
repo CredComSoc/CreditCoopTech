@@ -168,7 +168,8 @@
         "chat_message": "a chat message",
         "older": "Older",
         "no_notifications": "No notifications",
-        "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase."
+        "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
+        "transaction_cancelled": "{buyer_username} has cancelled their purchase."
     },
     "cart": {
         "cart": "cart",
@@ -317,5 +318,6 @@
     "default_images": "Default images",
     "wrong_email_password": "Invalid email or password",
     "confirmation": "Confirmation",
-    "choose_more": "Choose more"
+    "choose_more": "Choose more",
+    "seller_name": "Seller"
 }
