@@ -967,52 +967,61 @@ module.exports = function() {
    *****************************************************************************/
 
   router.post('/notification', (req, res) => {
-    let notification = req.body
-    notification.date = new Date()
-    notification.fromUser = req.user
-    notification.seen = false
+    try {
+      let notification = req.body
+      notification.date = new Date()
+      notification.fromUser = req.user
+      notification.seen = false
 
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
-      dbo.collection('notifications').insertOne(notification, (err, result) => {
-        if (err) {
-          db.close();
-          res.status(500).send("Error in adding new record")
-        }
-        else if (result != null) {
-          console.log(result)
-          db.close();
-          res.sendStatus(200)
-        }
-        else {
-          db.close();
-          res.status(404).send("Error in adding new record")
-        }
-      })
-    })
-  })
-
-  router.patch("/notification", (req, res) => {
-    MongoClient.connect(dbUrl, (err, db) => {
-      let dbo = db.db(dbFolder);
-      dbo.collection('notifications').updateMany(
-        { 'fromUser': req.user },
-        { $set: { 'seen': true }}, function (err, result) {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection('notifications').insertOne(notification, (err, result) => {
           if (err) {
             db.close();
-            res.status(500).send("Error in updating notifications' seen status")
+            res.status(400).send("Error in adding new record")
           }
-          else if (result.matchedCount != 0) {
+          else if (result != null) {
+            console.log(result)
             db.close();
-            res.status(200).send("Notifications marked as seen");
+          res.sendStatus(200)
           }
           else {
             db.close();
-            res.status(204).send("No matching notifications found")
+            res.status(400).send("Error in adding new record")
           }
-        }
-      )
-    })
+        })
+      })
+    } catch (ex) {
+      res.status(500).send("Server error while adding new notificaiton")
+    }
+  })
+
+  router.patch("/notification", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection('notifications').updateMany(
+          { 'fromUser': req.user },
+          { $set: { 'seen': true }}, function (err, result) {
+            if (err) {
+              db.close();
+              res.status(400).send("Error in updating notifications' seen status")
+            }
+            else if (result.matchedCount != 0) {
+              db.close();
+              res.status(200).send("Notifications marked as seen");
+            }
+            else {
+              db.close();
+              res.status(204).send("No matching notifications found")
+            }
+          }
+        )
+      })
+    } catch (ex) {
+      res.status(500).send("Error while updating notifications");
+      console.log(ex)
+    }
   })
 
   router.get("/notifications/byUser", (req, res) => {
@@ -1023,7 +1032,7 @@ module.exports = function() {
         const notifications = dbo.collection("notifications").find({ "toUser": req.user }).toArray(function (err, result) {
           if (err) {
             db.close();
-            res.status(500).send("Error in retrieving notifications")
+            res.status(400).send("Error in retrieving notifications")
           }
           else if (result != null) {
             db.close();
@@ -1036,7 +1045,7 @@ module.exports = function() {
         })
       })
     } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching notifications' })
+      res.status(500).send({ error: 'Error while fetching notifications' })
       console.log(ex)
     }
   });
