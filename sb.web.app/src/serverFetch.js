@@ -437,6 +437,7 @@ export async function setNotificationsToSeen () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
+  await setNotificationsData()
   return promise
 }
 
@@ -960,11 +961,7 @@ export async function getNotificationsByUser () {
     credentials: 'include'
   }).then((response) => {
     const notifications = response.json()
-    if (Array.isArray(notifications)) {
-      return notifications
-    } else {
-      return []
-    }
+    return notifications
   }).catch(() => {
     return null
   })
