@@ -1037,7 +1037,8 @@ module.exports = function() {
           }
           else if (result != null) {
             db.close();
-            res.status(200).send(notifications)
+            console.log(result)
+            res.status(200).send(result)
           }
           else {
             db.close();
