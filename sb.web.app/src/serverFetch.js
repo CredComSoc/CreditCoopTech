@@ -522,7 +522,7 @@ export async function getSaldo () {
     return null
   })
   if (promise) {
-    return promise.completed.balance
+    return promise
   } else {
     return null
   }
@@ -530,6 +530,7 @@ export async function getSaldo () {
 
 export async function getAvailableBalance () {
   const saldo = await getSaldo()
+  const balance = saldo.completed.balance
   const promise = await fetch(EXPRESS_URL + '/limits/min', {
     method: 'GET',
     headers: {
@@ -547,7 +548,10 @@ export async function getAvailableBalance () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  return saldo - promise
+  return {
+    totalAvailableBalance: balance - promise,
+    pendingBalance: saldo.pending.balance
+  }
 }
 
 export async function getUserSaldo (user) {
@@ -566,7 +570,7 @@ export async function getUserSaldo (user) {
     return null
   })
   if (promise) {
-    return promise.completed.balance
+    return promise
   } else {
     return null
   }
@@ -574,7 +578,7 @@ export async function getUserSaldo (user) {
 
 export async function getUserAvailableBalance (user) {
   const saldo = await getUserSaldo(user)
-  
+  const balance = saldo.completed.balance
   const promise = await fetch(EXPRESS_URL + '/limits/min', {
     method: 'POST',
     headers: {
@@ -593,7 +597,10 @@ export async function getUserAvailableBalance (user) {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  return saldo - promise
+  return {
+    totalAvailableBalance: balance - promise,
+    pendingBalance: saldo.pending.balance
+  }
 }
 
 export async function getLimits () {

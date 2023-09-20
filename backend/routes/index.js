@@ -1571,7 +1571,7 @@ module.exports = function() {
               }
             }
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         }
         // get transactions
         try {
@@ -1616,7 +1616,7 @@ module.exports = function() {
           }
 
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         } 
         res.status(200).send(transactions)
       })
@@ -1667,8 +1667,8 @@ module.exports = function() {
      res.status(200).send(data);
     })
     } catch (ex) {
+      console.log(ex.response.data)
       res.status(400).send({ error: 'Error while fetching notifications' })
-      console.log(ex)
     }
   });
 
