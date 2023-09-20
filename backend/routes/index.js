@@ -17,7 +17,7 @@ module.exports = function() {
 
   const dbUrl = config.mongoURL;
   const dbFolder = config.dbFolder;
-  const FRONTEND_URL = config.FRONT_END_URL; 
+  const FRONTEND_URL = config.FRONT_END_URL;
   const CC_NODE_URL = config.CC_NODE_URL; 
   const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
@@ -1297,7 +1297,7 @@ module.exports = function() {
     if (email_enabled) {
       const resetEmail = {
         to: user.email,
-        from: support_email, 
+        from: support_email,
         subject: 'Your password for Land Care Trade has been updated',
         text: `
         This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
