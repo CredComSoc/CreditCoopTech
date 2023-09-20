@@ -401,7 +401,6 @@ module.exports = function() {
    *****************************************************************************/
 
   router.post("/register", upload.single('file'), (req, res) => { //register a new user
-    console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
 
     const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
@@ -947,7 +946,6 @@ module.exports = function() {
       if (user != null) {
         let newFile = {}
         if (req.file) {
-          console.log(req.file)
           newFile.name = req.file.filename
           newFile.fileType = req.file.contentType
           newFile.message = req.file.originalname
@@ -982,7 +980,6 @@ module.exports = function() {
             res.status(400).send("Error in adding new record")
           }
           else if (result != null) {
-            console.log(result)
             db.close();
           res.sendStatus(200)
           }
@@ -1037,7 +1034,6 @@ module.exports = function() {
           }
           else if (result != null) {
             db.close();
-            console.log(result)
             res.status(200).send(result)
           }
           else {
@@ -1075,7 +1071,6 @@ module.exports = function() {
               res.sendStatus(500)
             }
             else if (result != null) {
-              console.log(result)
               db.close();
               res.sendStatus(200)
             }
