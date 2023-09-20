@@ -128,18 +128,18 @@ export default {
     async confirmDialogBox (values) {
       this.openConfirmDialogBox = false
       this.$refs.loadingComponent.showLoading()
-      // await deactivateArticle(values.item.id)
-      // await getArticles().then(res => {
-      //   this.activeArticles = []
-      //   this.inactiveArticles = []
-      //   for (const article of res.products) {
-      //     if ((new Date(article['end-date'])).getTime() < Date.now()) {
-      //       this.inactiveArticles.push(article)
-      //     } else {
-      //       this.activeArticles.push(article)
-      //     }
-      //   }
-      // })
+      await deactivateArticle(values.item.id)
+      await getArticles().then(res => {
+        this.activeArticles = []
+        this.inactiveArticles = []
+        for (const article of res.products) {
+          if ((new Date(article['end-date'])).getTime() < Date.now()) {
+            this.inactiveArticles.push(article)
+          } else {
+            this.activeArticles.push(article)
+          }
+        }
+      })
       this.$refs.loadingComponent.hideLoading()
     }
   }

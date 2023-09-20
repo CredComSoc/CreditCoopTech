@@ -1002,7 +1002,7 @@ module.exports = function() {
       MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder);
         dbo.collection('notifications').updateMany(
-          { 'fromUser': req.user },
+          { 'toUser': req.user },
           { $set: { 'seen': true }}, function (err, result) {
             if (err) {
               db.close();
