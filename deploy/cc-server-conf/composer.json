@@ -1,0 +1,55 @@
+{
+    "name": "credit-commons/cc-server",
+    "description": "REST interface for a Credit Commons Node.",
+    "license": "GPL-2.0+",
+    "homepage": "https://creditcommons.net",
+    "minimum-stability": "dev",
+    "authors": [
+      {
+        "name": "Matthew Slater",
+        "email": "matslats@fastmail.com",
+        "homepage": "http://matslats.net",
+        "role": "Maintainer"
+      }
+    ],
+    "repositories": [
+      {
+        "type": "gitlab",
+        "url": "git@gitlab.com:credit-commons/cc-node"
+      },
+      {
+        "type": "gitlab",
+        "url": "git@gitlab.com:credit-commons/cc-php-lib"
+      }
+    ],
+    "require": {
+      "credit-commons/cc-node": "0.8.1",
+      "credit-commons/cc-php-lib": "0.8.1",
+      "slim/slim": "3.12.5",
+      "php": "~8.0"
+    },
+    "require-dev": {
+      "slim/psr7": "dev-master",
+      "phpunit/phpunit": "^9.6.11",
+      "nyholm/psr7": "^1.4",
+      "league/openapi-psr7-validator": "dev-master"
+    },
+    "autoload": {
+      "psr-4": {
+        "CCServer\\": "src",
+        "CCServer\\Tests\\": "tests"
+      }
+    },
+    "config": {
+      "platform-check": false
+    },
+    "scripts": {
+      "post-create-project-cmd": [
+        "cp -n vendor/credit-commons/cc-node/workflows.json.example workflows.json",
+        "cp -n vendor/credit-commons/cc-node/node.ini.example node.ini",
+        "ln -s vendor/credit-commons/cc-node/ui ui",
+        "touch last_exception.log"
+      ]
+    }
+  }
+  
