@@ -33,8 +33,8 @@
           <p>{{listingObj.destination}}</p>
 
           <h5>{{ $t('type') }}</h5> 
-          <p v-if="listingObj.article === 'product'">{{ $t('product') }}</p>
-          <p v-if="listingObj.article === 'service'">{{ $t('service') }}</p>
+          <p v-if="listingObj.article.toLowerCase() === 'product'">{{ $t('product') }}</p>
+          <p v-if="listingObj.article.toLowerCase() === 'service'">{{ $t('service') }}</p>
 
           <h5>{{$t('category')}}</h5> 
           <p>{{listingObj.category}}</p>
@@ -44,6 +44,10 @@
           
           <h5>{{ $t('list_price') }}</h5> 
           <p>{{listingObj.price}} {{ $t('org.token') }}</p>
+
+          <h5 v-if="listingObj.status === 'selling' || listingObj.status === 'offer'">{{ $t('available_until') }}</h5> 
+          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('wanted_by') }}</h5> 
+          <p>{{parseDate(listingObj["end-date"])}}</p>
 
           <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')" >
             <h5>{{ $t('quantity') }}</h5> 
@@ -149,11 +153,25 @@ export default {
     editItem () {
       // TODO: push to item editing page
       this.$router.push({ name: 'Edit_Article', params: { artID: this.listingObj.id } })
+    },
+    parseDate (dateSaved) {
+      var currentYear = new Date().getFullYear()
+      var date = new Date(dateSaved)
+      var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var day = date.getDate()
+      if (year - currentYear > 50) {
+        return 'Indefinitely'
+      } else {
+        var formattedTime = day + '/' + month + '/' + year
+        return formattedTime
+      }
     }
   },
   created: function () {
     // this.getSmallerImages(this.listingObj.img)
   }
+  
 }
 </script>
 

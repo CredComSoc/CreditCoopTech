@@ -1002,7 +1002,7 @@ module.exports = function() {
       MongoClient.connect(dbUrl, (err, db) => {
         let dbo = db.db(dbFolder);
         dbo.collection('notifications').updateMany(
-          { 'fromUser': req.user },
+          { 'toUser': req.user },
           { $set: { 'seen': true }}, function (err, result) {
             if (err) {
               db.close();
@@ -1571,7 +1571,7 @@ module.exports = function() {
               }
             }
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         }
         // get transactions
         try {
@@ -1616,7 +1616,7 @@ module.exports = function() {
           }
 
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         } 
         res.status(200).send(transactions)
       })
@@ -1667,8 +1667,8 @@ module.exports = function() {
      res.status(200).send(data);
     })
     } catch (ex) {
+      console.log(ex.response.data)
       res.status(400).send({ error: 'Error while fetching notifications' })
-      console.log(ex)
     }
   });
 
