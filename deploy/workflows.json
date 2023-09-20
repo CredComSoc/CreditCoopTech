@@ -1,0 +1,113 @@
+[
+  {
+    "id": "bill",
+    "label": "Bill",
+    "summary": "The author bills another account, which must agree.",
+    "active": true,
+    "direction": "bill",
+    "creation": {
+      "state": "pending",
+      "label": "Create",
+      "confirm": true
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "actors": ["payer"]
+        },
+        "erased": {
+          "label": "Erase",
+          "actors": ["payee", "payer"]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "actors": []
+        }
+      }
+    }
+  },
+  {
+    "id": "credit",
+    "label": "Credit",
+    "summary": "The author credits another account, which must agree.",
+    "active": true,
+    "direction": "credit",
+    "creation": {
+      "state": "pending",
+      "label": "Create",
+      "confirm": true
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "actors": ["payee"]
+        },
+        "erased": {
+          "label": "Erase",
+          "actors": ["payer", "payee"]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "actors": []
+        }
+      }
+    }
+  },
+  {
+    "id": "disabled",
+    "label": "Disabled",
+    "summary": "This workflow is not available for new transactions. (Needed for testing.)",
+    "active": true,
+    "direction": "credit",
+    "creation": {
+      "state": "pending",
+      "label": "Create",
+      "confirm": false
+    },
+    "states": {
+      "pending": {
+        "completed": {
+          "label": "Sign",
+          "actors": ["payee"]
+        },
+        "erased": {
+          "label": "Erase",
+          "actors": ["payer"]
+        }
+      },
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "actors": []
+        }
+      }
+    }
+  },
+  {
+    "id": "3rdparty",
+    "label": "3rd Party",
+    "summary": "Admin creates instantly with no confirmation",
+    "active": true,
+    "direction": "3rdparty",
+    "creation": {
+      "state": "completed",
+      "label": "Create",
+      "confirm": false
+    },
+    "states": {
+      "completed": {
+        "erased": {
+          "label": "Erase",
+          "actors": []
+        }
+      },
+      "erased": {}
+    }
+  }
+]
