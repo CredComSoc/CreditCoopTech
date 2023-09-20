@@ -73,11 +73,11 @@ export default {
       getAvailableBalance().then((balance) => {
         getLimits().then((limits) => {
           this.max_limit = limits.max
-          if (balance + limits.min + cost > limits.max) {
+          if (balance.totalAvailableBalance + limits.min + cost > limits.max) {
             this.payeeTooMuchBkr = true
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
-              if (cost <= payerBalance) {
+              if (cost <= payerBalance.totalAvailableBalance) {
                 this.statusSwap(index, this.$i18n.t('approved'), 'green')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)

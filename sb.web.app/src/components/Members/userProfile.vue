@@ -95,12 +95,12 @@ export default {
       this.comment = this.$refs.commentInput.getInput()
       if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
         const saldo = await getAvailableBalance()
-        if (saldo < this.tkn) {
+        if (saldo.totalAvailableBalance < this.tkn) {
           this.notEnoughBkrMsg = true
         } else {
           const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
           const userLimits = await getUserLimits(this.profileData.accountName)
-          if (userSaldo + userLimits.min + Number(this.tkn) > userLimits.max) {
+          if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
             this.tooMuchBkrMsg = true
           } else {
             await sendMoney(this.tkn, this.comment, this.profileData.accountName)
