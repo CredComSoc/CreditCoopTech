@@ -134,7 +134,7 @@ export default {
         console.log(this.total)
         this.availableBalance = res.totalAvailableBalance
         
-        if (res.totalAvailableBalance >= this.total) {
+        if (res.totalAvailableBalance > this.total) {
           console.log(res.pendingBalance, this.total, this.$store.state.user.min_limit)
           // very tricky logic. More knowledge of /saldo endpoint to understand
           if ((-res.pendingBalance) + this.total >= (-this.$store.state.user.min_limit)) {
