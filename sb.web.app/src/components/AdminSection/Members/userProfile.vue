@@ -20,13 +20,13 @@
         <p> {{profileData.description}} </p>
 
         <h1> {{ $t('user.street_address') }} </h1>
-        <p> {{profileData.adress}} </p>
+        <p> {{profileData.address}} </p>
 
         <h1> {{ $t('user.town') }} </h1>
         <p> {{profileData.city}} </p>
 
         <h1> {{ $t('user.billing') }} </h1>
-        <p> {{profileData.billing.name}}<br/>{{profileData.billing.box}}<br/>{{profileData.billing.adress}}<br/> {{profileData.billing.orgNumber}} </p>
+        <p> {{profileData.billing.name}}<br/>{{profileData.billing.box}}<br/>{{profileData.billing.address}}<br/> {{profileData.billing.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
@@ -68,8 +68,8 @@
           <input type="text" id="name" v-model="profileData.accountName" required><br/>
           <label for="description">{{ $t('user.description') }}:</label><br/>
           <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="adress">{{ $t('user.street_address') }}:</label><br/>
-          <input type="text" id="adress" v-model="profileData.adress" required><br/>
+          <label for="address">{{ $t('user.street_address') }}:</label><br/>
+          <input type="text" id="address" v-model="profileData.address" required><br/>
           <label for="location">{{ $t('user.town') }}:</label><br/>
           <input type="text" id="location" v-model="profileData.city" required><br/>
         </div>
@@ -79,8 +79,8 @@
           <input name="billingName" v-model="profileData.billing.name" required><br/>
           <label for="billingBox">Box:</label><br/>
           <input name="billingBox" v-model="profileData.billing.box" required><br/>
-          <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
-          <input name="billingAdress" v-model="profileData.billing.adress" required><br/>
+          <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
+          <input name="billingAddress" v-model="profileData.billing.address" required><br/>
           <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
           <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br/><br/>
           <h1>{{ $t('user.contact') }}</h1>
@@ -153,11 +153,11 @@ export default {
         this.profileData.previousname, 
         this.profileData.accountName, 
         this.profileData.description, 
-        this.profileData.adress, 
+        this.profileData.address,
         this.profileData.city, 
         this.profileData.billing.name, 
         this.profileData.billing.box, 
-        this.profileData.billing.adress, 
+        this.profileData.billing.address,
         this.profileData.billing.orgNumber, 
         this.profileData.email, 
         this.profileData.phone,

@@ -18,13 +18,13 @@
         <p> {{profileData.description}} </p>
 
         <h1> {{ $t('user.street_address') }} </h1>
-        <p> {{profileData.adress}} </p>
+        <p> {{profileData.address}} </p>
 
         <h1> {{ $t('user.town') }} </h1>
         <p> {{profileData.city}} </p>
 
         <h1> {{ $t('user.billing') }} </h1>
-        <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAdress}}<br/> {{profileData.orgNumber}} </p>
+        <p> {{profileData.billingName}}<br/>{{profileData.billingBox}}<br/>{{profileData.billingAddress}}<br/> {{profileData.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
