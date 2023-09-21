@@ -106,14 +106,15 @@
         "all_members": "All members",
         "messages": "Messages",
         "my_account": "My account",
-        "my_profile": "My Profile",
+        "my_profile": "My profile",
         "my_buy_sell": "My Wants and Offers",
-        "my_items": "My Items",
+        "my_items": "My items",
         "my_purchase_requests": "My purchase requests",
         "balance": "Balance & limits",
         "events": "Events",
         "sign_out": "Log out",
         "confirm_sign_out": "Are you sure you want to log out?",
+        "confirm_logout": "Yes, please log me out.",
         "trades": "Trades",
         "items": "Items",
         "my_trades": "My trades",
@@ -153,7 +154,9 @@
         "invalid_approval": "Invalid approval",
         "purchase_request_cannot_be_approved_buyer": "The purchase request cannot be approved, as it would take {buyer_username} below their negative credit limit. Please consider following up with them.",
         "purchase_request_cannot_be_approved_seller": "The purchase request cannot be approved, as your balance would then exceed your positive credit limit by {excess_credit} {credit_unit}.",
-        "pending_purchases": "You have pending purchases that must be approved by the seller(s) before they are completed. You will receive notification(s) when they have approved or declined the purchase(s)."
+        "pending_purchases": "You have pending purchases that must be approved by the seller(s) before they are completed. You will receive notification(s) when they have approved or declined the purchase(s).",
+        "seller_pending_balance_exceeded": "This purchase request cannot be completed, as it would take {seller} beyond their outstanding positive credit limit. Please consider following up with them about your intended purchase."
+
     },
     "notifications": {
         "notifications_header_label": "Notifications",
@@ -185,12 +188,14 @@
         "transaction_failed": "Unable to complete the transaction",
         "insufficient_credit": "Insufficient credit",
         "available_credit": "and your available credit is",
-        "transactions_failed_for_items": "Transactions Failed for few Items and those items are still in your cart"
+        "transactions_failed_for_items": "Transactions Failed for few Items and those items are still in your cart",
+        "pending_transaction_limit_exceeded": "You do not have enough credit to request this purchase, as the total price is {total_price} {credit_unit} and your available credit (including other outstanding purchase requests) is actually {available_credit} {credit_unit}."
     },
     "shop_items": {
         "need_or_offer": "Need or Offer?",
         "want_or_offer": "Want or Offer?",
-        "product_placeholder": " where product is wanted",
+        "product_want_placeholder": " where product is wanted",
+        "product_offer_placeholder": " of product",
         "service_placeholder": " where service is to be performed",
         "offer_placeholder": " of this offer?",
         "want_placeholder": " you are looking to pay?",
@@ -205,7 +210,8 @@
         "item_set_main_image": "Set as main image",
         "until_when": "When do you need this/until when will it be available?",
         "be_available": " be available?",
-        "indefinitely": "Whenever available",
+        "want_indefinitely_needed": "Whenever available",
+        "offer_indefinitely_available": "Indefinitely",
         "location": "Location",
         "price_prompt": "What is the price",
         "new_article": "New Item",
@@ -240,7 +246,7 @@
     "this_year": "This Year"
     },
     "balance": "Balance",
-    "credit": "Available Credit",
+    "credit": "Credit",
     "welcome": "Welcome",
     "product": "Product",
     "category": "Category",
@@ -319,5 +325,9 @@
     "wrong_email_password": "Invalid email or password",
     "confirmation": "Confirmation",
     "choose_more": "Choose more",
-    "seller_name": "Seller"
+    "seller_name": "Seller",
+    "confirm_item_removal":  "Confirm item removal",
+    "confirm_item_removal_text": "Are you sure you want to remove this item from the Marketplace?",
+    "wanted_by": "Wanted by",
+    "available_until": "Available until"
 }

@@ -7,6 +7,8 @@
     <PopupCard v-if="this.insufficientBalance" :title="$t('cart.insufficient_credit')" btnLink="/cart" btnText="Ok" :cardText="this.insufficientBalanceMessage"/>
     <PopupCard v-if="this.sellerLimitError" :title="$t('shop.seller_balance_too_high')" btnLink="/cart" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller})" />
     <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.transactions_failed_for_items')" />
+    <PopupCard v-if="this.pendingBalanceLimitExceeded" :title="$t('cart.insufficient_credit')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.pending_transaction_limit_exceeded', {'total_price': this.total, 'credit_unit': this.$t('org.token'), 'available_credit': this.actualAvailableCreditWithPending})" />
+    <PopupCard v-if="this.pendingSellerBalanceLimitExceeded" :title="$t('shop.seller_balance_too_high')" btnLink="/cart" btnText="Ok" :cardText="$t('shop.seller_pending_balance_exceeded', {'seller': this.pendingBalanceSeller})" />
     <LoadingComponent ref="loadingComponent" />
   </div>
 </template>
@@ -48,7 +50,11 @@ export default {
       transactionFailed: false,
       insufficientBalanceMessage: '',
       availableBalance: 0,
-      failedTransactionsMessage: ''
+      failedTransactionsMessage: '',
+      pendingBalanceLimitExceeded: false,
+      actualAvailableCreditWithPending: 0,
+      pendingBalanceSeller: '',
+      pendingSellerBalanceLimitExceeded: false
     }
   },
   methods: {
@@ -126,8 +132,17 @@ export default {
       this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
         console.log(this.total)
-        this.availableBalance = res
-        if (res >= this.total) {
+        this.availableBalance = res.totalAvailableBalance
+        
+        if (res.totalAvailableBalance >= this.total) {
+          console.log(res.pendingBalance, this.total, this.$store.state.user.min_limit)
+          // very tricky logic. More knowledge of /saldo endpoint to understand
+          if ((-res.pendingBalance) + this.total >= (-this.$store.state.user.min_limit)) {
+            this.$refs.loadingComponent.hideLoading()
+            this.actualAvailableCreditWithPending = this.$store.state.user.min_limit - res.pendingBalance 
+            this.pendingBalanceLimitExceeded = true
+            return
+          }
           const totalCosts = {}
           for (let i = 0; i < this.cart.length; i++) {
             if (!(this.cart[i].userUploader in totalCosts)) {
@@ -138,7 +153,15 @@ export default {
           for (const [key, value] of Object.entries(totalCosts)) {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
-            if (userSaldo + userLimits.min + value > userLimits.max) {
+            console.log(userSaldo, value)
+            if (userSaldo.pendingBalance + value > userLimits.max) {
+              if (this.pendingBalanceSeller === '') {
+                this.pendingBalanceSeller = key
+              } else {
+                this.pendingBalanceSeller = this.pendingBalanceSeller + ', ' + key
+              }    
+            }
+            if (userSaldo.totalAvailableBalance + userLimits.min + value > userLimits.max) {
               await postNotification('sellerLimitExceeded', key, value)
               if (this.seller === '') {
                 this.seller = key
@@ -149,6 +172,11 @@ export default {
           }
           if (this.seller) {
             this.sellerLimitError = true
+            this.$refs.loadingComponent.hideLoading()
+            return
+          }
+          if (this.pendingBalanceSeller) {
+            this.pendingSellerBalanceLimitExceeded = true
             this.$refs.loadingComponent.hideLoading()
             return
           }

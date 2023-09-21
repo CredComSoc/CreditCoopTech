@@ -53,13 +53,17 @@
         </tr>
       </table>
     </div>
- </div>
+    <ConfirmDialogBox v-if="this.openConfirmDialogBox" class="confirm-dialog" :title = "this.removeItemText.title" :body= "this.removeItemText.body" @confirm="this.confirmDialogBox" @cancel="cancelDialogBox()" :values = "this.removedItem"/>
+    <LoadingComponent ref="loadingComponent" />
+</div> 
 </template>
 
 <script>
 import { getArticles, deactivateArticle } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
+import ConfirmDialogBox from '../SharedComponents/ConfirmDialogBox.vue'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
 
 export default {
   data () {
@@ -70,7 +74,16 @@ export default {
       date: new Date(),
       popupActive: false,
       listingObjPopup: Object,
-      username: ''
+      username: '',
+      openConfirmDialogBox: false,
+      removedItem: {
+        item: {},
+        index: 0
+      },
+      removeItemText: {
+        title: 'Remove',
+        body: 'Are you sure you want to remove this item?'
+      }
     }
   },
   mounted () {
@@ -89,12 +102,34 @@ export default {
   },
   components: {
     Listing,
-    ListingPopup
+    ListingPopup,
+    ConfirmDialogBox,
+    LoadingComponent
   },
   methods: {
     remove (item, index) {
-      deactivateArticle(item.id)
-      getArticles().then(res => {
+      this.removedItem.item = item
+      this.removedItem.index = index
+      this.removeItemText.title = this.$i18n.t('confirm_item_removal')
+      this.removeItemText.body = this.$i18n.t('confirm_item_removal_text')
+      this.openConfirmDialogBox = true
+    },
+    openPopUp (listingObj) {
+      this.popupActive = true
+      this.listingObjPopup = listingObj
+    },
+    closePopup (listingObj) {
+      this.popupActive = false
+      //this.putInCart = false
+    },
+    cancelDialogBox () {
+      this.openConfirmDialogBox = false
+    },
+    async confirmDialogBox (values) {
+      this.openConfirmDialogBox = false
+      this.$refs.loadingComponent.showLoading()
+      await deactivateArticle(values.item.id)
+      await getArticles().then(res => {
         this.activeArticles = []
         this.inactiveArticles = []
         for (const article of res.products) {
@@ -105,14 +140,7 @@ export default {
           }
         }
       })
-    },
-    openPopUp (listingObj) {
-      this.popupActive = true
-      this.listingObjPopup = listingObj
-    },
-    closePopup (listingObj) {
-      this.popupActive = false
-      //this.putInCart = false
+      this.$refs.loadingComponent.hideLoading()
     }
   }
 }
@@ -161,6 +189,12 @@ button {
   border-radius: 5px;
   font-size: 1.2rem;
   padding: 2px 15px 2px 15px;
+}
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 </style>

@@ -25,7 +25,7 @@
           <img src="../../assets/cart_images/add.png">
         </div>
       </div>
-      <p :class="[`non-b-text`, `sum-text`]"> {{ $t('total') }}: {{ this.totalPrice }} </p>   
+      <p :class="[`non-b-text`, `sum-text`]"> {{ $t('total') }}: {{ this.totalPrice }} {{ $t('org.token') }} </p>   
     </div>
   </div>
 </div>

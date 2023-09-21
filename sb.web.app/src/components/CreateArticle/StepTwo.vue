@@ -3,10 +3,10 @@
   <div id="title-field" class="input">
     <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
     <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
-    <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
+    <label for="end-date">{{ endDateLabel }}</label>
   </div>
   <div class="input">
-    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="[`Burlington`, `Rutland`, `Montpelier`]" :placeholder="$t('shop_items.location') + locationPlaceholder" />
+    <Combobox ref="cityInput" name="city-new-article" :label="$t('place')" :options="places" :placeholder="$t('shop_items.location') + locationPlaceholder" />
   </div>
   <div class="input" id="new-article-price">
     <TextBox ref="priceInput" id="price-new-article" name="price" :label="$t('price')" :placeholder="$t('shop_items.price_prompt') + pricePlaceholder" :disabled='true' length="20" />
@@ -83,7 +83,11 @@ export default {
   computed: {
     locationPlaceholder () {
       if (this.chosenType.toLowerCase() === 'product') {
-        return this.$i18n.t('shop_items.product_placeholder')
+        if (this.savedProgress.status === 'Offer') {
+          return this.$i18n.t('shop_items.product_offer_placeholder')
+        } else {
+          return this.$i18n.t('shop_items.product_want_placeholder')
+        }
       } else {
         return this.$i18n.t('shop_items.service_placeholder')
       }
@@ -93,6 +97,20 @@ export default {
         return this.$i18n.t('shop_items.offer_placeholder')
       } else {
         return this.$i18n.t('shop_items.want_placeholder')
+      }
+    },
+    endDateLabel () {
+      if (this.savedProgress.status === 'Offer') {
+        return this.$i18n.t('shop_items.offer_indefinitely_available')
+      } else {
+        return this.$i18n.t('shop_items.want_indefinitely_needed')
+      }
+    },
+    places () {
+      if (this.chosenType.toLowerCase() === 'product') {
+        return ['Burlington', 'Rutland', 'Montpelier']
+      } else {
+        return ['Burlington', 'Rutland', 'Montpelier', 'Anywhere', 'Remote']
       }
     }
   },
