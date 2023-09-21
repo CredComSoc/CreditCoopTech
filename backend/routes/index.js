@@ -17,18 +17,18 @@ module.exports = function() {
 
   const dbUrl = config.mongoURL;
   const dbFolder = config.dbFolder;
-  const FRONTEND_URL = config.FRONTEND_URL; 
-  const CC_NODE_URL = config.CC_NODE_URL; C_NODE;
+  const FRONTEND_URL = config.FRONT_END_URL; 
+  const CC_NODE_URL = config.CC_NODE_URL; 
   const router = express.Router();
 
   const support_email = config.SUPPORT_EMAIL
   const support_email_password = config.SUPPORT_EMAIL_PASSWORD
-  var email_transporter = None
+  let email_transporter = null
   if (support_email != undefined && support_email != "disabled") {
     email_transporter = nodemailer.createTransport({
-      //FIXME this ain't gonna work but it's a start
-      service: 'migadu', 
-      secure: true,
+      host: 'smtp.migadu.com',
+      port: 587,
+      secure: false, 
       auth: {
         user: support_email,
         pass: support_email_password
@@ -36,7 +36,7 @@ module.exports = function() {
     })
   }
 
-  const email_enabled = (email_transporter == None) ? true : false
+  const email_enabled = (email_transporter == null) ? false : true
 
   /*****************************************************************************
    * 
@@ -453,7 +453,7 @@ module.exports = function() {
             try {
               // TODO: May be change the language to english if that is the users are english speaking
               const reponse = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-                from: ouremail, // sender address
+                from: support_email, // sender address
 
                 to: newUser.email, 
                 subject: 'Welcome to Land Care Trade', // Subject line
@@ -1263,10 +1263,11 @@ module.exports = function() {
     }
     console.log(user)
     updateUser(user, query)
-
+    console.log(email_enabled)
     if (email_enabled) {
+      
       await email_transporter.sendMail({
-        from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
+        from: support_email, // sender address   
         to: user.email, // list of receivers
         subject: 'Reset your password for Land Care Trade', // Subject line
         text: `
@@ -1302,7 +1303,7 @@ module.exports = function() {
     if (email_enabled) {
       const resetEmail = {
         to: user.email,
-        from: ouremail, //'svenskbarter.reset@outlook.com'
+        from: support_email, 
         subject: 'Your password for Land Care Trade has been updated',
         text: `
         This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
@@ -1681,6 +1682,30 @@ module.exports = function() {
     }
   });
 
+  router.get("/testemail", async (req, res) => {
+    // nodemailer.createTestAccount((err, account) => {
+    //   if (err) {
+    //     console.error('Error creating test account:', err);
+    //     return;
+    //   }
+    //   console.log('SMTP Config:', account.smtp);
+    // });
+    try {
+      // TODO: May be change the language to english if that is the users are english speaking
+      const response = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+        from: support_email, // sender address
+
+        to: 'yonasbek4@gmail.com', 
+        subject: 'Welcome to Land Care Trade', // Subject line
+        text: `Test email service`
+      })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+      res.status(400).send(error)
+      return
+    }
+  });
 
 
 return { 'router': router, 'conn': conn }
