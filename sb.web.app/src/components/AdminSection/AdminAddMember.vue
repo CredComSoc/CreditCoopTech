@@ -18,8 +18,8 @@
         <input type="text" id="name" v-model="profileData.name" required><br/>
         <label for="description">{{ $t('user.description') }}:</label><br/>
         <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
-        <label for="adress">{{ $t('user.street_address') }}:</label><br/>
-        <input type="text" id="adress" v-model="profileData.adress" required><br/>
+        <label for="address">{{ $t('user.street_address') }}:</label><br/>
+        <input type="text" id="address" v-model="profileData.address" required><br/>
         <label for="location">{{ $t('user.town') }}:</label><br/>
         <input type="text" id="location" v-model="profileData.city" required><br/>
       </div>
@@ -29,8 +29,8 @@
         <input name="billingName" v-model="profileData.billingName" required><br/>
         <label for="billingBox">Box:</label><br/>
         <input name="billingBox" v-model="profileData.billingBox" required><br/>
-        <label for="billingAdress">{{ $t('user.street_address') }}:</label><br/>
-        <input name="billingAdress" v-model="profileData.billingAdress" required><br/>
+        <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
+        <input name="billingAddress" v-model="profileData.billingAddress" required><br/>
         <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
         <h2>{{ $t('user.contact') }}</h2>
@@ -53,7 +53,7 @@
       </div>
     </form>
   <!--<div v-if="registered">
-    //  <h1>Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailadressen.</h1>
+    //  <h1>Den nya medlemmen är nu registrerad. Ett mail med inloggningsuppgifter har skickats till angivna mailaddressen.</h1>
 -->
     <div v-if="registered && !registered_fail">
       <h1>{{this.registeredText}}</h1>
@@ -94,11 +94,11 @@ export default {
         this.profileData.name, 
         randomstring,
         this.profileData.description, 
-        this.profileData.adress, 
+        this.profileData.address,
         this.profileData.city, 
         this.profileData.billingName, 
         this.profileData.billingBox, 
-        this.profileData.billingAdress, 
+        this.profileData.billingAddress,
         this.profileData.orgNumber, 
         this.profileData.email, 
         this.profileData.phone,
@@ -118,11 +118,11 @@ export default {
       this.profileData.isadmin = false
       this.profileData.name = ''
       this.profileData.description = '' 
-      this.profileData.adress = '' 
+      this.profileData.address = ''
       this.profileData.city = '' 
       this.profileData.billingName = ''  
       this.profileData.billingBox = '' 
-      this.profileData.billingAdress = '' 
+      this.profileData.billingAddress = ''
       this.profileData.orgNumber = '' 
       this.profileData.email = '' 
       this.profileData.phone = '' 

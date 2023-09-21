@@ -486,7 +486,7 @@ describe('index routes', function () {
         description: {
           type: 'string'
         },
-        adress: {
+        address: {
           type: 'string'
         },
         city: {
@@ -498,7 +498,7 @@ describe('index routes', function () {
         billingBox: {
           type: 'string'
         },
-        billingAdress: {
+        billingAddress: {
           type: 'string'
         },
         orgNumber: {
@@ -519,11 +519,11 @@ describe('index routes', function () {
     data.append('accountInfo', stringify({ 
       accountName: name,
       description: description,
-      adress: "",
+      address: "",
       city: "",
       billingName: "",
       billingBox: "",
-      billingAdress: "",
+      billingAddress: "",
       orgNumber: "", 
       email: email,
       phone: "",
@@ -870,4 +870,4 @@ describe('ccRequest routes', function () {
 
 describe('ccUserStore routes', function () {
 
-}) 
+})

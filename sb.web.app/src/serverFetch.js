@@ -133,7 +133,7 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function register (isadmin, username, password, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const hashedPassword = hashMyPassword(password) // maybe doing this in backend for security
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
@@ -141,11 +141,11 @@ export async function register (isadmin, username, password, description, adress
     accountName: username,
     password: password,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone,
@@ -220,16 +220,16 @@ export async function profile () {
   })
 }
 
-export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function updateProfile (accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     accountName: accountName,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone
@@ -250,16 +250,16 @@ export async function updateProfile (accountName, description, adress, city, bil
   })
 }
 
-export async function updateuserProfile (previousname, accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function updateuserProfile (previousname, accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     accountName: accountName,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone
