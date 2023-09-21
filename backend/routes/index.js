@@ -1678,23 +1678,15 @@ module.exports = function() {
   });
 
   router.get("/testemail", async (req, res) => {
-    // nodemailer.createTestAccount((err, account) => {
-    //   if (err) {
-    //     console.error('Error creating test account:', err);
-    //     return;
-    //   }
-    //   console.log('SMTP Config:', account.smtp);
-    // });
+    // sending test email api
     try {
-      // TODO: May be change the language to english if that is the users are english speaking
-      const response = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+      const response = await email_transporter.sendMail({ 
         from: support_email, // sender address
 
         to: 'yonasbek4@gmail.com', 
         subject: 'Welcome to Land Care Trade', // Subject line
         text: `Test email service`
       })
-      console.log(response)
     } catch (error) {
       console.log(error)
       res.status(400).send(error)
