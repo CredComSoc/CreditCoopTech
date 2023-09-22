@@ -302,7 +302,7 @@ module.exports = function() {
         }
       } catch (error) {
         console.error(error.response.data)
-        errors.push("Error processing CC_NODE events")
+        errors.push("Error processing  CC_NODE events")
       }
       
 
