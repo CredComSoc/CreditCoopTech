@@ -48,6 +48,23 @@
         <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
+
+    <!-- members wants and offers -->
+
+    <div class="listings">
+        <div v-if="this.items.offers.length !== 0">
+          <h3 >{{ $t('Offers') }}</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=this.items.offers :search-data=this.items.offers />
+        </div>
+        <div v-if="this.items.wants.length !== 0">
+          <h3>{{ $t('Wants') }}</h3>
+          <Alllistings @togglePopupEvent="openPopUp" :key=this.items.wants :search-data=this.items.wants />
+        </div>
+        <h3 v-if="this.items.offers.length === 0 && this.items.wants.length === 0">{{ $t('shop.no_product_found', {searchWord: this.username}) }}</h3>
+        <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
+      </div>
+
+
     <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {tkn: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
@@ -57,16 +74,20 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits } from './../../serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, setArticles, setCartData } from './../../serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
+import Alllistings from '@/components/Shop/all_listings.vue'
+import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 
 export default {
   components: {
     PopupCard,
     TextBox,
-    TextArea
+    TextArea,
+    Alllistings,
+    ListingPopup
   },
   data () {
     return {
@@ -79,7 +100,15 @@ export default {
       tooMuchBkrMsg: false,
       chatError: false,
       show_optional: false,
-      invalidNumberOfBkr: false
+      invalidNumberOfBkr: false,
+      items: {
+        wants: [],
+        offers: []
+      },
+      popupActive: false,
+      listingObjPopup: Object,
+      username: '',
+      putInCart: false
     }
   },
   methods: {
@@ -112,12 +141,18 @@ export default {
         this.invalidNumberOfBkr = true
       }
     },
+    openPopUp (listingObj) {
+      this.popupActive = true
+      console.log(listingObj)
+      this.listingObjPopup = listingObj
+    },
     closePopup () {
       this.tknSentMsh = false
       this.notEnoughBkrMsg = false
       this.tooMuchBkrMsg = false
       this.tkn = 0
       this.comment = ''
+      this.popupActive = false
     },
     goToChat () {
       fetch(EXPRESS_URL + '/chat/' + this.profileData.accountName, {
@@ -153,9 +188,48 @@ export default {
       } else {
         return this.$i18n.t('time.never')
       } 
+    },
+    placeInCart (amount, listingObj) {
+      const JSONdata = new FormData()
+      const cartItem = {
+        title: listingObj.title,
+        coverImg: listingObj.coverImg,
+        price: listingObj.price,
+        quantity: amount, // number of items
+        article: listingObj.article, // product or service
+        id: listingObj.id, // Id for the article
+        status: listingObj.status, // is for sale
+        userUploader: listingObj.userUploader, // user who uploaded the article, use to see if article is still for sale
+        'end-date': listingObj['end-date'] // end date for the article
+      }
+      JSONdata.append('cartItem', JSON.stringify(cartItem))
+
+      this.popupActive = false
+      this.putInCart = true
+
+      fetch(EXPRESS_URL + '/cart', { // POST endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(cartItem) // This is your file object
+      }).then(
+        response => response,
+        // TODO: get the cart data endpoint only and replace it with the whole data endpoint
+        setTimeout(() => {
+          setCartData()
+        })
+      ).then(
+        success => {
+          //console.log(success)
+        } // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      )
     }
   },
-  created: function () {
+  created: async function () {
     for (const member of this.$store.state.allMembers) {
       if (member.accountName === this.$route.params.userprofile) {
         this.profileData = member
@@ -165,6 +239,13 @@ export default {
     if (this.$route.params.userprofile !== this.$store.state.user.profile.accountName) {
       this.show_optional = true
     }
+  },
+  async mounted () {
+    this.username = this.$route.params.userprofile
+    await setArticles()
+    this.items.offers = this.$store.state.allArticles.filter(article => (article.status === 'selling' || article.status === 'offer') && article.userUploader === this.$route.params.userprofile)
+    this.items.wants = this.$store.state.allArticles.filter(article => (article.status === 'buying' || article.status === 'want') && article.userUploader === this.$route.params.userprofile)
+    console.log(this.items)
   }
 }
 
@@ -228,6 +309,11 @@ h1 {
 
 #profile-img {
   text-align: center;
+}
+.listings {
+  flex-basis: 100%;
+  width: auto;
+  margin-top: 1rem;
 }
 
 @media screen and (min-width: 860px) {
