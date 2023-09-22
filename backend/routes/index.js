@@ -19,6 +19,7 @@ module.exports = function() {
   const dbFolder = config.dbFolder;
   const FRONTEND_URL = config.FRONT_END_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
+  const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
 
   const support_email = config.SUPPORT_EMAIL
@@ -301,7 +302,7 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        console.error(error.response.data)
+        console.error(error)
         errors.push("Error processing  CC_NODE events")
       }
       
