@@ -101,26 +101,11 @@
     </div>
    
   </div>
-  <div class="listings">
-        <div v-if="this.items.offers.length !== 0">
-          <h3 >{{ $t('Offers') }}</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=this.items.offers :search-data=this.items.offers />
-        </div>
-        <div v-if="this.items.wants.length !== 0">
-          <h3>{{ $t('Wants') }}</h3>
-          <Alllistings @togglePopupEvent="openPopUp" :key=this.items.wants :search-data=this.items.wants />
-        </div>
-        <h3 v-if="this.items.offers.length === 0 && this.items.wants.length === 0">{{ $t('shop.no_product_found') }}</h3>
-        <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
-        <PopupCard v-if="this.putInCart" @closePopup="this.closePopup" :title="$t('success')" btnText="Ok" :cardText="$t('shop.item_added')" />
-      </div>
+  
 </template>
 
 <script>
 import { EXPRESS_URL, profile, setArticles, updateProfile } from '../../serverFetch'
-import Alllistings from '@/components/Shop/all_listings.vue'
-import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
-import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 export default {
   data () {
     return {
@@ -128,24 +113,10 @@ export default {
       profileData: [],
       updateProfile,
       logoURL: '',
-      localURL: '',
-      items: {
-        wants: [],
-        offers: []
-      },
-      popupActive: false,
-      listingObjPopup: Object
+      localURL: ''
     }
   },
-  components: { // disabled components: Categories,FilterButton
-    Alllistings,
-    ListingPopup,
-    PopupCard
-  },
-  async mounted () {
-    await setArticles()
-    this.items.offers = this.$store.state.myArticles.filter(article => article.status === 'selling' || article.status === 'offer')
-    this.items.wants = this.$store.state.myArticles.filter(article => article.status === 'buying' || article.status === 'want')
+  mounted () {
     profile()
       .then(res => {
         this.profileData = res

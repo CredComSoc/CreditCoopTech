@@ -1,7 +1,7 @@
 <template> 
 <div>
   <div id="title-field" class="input">
-    <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox' /><br>
+    <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('time.time')" :placeholder="$t('shop_items.until_when')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox'/><br>
     <input @click="clearDatePicker" ref="noEndDate" id="no-end-date" type="checkbox" name="end-date"/>
     <label for="end-date">{{ $t('shop_items.indefinitely') }}</label>
   </div>
@@ -97,8 +97,14 @@ export default {
     }
   },
   mounted () {
+    var currentYear = new Date().getFullYear()
+    var date = new Date(this.savedProgress['end-date'])
+    var year = date.getFullYear()
+    if (year - currentYear > 50) {
+      this.$refs.noEndDate.checked = true
+    }
     if ('end-date' in this.savedProgress) {
-      if (this.savedProgress['end-date'] === null) {
+      if (this.savedProgress['end-date'] === null || this.$refs.noEndDate.checked) {
         this.$refs.noEndDate.checked = true
       } else {
         this.$refs.endDateInput.setValue(this.savedProgress['end-date']) 

@@ -137,9 +137,9 @@ export default {
         if (res.totalAvailableBalance > this.total) {
           console.log(res.pendingBalance, this.total, this.$store.state.user.min_limit)
           // very tricky logic. More knowledge of /saldo endpoint to understand
-          if ((-res.pendingBalance) + this.total >= (-this.$store.state.user.min_limit)) {
+          if ((-res.pendingBalance) + this.total > (-this.$store.state.user.min_limit)) {
             this.$refs.loadingComponent.hideLoading()
-            this.actualAvailableCreditWithPending = this.$store.state.user.min_limit - res.pendingBalance 
+            this.actualAvailableCreditWithPending = Math.abs(this.$store.state.user.min_limit - res.pendingBalance)
             this.pendingBalanceLimitExceeded = true
             return
           }
