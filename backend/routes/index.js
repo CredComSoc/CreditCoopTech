@@ -10,28 +10,33 @@ const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const axios = require('axios').default;
-
 const config = require('../config');
 
-const ouremail = "sbwebapp@outlook.com"
-
-const transporter = nodemailer.createTransport({
-  service: 'hotmail',
-  secure: true,
-  auth: {
-    user: ouremail,
-    pass: '@sbapp_KU5'
-  }
-})
 
 module.exports = function() {
 
   const dbUrl = config.mongoURL;
   const dbFolder = config.dbFolder;
-  const FRONTEND_URL = config.FRONTEND_URL; 
+  const FRONTEND_URL = config.FRONT_END_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
-  const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
+
+  const support_email = config.SUPPORT_EMAIL
+  const support_email_password = config.SUPPORT_EMAIL_PASSWORD
+  let email_transporter = null
+  if (support_email != undefined && support_email != "disabled") {
+    email_transporter = nodemailer.createTransport({
+      host: 'smtp.migadu.com',
+      port: 587,
+      secure: false, 
+      auth: {
+        user: support_email,
+        pass: support_email_password
+      }
+    })
+  }
+
+  const email_enabled = (email_transporter == null) ? false : true
 
   /*****************************************************************************
    * 
@@ -443,11 +448,11 @@ module.exports = function() {
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
 
-          if (sendWelcomeEmail) {
+          if (sendWelcomeEmail && email_enabled) {
             try {
               // TODO: May be change the language to english if that is the users are english speaking
-              const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-                from: ouremail, // sender address
+              const reponse = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+                from: support_email, // sender address
 
                 to: newUser.email, 
                 subject: 'Welcome to Land Care Trade', // Subject line
@@ -1253,20 +1258,23 @@ module.exports = function() {
     }
     console.log(user)
     updateUser(user, query)
+    console.log(email_enabled)
+    if (email_enabled) {
+      
+      await email_transporter.sendMail({
+        from: support_email, // sender address   
+        to: user.email, // list of receivers
+        subject: 'Reset your password for Land Care Trade', // Subject line
+        text: `
+        You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
+        Please click the following link or paste it into your browser to complete the process:
+        ${FRONTEND_URL}/reset/${token}
 
-    await transporter.sendMail({
-      from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
-      to: user.email, // list of receivers
-      subject: 'Reset your password for Land Care Trade', // Subject line
-      text: `
-      You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
-      Please click the following link or paste it into your browser to complete the process:
-      ${FRONTEND_URL}/reset/${token}
-
-      If you have not requested this reset, please ignore this email and your password will remain unchanged.
-    `
-    })
-    return res.status(200).send("Email successfully sent")
+        If you have not requested this reset, please ignore this email and your password will remain unchanged.
+      `
+      })
+      return res.status(200).send("Email successfully sent")
+    }
   }) 
 
   router.post('/reset/:token', async (req, res) => {
@@ -1287,16 +1295,18 @@ module.exports = function() {
 
     updateUser(user, query)
   
-    const resetEmail = {
-      to: user.email,
-      from: ouremail, //'svenskbarter.reset@outlook.com'
-      subject: 'Your password for Land Care Trade has been updated',
-      text: `
-      This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
-      `,
-    };
-    await transporter.sendMail(resetEmail);
-    return res.status(200).send("Email successfully sent")
+    if (email_enabled) {
+      const resetEmail = {
+        to: user.email,
+        from: support_email, 
+        subject: 'Your password for Land Care Trade has been updated',
+        text: `
+        This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
+        `,
+      };
+      await email_transporter.sendMail(resetEmail);
+      return res.status(200).send("Email successfully sent")
+    }
   })
 
   
@@ -1667,6 +1677,22 @@ module.exports = function() {
     }
   });
 
+  router.get("/testemail", async (req, res) => {
+    // sending test email api
+    try {
+      const response = await email_transporter.sendMail({ 
+        from: support_email, // sender address
+
+        to: 'yonasbek4@gmail.com', 
+        subject: 'Welcome to Land Care Trade', // Subject line
+        text: `Test email service`
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(400).send(error)
+      return
+    }
+  });
 
 
 return { 'router': router, 'conn': conn }
