@@ -24,11 +24,11 @@ async function registerUser (isadmin, username, password, email) {
       accountName: username,
       password: password,
       description: 'description',
-      adress: 'adress',
+      address: 'address',
       city: 'city',
       billingName: 'billingName',
       billingBox: 'billingBox',
-      billingAdress: 'billingAdress',
+      billingAddress: 'billingAddress',
       orgNumber: 'orgNumber', 
       email: email.toLowerCase(),
       phone: 'phone'

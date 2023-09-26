@@ -89,7 +89,8 @@ export default {
         this.searchWord = searchWord
 
         this.enableSearch = false
-
+        // const otherItems = this.$store.state.allArticles.filter(it => it.userUploader !== this.$store.state.user.profile.accountName)
+        // removed this filter because users needs to see what they deployed
         for (const article of this.$store.state.allArticles) {
           const now = new Date()
           const chosenDate = new Date(article['end-date'])
@@ -128,6 +129,7 @@ export default {
     },
     openPopUp (listingObj) {
       this.popupActive = true
+      console.log(listingObj)
       this.listingObjPopup = listingObj
     },
     closePopup (listingObj) {

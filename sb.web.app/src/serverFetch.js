@@ -133,7 +133,7 @@ export async function fetchData () {
  *                 
  *****************************************************************************/
 
-export async function register (isadmin, username, password, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function register (isadmin, username, password, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const hashedPassword = hashMyPassword(password) // maybe doing this in backend for security
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
@@ -141,11 +141,11 @@ export async function register (isadmin, username, password, description, adress
     accountName: username,
     password: password,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone,
@@ -220,16 +220,16 @@ export async function profile () {
   })
 }
 
-export async function updateProfile (accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function updateProfile (accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     accountName: accountName,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone
@@ -250,16 +250,16 @@ export async function updateProfile (accountName, description, adress, city, bil
   })
 }
 
-export async function updateuserProfile (previousname, accountName, description, adress, city, billingName, billingBox, billingAdress, orgNumber, email, phone, logo) {
+export async function updateuserProfile (previousname, accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     accountName: accountName,
     description: description,
-    adress: adress,
+    address: address,
     city: city,
     billingName: billingName,
     billingBox: billingBox,
-    billingAdress: billingAdress,
+    billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
     phone: phone
@@ -286,8 +286,8 @@ export async function updateuserProfile (previousname, accountName, description,
  *                 
  *****************************************************************************/
 
-export function getArticles () {
-  const promise = fetch(EXPRESS_URL + '/articles', {
+export function getAllArticles () {
+  const promise = fetch(EXPRESS_URL + '/articles/all', {
     method: 'GET',
     credentials: 'include'
   })
@@ -437,6 +437,7 @@ export async function setNotificationsToSeen () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
+  await setNotificationsData()
   return promise
 }
 
@@ -521,7 +522,7 @@ export async function getSaldo () {
     return null
   })
   if (promise) {
-    return promise.completed.balance
+    return promise
   } else {
     return null
   }
@@ -529,6 +530,7 @@ export async function getSaldo () {
 
 export async function getAvailableBalance () {
   const saldo = await getSaldo()
+  const balance = saldo.completed.balance
   const promise = await fetch(EXPRESS_URL + '/limits/min', {
     method: 'GET',
     headers: {
@@ -546,7 +548,10 @@ export async function getAvailableBalance () {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  return saldo - promise
+  return {
+    totalAvailableBalance: balance - promise,
+    pendingBalance: saldo.pending.balance
+  }
 }
 
 export async function getUserSaldo (user) {
@@ -565,7 +570,7 @@ export async function getUserSaldo (user) {
     return null
   })
   if (promise) {
-    return promise.completed.balance
+    return promise
   } else {
     return null
   }
@@ -573,7 +578,7 @@ export async function getUserSaldo (user) {
 
 export async function getUserAvailableBalance (user) {
   const saldo = await getUserSaldo(user)
-  
+  const balance = saldo.completed.balance
   const promise = await fetch(EXPRESS_URL + '/limits/min', {
     method: 'POST',
     headers: {
@@ -592,7 +597,10 @@ export async function getUserAvailableBalance (user) {
     .catch(err => {
       console.error('There has been a problem with your fetch operation:', err)
     })
-  return saldo - promise
+  return {
+    totalAvailableBalance: balance - promise,
+    pendingBalance: saldo.pending.balance
+  }
 }
 
 export async function getLimits () {
@@ -959,7 +967,8 @@ export async function getNotificationsByUser () {
     },
     credentials: 'include'
   }).then((response) => {
-    return response.json()
+    const notifications = response.json()
+    return notifications
   }).catch(() => {
     return null
   })
@@ -1031,6 +1040,32 @@ export async function setTransactionsData () {
   }
 }
 
+
+export async function getArticles () {
+  return await fetch(EXPRESS_URL + '/articles', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+
+export async function setArticles () {
+  const articles = await getAllArticles().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (articles !== null) {
+    store.commit('replaceAllArticles', articles.allArticles)
+    store.commit('replaceMyArticles', articles.myArticles)
+  }
+}
 
 /*****************************************************************************
 * 

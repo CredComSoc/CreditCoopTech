@@ -18,6 +18,7 @@
           @remove-row="this.removeRow" 
           @add-item="this.addItem"
           @min-item="this.minItem"
+          :userUploader="row.userUploader"
         />
       
         <MobileCartTableRow 
@@ -34,6 +35,7 @@
           @remove-row="this.removeRow" 
           @add-item="this.addItem"
           @min-item="this.minItem"
+          :userUploader="row.userUploader"
         /> 
 
       </div>

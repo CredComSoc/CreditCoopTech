@@ -19,8 +19,8 @@
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}} {{ $t('org.token') }}</td>
+          <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
               <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;">  {{ $t('user.approveLabel') }}</button>
@@ -53,11 +53,11 @@
           <td v-if="item.entries[0].metadata.id !== '0'"><Listing :listingObj="getListing(item.entries[0])" /></td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}} {{ $t('org.token') }}</td>
+          <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
+              <button @click="cancel(item.uuid, index,item)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
             </td>
           </tr>
         </table>
@@ -91,8 +91,8 @@
           <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}} {{ $t('org.token') }}</td>
+          <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
           <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
@@ -114,8 +114,8 @@
           <td v-if="item.entries[0].metadata.id !== '0'">{{getListing_title(item.entries[0])}}</td>
           <td v-if="item.entries[0].metadata.id === '0'"><Listing :listingId="'0'" :comment="item.entries[0].description"/></td>
           <td>{{item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
-          <td>{{item.entries[0].quant}}</td>
+          <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}} {{ $t('org.token') }}</td>
+          <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
           <!--<td><button className="red" @click="invoice('test.txt', item)">{{ $t('downloadInvoice') }}</button></td>-->
         </tr>
@@ -328,11 +328,12 @@ export default {
         pom.click()
       }
     },
-    async cancel (id, index) { //cancel order button
-      //console.log('Canceling order: ' + id)
+    async cancel (id, index, item) { //cancel order button
+      console.log('Canceling order: ', item)
       this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
       await cancelRequest(id)
+      postNotification('transactionCancelled', item.entries[0].payee)
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
@@ -349,12 +350,12 @@ export default {
       getAvailableBalance().then((balance) => {
         getLimits().then((limits) => {
           this.max_limit = limits.max
-          if (balance + limits.min + cost > limits.max) {
+          if (balance.totalAvailableBalance + limits.min + cost > limits.max) {
             this.$refs.loadingComponent.hideLoading()
             this.payeeTooMuchTkn = true
           } else {
             getUserAvailableBalance(payer).then(async (payerBalance) => {
-              if (cost <= payerBalance) {
+              if (cost <= payerBalance.totalAvailableBalance) {
                 this.statusSwap(index, this.$i18n.t('approved'), 'out', 'green')
                 await acceptRequest(id)
                 await postNotification('saleRequestAccepted', payer)

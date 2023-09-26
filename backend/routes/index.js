@@ -10,28 +10,34 @@ const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { promisify } = require('util');
 const axios = require('axios').default;
-
 const config = require('../config');
 
-const ouremail = "sbwebapp@outlook.com"
-
-const transporter = nodemailer.createTransport({
-  service: 'hotmail',
-  secure: true,
-  auth: {
-    user: ouremail,
-    pass: '@sbapp_KU5'
-  }
-})
 
 module.exports = function() {
 
   const dbUrl = config.mongoURL;
   const dbFolder = config.dbFolder;
-  const FRONTEND_URL = config.FRONTEND_URL; 
+  const FRONTEND_URL = config.FRONT_END_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
   const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();
+
+  const support_email = config.SUPPORT_EMAIL
+  const support_email_password = config.SUPPORT_EMAIL_PASSWORD
+  let email_transporter = null
+  if (support_email != undefined && support_email != "disabled") {
+    email_transporter = nodemailer.createTransport({
+      host: 'smtp.migadu.com',
+      port: 587,
+      secure: false, 
+      auth: {
+        user: support_email,
+        pass: support_email_password
+      }
+    })
+  }
+
+  const email_enabled = (email_transporter == null) ? false : true
 
   /*****************************************************************************
    * 
@@ -296,8 +302,8 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        console.error(error.response.data)
-        errors.push("Error processing CC_NODE events")
+        console.error(error)
+        errors.push("Error processing  CC_NODE events")
       }
       
 
@@ -401,7 +407,6 @@ module.exports = function() {
    *****************************************************************************/
 
   router.post("/register", upload.single('file'), (req, res) => { //register a new user
-    console.log(req.body)
     const newPro = JSON.parse(req.body.accountInfo)
 
     const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
@@ -420,20 +425,20 @@ module.exports = function() {
             website: "",
             accountName: newPro.accountName,
             description: newPro.description,
-            adress: newPro.adress,
+            address: newPro.address,
             city: newPro.city,
             phone: newPro.phone,
             billing: {
               name: newPro.billingName,
               box: newPro.billingBox,
-              adress: newPro.billingAdress,
+              address: newPro.billingAddress,
               orgNumber: newPro.orgNumber
             },
             logo: "",
             logo_id: ""
           },
           messages: {},
-          notifications: [],
+          //notifications: [],
         }
         if (req.file) {
           newUser.logo = req.file.filename
@@ -444,11 +449,11 @@ module.exports = function() {
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
 
-          if (sendWelcomeEmail) {
+          if (sendWelcomeEmail && email_enabled) {
             try {
               // TODO: May be change the language to english if that is the users are english speaking
-              const reponse = await transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-                from: ouremail, // sender address
+              const reponse = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
+                from: support_email, // sender address
 
                 to: newUser.email, 
                 subject: 'Welcome to Land Care Trade', // Subject line
@@ -578,11 +583,11 @@ module.exports = function() {
         const userData = {
           "name": user.profile.accountName,
           "description": user.profile.description,
-          "adress": user.profile.adress,
+          "address": user.profile.address,
           "city": user.profile.city,
           "billingName": user.profile.billing.name,
           "billingBox": user.profile.billing.box,
-          "billingAdress": user.profile.billing.adress,
+          "billingAddress": user.profile.billing.address,
           "orgNumber": user.profile.billing.orgNumber,
           "email": user.email,
           "phone": user.profile.phone,
@@ -604,12 +609,12 @@ module.exports = function() {
           website: "",
           accountName: newPro.accountName,
           description: newPro.description,
-          adress: newPro.adress,
+          address: newPro.address,
           city: newPro.city,
           billing: {
             name: newPro.billingName,
             box: newPro.billingBox,
-            adress: newPro.billingAdress,
+            address: newPro.billingAddress,
             orgNumber: newPro.orgNumber
           },
           phone: newPro.phone,
@@ -660,12 +665,12 @@ module.exports = function() {
           website: "",
           accountName: newPro.accountName,
           description: newPro.description,
-          adress: newPro.adress,
+          address: newPro.address,
           city: newPro.city,
           billing: {
             name: newPro.billingName,
             box: newPro.billingBox,
-            adress: newPro.billingAdress,
+            address: newPro.billingAddress,
             orgNumber: newPro.orgNumber
           },
           phone: newPro.phone,
@@ -854,6 +859,7 @@ module.exports = function() {
           images = images.filter((img) => { return img !== editArticle.coverImg })
           editArticle.img = images;
         }
+        editArticle['end-date'] = new Date(editArticle['end-date']);
         editArticle['item_update_date'] = new Date();
         const query = { id: req.params.id };
         delete editArticle._id
@@ -946,7 +952,6 @@ module.exports = function() {
       if (user != null) {
         let newFile = {}
         if (req.file) {
-          console.log(req.file)
           newFile.name = req.file.filename
           newFile.fileType = req.file.contentType
           newFile.message = req.file.originalname
@@ -966,49 +971,88 @@ module.exports = function() {
    *                 
    *****************************************************************************/
 
-  router.post("/notification", (req, res) => {
-    let notification = req.body
-    notification.date = new Date()
-    notification.fromUser = req.user
+  router.post('/notification', (req, res) => {
+    try {
+      let notification = req.body
+      notification.date = new Date()
+      notification.fromUser = req.user
+      notification.seen = false
 
-    getUser({ 'profile.accountName': notification.toUser }).then((user) => {
-      if (user != null) {
-        let notification_list = user.notifications
-        if (notification_list.length >= 4) {
-          notification_list = [notification, notification_list[0], notification_list[1], notification_list[2]]
-        } else {
-          notification_list.push(notification)
-        }
-        updateUser({ 'profile.accountName': notification.toUser }, { $set: { notifications: notification_list } }).then((query) => {
-          if (query.acknowledged) {
-            res.sendStatus(200)
-          } else {
-            res.status(404).send("User not found.")
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection('notifications').insertOne(notification, (err, result) => {
+          if (err) {
+            db.close();
+            res.status(400).send("Error in adding new record")
+          }
+          else if (result != null) {
+            db.close();
+          res.sendStatus(200)
+          }
+          else {
+            db.close();
+            res.status(400).send("Error in adding new record")
           }
         })
-      } else {
-        res.status(404).send("User not found.")
-      }
-    })
+      })
+    } catch (ex) {
+      res.status(500).send("Server error while adding new notificaiton")
+    }
   })
 
   router.patch("/notification", (req, res) => {
-    getUser({ "profile.accountName": req.user }).then((user) => {
-      if (user != null) {
-        let notification_list = user.notifications
-        notification_list.forEach(notification => notification.seen = true)
-        updateUser({ "profile.accountName": req.user }, { $set: { notifications: notification_list } }).then((query) => {
-          if (query.acknowledged) {
-            res.sendStatus(200)
-          } else {
-            res.status(404).send("User not found.")
+    try {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        dbo.collection('notifications').updateMany(
+          { 'toUser': req.user },
+          { $set: { 'seen': true }}, function (err, result) {
+            if (err) {
+              db.close();
+              res.status(400).send("Error in updating notifications' seen status")
+            }
+            else if (result.matchedCount != 0) {
+              db.close();
+              res.status(200).send("Notifications marked as seen");
+            }
+            else {
+              db.close();
+              res.status(204).send("No matching notifications found")
+            }
+          }
+        )
+      })
+    } catch (ex) {
+      res.status(500).send("Error while updating notifications");
+      console.log(ex)
+    }
+  })
+
+  router.get("/notifications/byUser", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
+        const notifications = dbo.collection("notifications").find({ "toUser": req.user }).toArray(function (err, result) {
+          if (err) {
+            db.close();
+            res.status(400).send("Error in retrieving notifications")
+          }
+          else if (result != null) {
+            db.close();
+            res.status(200).send(result)
+          }
+          else {
+            db.close();
+            res.status(204).send("No matching notifications found")
           }
         })
-      } else {
-        res.status(404).send("User not found.")
-      }
-    })
-  })
+      })
+    } catch (ex) {
+      res.status(500).send({ error: 'Error while fetching notifications' })
+      console.log(ex)
+    }
+  });
 
   /*****************************************************************************
    * 
@@ -1033,7 +1077,6 @@ module.exports = function() {
               res.sendStatus(500)
             }
             else if (result != null) {
-              console.log(result)
               db.close();
               res.sendStatus(200)
             }
@@ -1216,20 +1259,23 @@ module.exports = function() {
     }
     console.log(user)
     updateUser(user, query)
+    console.log(email_enabled)
+    if (email_enabled) {
+      
+      await email_transporter.sendMail({
+        from: support_email, // sender address   
+        to: user.email, // list of receivers
+        subject: 'Reset your password for Land Care Trade', // Subject line
+        text: `
+        You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
+        Please click the following link or paste it into your browser to complete the process:
+        ${FRONTEND_URL}/reset/${token}
 
-    await transporter.sendMail({
-      from: ouremail, // sender address   ???'svenskbarter.reset@outlook.com'???
-      to: user.email, // list of receivers
-      subject: 'Reset your password for Land Care Trade', // Subject line
-      text: `
-      You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
-      Please click the following link or paste it into your browser to complete the process:
-      ${FRONTEND_URL}/reset/${token}
-
-      If you have not requested this reset, please ignore this email and your password will remain unchanged.
-    `
-    })
-    return res.status(200).send("Email successfully sent")
+        If you have not requested this reset, please ignore this email and your password will remain unchanged.
+      `
+      })
+      return res.status(200).send("Email successfully sent")
+    }
   }) 
 
   router.post('/reset/:token', async (req, res) => {
@@ -1250,16 +1296,18 @@ module.exports = function() {
 
     updateUser(user, query)
   
-    const resetEmail = {
-      to: user.email,
-      from: ouremail, //'svenskbarter.reset@outlook.com'
-      subject: 'Your password for Land Care Trade has been updated',
-      text: `
-      This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
-      `,
-    };
-    await transporter.sendMail(resetEmail);
-    return res.status(200).send("Email successfully sent")
+    if (email_enabled) {
+      const resetEmail = {
+        to: user.email,
+        from: support_email, 
+        subject: 'Your password for Land Care Trade has been updated',
+        text: `
+        This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
+        `,
+      };
+      await email_transporter.sendMail(resetEmail);
+      return res.status(200).send("Email successfully sent")
+    }
   })
 
   
@@ -1469,29 +1517,6 @@ module.exports = function() {
     }
   });
 
-
-  /*****************************************************************************
-  * 
-  *                                Notification
-  *                 
-  *****************************************************************************/
-
-  router.get("/notifications/byUser", (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
-        const user = await dbo.collection("users").find({ "profile.accountName": req.user }).toArray()
-        const notifications = user.map(us => us = us.notifications)
-        res.status(200).send(notifications[0])
-      })
-    } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching notifications' })
-      console.log(ex)
-    }
-  });
-
-
    /*****************************************************************************
   * 
   *                                Transactions
@@ -1552,7 +1577,7 @@ module.exports = function() {
               }
             }
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         }
         // get transactions
         try {
@@ -1597,13 +1622,76 @@ module.exports = function() {
           }
 
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
         } 
         res.status(200).send(transactions)
       })
     } catch (ex) {
       res.status(400).send({ error: 'Error while fetching Transactions' })
       console.log(ex)
+    }
+  });
+
+  
+  /*****************************************************************************
+  * 
+  *                                Article
+  *                 
+  *****************************************************************************/
+
+  router.get("/articles/all", async (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+      let data = {}
+      let userId;
+      let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+      if (user) {
+        userId = user._id.toString()
+      }
+     // get article data
+     let articles = await dbo.collection("posts").find({}).toArray()
+     const myArticles = []
+     const allArticles = []
+     for (let article of articles) {
+       const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
+         if (articleUser) {
+           article.userUploader = articleUser.profile.accountName
+
+           if(userId && article.userId.toString() === userId.toString()) {
+             myArticles.push(article)
+           }
+         }
+         const now = new Date()
+         const chosenDate = article["end-date"]
+         if (now.getTime() < Date.parse(chosenDate)) {
+           allArticles.push(article)
+         }
+     }
+     data.myArticles = myArticles
+     data.allArticles = allArticles
+     res.status(200).send(data);
+    })
+    } catch (ex) {
+      console.log(ex.response.data)
+      res.status(400).send({ error: 'Error while fetching notifications' })
+    }
+  });
+
+  router.get("/testemail", async (req, res) => {
+    // sending test email api
+    try {
+      const response = await email_transporter.sendMail({ 
+        from: support_email, // sender address
+
+        to: 'yonasbek4@gmail.com', 
+        subject: 'Welcome to Land Care Trade', // Subject line
+        text: `Test email service`
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(400).send(error)
+      return
     }
   });
 

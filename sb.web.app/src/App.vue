@@ -25,7 +25,7 @@ import Navbar from './components/Navbar/Navbar.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SaldoCard from '@/components/SaldoCard.vue'
 import AdminNavbar from './components/AdminSection/AdminNavbar.vue'
-import { authenticate, checkAdminStatus, getSaldo, fetchData, setStoreData, setNotificationsData } from './serverFetch'
+import { authenticate, checkAdminStatus, fetchData, setStoreData, setNotificationsData } from './serverFetch'
 import { useWindowSize } from 'vue-window-size'
 
 export default {
@@ -62,7 +62,7 @@ export default {
     })
     setInterval(async () => {
       await setNotificationsData()
-    }, 5000)
+    }, 10000)
     // setStoreData()
   }
 }

@@ -66,14 +66,11 @@ export default {
         },
         credentials: 'include',
         body: JSON.stringify(cartItem) // This is your file object
-      }).then(
-        response => response,
-        setTimeout(() => {
-          setCartData()
-        })
-      ).catch(
-        error => console.log(error) // Handle the error response object
-      )
+      }).then(res => {
+        setCartData()
+      }).catch(err => {
+        console.log(err) // Handle the error response object
+      })
     },
     // Set limits for number of chars depending on Upper or lower case for the description in list element
     formatText (str) {

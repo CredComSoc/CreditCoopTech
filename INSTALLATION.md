@@ -143,6 +143,50 @@ vue-cli-service serve
   To create a production build, run npm run build.
 ```
 
+
+## Configuration on prod
+
+Currently the code directorys in prodution are as follows
+
+```
+www.landcaretrade.com -> /var/www/dist  
+ledger.landcaretrade.com -> /var/www/ledger.landcaretrade.com
+api.landcaretrade.com -> apache proxy ->  /root/sb-web-app-2.0/backend/
+```
+
+Currently logs can be found int he following directories
+
+### front end  
+```
+/var/log/apache2/access.log
+/var/log/apache2/error.log
+```
+
+### backend aka expressjs
+```
+/var/log/apache2/backend_access.log
+/var/log/apache2/backend_error.log
+```
+
+### backend aka expressjs - chat 
+```
+/var/log/apache2/chat_access.log
+/var/log/apache2/chat_error.log
+```
+
+### cc-node ledger 
+```
+/var/log/apache2/ledger.landcaretrade.com_access.log
+/var/log/apache2/ledger.landcaretrade.com_error.log
+```
+
+### other logs 
+```
+/var/log/apache2/other_vhosts_access.log
+```
+ 
+
+
 ## Migrations
 
 ** Init users
@@ -163,7 +207,6 @@ In order to create some categories into your data
 > cd backend
 > node migrations/0002_add_categories.js
 ```
-
 
 <!-- 
 ### Install cc-node -- Optional: If you want to test the cc-node functionallity while running on your computer. Otherwise test functionallity regarding cc-node on the droplet.

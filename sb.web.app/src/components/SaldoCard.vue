@@ -20,7 +20,7 @@
             <a href="#">
               <img src="../assets/sidecard_logos/credit-card.png"/>
               <!-- state.saldo ska ändras till att connecta till kredit istället-->
-              <figcaption class="l-text" id='top-logo-text'> {{ $t('credit') }}: {{ this.$store.state.creditLine }} {{ $t('org.tkn') }}</figcaption>
+              <figcaption class="l-text" id='top-logo-text'> {{ $t('credit') }}: {{ this.availableBalance(this.$store.state) }} {{ $t('org.tkn') }}</figcaption>
             </a>
           </figure>
       </div>
@@ -75,6 +75,11 @@ export default {
       const outline = document.getElementById('saldo-card-outline')
       outline.style.width = '130px'
       outline.style.height = '70px'
+    },
+    availableBalance (state) {
+      const saldo = state.saldo
+      const creditLine = state.creditLine
+      return (saldo < 0) ? creditLine : saldo + creditLine
     }
   }
 }

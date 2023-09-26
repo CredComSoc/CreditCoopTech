@@ -5,7 +5,7 @@
                 <tr>
                     <th><h1>{{ $t('credit_limit') }}</h1></th>
                     <th><h1>{{ $t('balance') }}</h1></th>
-                    <th><h1>{{ $t('available_credit') }}</h1></th>
+                    <th><h1>{{ $t('credit') }}</h1></th>
                 </tr>
                 <tr>
                   <td>{{ this.$store.state.creditLimit }} {{ $t('org.token') }}</td>
