@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Add new category</h1>
+        <h1>{{ $t('add_new_category') }}</h1>
     </div>
     <div id="main">
       <div class="">
@@ -28,7 +28,7 @@
           :isCoverImg="img[2]"
         />
       </div>
-      <button class="btn-submit" @click="saveCategories">Submit</button>
+      <button class="btn-submit" @click="saveCategories">{{ $t('submit') }}</button>
       <!-- change to locale -->
     </div>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />

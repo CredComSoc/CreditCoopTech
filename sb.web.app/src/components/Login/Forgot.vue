@@ -15,21 +15,21 @@
   </div>
   <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Återställ lösenord</div>
+      <div class="box-text">{{ $t('reset_password') }}</div>
       <div>
         <label class="box-label">{{ $t('login.email_label') }}</label>
         <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
       </div>
-      <button id="reset-button" >Återställ</button>
+      <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
     <div class="box-error" v-if="error">
-      Det finns ingen {{ $t('user.member_label') }} med den e-postadressen
+      {{ $t('there_is_no_one') }} {{ $t('user.member_label') }} {{ $t('with_that_email_address') }}
     </div>
     <div class="box-sent" v-if="sent">
-      Ett e-post med instruktioner för lösenordsåterställning har skickats!
+      {{ $t('reset_password_email_sent') }}
     </div>
     <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
+      <button id="login-button" ><p>&larr; {{ $t('log_in') }}</p></button>
     </router-link>
   </div>
 </div>

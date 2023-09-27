@@ -15,19 +15,19 @@
   </div>
   <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Återställ lösenord</div>
+      <div class="box-text">{{ $t('reset_password') }}</div>
       <div>
-        <label class="box-label">Nytt lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Nytt lösenord" id="password" required>
-        <input class="box-input" type="password" v-model="password2" name="" placeholder="Bekräfta lösenord" id="password2" required>
+        <label class="box-label">{{ $t('new_password') }}</label>
+        <input class="box-input" type="password" v-model="password" name="" placeholder="$t('new_password')" id="password" required>
+        <input class="box-input" type="password" v-model="password2" name="" placeholder="$t('confirm_password')" id="password2" required>
       </div>
-      <button id="reset-button" >Återställ</button>
+      <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
     <div class="box-error" v-if="error">
       {{this.errorText}}
     </div>
     <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
+      <button id="login-button" ><p>&larr; {{ $t('log_in') }}</p></button>
     </router-link>
   </div>
 </div>

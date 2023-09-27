@@ -3,9 +3,9 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL !== ''" :src="this.localURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
           <h1> {{ $t('user.business') }} </h1>
@@ -49,9 +49,9 @@
           <h1>{{ $t('user.general_information') }}</h1>
           <label for="logo">{{ $t('user.profile_picture') }}:</label><br/>
           <div class="image">
-          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL !== ''" :src="this.localURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">{{ $t('user.business') }}:</label><br/>

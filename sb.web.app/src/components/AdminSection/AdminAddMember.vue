@@ -8,8 +8,8 @@
         <h2>{{ $t('user.general_information') }}</h2>
         <label for="logo">Profilbild:</label><br/> 
         <div class="image">
-          <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL !== ''" :src="this.localURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' " src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL !== ''" :src="this.localURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <input type="file" name="logo" @change="addLogo"><br/>
         <label for="checkbox" >Admin:&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -27,14 +27,14 @@
         <h2>{{ $t('user.billing') }}</h2>
         <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
         <input name="billingName" v-model="profileData.billingName" required><br/>
-        <label for="billingBox">Box:</label><br/>
+        <label for="billingBox">{{ $t('user.box') }}:</label><br/>
         <input name="billingBox" v-model="profileData.billingBox" required><br/>
         <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
         <input name="billingAddress" v-model="profileData.billingAddress" required><br/>
         <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
         <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
         <h2>{{ $t('user.contact') }}</h2>
-        <label for="email">E-post:</label><br/>
+        <label for="email">{{ $t('user.email') }}:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
         <label for="phone">{{ $t('user.telephonecontaclabel') }}:</label><br/>
         <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
@@ -42,7 +42,7 @@
           <p style="color: red">{{this.registeredText}}</p>
         </div>
         <button type="submit" value="Submit" class="buttonflex"> 
-          <p style="padding-right:7px" > Registrera </p>
+          <p style="padding-right:7px" > {{ $t('user.register') }} </p>
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />

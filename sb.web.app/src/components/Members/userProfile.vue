@@ -3,8 +3,8 @@
     <div className="flexbox-container2 flexbox-item">
       
       <div className="image container-item">
-        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="profileData.logo === ''" src="../../assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo === ''" src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
@@ -51,7 +51,7 @@
     <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {tkn: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
     <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
     <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="{{ $t('something_went_wrong') }} {{ $t('user.member_label') }}. {{ $t('try_again_later') }}." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
   </div>
 </template>

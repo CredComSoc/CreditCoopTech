@@ -2,8 +2,8 @@
   <div>
     <div className="flexbox-container2 flexbox-item" v-if="!edit">
       <div className="image container-item">
-        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo2" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
@@ -60,8 +60,8 @@
           <h1>{{ $t('user.general_information') }}</h1>
           <label for="logo">Logotyp:</label><br/>
           <div class="image">
-          <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="Profile Logo" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t(user.alt_profile_logo)" style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
           <input type="file" name="logo" @change="addLogo"><br/>
           <label for="name">{{ $t('user.business') }}:</label><br/>
@@ -77,7 +77,7 @@
           <h1>{{ $t('user.billing') }}</h1>
           <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
           <input name="billingName" v-model="profileData.billing.name" required><br/>
-          <label for="billingBox">Box:</label><br/>
+          <label for="billingBox">{{ $t('user.box') }}:</label><br/>
           <input name="billingBox" v-model="profileData.billing.box" required><br/>
           <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
           <input name="billingAddress" v-model="profileData.billing.address" required><br/>

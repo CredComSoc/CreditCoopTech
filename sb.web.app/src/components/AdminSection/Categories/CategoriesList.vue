@@ -12,12 +12,12 @@
 
             </th>
             <th >
-              Name
+              {{ $t('billingnamelabel') }}
             </th>
             <th>
-                Is Active
+              {{ $t('is_active') }}
             </th>
-            <th>action</th>
+            <th>{{ $t('action') }}</th>
           </tr>
         </thead>
         <tbody>
