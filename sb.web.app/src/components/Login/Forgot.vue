@@ -29,7 +29,7 @@
       {{ $t('reset_password_email_sent') }}
     </div>
     <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; {{ $t('log_in') }}</p></button>
+      <button id="login-button" ><span>&larr; {{ $t('login.login_button') }}</span></button>
     </router-link>
   </div>
 </div>
@@ -90,7 +90,7 @@ export default {
     padding-left: 19px;
     padding-right: 19px;
     width: 300px;
-    height: 570px;
+    height: fit-content;
     border-radius: 20px;
     margin: auto;
     margin-top: 15%;
@@ -157,8 +157,7 @@ input::placeholder {
 }
 
 #login-button {
-  margin-top: 280px;
-
+  margin-top: 40px;
 }
 
 input:focus,
