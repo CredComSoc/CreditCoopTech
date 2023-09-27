@@ -197,8 +197,6 @@ router.beforeEach(async (to, from) => {
         }
       }
     }
-  } else if (to.name === 'Forgot' || to.name === 'Reset') {
-    return { name: to.name }
   } else if (auth) {
     const admin = await checkAdminStatus()
     if (admin) {

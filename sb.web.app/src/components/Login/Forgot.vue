@@ -18,7 +18,7 @@
       <div class="box-text">{{ $t('reset_password') }}</div>
       <div>
         <label class="box-label">{{ $t('login.email_label') }}</label>
-        <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
+        <input class="box-input" type="text" v-model="email" name="" :placeholder="$t('login.email_placeholder')" id="email-input" required>
       </div>
       <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
@@ -33,16 +33,22 @@
     </router-link>
   </div>
 </div>
+<LoadingComponent ref="loadingComponent" />
 
 </template>
 
 <script>
-import { mail } from '../../serverFetch'
+import { resetPassword } from '../../serverFetch'
 import { useRouter } from 'vue-router'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
+
 const router = useRouter()
 
 export default {
   name: 'Forgot',
+  components: {
+    LoadingComponent
+  },
   data () {
     return {
       email: '',
@@ -52,13 +58,16 @@ export default {
   },
   methods: {
     async handleSubmit () {
-      mail(this.email).then((response) => {
+      this.$refs.loadingComponent.showLoading()
+      resetPassword(this.email).then((response) => {
         if (response) {
           this.error = false
-          this.sent = true     
+          this.sent = true  
+          this.$refs.loadingComponent.hideLoading()   
         } else {
           this.error = true
           this.sent = false
+          this.$refs.loadingComponent.hideLoading()
         } 
       })
     }
