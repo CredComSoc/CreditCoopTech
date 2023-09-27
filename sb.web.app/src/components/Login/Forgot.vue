@@ -15,34 +15,40 @@
   </div>
   <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Återställ lösenord</div>
+      <div class="box-text">{{ $t('reset_password') }}</div>
       <div>
         <label class="box-label">{{ $t('login.email_label') }}</label>
-        <input class="box-input" type="text" v-model="email" name="" placeholder="e-postadress@hemsida.sv" id="email-input" required>
+        <input class="box-input" type="text" v-model="email" name="" :placeholder="$t('login.email_placeholder')" id="email-input" required>
       </div>
-      <button id="reset-button" >Återställ</button>
+      <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
     <div class="box-error" v-if="error">
-      Det finns ingen {{ $t('user.member_label') }} med den e-postadressen
+      {{ $t('user.user_not_found') }} 
     </div>
     <div class="box-sent" v-if="sent">
-      Ett e-post med instruktioner för lösenordsåterställning har skickats!
+      {{  $t ('user.reset_email_instruction_sent') }}
     </div>
     <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
+      <button id="login-button" ><span>&larr; {{ $t('login.login_button') }}</span></button>
     </router-link>
   </div>
 </div>
+<LoadingComponent ref="loadingComponent" />
 
 </template>
 
 <script>
-import { mail } from '../../serverFetch'
+import { resetPassword } from '../../serverFetch'
 import { useRouter } from 'vue-router'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
+
 const router = useRouter()
 
 export default {
   name: 'Forgot',
+  components: {
+    LoadingComponent
+  },
   data () {
     return {
       email: '',
@@ -52,13 +58,16 @@ export default {
   },
   methods: {
     async handleSubmit () {
-      mail(this.email).then((response) => {
+      this.$refs.loadingComponent.showLoading()
+      resetPassword(this.email).then((response) => {
         if (response) {
           this.error = false
-          this.sent = true     
+          this.sent = true  
+          this.$refs.loadingComponent.hideLoading()   
         } else {
           this.error = true
           this.sent = false
+          this.$refs.loadingComponent.hideLoading()
         } 
       })
     }
@@ -81,7 +90,7 @@ export default {
     padding-left: 19px;
     padding-right: 19px;
     width: 300px;
-    height: 570px;
+    height: fit-content;
     border-radius: 20px;
     margin: auto;
     margin-top: 15%;
@@ -148,8 +157,7 @@ input::placeholder {
 }
 
 #login-button {
-  margin-top: 280px;
-
+  margin-top: 40px;
 }
 
 input:focus,

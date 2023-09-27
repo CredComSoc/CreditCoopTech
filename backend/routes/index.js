@@ -1246,7 +1246,7 @@ module.exports = function() {
     const user = await getUser({ "email": req.body.email })
 
     if (!user) {
-      return res.status(404).send("There is no user with this email.")
+      return res.status(400).send("There is no user with this email.")
     }
 
     const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
@@ -1257,9 +1257,7 @@ module.exports = function() {
         resetPasswordExpires: Date.now() + 3600000
       }
     }
-    console.log(user)
     updateUser(user, query)
-    console.log(email_enabled)
     if (email_enabled) {
       
       await email_transporter.sendMail({
@@ -1283,7 +1281,7 @@ module.exports = function() {
     const user = await getUser({ "resetPasswordToken": req.params.token })
   
     if (!user || !user.resetPasswordExpires > Date.now() || !crypto.timingSafeEqual(Buffer.from(user.resetPasswordToken), Buffer.from(req.params.token))) {
-      return res.status(404).send("Password reset token is invalid or has expired.")
+      return res.status(401).send("Password reset token is invalid or has expired.")
     }
 
     const query = {

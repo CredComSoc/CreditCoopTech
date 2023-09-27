@@ -15,32 +15,37 @@
   </div>
   <div class="reset-box">
     <form @submit.prevent="handleSubmit" v-on:keyup.enter="handleSubmit">
-      <div class="box-text">Återställ lösenord</div>
+      <div class="box-text">{{ $t('reset_password') }}</div>
       <div>
-        <label class="box-label">Nytt lösenord</label>
-        <input class="box-input" type="password" v-model="password" name="" placeholder="Nytt lösenord" id="password" required>
-        <input class="box-input" type="password" v-model="password2" name="" placeholder="Bekräfta lösenord" id="password2" required>
+        <label class="box-label">{{ $t('new_password') }}</label>
+        <input class="box-input" type="password" v-model="password" name="" :placeholder="$t('new_password')" id="password" required>
+        <input class="box-input" type="password" v-model="password2" name="" :placeholder="$t('re_password')" id="re_password" required>
       </div>
-      <button id="reset-button" >Återställ</button>
+      <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
     <div class="box-error" v-if="error">
       {{this.errorText}}
     </div>
     <router-link :to="{name:'Login'}">
-      <button id="login-button" ><p>&larr; Logga in</p></button>
+      <button id="login-button" ><span>&larr; {{ $t('login.login_button') }}</span></button>
     </router-link>
   </div>
 </div>
-
+<LoadingComponent ref="loadingComponent" />
 </template>
 
 <script>
 import { resetToken } from '../../serverFetch'
 import { useRouter } from 'vue-router'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
+
 const router = useRouter()
 
 export default {
   name: 'Reset',
+  components: {
+    LoadingComponent
+  },
   data () {
     return {
       error: false,
@@ -54,18 +59,22 @@ export default {
       const uri = window.location.href.split('/')
       const token = uri[4]
       if (this.password === this.password2) {
-        //console.log('Token = ' + token)
+        this.$refs.loadingComponent.showLoading()
         resetToken(token, this.password).then((response) => {
           if (response) {
             this.error = false
-            this.$router.push({ name: 'Home' }) 
+            this.$refs.loadingComponent.showLoading()
+            setTimeout(() => {
+              this.$router.push({ name: 'Home' }) 
+            }, 1000)
           } else {
-            this.errorText = 'Något gick fel. Vänligen testa att återställa lösenordet på nytt.'
+            this.errorText = this.$i18n.t('password_reset_failed')
+            this.$refs.loadingComponent.showLoading()
             this.error = true
           }
         })
       } else {
-        this.errorText = 'Lösenorden stämmer ej överens.'
+        this.errorText = this.$i18n.t('passwords_not_matched')
         this.error = true
       }  
     }
@@ -87,7 +96,7 @@ export default {
     padding-left: 19px;
     padding-right: 19px;
     width: 300px;
-    height: 570px;
+    height: fit-content;
     border-radius: 20px;
     margin: auto;
     margin-top: 15%;

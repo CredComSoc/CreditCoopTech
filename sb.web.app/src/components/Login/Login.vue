@@ -32,10 +32,10 @@
     <div class="box-link">
       <a href="#" @click="handleMailToClick($t('org.contact_email'))">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
       <div class="box-msg" v-if="this.mailtoClicked">
-          <a href="$t('org.contact_link'">{{ $t('org.contact_email') }}</a>
+          <a :href="$t('org.contact_link')">{{ $t('org.contact_email') }}</a>
       </div>
       <!-- bring this back later -->
-      <!-- <router-link :to="{name:'Forgot'}">Återställ lösenord</router-link> -->
+      <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
     </div> 
     <div class="box-error" v-if="this.error">
       {{ $t('wrong_email_password') }} ({{ loginCount }})

@@ -70,7 +70,9 @@
         "add_category": "Add Category",
         "categories_list": "Categories List",
         "categories": "Categories",
-        "financial_overview": "Financial Overview"
+        "financial_overview": "Financial Overview",
+        "user_not_found": "There is user found with that email address", 
+        "reset_email_instruction_sent": "An email with password reset instructions has been sent!"
     },
     "event": {
         "instructions": "Instructions",
@@ -329,5 +331,11 @@
     "confirm_item_removal":  "Confirm item removal",
     "confirm_item_removal_text": "Are you sure you want to remove this item from the Marketplace?",
     "wanted_by": "Wanted by",
-    "available_until": "Available until"
+    "available_until": "Available until",
+    "reset_password": "Reset Password",
+    "reset": "Reset", 
+    "new_password": "New password",
+    "re_password": "Re-enter your password", 
+    "passwords_not_matched": "The passwords do not match.",
+    "password_reset_failed": "Something went wrong. Please try resetting the password again."
 }
