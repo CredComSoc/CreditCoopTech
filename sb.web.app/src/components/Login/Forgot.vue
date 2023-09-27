@@ -23,7 +23,7 @@
       <button id="reset-button" >{{ $t('reset') }}</button>
     </form>
     <div class="box-error" v-if="error">
-      {{ $t('there_is_no_one') }} {{ $t('user.member_label') }} {{ $t('with_that_email_address') }}
+      {{ $t('user.user_not_found') }}
     </div>
     <div class="box-sent" v-if="sent">
       {{ $t('reset_password_email_sent') }}

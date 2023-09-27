@@ -75,7 +75,7 @@
         "categories_list": "Categories List",
         "categories": "Categories",
         "financial_overview": "Financial Overview",
-        "user_not_found": "There is user found with that email address", 
+        "user_not_found": "There is no user found with that email address",
         "reset_email_instruction_sent": "An email with password reset instructions has been sent!"
     },
     "event": {
