@@ -701,7 +701,7 @@ export function acceptRequest (id) {
 *                 
 *****************************************************************************/
 
-export async function mail (email) {
+export async function resetPassword (email) {
   const data = { email: email }
   const promise = fetch(EXPRESS_URL + '/forgot', {
     method: 'POST',
