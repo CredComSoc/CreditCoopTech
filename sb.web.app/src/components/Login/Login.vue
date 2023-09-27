@@ -30,9 +30,9 @@
       <button id="login-button" >{{ $t('login.login_button')}}</button>
     </form>
     <div class="box-link">
-      <a href="#" @click="handleMailToClick($t('org.contact_email'))">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
+      <a href="mailto:support@landcaretrade.com">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
       <div class="box-msg" v-if="this.mailtoClicked">
-          <a :href="$t('org.contact_link')">{{ $t('org.contact_email') }}</a>
+          <a href="mailto:support@landcaretrade.com">{{ $t('org.contact_email') }}</a>
       </div>
       <!-- bring this back later -->
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
