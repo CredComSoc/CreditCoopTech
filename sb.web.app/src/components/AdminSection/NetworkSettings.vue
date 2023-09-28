@@ -11,7 +11,7 @@
         <input type="text" placeholder="$t('seller_percentage')">
         <input type="text" placeholder="$t('buyer_percentage')">
       </div>
-      <h3>Ränta på BSEK</h3> <!-- TODO: translate-->
+        <h3>{{ $t('interest_rate_on_negative_balances') }}</h3>
       <div>
         <input type="text" placeholder="Procentsats">
       </div>
