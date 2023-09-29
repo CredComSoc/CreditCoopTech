@@ -13,12 +13,12 @@
       </div>
         <h3>{{ $t('interest_rate_on_negative_balances') }}</h3>
       <div>
-        <input type="text" placeholder="Procentsats">
+        <input type="text" placeholder="$t(percentage)">
       </div>
       <h3>{{ $t('default_balance_limits') }}</h3> <!-- Ska ändras till svenska -->
       <div>
-        <input type="text" placeholder="Maximum">
-        <input type="text" placeholder="Minimum">
+        <input type="text" placeholder="$t('positive')">
+        <input type="text" placeholder="$t('negative')">
       </div>
     </div>
   </div>

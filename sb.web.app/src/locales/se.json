@@ -125,6 +125,8 @@
         "approved_purchase": "har godkänt din köpförfrägan",
         "chat_message": "ett chatt-meddelande"
     },
+    "profile_picture": "Profilbild",
+    "percentage": "Procentsats",
     "interest_rate_on_negative_balances": "Ränta på BSEK",
     "not_enough_credit_unit": "köparen har inte tillräckligt med bKr.",
     "upper_limit_is": "din övre gräns är ",
