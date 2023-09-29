@@ -6,7 +6,7 @@
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <img src="../../assets/navbar_logos/sb.png" :alt="$t('shop.go_to_shop')"/>
+              <img src="/logo.png"/>
             </figure>
           </div>
         </div>

@@ -34,8 +34,9 @@
       <div class="box-msg" v-if="this.mailtoClicked">
           <a href="mailto:support@landcaretrade.com">{{ $t('org.contact_email') }}</a>
       </div>
-      <!-- bring this back later -->
+      <div>
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
+    </div>
     </div> 
     <div class="box-error" v-if="this.error">
       {{ $t('wrong_email_password') }} ({{ loginCount }})
