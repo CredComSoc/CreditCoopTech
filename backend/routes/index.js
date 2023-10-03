@@ -250,32 +250,16 @@ module.exports = function() {
       const users = await dbo.collection("users").find({}).toArray()
       const allMembers = []
       for (const user of users) {
-        try {
           let userData = user.profile
           userData.is_admin = user.is_admin
           userData.email = user.email
-          allMembers.push(userData)
-        } catch (error) {
-          console.error(error)
-          errors.push("Error with processing users")
-        }
+          allMembers.push(userData)        
       }
       data.allMembers = allMembers
       
       // get cart data
-      const carts = await dbo.collection("carts").find({}).toArray()
-      const myCart = []
-      for (const cart of carts) {
-        try {
-          if (user && cart.cartOwner === user.profile.accountName) {
-            myCart.push(cart)
-          }
-        } catch (error) {
-          console.error(error)
-          errors.push("Error with processing carts")
-        }
-      }
-      data.myCart = myCart
+      const carts = await dbo.collection("carts").find({"cartOwner": user.profile.accountName}).toArray()
+      data.myCart = carts
       
       // get event data
       data.allEvents = await dbo.collection("events").find({}).toArray()
@@ -306,91 +290,6 @@ module.exports = function() {
         errors.push("Error processing  CC_NODE events")
       }
       
-
-      // get requests
-      try {
-        if (userId) {
-          const response = await axios.get(CC_NODE_URL + '/transactions', {
-            headers: {
-              'cc-user': userId,
-              'cc-auth': '1'
-            },
-            params: {
-              'payee': userId
-          }})
-          let users = {}
-          let entries = response.data.data || []
-          for (const entry of entries) {
-            if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-              const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-              users[entry.entries[0].payee] = payee.profile.accountName
-            }
-            if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-              const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-              users[entry.entries[0].payer] = payer.profile.accountName
-            }
-            if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-              const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-              users[entry.entries[0].author] = author.profile.accountName
-            }
-            entry.entries[0].payee = users[entry.entries[0].payee]
-            entry.entries[0].payer = users[entry.entries[0].payer]
-            entry.entries[0].author = users[entry.entries[0].author]
-            if (entry.state === 'completed') {
-              data.completedTransactions.push(entry)
-            } else if (entry.state === 'pending') {
-              data.requests.push(entry)
-            }
-          }
-        }
-        //data.requests = response.data
-      } catch (error) {
-        console.error(error.response.data)
-        errors.push("Error processing CC_NODE payee transactions")
-      }
-
-      // get transactions
-      // try {
-      //   if (userId) {
-      //     const response = await axios.get(CC_NODE_URL + '/transactions', {
-      //       headers: {
-      //         'cc-user': userId,
-      //         'cc-auth': '1'
-      //       },
-      //       params: {
-      //         'payer': userId
-      //     }})
-      //     let users = {}
-      //     let entries = response.data.data || []
-      //     for (const entry of entries) {
-      //       if((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-      //         const payee = await getUser({'_id': ObjectId(entry.entries[0].payee)})
-      //         users[entry.entries[0].payee] = payee.profile.accountName
-      //       }
-      //       if((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-      //         const payer = await getUser({'_id': ObjectId(entry.entries[0].payer)})
-      //         users[entry.entries[0].payer] = payer.profile.accountName
-      //       }
-      //       if((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-      //         const author = await getUser({'_id': ObjectId(entry.entries[0].author)})
-      //         users[entry.entries[0].author] = author.profile.accountName
-      //       }
-      //       entry.entries[0].payee = users[entry.entries[0].payee]
-      //       entry.entries[0].payer = users[entry.entries[0].payer]
-      //       entry.entries[0].author = users[entry.entries[0].author]
-
-      //       if (entry.state === 'completed') {
-      //         data.completedTransactions.push(entry)
-      //       } else if (entry.state === 'pending') {
-      //         data.pendingPurchases.push(entry)
-      //       }
-      //     }
-      //   }
-      // } catch (error) {
-      //   console.error(error.response.data)
-      //   errors.push("Error processing CC_NODE payer transactions")
-      // }
-
       db.close()
       res.status(200).send(data)
     } catch (error) {
@@ -724,26 +623,26 @@ module.exports = function() {
     } else {
       const user = await getUser({'profile.accountName': req.user})
       if (user) {
-        let products = [];
+        
+        let err = false;
         const db = await MongoClient.connect(dbUrl)
         const dbo = db.db(dbFolder);
-        dbo.collection('posts').find({}).toArray(function (err, posts) {
+        dbo.collection('posts').find({"userId": user._id}).toArray(function (err, result) {
           if (err) {
-            res.sendStatus(500)
-            db.close()
+            db.close();
+            res.status(400).send("Error in retrieving articles")
+          }
+          else if (result != null) {
+            db.close();
+            res.status(200).send(result)
           }
           else {
-            posts.forEach(listing => {
-              if(listing.userId.toString() === user._id.toString()) {
-                products.push(listing)
-              }
-            })
-            res.status(200).send({products})
-            db.close()
+            db.close();
+            res.status(204).send("No matching articles found")
           }
         })
       } else {
-        res.sendStatus(500)
+        res.sendStatus(401)
         db.close()
       }
     }
@@ -895,7 +794,7 @@ module.exports = function() {
         dbo.collection('posts').updateOne(query, {$set: {'end-date': past}}, function (err, result) {
           if (err) {
             db.close();
-            res.sendStatus(500);
+            res.sendStatus(400).send(err);
           }
           else if (result.matchedCount != 0) {
             db.close();
@@ -908,6 +807,37 @@ module.exports = function() {
           }
         })
       })
+    });
+
+
+    router.post('/article/activate/:id', (req, res) => {
+      
+      const now = new Date()
+      const newEndDate = new Date(now.getFullYear() , now.getMonth() + 1, now.getDate())
+      const query = { id: req.params.id };
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        try {
+        dbo.collection('posts').updateOne(query, {$set: {'end-date': newEndDate}}, function (err, result) {
+          if (err) {
+            db.close();
+            res.sendStatus(400).send(err);
+          }
+          else if (result.matchedCount != 0) {
+            db.close();
+            res.status(200).send('successfullyUpdated');
+          }
+          else {
+            // If we dont find a result
+            db.close();
+            res.sendStatus(204);
+          }
+        })
+      } catch (ex) {
+        res.status(400).send(ex)
+      }
+      }) 
+
     });
 
   /*****************************************************************************
@@ -1690,6 +1620,42 @@ module.exports = function() {
       console.log(error)
       res.status(400).send(error)
       return
+    }
+  });
+
+  router.get("/user/balance", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
+        let data = {
+          balance: 0,
+          creditLimit: 0,
+          creditLine: user.min_limit*-1
+        }
+          if (DISABLE_CC_NODE) {
+            return res.status(200).json(balance)
+          }
+          if (user) {
+            const response = await axios.get(CC_NODE_URL + '/account/summary', {
+              headers: {
+                'cc-user': user._id.toString(),
+                'cc-auth': '1'
+            }})
+  
+           let user_data = response.data.data[user._id.toString()]
+            data.balance = user_data.completed.balance
+            data.creditLimit = data.creditLine
+            if (data.balance < 0) {
+              // reduce credit line *only* if negative balance
+              data.creditLine += data.balance
+            }
+          }
+          res.status(200).send(data)
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching user balance information' })
+      console.log(ex)
     }
   });
 
