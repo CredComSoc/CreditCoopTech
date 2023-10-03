@@ -23,8 +23,8 @@
           <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;">  {{ $t('user.approveLabel') }}</button>
-              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.declineLabel') }} </button> 
+              <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant, item)" style="background-color: green;">  {{ $t('user.approveLabel') }}</button>
+              <button @click="startCancelRequest(item.uuid, item.entries[0].payer, index, item)" style="background-color: red;"> {{ $t('user.declineLabel') }} </button> 
             </td>
           </tr>
         </table>
@@ -337,15 +337,20 @@ export default {
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
-    async startCancelRequest (id, payer, index) {
+    async startCancelRequest (id, payer, index, item) {
       this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('declined'), 'out', 'red')
       await cancelRequest(id)
-      await postNotification('saleRequestDenied', payer)
+      // eslint-disable-next-line
+      if (item.entries[0].metadata.id == 0) {
+        await postNotification('transferRequestDenied', payer)
+      } else {
+        await postNotification('saleRequestDenied', payer)
+      }
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
-    accept (id, payer, index, cost) { 
+    accept (id, payer, index, cost, item) { 
       this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then((balance) => {
         getLimits().then((limits) => {
@@ -358,7 +363,12 @@ export default {
               if (cost <= payerBalance.totalAvailableBalance) {
                 this.statusSwap(index, this.$i18n.t('approved'), 'out', 'green')
                 await acceptRequest(id)
-                await postNotification('saleRequestAccepted', payer)
+                // eslint-disable-next-line
+                if (item.entries[0].metadata.id == 0) {
+                  await postNotification('transferRequestAccepted', payer)
+                } else {
+                  await postNotification('saleRequestAccepted', payer)
+                }
                 await setTransactionsData()
                 this.$refs.loadingComponent.hideLoading()
               } else {
