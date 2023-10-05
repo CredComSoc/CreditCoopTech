@@ -17,7 +17,7 @@ module.exports = function() {
 
   const dbUrl = config.mongoURL;
   const dbFolder = config.dbFolder;
-  const FRONTEND_URL = config.FRONT_END_URL;
+  const FRONTEND_URL = config.FRONT_END_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
   const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
   const router = express.Router();

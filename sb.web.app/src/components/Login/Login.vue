@@ -37,7 +37,7 @@
       <div>
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
     </div>
-    </div>
+    </div> 
     <div class="box-error" v-if="this.error">
       {{ $t('wrong_email_password') }} ({{ loginCount }})
     </div>
