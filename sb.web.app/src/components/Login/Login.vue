@@ -34,7 +34,7 @@
       <div class="box-msg" v-if="this.mailtoClicked">
           <a href="mailto:support@landcaretrade.com">{{ $t('org.contact_email') }}</a>
       </div>
-      <div>
+      <div class="forgot_link">
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
     </div>
     </div> 
@@ -106,12 +106,14 @@ export default {
     padding-left: 19px;
     padding-right: 19px;
     width: 300px;
-    height: 570px;
     border-radius: 20px;
     margin: auto;
-    margin-top: 15%;
+    margin-top: 10%;
+    margin-bottom: 20px;
     position: relative;
     background: rgba(246, 202, 115, 0.27);
+    padding-top: 25px;
+    padding-bottom: 25px;;
 }
 
 button {
@@ -149,9 +151,10 @@ button {
 }
 
 .box-link {
-  margin-top: 50px;
+  margin-top: 30px;
   text-align: center;
   font-size: 16px;
+  margin-bottom: 20px;
 }
 
 input {
@@ -169,8 +172,10 @@ textarea:focus,
 button:focus {
     outline: none;
 }
-
-
+.forgot_link {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
 
 .box-msg a {
@@ -178,7 +183,7 @@ button:focus {
   text-align: center;
   color: rgb(27, 77, 2);
   margin-top: 15px;
-  margin-bottom: -58px
 }
+
 
 </style>

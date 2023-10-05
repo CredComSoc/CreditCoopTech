@@ -99,7 +99,7 @@ export default {
     height: fit-content;
     border-radius: 20px;
     margin: auto;
-    margin-top: 15%;
+    margin-top: 5%;
     position: relative;
     background: rgba(246, 202, 115, 0.27);
 }
@@ -136,7 +136,6 @@ button {
   text-align: center;
   color: red;
   margin-top: 15px;
-  margin-bottom: -37px;
 }
 
 .box-link {

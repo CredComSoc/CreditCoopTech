@@ -2,9 +2,9 @@
     "login": {
         "login_to_label": "Log in to",
         "email_label": "Email address",
-        "email_placeholder": "test nowhere.com",
+        "email_placeholder": "Email Address",
         "password_label": "Password",
-        "password_placeholder": "testpassword",
+        "password_placeholder": "Password",
         "login_button": "Login",
         "need_help": "Need help?",
         "contact_us": "Contact us."
@@ -74,7 +74,8 @@
         "user_not_found": "There is user found with that email address", 
         "reset_email_instruction_sent": "An email with password reset instructions has been sent!",
         "recipient_balance_too_high": "Recipient balance too high",
-        "recipient_balance_too_high_body": "This transfer request cannot be completed, as it would take {username} beyond their positive credit limit. {username} has been notified, but please consider following up with them about your intended transfer"
+        "recipient_balance_too_high_body": "This transfer request cannot be completed, as it would take {username} beyond their positive credit limit. {username} has been notified, but please consider following up with them about your intended transfer",
+        "insufficient_sender_balance": "You do not have enough credit to request this transfer, as the amount is {amount} {credit_unit} and your available credit is {credit} {credit_unit}"
     },
     "event": {
         "instructions": "Instructions",

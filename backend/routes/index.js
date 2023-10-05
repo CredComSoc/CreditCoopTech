@@ -243,6 +243,8 @@ module.exports = function() {
           errors.push("Error with processing articles/items")
         }
       }
+      myArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+     allArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
       data.myArticles = myArticles
       data.allArticles = allArticles
 
@@ -1666,6 +1668,8 @@ module.exports = function() {
            allArticles.push(article)
          }
      }
+     myArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+     allArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
      data.myArticles = myArticles
      data.allArticles = allArticles
      res.status(200).send(data);
