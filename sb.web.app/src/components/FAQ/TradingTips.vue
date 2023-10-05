@@ -1,6 +1,14 @@
 
 <template>  
-    <div> 
+    <div>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Sed rutrum quam sit amet elit scelerisque ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In euismod rutrum dui, et pulvinar libero hendrerit et. Sed suscipit quam non velit scelerisque, ut finibus arcu aliquet.
+      Vivamus ullamcorper interdum scelerisque. Duis commodo diam eget nulla lobortis molestie. Suspendisse sagittis nibh est, sit amet porttitor eros dictum eu. Donec quis eros sit amet justo semper accumsan.
+      Praesent venenatis mollis sem eget tempus. Duis accumsan tempor ex, non dictum leo hendrerit eu. Sed posuere egestas est vitae egestas. Ut porta eget metus non sodales. Nullam in dictum tellus, pretium placerat felis.
+    </p>
+        <!--
         <h1><b> Bakgrund </b></h1>
     </div>
     <div>
@@ -23,6 +31,7 @@
     </div>
     <div>
         <img src="../../assets/Svensk-barter-ide-diagram.png" alt="Svensk-barter-ide-diagram">
+        -->
     </div>
     </template>
 
