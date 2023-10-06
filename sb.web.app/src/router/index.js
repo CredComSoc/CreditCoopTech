@@ -180,7 +180,6 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   //Navbar.forceRerender()
   setStoreData()
-  await setUserBalance()
 
   const auth = await authenticate()
   if (to.name !== 'Login' && to.name !== 'Forgot' && to.name !== 'Reset') {
