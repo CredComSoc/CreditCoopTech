@@ -75,7 +75,9 @@
         "reset_email_instruction_sent": "An email with password reset instructions has been sent!",
         "recipient_balance_too_high": "Recipient balance too high",
         "recipient_balance_too_high_body": "This transfer request cannot be completed, as it would take {username} beyond their positive credit limit. {username} has been notified, but please consider following up with them about your intended transfer",
-        "insufficient_sender_balance": "You do not have enough credit to request this transfer, as the amount is {amount} {credit_unit} and your available credit is {credit} {credit_unit}"
+        "insufficient_sender_balance": "You do not have enough credit to request this transfer, as the amount is {amount} {credit_unit} and your available credit is {credit} {credit_unit}",
+        "receiver_pending_balance_exceeded": "This transfer request cannot be completed, as it would take {seller} beyond their outstanding positive credit limit. Please consider following up with them about your intended purchase."
+
     },
     "event": {
         "instructions": "Instructions",

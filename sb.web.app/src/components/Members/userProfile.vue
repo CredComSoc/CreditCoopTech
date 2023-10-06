@@ -71,7 +71,7 @@
     <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="Något gick fel vid anslutning till chatt med denna {{ $t('user.member_label') }}. Försök igen senare." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$t('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
     <PopupCard v-if="this.pendingBalanceLimitExceeded" :title="$t('cart.insufficient_credit')" btnLink="" btnText="Ok" :cardText="$t('cart.pending_transaction_limit_exceeded', {'total_price': this.tkn, 'credit_unit': this.$t('org.token'), 'available_credit': this.actualAvailableCreditWithPending})" />
-    <PopupCard v-if="this.pendingSellerBalanceLimitExceeded" :title="$t('shop.seller_balance_too_high')" btnLink="" btnText="Ok" :cardText="$t('shop.seller_pending_balance_exceeded', {'seller': profileData.accountName})" />
+    <PopupCard v-if="this.pendingSellerBalanceLimitExceeded" :title="$t('shop.seller_balance_too_high')" btnLink="" btnText="Ok" :cardText="$t('user.receiver_pending_balance_exceeded', {'seller': profileData.accountName})" />
 
   </div>
   <LoadingComponent ref="loadingComponent" />
@@ -144,7 +144,7 @@ export default {
         } else {
           // very tricky logic. More knowledge of /saldo endpoint to understand
           // min limit violation
-          if ((-balance.pendingBalance) + this.tkn > (-this.$store.state.user.min_limit)) {
+          if ((-balance.pendingBalance) + Number(this.tkn) > (-this.$store.state.user.min_limit)) {
             this.$refs.loadingComponent.hideLoading()
             this.actualAvailableCreditWithPending = Math.abs(this.$store.state.user.min_limit - balance.pendingBalance)
             this.pendingBalanceLimitExceeded = true
@@ -152,7 +152,7 @@ export default {
             const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
             const userLimits = await getUserLimits(this.profileData.accountName)
             
-            if (userSaldo.pendingBalance + this.tkn > userLimits.max) {
+            if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
               this.$refs.loadingComponent.hideLoading()
               this.pendingSellerBalanceLimitExceeded = true
             } else if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
