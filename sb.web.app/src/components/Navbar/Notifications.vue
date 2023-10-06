@@ -94,7 +94,7 @@
                     <div v-if="item.type == 'sendBalanceSellerBalanceTooHigh'">
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
-                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'username': item.fromUser, amount: item.amount, credit_unit: $t('org.token')  }) }}</p>
+                        <p class="notice-desc"> {{ $t('notifications.send_balance_seller_balance_too_high', {'username': item.fromUser, amount: item.amount, credit_unit: $t('org.token')  }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -180,7 +180,7 @@
                     <div v-if="item.type == 'sendBalanceSellerBalanceTooHigh'">
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
-                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'username': item.fromUser, amount: item.amount, credit_unit: $t('org.token')  }) }}</p>
+                        <p class="notice-desc"> {{ $t('notifications.send_balance_seller_balance_too_high', {'username': item.fromUser, amount: item.amount, credit_unit: $t('org.token')  }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 

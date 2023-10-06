@@ -183,7 +183,7 @@
         "no_notifications": "No notifications",
         "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
         "transaction_cancelled": "{buyer_username} has cancelled their purchase.",
-        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit by {amount} {credit_unit}. Please consider following up with {username} about their intended transfer."
+        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {username} about their intended transfer."
     },
     "cart": {
         "cart": "cart",
