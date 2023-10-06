@@ -39,6 +39,7 @@
           <th>{{ $t('category')}}</th>
           <th>{{ $t('price') }}</th>
           <th>{{ $t('created')}}</th>
+          <th></th>
         </tr>
         <tr v-for="(item) in inactiveArticles" :key="item">
           <td><Listing className='article' :listingObj="item"/></td>
@@ -47,6 +48,8 @@
           <td>{{item.uploadDate}} </td> 
           <td>   
             <div class="edit">
+              <button @click="activate(item, index)" 
+                style="background-color: green;"> {{ $t('activate')}}</button>
               <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> {{ $t('edit_ads') }} </router-link> -->
             </div> 
           </td>
@@ -59,7 +62,7 @@
 </template>
 
 <script>
-import { getArticles, deactivateArticle } from '../../serverFetch'
+import { getArticles, deactivateArticle, activateArticle } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import ListingPopup from '@/components/SharedComponents/ListingPopup.vue'
 import ConfirmDialogBox from '../SharedComponents/ConfirmDialogBox.vue'
@@ -78,7 +81,8 @@ export default {
       openConfirmDialogBox: false,
       removedItem: {
         item: {},
-        index: 0
+        index: 0,
+        status: false
       },
       removeItemText: {
         title: 'Remove',
@@ -90,7 +94,7 @@ export default {
     getArticles().then(res => {
       this.activeArticles = []
       this.inactiveArticles = []
-      for (const article of res.products) {
+      for (const article of res) {
         //console.log(article)
         if ((new Date(article['end-date'])).getTime() < Date.now()) {
           this.inactiveArticles.push(article)
@@ -110,8 +114,17 @@ export default {
     remove (item, index) {
       this.removedItem.item = item
       this.removedItem.index = index
+      this.removedItem.status = false
       this.removeItemText.title = this.$i18n.t('confirm_item_removal')
       this.removeItemText.body = this.$i18n.t('confirm_item_removal_text')
+      this.openConfirmDialogBox = true
+    },
+    activate (item, index) {
+      this.removedItem.item = item
+      this.removedItem.index = index
+      this.removedItem.status = true
+      this.removeItemText.title = this.$i18n.t('confirm_item_activation')
+      this.removeItemText.body = this.$i18n.t('confirm_item_activation_text')
       this.openConfirmDialogBox = true
     },
     openPopUp (listingObj) {
@@ -128,11 +141,15 @@ export default {
     async confirmDialogBox (values) {
       this.openConfirmDialogBox = false
       this.$refs.loadingComponent.showLoading()
-      await deactivateArticle(values.item.id)
+      if (this.removedItem.status) {
+        await activateArticle(values.item.id)
+      } else {
+        await deactivateArticle(values.item.id)
+      }
       await getArticles().then(res => {
         this.activeArticles = []
         this.inactiveArticles = []
-        for (const article of res.products) {
+        for (const article of res) {
           if ((new Date(article['end-date'])).getTime() < Date.now()) {
             this.inactiveArticles.push(article)
           } else {

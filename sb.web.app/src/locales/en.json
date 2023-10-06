@@ -336,6 +336,8 @@
     "seller_name": "Seller",
     "confirm_item_removal":  "Confirm item removal",
     "confirm_item_removal_text": "Are you sure you want to remove this item from the Marketplace?",
+    "confirm_item_activation":  "Confirm item activation",
+    "confirm_item_activation_text": "Are you sure you want to activate this item?",
     "wanted_by": "Wanted by",
     "available_until": "Available until",
     "reset_password": "Reset Password",
@@ -343,5 +345,6 @@
     "new_password": "New password",
     "re_password": "Re-enter your password", 
     "passwords_not_matched": "The passwords do not match.",
-    "password_reset_failed": "Something went wrong. Please try resetting the password again."
+    "password_reset_failed": "Something went wrong. Please try resetting the password again.",
+    "activate": "Activate"
 }

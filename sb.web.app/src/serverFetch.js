@@ -364,6 +364,22 @@ export async function deactivateArticle (id) {
   }) 
 }
 
+export async function activateArticle (id) {
+  return await fetch(EXPRESS_URL + '/article/activate/' + id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  }) 
+}
+
 /*****************************************************************************
  * 
  *                                Members
@@ -1064,6 +1080,33 @@ export async function setArticles () {
   if (articles !== null) {
     store.commit('replaceAllArticles', articles.allArticles)
     store.commit('replaceMyArticles', articles.myArticles)
+  }
+}
+
+export async function getUserBalance () {
+  return await fetch(EXPRESS_URL + '/user/balance', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()   
+  }).catch(() => {
+    return null
+  })
+}
+
+export async function setUserBalance () {
+  const balance = await getUserBalance().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (balance !== null) {
+    store.commit('replaceSaldo', balance.balance)
+    store.commit('replaceCreditLine', balance.creditLine)
+    store.commit('replaceCreditLimit', balance.creditLimit)
   }
 }
 
