@@ -156,7 +156,7 @@ export default {
               this.$refs.loadingComponent.hideLoading()
               this.pendingSellerBalanceLimitExceeded = true
             } else if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
-              await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName)
+              await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
               // receiver balance too high
               this.tooMuchBkrMsg = true
