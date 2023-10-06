@@ -93,9 +93,10 @@ export default {
     height: fit-content;
     border-radius: 20px;
     margin: auto;
-    margin-top: 15%;
+    margin-top: 5%;
     position: relative;
     background: rgba(246, 202, 115, 0.27);
+    padding-bottom: 30px;
 }
 
 button {
@@ -130,7 +131,6 @@ button {
   text-align: center;
   color: red;
   margin-top: 15px;
-  margin-bottom: -58px
 }
 
 .box-sent{
@@ -138,7 +138,6 @@ button {
   text-align: center;
   color: green;
   margin-top: 15px;
-  margin-bottom: -58px
 }
 
 .box-link {
