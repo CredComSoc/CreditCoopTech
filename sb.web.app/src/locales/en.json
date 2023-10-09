@@ -2,9 +2,9 @@
     "login": {
         "login_to_label": "Log in to",
         "email_label": "Email address",
-        "email_placeholder": "test nowhere.com",
+        "email_placeholder": "Email Address",
         "password_label": "Password",
-        "password_placeholder": "testpassword",
+        "password_placeholder": "Password",
         "login_button": "Login",
         "need_help": "Need help?",
         "contact_us": "Contact us."
@@ -78,7 +78,10 @@
         "user_not_found": "There is no user found with that email address",
         "reset_email_instruction_sent": "An email with password reset instructions has been sent!",
         "recipient_balance_too_high": "Recipient balance too high",
-        "recipient_balance_too_high_body": "This transfer request cannot be completed, as it would take {username} beyond their positive credit limit. {username} has been notified, but please consider following up with them about your intended transfer"
+        "recipient_balance_too_high_body": "This transfer request cannot be completed, as it would take {username} beyond their positive credit limit. {username} has been notified, but please consider following up with them about your intended transfer",
+        "insufficient_sender_balance": "You do not have enough credit to request this transfer, as the amount is {amount} {credit_unit} and your available credit is {credit} {credit_unit}",
+        "receiver_pending_balance_exceeded": "This transfer request cannot be completed, as it would take {seller} beyond their outstanding positive credit limit. Please consider following up with them about your intended purchase."
+
     },
     "event": {
         "instructions": "Instructions",
@@ -184,7 +187,7 @@
         "no_notifications": "No notifications",
         "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
         "transaction_cancelled": "{buyer_username} has cancelled their purchase.",
-        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit by {amount} {credit_unit}. Please consider following up with {username} about their intended transfer."
+        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {username} about their intended transfer."
     },
     "cart": {
         "cart": "cart",
@@ -372,6 +375,8 @@
     "seller_name": "Seller",
     "confirm_item_removal":  "Confirm item removal",
     "confirm_item_removal_text": "Are you sure you want to remove this item from the Marketplace?",
+    "confirm_item_activation":  "Confirm item activation",
+    "confirm_item_activation_text": "Are you sure you want to activate this item?",
     "wanted_by": "Wanted by",
     "available_until": "Available until",
     "reset_password": "Reset Password",
@@ -379,5 +384,6 @@
     "new_password": "New password",
     "re_password": "Re-enter your password", 
     "passwords_not_matched": "The passwords do not match.",
-    "password_reset_failed": "Something went wrong. Please try resetting the password again."
+    "password_reset_failed": "Something went wrong. Please try resetting the password again.",
+    "activate": "Activate"
 }

@@ -8,7 +8,7 @@
                     <th><h1>{{ $t('credit') }}</h1></th>
                 </tr>
                 <tr>
-                  <td>{{ this.$store.state.creditLimit }} {{ $t('org.token') }}</td>
+                  <td>-{{ this.$store.state.creditLimit }} {{ $t('org.token') }}</td>
                   <td>{{ this.$store.state.saldo }} {{ $t('org.token') }}</td>
                   <td>{{ this.availableBalance(this.$store.state) }} {{ $t('org.token') }}</td>
                 </tr>

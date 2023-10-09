@@ -111,7 +111,7 @@ export default {
       return validImageTypes.includes(file.type)
     },
     displayImg () {
-      this.$refs.addFile.innerText = this.$i18n.$t('choose_more')
+      this.$refs.addFile.innerText = this.$i18n.t('choose_more')
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
         this.images.push([URLImg, this.images.length, img.isCoverImg])
@@ -125,7 +125,7 @@ export default {
   },
   mounted () {
     // in edit mode
-    console.log(this.l=this.imageObjs.length == 0)
+    console.log(this.savedProgress)
     if ('coverImg' in this.savedProgress) {
       if (this.savedProgress.img.length > 0) {
         if (typeof this.savedProgress.img[0] === 'object') {

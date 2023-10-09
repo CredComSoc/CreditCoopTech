@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData } from '../../serverFetch'
+import { cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData, setUserBalance } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import DateFilter from './DateFilter.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
@@ -370,6 +370,7 @@ export default {
                   await postNotification('saleRequestAccepted', payer)
                 }
                 await setTransactionsData()
+                await setUserBalance()
                 this.$refs.loadingComponent.hideLoading()
               } else {
                 this.$refs.loadingComponent.hideLoading()

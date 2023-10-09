@@ -61,13 +61,11 @@ export default {
       file_size_error_message: this.$i18n.t('shop_items.image_file_extension_must_be') + '\n' + this.$i18n.t('shop_items.smaller_than_2mb'),
       image_upload_error_message: this.$i18n.t('shop_items.image_upload_failed') + '\n' + this.$i18n.t('shop_items.try_again_later'),
       invalid_price_message: this.$i18n.t('shop_items.price_positive_integer') + '\n' + this.$i18n.t('shop_items.try_again'),
-      inEditMode: false,
-      isEdit: false
+      inEditMode: false
     }
   },
   created () {
     if (this.$route.params.artID) {
-      this.isEdit = true
       fetch(EXPRESS_URL + '/article/' + this.$route.params.artID, {
         method: 'GET',
         credentials: 'include'
