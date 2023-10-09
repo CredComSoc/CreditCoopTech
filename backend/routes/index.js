@@ -712,6 +712,7 @@ module.exports = function() {
             }) 
         }
         newArticle.id = uuid.v4().toString();
+        newArticle.uploadDate = new Date();
         newArticle.userUploader = req.user
 
         const user = await getUser({'profile.accountName': req.user})
@@ -1277,9 +1278,7 @@ module.exports = function() {
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
-      
-      console.log(req.body) //shows contents of body in terminal
-      
+            
       let newEvent = {
         title: req.body.title,
         start: new Date(req.body.eventstart),
@@ -1290,12 +1289,11 @@ module.exports = function() {
         contacts: req.body.contacts,
         webpage: req.body.webpage,
         _startTime: req.body._startTime,
-        _endTime: req.body._endTime
+        _endTime: req.body._endTime,
       }
       
       const user = await getUser({'profile.accountName': req.user})
-
-      if (!user) {
+      if (user) {
         newEvent.userId = user._id
 
       
@@ -1307,6 +1305,7 @@ module.exports = function() {
         const dbo = db.db(dbFolder);
         dbo.collection("events").insertOne(newEvent, (err, result)=>{
           if (err) {
+            console.log(err)
             res.sendStatus(500)
             db.close()
           }

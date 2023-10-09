@@ -73,6 +73,13 @@ export default {
 
       this.endDate = this.savedProgress['end-date']
     }
+    else {
+      if (this.savedProgress.status == "Offer") {
+        this.endDate = this.$i18n.t('shop_items.offer_indefinitely_available')
+      } else {
+        this.endDate = this.$i18n.t('shop_items.want_indefinitely_needed')
+      }
+    }
   },
   props: ['savedProgress', 'isPublished'],
   data () {

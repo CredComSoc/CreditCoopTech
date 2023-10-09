@@ -122,10 +122,10 @@ export default {
       this.$refs.noEndDate.checked = true
     }
     if ('end-date' in this.savedProgress) {
-      if (this.savedProgress['end-date'] === null || this.$refs.noEndDate.checked) {
-        this.$refs.noEndDate.checked = true
-      } else {
+      if (this.savedProgress['end-date'] !== null && !this.$refs.noEndDate.checked) {
         this.$refs.endDateInput.setValue(this.savedProgress['end-date']) 
+      } else {
+        this.$refs.noEndDate.checked = true
       }
     } 
     if ('destination' in this.savedProgress) {

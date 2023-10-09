@@ -125,7 +125,6 @@ export default {
   },
   mounted () {
     // in edit mode
-    console.log(this.savedProgress)
     if ('coverImg' in this.savedProgress) {
       if (this.savedProgress.img.length > 0) {
         if (typeof this.savedProgress.img[0] === 'object') {
