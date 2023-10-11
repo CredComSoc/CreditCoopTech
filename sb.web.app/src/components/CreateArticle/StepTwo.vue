@@ -83,7 +83,7 @@ export default {
   computed: {
     locationPlaceholder () {
       if (this.chosenType.toLowerCase() === 'product') {
-        if (this.savedProgress.status === 'Offer') {
+        if (this.savedProgress.status.toLowerCase() === 'offer') {
           return this.$i18n.t('shop_items.product_offer_placeholder')
         } else {
           return this.$i18n.t('shop_items.product_want_placeholder')
@@ -93,14 +93,14 @@ export default {
       }
     },
     pricePlaceholder () {
-      if (this.savedProgress.status === 'Offer') {
+      if (this.savedProgress.status.toLowerCase() === 'offer') {
         return this.$i18n.t('shop_items.offer_placeholder')
       } else {
         return this.$i18n.t('shop_items.want_placeholder')
       }
     },
     endDateLabel () {
-      if (this.savedProgress.status === 'Offer') {
+      if (this.savedProgress.status.toLowerCase() === 'offer') {
         return this.$i18n.t('shop_items.offer_indefinitely_available')
       } else {
         return this.$i18n.t('shop_items.want_indefinitely_needed')
