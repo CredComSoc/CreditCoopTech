@@ -3,22 +3,22 @@
   <div class="wrapper">
     
     <div class="center">
-      <h2 class="center-text" >NÄTVERKSINSTÄLLNINGAR</h2>
+      <h2 class="center-text" >{{ $t('network_settings') }}</h2>
     </div>
     <div class="main">
-      <h3>Transaktionsavgift</h3>
+      <h3>{{ $t('transaction_fee') }}</h3>
       <div>
-        <input type="text" placeholder="Säljare procentsats">
-        <input type="text" placeholder="Köpare procentsats">
+        <input type="text" placeholder="$t('seller_percentage')">
+        <input type="text" placeholder="$t('buyer_percentage')">
       </div>
-      <h3>Ränta på BSEK</h3>
+        <h3>{{ $t('interest_rate_on_negative_balances') }}</h3>
       <div>
-        <input type="text" placeholder="Procentsats">
+        <input type="text" placeholder="$t(percentage)">
       </div>
-      <h3>Default balance limits</h3> <!-- Ska ändras till svenska -->
+      <h3>{{ $t('default_balance_limits') }}</h3> <!-- Ska ändras till svenska -->
       <div>
-        <input type="text" placeholder="Maximum">
-        <input type="text" placeholder="Minimum">
+        <input type="text" placeholder="$t('positive')">
+        <input type="text" placeholder="$t('negative')">
       </div>
     </div>
   </div>
