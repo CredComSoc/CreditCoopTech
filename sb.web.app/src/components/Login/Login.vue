@@ -15,6 +15,7 @@
     </header>
   </div>
   <div class="login-box">
+    
     <form @submit.prevent="handleSubmit">
       <div class="box-text">{{ $t('login.login_to_label') }} {{ $t('org.name') }}</div>
       <div>
@@ -27,7 +28,11 @@
         <input class="box-input" type="password" v-model="password" :placeholder="$t('login.password_placeholder')" name="" id="password-input" required>
         
       </div>
-      <button id="login-button" >{{ $t('login.login_button')}}</button>
+      <span class="box-error" v-if="this.error">
+      {{ $t('wrong_email_password') }} ({{ loginCount }})
+      </span>
+      <button id="login-button" >{{ $t('login.login_button')}}</button> 
+      
     </form>
     <div class="box-link">
       <a href="mailto:support@landcaretrade.com">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
@@ -38,9 +43,7 @@
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
     </div>
     </div> 
-    <div class="box-error" v-if="this.error">
-      {{ $t('wrong_email_password') }} ({{ loginCount }})
-    </div>
+    
     <LoadingComponent ref="loadingComponent" />
   </div>
 </div>
