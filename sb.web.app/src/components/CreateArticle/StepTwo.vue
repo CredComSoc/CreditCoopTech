@@ -83,7 +83,7 @@ export default {
   computed: {
     locationPlaceholder () {
       if (this.chosenType.toLowerCase() === 'product') {
-        if (this.savedProgress.status === 'Offer') {
+        if (this.savedProgress.status.toLowerCase() === 'offer') {
           return this.$i18n.t('shop_items.product_offer_placeholder')
         } else {
           return this.$i18n.t('shop_items.product_want_placeholder')
@@ -93,14 +93,14 @@ export default {
       }
     },
     pricePlaceholder () {
-      if (this.savedProgress.status === 'Offer') {
+      if (this.savedProgress.status.toLowerCase() === 'offer') {
         return this.$i18n.t('shop_items.offer_placeholder')
       } else {
         return this.$i18n.t('shop_items.want_placeholder')
       }
     },
     endDateLabel () {
-      if (this.savedProgress.status === 'Offer') {
+      if (this.savedProgress.status.toLowerCase() === 'offer') {
         return this.$i18n.t('shop_items.offer_indefinitely_available')
       } else {
         return this.$i18n.t('shop_items.want_indefinitely_needed')
@@ -122,10 +122,10 @@ export default {
       this.$refs.noEndDate.checked = true
     }
     if ('end-date' in this.savedProgress) {
-      if (this.savedProgress['end-date'] === null || this.$refs.noEndDate.checked) {
-        this.$refs.noEndDate.checked = true
-      } else {
+      if (this.savedProgress['end-date'] !== null && !this.$refs.noEndDate.checked) {
         this.$refs.endDateInput.setValue(this.savedProgress['end-date']) 
+      } else {
+        this.$refs.noEndDate.checked = true
       }
     } 
     if ('destination' in this.savedProgress) {

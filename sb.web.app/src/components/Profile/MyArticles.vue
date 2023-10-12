@@ -19,9 +19,9 @@
             <ListingPopup @closePopup="closePopup" @placeInCart="this.placeInCart" v-if="popupActive" :key="popupActive" :listing-obj=listingObjPopup :username="this.username" />
           </td>
           <td>{{item.category}}</td>
-          <td>{{item.price}}</td>
-          <td>{{item.uploadDate}} </td>
-          <td> 
+          <td>{{item.price}} {{ $t('org.token') }}</td>
+            <td>{{ new Date(item.uploadDate).toLocaleDateString() }} </td>
+            <td> 
             <div class="edit">
               <button v-if="(new Date(item['end-date'])).getTime() > Date.now()" @click="remove(item, index)" 
                 style="background-color: red;"> {{ $t('remove')}}</button>
@@ -44,8 +44,8 @@
         <tr v-for="(item) in inactiveArticles" :key="item">
           <td><Listing className='article' :listingObj="item"/></td>
           <td>{{item.category}}</td>
-          <td>{{item.price}}</td> 
-          <td>{{item.uploadDate}} </td> 
+          <td>{{item.price}} {{ $t('org.token') }}</td> 
+          <td>{{ new Date(item.uploadDate).toLocaleDateString() }} </td>
           <td>   
             <div class="edit">
               <button @click="activate(item, index)" 
