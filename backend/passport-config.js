@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local')
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const config = require('./config')
 const { MongoClient } = require("mongodb");
 
@@ -13,6 +14,7 @@ const { MongoClient } = require("mongodb");
 
       await client.connect();
       const result = await client.db().collection("users").findOne({ email, password });
+      console.log('In authenticate user');
 
       if (result != null) {
         return done(null, result);
@@ -38,8 +40,50 @@ const { MongoClient } = require("mongodb");
     }
   }
 
+  async function getUserByUsername(username) {
+    const client = new MongoClient(mongoURL);
+    try {
+      await client.connect();
+      const user = await client.db().collection("users").findOne({ email: username });
+      return user
+    } finally {
+      await client.close();
+    }
+  }
+
+  async function comparePassword(password, encryptedPassword) {
+    try {
+      const match = await bcrypt.compare(password, encryptedPassword);
+      return match;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   function initialize (passport) {
-    passport.use (new LocalStrategy ({usernameField: 'email'}, authenticateUser))
+    passport.use(new LocalStrategy( {usernameField: 'email'},
+      async (username, password, done) => {
+        try {
+          const user = await getUserByUsername(username);
+
+          if (!user) {
+            return done(null, false, { message: 'Incorrect username.' });
+          }
+
+          const passwordMatch = await bcrypt.compare(password, user.password);
+
+          if (!passwordMatch) {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+
+          return done(null, user);
+        } catch (error) {
+          console.log(error)
+          return done(error);
+        }
+      }
+    ))
+
     passport.serializeUser((user, done) => {
       return done(null, user._id)
     })
