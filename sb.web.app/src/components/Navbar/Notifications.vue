@@ -15,7 +15,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -24,7 +24,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" :alt="$t('notifications.new_notification')"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.transfer_request') }}{{ item.amount }} {{ $t('org.token') }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t ('notifications.transfer_request') }}{{ item.amount }} {{ $t('org.token') }}{{ $t ('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u>{{ $t ('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -33,7 +33,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_purchase')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_purchase')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -42,7 +42,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_transfer')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_transfer')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -107,7 +107,7 @@
                     <div v-if="item.type == 'saleRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'requests'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ $t('notifications.purchase_request') }} {{ item.fromUser }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -115,7 +115,7 @@
                     <div v-if="item.type == 'sendRequest'">
                     <router-link :to="{name:'Profile', params:{tab: 'requests'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.transfer_request') }}{{ item.amount }} {{ $t('org.token') }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.transfer_request') }}{{ item.amount }} {{ $t('org.token') }}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u>{{ $t('notifications.approve_or_decline') }}.</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -123,7 +123,7 @@
                     <div v-if="item.type == 'saleRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{$t('notifications.approved_purchase')}}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{$t('notifications.approved_purchase')}}{{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -131,7 +131,7 @@
                     <div v-if="item.type == 'transferRequestAccepted'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_transfer')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_account') }} </u> {{ $t('notifications.download_invoice') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.approved_transfer')}} {{ $t('notifications.go_to') }} <u> {{ $t('nav.my_trades') }} </u> {{ $t('notifications.download_invoice') }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
