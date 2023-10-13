@@ -97,7 +97,7 @@ async function registerUser (isadmin, username, password, email) {
 
 // registerUser(false, "testuser", "testpassword", "test@nowhere.com")
 // registerUser(false, "testuser2", "testpassword", "test2@nowhere.com")
-// registerUser(true, "admintest", "testpassword", "admin@nowhere.com")
+registerUser(true, "admintest2", "testpassword2", "admin2@nowhere.com")
 // registerUser(false, "testuser3", "testpassword", "test3@nowhere.com")
 
 registerUser(false, "test", "testpassword", "test@gmail.com")

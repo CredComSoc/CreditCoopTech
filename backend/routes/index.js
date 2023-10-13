@@ -1,4 +1,5 @@
-const express = require('express'); //
+const express = require('express');
+const bcrypt = require('bcrypt');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -59,6 +60,17 @@ module.exports = function() {
     const result = await dbo.collection("users").updateOne(user_query, update_query)
     db.close()
     return result
+  }
+
+  async function encryptPassword(password) {
+   try {
+     const salt = await bcrypt.genSalt(10);
+     const hash = await bcrypt.hash(password, salt);
+     return hash;
+   } catch (error) {
+     console.log(error)
+     throw error;
+   }
   }
 
   function cleanQuantityData(quant) {
@@ -307,7 +319,7 @@ module.exports = function() {
    *                 
    *****************************************************************************/
 
-  router.post("/register", upload.single('file'), (req, res) => { //register a new user
+  router.post("/register", upload.single('file'), async (req, res) => { //register a new user
     const newPro = JSON.parse(req.body.accountInfo)
 
     const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
@@ -316,8 +328,7 @@ module.exports = function() {
         console.log(req.body.accountInfo)
         const newUser = {
           email: newPro.email,
-          //to be implimented {using a hashed password later in accordance with the login code(look into login code)}
-          password: newPro.password, 
+          password: await encryptPassword(newPro.password),
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(newPro.min_limit),
           max_limit: parseInt(newPro.max_limit),
