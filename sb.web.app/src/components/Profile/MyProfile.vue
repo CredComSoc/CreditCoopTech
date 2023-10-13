@@ -3,8 +3,8 @@
     <div>
       <div className="flexbox-container2" v-if="!edit">
         <div className="image container-item">
-          <img v-if="localURL === '' && this.profileData.logo === ''" src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="localURL === '' && this.profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && !this.profileData.logo" src="../../assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
+          <img v-if="localURL === '' && this.profileData.logo" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="localURL !== ''" :src="this.localURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
         </div>
         <div className="container-item">
