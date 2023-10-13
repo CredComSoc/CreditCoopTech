@@ -3,14 +3,14 @@
     <div>
       <h2 class="center-text">{{ $t('member') }}</h2>
     </div>
-    <Searchfield @searchEvent="triggerSearch" :place-holder-message="'Who do you want to search for today?'"/>
+    <Searchfield @searchEvent="triggerSearch" :place-holder-message="$t('user.whoDoYouWantToSearchForTodayLabel')"/>
     <br>
     <div class="main">
       <div class="listings">
         <div v-if="this.SearchData.length !== 0">
           <AllMembers :key=SearchData :search-data=SearchData @openProfile="this.openProfile"/>
         </div>
-        <h3 v-if="this.allMembersArraySize === 0 && this.adminMembersArraySize === 0" class="text-center">No users found for '{{this.searchWord}}'</h3>
+        <h3 v-if="this.allMembersArraySize === 0 && this.adminMembersArraySize === 0" class="text-center">{{ $t('user.no_users_found') }} '{{this.searchWord}}'</h3>
       </div>
     </div>
   </div>

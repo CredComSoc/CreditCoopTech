@@ -1,8 +1,8 @@
 <template>
   <div :id="this.userchat" class="user-chat" type="button" @click="this.openChat">
       <p>{{userchat}}</p>
-      <p v-if="online" style="color: green;">Online</p>
-      <p v-if="!online" style="color: red;">Offline</p>
+      <p v-if="online" style="color: green;">{{ $t('online') }}</p>
+      <p v-if="!online" style="color: red;">{{ $t('offline') }}</p>
   </div> 
 </template>
 

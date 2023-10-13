@@ -3,6 +3,24 @@ Detta kommer i framtiden behöva ändras så att admin kan ändra texten via adm
 och att texten ligger sparad i databasen istället för att vara hårdkodad här.-->
 <template>  
     <div>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Sed rutrum quam sit amet elit scelerisque ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In euismod rutrum dui, et pulvinar libero hendrerit et. Sed suscipit quam non velit scelerisque, ut finibus arcu aliquet.
+      Vivamus ullamcorper interdum scelerisque. Duis commodo diam eget nulla lobortis molestie. Suspendisse sagittis nibh est, sit amet porttitor eros dictum eu. Donec quis eros sit amet justo semper accumsan.
+      Praesent venenatis mollis sem eget tempus. Duis accumsan tempor ex, non dictum leo hendrerit eu. Sed posuere egestas est vitae egestas. Ut porta eget metus non sodales. Nullam in dictum tellus, pretium placerat felis.
+    </p>
+        <!--
+        <p><strong>{{ $t('faq.purpose') }}</strong></p>
+        {{ $t('faq.purpose_text')  }}
+
+        <p><strong>{{ $t('faq.background') }}</strong></p>
+        {{ $t('faq.background_text') }}
+
+        <p><strong>{{ $t('faq.guidelines') }}</strong></p>
+        {{ $t('faq.guidelines_text') }}
+        -->
+<!--
     <p><strong>Syfte</strong></p>
     <p>Vi v&auml;rnar om din integritet. Du ska kunna k&auml;nna dig trygg n&auml;r du anf&ouml;rtror oss dina personuppgifter. D&auml;rf&ouml;r har vi uppr&auml;ttat den h&auml;r policyn. Den utg&aring;r fr&aring;n g&auml;llande dataskyddslagstiftning och f&ouml;rtydligar hur vi jobbar f&ouml;r att ta tillvara dina r&auml;ttigheter och din integritet.</p>
     <p>Syftet med den h&auml;r policyn &auml;r att du ska f&aring; veta hur vi behandlar dina personuppgifter, vad vi anv&auml;nder dem till, vilka som f&aring;r ta del av dem och under vilka f&ouml;ruts&auml;ttningar samt hur du kan ta tillvara dina r&auml;ttigheter.</p>
@@ -112,6 +130,7 @@ och att texten ligger sparad i databasen istället för att vara hårdkodad här
     <h4>&Auml;ndringar i integritetspolicy</h4>
     <p>Svensk Barter kan &auml;ndra eller uppdatera sin Integritetspolicy efter eget gottfinnande. D&auml;rf&ouml;r uppmuntrar Svensk Barter anv&auml;ndare att &aring;terkommande bes&ouml;ka denna sida f&ouml;r eventuella &auml;ndringar i sin sekretesspolicy. Din fortsatta anv&auml;ndning av denna webbplats efter n&aring;gon &auml;ndring av denna sekretesspolicy kommer att utg&ouml;ra din godtagande av s&aring;dan &auml;ndring.</p>
     <p>Om du har fr&aring;gor om &aring;tkomst till eller korrigering av dina personuppgifter, kontakta oss p&aring;: svenskbarter@gmail.com</p>
+-->
     </div>
 </template>
     

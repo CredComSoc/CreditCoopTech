@@ -6,7 +6,7 @@
       <ChatBoxMult ref="chatbox" :activeChat="this.activeChat" :reciever="this.reciever" :user="this.user"  @sendMessage="this.sendMessage" @storeMsg="this.storeMsg"/>
     </div>
     <div v-if="this.showMembersList" class="member-list-container">
-      <H4 v-if="this.allmembers.length === 0">Ingen medlemmar</H4>
+      <H4 v-if="this.allmembers.length === 0">{{ $t('no_members') }}</H4>
       <div v-if="this.allmembers.length !== 0" class="member-list">
         <label :for="index" v-for=" ( member,index ) in this.allmembers" :key="index">
           {{member}}

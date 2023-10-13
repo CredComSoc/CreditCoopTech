@@ -1241,7 +1241,7 @@ module.exports = function() {
     if (email_enabled) {
       const resetEmail = {
         to: user.email,
-        from: support_email, 
+        from: support_email,
         subject: 'Your password for Land Care Trade has been updated',
         text: `
         This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".

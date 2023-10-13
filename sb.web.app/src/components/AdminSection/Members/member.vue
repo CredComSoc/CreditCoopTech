@@ -11,7 +11,7 @@ do not match the equivalent of the database.
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
-        <h5 class="element-text one">Balance: <br/>{{ '0Kr' }}</h5>
+        <h5 class="element-text one">Balance: <br/>{{ getBalance() }}</h5>
         <h5 class="element-text two">Online: <br/>{{ getOnlineStatus() }}</h5>
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
         <div class="button-container">
@@ -33,7 +33,7 @@ do not match the equivalent of the database.
 </template>
 
 <script>
-import { EXPRESS_URL } from '@/serverFetch'
+import { EXPRESS_URL, getUserSaldo } from '@/serverFetch'
 
 export default {
 
@@ -41,6 +41,12 @@ export default {
     listingObj: Object
   },
   methods: {
+    async getBalance () {
+      const saldo = await getUserSaldo(this.listingObj)
+      const balance = saldo.completed.balance
+      const currency = this.$i18n.t('org.tkn')
+      return `${balance} ${currency}`
+    },
     getImgURL () {
       return EXPRESS_URL + '/image/' + this.listingObj.logo
     },

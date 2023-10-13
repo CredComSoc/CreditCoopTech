@@ -2,6 +2,16 @@
   <div> 
     <h1><b> {{ $t('faq.common_questions') }} </b></h1>
   </div>
+  <div>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Sed rutrum quam sit amet elit scelerisque ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In euismod rutrum dui, et pulvinar libero hendrerit et. Sed suscipit quam non velit scelerisque, ut finibus arcu aliquet.
+      Vivamus ullamcorper interdum scelerisque. Duis commodo diam eget nulla lobortis molestie. Suspendisse sagittis nibh est, sit amet porttitor eros dictum eu. Donec quis eros sit amet justo semper accumsan.
+      Praesent venenatis mollis sem eget tempus. Duis accumsan tempor ex, non dictum leo hendrerit eu. Sed posuere egestas est vitae egestas. Ut porta eget metus non sodales. Nullam in dictum tellus, pretium placerat felis.
+    </p>
+  </div>
+  <!--
   <button class="accordion" @click="expand">Hur tjänar jag barterkrediter?
 </button>
   <div class="panel">
@@ -62,7 +72,7 @@
   <div class="panel">
   <p>Barterpriserna är företrädesvis slutkundpriser utan rabatter eller andra former av förmånserbjudanden. Om någon medlem säljer under vad som kan sägas vara i linje med rekommenderat slutkundspris för en viss vara eller tjänst kan det leda till varning och fortsätter beteendet kan det innebära uteslutning. Att ta överpriser kan efter godkännande av admin dock vara godtagbart förutsatt att det gäller ”hårda produkter” med låg bruttomarginal och ett stort värde för våra medlemmar, t ex datorer, mobiltelefoner, båtar, verktyg, maskiner och så vidare. Sådana produkter kan annars vara mycket svåra att få in i barterringen överhuvudtaget.Barterpriserna är företrädesvis slutkundpriser utan rabatter eller andra former av förmånserbjudanden. Om någon medlem säljer under vad som kan sägas vara i linje med rekommenderat slutkundspris för en viss vara eller tjänst kan det leda till varning och fortsätter beteendet kan det innebära uteslutning. Att ta överpriser kan efter godkännande av admin dock vara godtagbart förutsatt att det gäller ”hårda produkter” med låg bruttomarginal och ett stort värde för våra medlemmar, t ex datorer, mobiltelefoner, båtar, verktyg, maskiner och så vidare. Sådana produkter kan annars vara mycket svåra att få in i barterringen överhuvudtaget.</p>
   </div>  
-  
+  -->
 </template>
 
 <script>

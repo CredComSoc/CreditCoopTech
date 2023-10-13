@@ -13,6 +13,12 @@
     "common_questions": "Common questions",
     "trading_tips": "Trading tips",
     "association_information": "Association information",
-    "policy": "Privacy policy"
+    "policy": "Privacy policy",
+    "purpose": "Purpose",
+    "guidelines": "Guidelines",
+    "background": "Background",
+    "purpose_text": "<p>We care about your privacy. You should feel secure when entrusting us with your personal information. Therefore, we have established this policy. It is based on applicable data protection legislation and clarifies how we work to safeguard your rights and privacy.</p><p>The purpose of this policy is to inform you about how we process your personal data, what we use it for, who has access to it, and under what conditions, as well as how you can exercise your rights.</p>",
+    "background_text": "<p>We primarily process your personal data to fulfill our obligations to you. Our starting point is not to process more personal data than is necessary for the purpose, and we always strive to use the least privacy-sensitive information.</p><p>We also need your personal data to provide you with good service, for example, in terms of marketing, barter support, and information. We may also need your personal data to comply with laws and perform customer and market analyses.</p><p>You have the right to object to our use of personal data for direct marketing. When we collect personal data about you for the first time, you will receive more information about this and how you can object to it.</p>",
+    "guidelines_text": "<p>What personal data do we process?</p><p>We only process personal data when we have a legal basis. We do not process personal data unless needed to fulfill obligations under contracts and laws.</p>"
   }
 }

@@ -16,7 +16,7 @@
       <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
     </div>
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
-    <button @click="returnHome()" class="edit_button">Cancel</button>
+    <button v-if="this.isEdit" @click="returnHome()" class="edit_button">{{ $t('user.cancelLabel') }}</button>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
     <!-- add my loading component -->
     <LoadingComponent ref="loadingComponent" />

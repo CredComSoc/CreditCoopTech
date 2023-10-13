@@ -8,7 +8,7 @@
         <th>{{ $t('price') }}</th>
         <th>{{ $t('amount') }}</th>
         <th>{{ $t('timestamp') }}</th>
-        <th>Status</th>
+        <th>{{ $t('status') }}</th>
       </tr>
       <tr v-for="(item, index) in this.$store.state.requests.filter(request => request.state==='pending')" :key="item" ref="reqRefs">
         <td>{{item.entries[0].payer}}</td>
@@ -39,8 +39,8 @@
     <div v-if="!requests">
       <h4> {{ $t('youHaventReceivedAnyPurchaseRequestsYet')}} </h4>
     </div>
-    <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', din övre gräns är ' + this.max_limit + ' bKr.'" />
-    <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', köparen har inte tillräckligt med bKr.'" />
+    <PopupCard v-if="this.payeeTooMuchBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', ' + $t('upper_limit_is') + this.max_limit + ' bKr.'" />
+    <PopupCard v-if="this.payerNotEnoughBkr" @closePopup="this.closePopup" :title="$t('user.prohibitedRequest')" btnLink="" btnText="Ok" :cardText="$t('shop.purchaseRequestCannotBeApproved') + ', ', + $t('not_enough_credit_unit')" />
   </div>
 </template>
 

@@ -34,6 +34,7 @@
 /* eslint-disable */
 import UploadedImage from './UploadedImage.vue'
 import { EXPRESS_URL, getImg } from '../../serverFetch'
+import Compressor from 'compressorjs';
 
 export default {
   name: 'StepThree',
@@ -69,16 +70,11 @@ export default {
     upload () {
       document.getElementById('getFile').click()
     },
-    getFile (e) {
-      const imageObj = e.target.files[0]
+    async getFile (e) {
+      const imageSelected = e.target.files[0]
+      let imageObj = imageSelected
       if (this.validateImageFile(imageObj) && this.validatedFileSize(imageObj.size)) {
-        const URLImg = URL.createObjectURL(imageObj)
-        this.$refs.addFile.innerText = 'Choose more'
-        this.images.push([URLImg, this.images.length, false])
-        this.imageObjs.push(imageObj)
-        if (this.images.length === 5) {
-          document.getElementById('upload-button').disabled = true
-        }
+        await this.compressImage(imageObj)
       } else {
         this.$emit('fileSizeError')
       }
@@ -102,9 +98,28 @@ export default {
         document.getElementById('upload-button').disabled = false
       }
     },
+
+    async compressImage (file) {
+      new Compressor(file, {
+        quality: 0,
+        success:(result) => {
+          let resNew = new File([result], file.name, { type: file.type })
+          const URLImg = URL.createObjectURL(resNew)
+        this.$refs.addFile.innerText = 'Choose more'
+        this.images.push([URLImg, this.images.length, false])
+        this.imageObjs.push(resNew)
+        if (this.images.length === 5) {
+          document.getElementById('upload-button').disabled = true
+        }
+        },
+        error(err) {
+          console.log(err.message);
+        },
+      });
+    },
     // less then 2MB
     validatedFileSize (byteSize) {
-      return byteSize <= 2000000
+      return byteSize <= 10000000
     },
     validateImageFile (file) {
       const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']

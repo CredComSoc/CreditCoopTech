@@ -194,7 +194,7 @@ export default {
       <br><b>{{ $t('event.url') }}: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
       <br>
       <br>          
-      <button v-if="owner" class="button-modal" @click="removeEvent ()">Radera</button> 
+      <button v-if="owner" class="button-modal" @click="removeEvent ()">{{ $t('delete') }}</button>
     </Modal> 
 
     <!-- Modal to create events   -->
