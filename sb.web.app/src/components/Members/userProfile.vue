@@ -153,6 +153,7 @@ export default {
             const userLimits = await getUserLimits(this.profileData.accountName)
             
             if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
+              // create a notification logic here
               this.$refs.loadingComponent.hideLoading()
               this.pendingSellerBalanceLimitExceeded = true
             } else if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {

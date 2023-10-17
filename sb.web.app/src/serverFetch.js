@@ -859,23 +859,32 @@ export async function getUserId () {
     return false
   })
 }
-export async function uploadEvent (title, start, end, allDay, location, description, contacts, webpage, startTime, endTime) {
+export async function uploadEvent (data) {
   return await fetch(EXPRESS_URL + '/upload/event', { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      title: title,
-      eventstart: start,
-      eventend: end,
-      eventallDay: allDay,
-      location: location,
-      description: description,
-      contacts: contacts,
-      webpage: webpage, 
-      _startTime: startTime,
-      _endTime: endTime
+      ...data
+    }),
+    credentials: 'include'
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch(error => {
+    return error
+  })
+}
+export async function updateEvent (id, data) {
+  return await fetch(EXPRESS_URL + `/event/${id}`, { 
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      ...data
     }),
     credentials: 'include'
   }).then((res) => {
@@ -971,6 +980,30 @@ export async function setCartData () {
       cartSize += item.quantity
     }
     store.commit('replaceMyCartSize', cartSize)
+  }
+}
+
+export async function getEvents () {
+  return await fetch(EXPRESS_URL + '/event/all', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch(() => {
+    return null
+  })
+}
+export async function setEventData () {
+  const events = await getEvents().then((res) => {
+    if (res) {
+      return res
+    }
+  })
+  if (events !== null) {
+    store.commit('replaceAllEvents', events)
   }
 }
 
