@@ -1,0 +1,20 @@
+version: '3'
+services:
+  express-app:
+    build:
+      context: ./backend  # Set the path to your Express.js app's Dockerfile
+    ports:
+      - "3000:3000"  # Map your app's port to the host machine
+    depends_on:
+      - mongo
+
+  vue-app:
+    build:
+      context: ./sb.web.app  # Set the path to your Express.js app's Dockerfile
+    ports:
+      - "80:80"  # Map your app's port to the host machine
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Map MongoDB's port to the host machine
