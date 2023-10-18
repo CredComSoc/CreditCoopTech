@@ -166,7 +166,7 @@ export default {
           _endTime: document.getElementById('createEventTimeEnd').value,
           eventType: 'onetime',
           recurringType: null,
-          dow: null,
+          daysOfWeek: null,
           recurrenceRule: null
         } 
 
@@ -212,8 +212,9 @@ export default {
       if (this.recurringType === 'monthly') {
         const date = new Date()
         const year = date.getFullYear()
-        const month = date.getMonth() + 1
+        const month = date.getMonth()
         const day = date.getDate()
+        console.log(this.dateOfMonth)
         this.eventDate.startDate = new Date(year, month, this.dateOfMonth)
         this.eventDate.endDate = new Date(year, month, this.dateOfMonth)
       }
@@ -232,7 +233,7 @@ export default {
           _endTime: document.getElementById('createEventTimeEnd').value,
           eventType: this.eventType,
           recurringType: this.recurringType,
-          dow: this.recurringType === 'weekly' ? dow : null,
+          daysOfWeek: this.recurringType === 'weekly' ? dow : null,
           recurrenceRule: this.recurringType === 'monthly' ? 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + this.dateOfMonth : null
         } 
         // UploadEvent saves event on database, is located in sb.web.app/src/serverFetch.js   
@@ -296,7 +297,7 @@ export default {
         endDate: new Date(clickedEvent.event.end).toLocaleDateString('en-US', { day: 'numeric', month: 'numeric', year: 'numeric' }),
         eventType: clickedEvent.event.extendedProps.eventType,
         recurringType: clickedEvent.event.extendedProps.recurringType,
-        dow: clickedEvent.event.extendedProps.daysOfWeek,
+        daysOfWeek: clickedEvent.event.extendedProps.daysOfWeek,
         recurrenceRule: clickedEvent.event.extendedProps.recurrenceRule,
         _id: clickedEvent.event.extendedProps._id
       }
@@ -359,7 +360,7 @@ export default {
         </div>
     </div>
     <div>
-      <button @click="resetData(); openCreateMeetingModal = true">{{$t('event.create_event')}}</button>
+      <button class="create_event" @click="resetData(); openCreateMeetingModal = true">{{$t('event.create_event')}}</button>
     </div>
     <div class='demo-app-main'>
         <FullCalendar
@@ -372,7 +373,7 @@ export default {
         </template>
         </FullCalendar>
     <!-- Modal to show events   -->
-    <Modal :open="showModal" @close="showModal = !showModal">        
+    <Modal :open="showModal" :displayCloseButton="false" @close="showModal = !showModal">        
       <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
       <b> {{ $t('location') }}: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>            
       <br><b>{{ $t('event.start') }}:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
@@ -381,8 +382,8 @@ export default {
       <br><b>{{ $t('event.url') }}: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
       <br>
       <br>          
-      <button v-if="owner" class="button-modal" @click="removeEvent ()">{{$t('event.delete_event')}}</button> 
-      <button v-if="owner" class="button-modal" @click="editEvent (this.clickedEvent)">{{$t('event.edit_event')}}</button>
+      <button v-if="owner" class="button-modal-delete" @click="removeEvent(); showModal = false">{{$t('event.delete_event')}}</button> 
+      <button v-if="owner" class="button-modal-edit" @click="editEvent (this.clickedEvent)">{{$t('event.edit_event')}}</button>
     </Modal> 
 
     <!-- Modal to create events   -->
@@ -410,8 +411,8 @@ export default {
           <input type='time' id='eventTimeEnd' :min="eventDate.startTime" v-model="eventDate.endTime" name="EventTimeEnd"/>
         </p>          
       </div>
-      <button v-if="!this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal"> {{ $t('event.create_event') }}</button>
-      <button v-if="this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal"> {{ $t('event.edit_event') }}</button>
+      <button v-if="!this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal-create"> {{ $t('event.create_event') }}</button>
+      <button v-if="this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal-edit-submit"> {{ $t('event.edit_event') }}</button>
     </Modal> 
 
     <Modal :open="openCreateMeetingModal" @close="openCreateMeetingModal = false">
@@ -459,7 +460,7 @@ export default {
         </p>
         <p v-if="recurringType == 'monthly'">
           {{$t('event.recurring_Date')}}
-          <input id='dateOfMonth' name="dateOfMonth" :placeholder="$t('event.recurring_Date')"/>
+          <input id='dateOfMonth' name="dateOfMonth" v-model="dateOfMonth" :placeholder="$t('event.recurring_Date')"/>
         </p>
         <p>
           <span v-if="eventType != 'recurring'"> 
@@ -484,8 +485,8 @@ export default {
           
         </p>         
       </div>
-      <button v-if="!this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal"> {{ $t('event.create_event') }}</button>
-      <button v-if="this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal"> {{ $t('event.edit_event') }}</button>
+      <button v-if="!this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal-create"> {{ $t('event.create_event') }}</button>
+      <button v-if="this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal-edit-submit"> {{ $t('event.edit_event') }}</button>
     </Modal>
 
     </div>
@@ -535,11 +536,59 @@ b { /* used for event dates/times */
     margin: 0 auto;
 }
 
-.button-modal {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 0.3rem;
-  padding: 0.2rem;
+.button-modal-delete {
+  background-color: #f44336; /* Red */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
+.button-modal-edit {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.button-modal-create {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.button-modal-edit-submit {
+  background-color: #babd37; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 
 .modal-split {
   height: 100%;
@@ -559,6 +608,17 @@ background-color: red;
 .modal-left{
 left: 0;
 background-color: green;
+}
+.create_event {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
 }
 </style>
 
