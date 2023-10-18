@@ -57,7 +57,7 @@
           <td>{{item.entries[0].quant}} {{ $t('org.token') }}</td>
           <th>{{item.written}}</th>
             <td id="buttons">
-              <button @click="cancel(item.uuid, index,item)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
+              <button @click="cancel(item.uuid, index, item)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
             </td>
           </tr>
         </table>
@@ -188,7 +188,7 @@ export default {
         dateFilterStartDate.setAttribute('max', maxLimitStartDate.toISOString().split('T')[0])
       }
     },
-    getListing (item) { //gets a specific articleobject from allArticles in the vuex store depending on a given id. 
+    getListing (item) { //gets a specific articleobject from allArticles in the vuex store depending on a given id.
       for (const listing of this.$store.state.allArticles) {
         if (listing.id === item.metadata.id) {
           return listing
@@ -333,7 +333,11 @@ export default {
       this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
       await cancelRequest(id)
-      postNotification('transactionCancelled', item.entries[0].payee)
+      const itemData = this.getListing(item.entries[0])
+      const itemName = itemData.title
+      const itemCount = item.entries[0].metadata.quantity
+      const amount = item.entries[0].quant
+      await postNotification('transactionCancelled', item.entries[0].payee, amount, itemName, itemCount)
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
@@ -345,7 +349,12 @@ export default {
       if (item.entries[0].metadata.id == 0) {
         await postNotification('transferRequestDenied', payer)
       } else {
-        await postNotification('saleRequestDenied', payer)
+        const payer = item.entries[0].payer
+        const itemData = this.getListing(item.entries[0])
+        const itemName = itemData.title
+        const itemCount = item.entries[0].metadata.quantity
+        const amount = item.entries[0].quant
+        await postNotification('saleRequestDenied', payer, amount, itemName, itemCount)
       }
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()

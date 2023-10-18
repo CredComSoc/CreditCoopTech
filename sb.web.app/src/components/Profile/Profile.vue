@@ -39,6 +39,7 @@ import MyEconomy from '@/components/Profile/MyEconomy.vue'
 export default {
   data () {
     return {
+      tab: ''
     }
   },
   components: {
@@ -53,7 +54,7 @@ export default {
       this.tab = this.$route.params.tab
     }
   },
-  beforeUpdate () {
+  beforeMount () {
     if (this.$route.params.tab) {
       this.tab = this.$route.params.tab
     }

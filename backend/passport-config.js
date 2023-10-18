@@ -67,12 +67,14 @@ const { MongoClient } = require("mongodb");
           const user = await getUserByUsername(username);
 
           if (!user) {
+            console.log('Incorrect username');
             return done(null, false, { message: 'Incorrect username.' });
           }
 
           const passwordMatch = await bcrypt.compare(password, user.password);
 
           if (!passwordMatch) {
+            console.log('Incorrect password.')
             return done(null, false, { message: 'Incorrect password.' });
           }
 

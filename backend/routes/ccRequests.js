@@ -90,10 +90,12 @@ module.exports = function() {
         "metadata"    : {"id" : article.id, "quantity": article.quantity}
       }
       const response = await axios.post(transaction_url, payload, { headers: auth_header })
+      console.log(response)
       transaction_uuid = response.data.data.uuid 
 
     } catch (error) {
       console.error("Error sending transaction to " + transaction_url)
+      console.error(error)
       res.sendStatus(500)
       return
     }

@@ -146,23 +146,27 @@ export default {
           const totalCosts = {}
           for (let i = 0; i < this.cart.length; i++) {
             if (!(this.cart[i].userUploader in totalCosts)) {
-              totalCosts[this.cart[i].userUploader] = 0
+              totalCosts[this.cart[i].userUploader] = {}
             }
-            totalCosts[this.cart[i].userUploader] += Number(this.cart[i].price) * this.cart[i].quantity
+            totalCosts[this.cart[i].userUploader] = {
+              amount: Number(this.cart[i].price) * this.cart[i].quantity,
+              itemName: this.cart[i].title,
+              quantity: this.cart[i].quantity
+            }
           }
           for (const [key, value] of Object.entries(totalCosts)) {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
-            console.log(userSaldo, value)
-            if (userSaldo.pendingBalance + value > userLimits.max) {
+            console.log(userSaldo, value.amount)
+            if (userSaldo.pendingBalance + value.amount > userLimits.max) {
               if (this.pendingBalanceSeller === '') {
                 this.pendingBalanceSeller = key
               } else {
                 this.pendingBalanceSeller = this.pendingBalanceSeller + ', ' + key
               }    
             }
-            if (userSaldo.totalAvailableBalance + userLimits.min + value > userLimits.max) {
-              await postNotification('sellerLimitExceeded', key, value)
+            if (userSaldo.totalAvailableBalance + userLimits.min + value.amount > userLimits.max) {
+              await postNotification('sellerLimitExceeded', key, value.amount, value.itemName, value.quantity)
               if (this.seller === '') {
                 this.seller = key
               } else {

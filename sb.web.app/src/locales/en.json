@@ -36,7 +36,7 @@
         "town": "Town/city",
         "Zip code": "Zip code",
         "billing": "Billing information",
-        "billingnamelabel": "Name",
+        "billingnamelabel": "Category",
         "contact": "Contact information",
         "emailcontactlabel": "Email",
         "telephonecontactlabel": "Phone",
@@ -179,7 +179,7 @@
         "have_sent": "has sent",
         "transfer_request": "has made a transfer request for ",
         "download_invoice": "to download the invoice.",
-        "denied_purchase": "has declined your purchase request.",
+        "denied_purchase": "has declined your purchase request for {number_of_units} units of {item_name}.",
         "denied_transfer": "has declined your transfer request.",
         "approved_purchase": " has approved your purchase request",
         "approved_transfer": " has approved your transfer request",
@@ -187,7 +187,7 @@
         "older": "Older",
         "no_notifications": "No notifications",
         "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
-        "transaction_cancelled": "{buyer_username} has cancelled their purchase.",
+        "transaction_cancelled": "{buyer_username} has cancelled their purchase for {number_of_units} units of {item_name}.",
         "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {username} about their intended transfer."
     },
     "cart": {
@@ -255,12 +255,14 @@
         "default_images": "Default Images"
     },
     "financial" : {
-    "revenue": "Revenue",
-    "today": "Today",
-    "this_week": "This Week",
-    "this_month": "This Month",
-    "this_year": "This Year"
+        "revenue": "Revenue",
+        "today": "Today",
+        "this_week": "This Week",
+        "this_month": "This Month",
+        "this_year": "This Year"
     },
+    "enable_category": "Enable Category",
+    "disable_category": "Disable Category",
     "profile_picture": "Profile picture",
     "percentage": "Percentage",
     "positive": "Positive",

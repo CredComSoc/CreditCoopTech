@@ -8,17 +8,17 @@
     <div class="main">
       <h3>{{ $t('transaction_fee') }}</h3>
       <div>
-        <input type="text" placeholder="$t('seller_percentage')">
-        <input type="text" placeholder="$t('buyer_percentage')">
+        <input type="text" :placeholder="$t('seller_percentage')">
+        <input type="text" :placeholder="$t('buyer_percentage')">
       </div>
         <h3>{{ $t('interest_rate_on_negative_balances') }}</h3>
       <div>
-        <input type="text" placeholder="$t(percentage)">
+        <input type="text" :placeholder="$t('percentage')">
       </div>
       <h3>{{ $t('default_balance_limits') }}</h3> <!-- Ska ändras till svenska -->
       <div>
-        <input type="text" placeholder="$t('positive')">
-        <input type="text" placeholder="$t('negative')">
+        <input type="text" :placeholder="$t('positive')">
+        <input type="text" :placeholder="$t('negative')">
       </div>
     </div>
   </div>
