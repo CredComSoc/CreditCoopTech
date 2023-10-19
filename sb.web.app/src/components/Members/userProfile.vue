@@ -66,8 +66,8 @@
 
 
     <PopupCard v-if="this.isBalanceSent" @closePopup="this.closePopup" :title="$t('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {'username': profileData.accountName})" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {tkn: this.tkn, accountName: profileData.accountName})" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$t('cart.insufficient_credit')" btnText="Ok" :cardText="$t('user.insufficient_sender_balance', {amount: this.tkn, 'credit_unit': this.$t('org.token'), 'credit': this.available_credit})" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$t('user.recipient_balance_too_high')" btnText="Ok" :cardText="$t('user.recipient_balance_too_high_body', {username: profileData.accountName})" />
     <PopupCard v-if="this.chatError" :title="$t('user.connectionProblemsCardText')" cardText="{{ $t('something_went_wrong') }} {{ $t('user.member_label') }}. {{ $t('try_again_later') }}." btnLink="#" btnText="Ok" />
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
     <PopupCard v-if="this.pendingBalanceLimitExceeded" :title="$t('cart.insufficient_credit')" btnLink="" btnText="Ok" :cardText="$t('cart.pending_transaction_limit_exceeded', {'total_price': this.tkn, 'credit_unit': this.$t('org.token'), 'available_credit': this.actualAvailableCreditWithPending})" />
@@ -153,8 +153,11 @@ export default {
             const userLimits = await getUserLimits(this.profileData.accountName)
             
             if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
+              // new logic to send notification even if it is a outstanding limit
+              await postNotification('sellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
-              this.pendingSellerBalanceLimitExceeded = true
+              this.tooMuchBkrMsg = true
+              // this.pendingSellerBalanceLimitExceeded = true
             } else if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
               await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()

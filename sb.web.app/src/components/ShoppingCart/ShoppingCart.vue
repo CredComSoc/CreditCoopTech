@@ -155,6 +155,8 @@ export default {
             const userLimits = await getUserLimits(key)
             console.log(userSaldo, value)
             if (userSaldo.pendingBalance + value > userLimits.max) {
+              // new logic to send notification even if it is a outstanding limit
+              await postNotification('sellerPendingLimitExceeded', key, value)
               if (this.pendingBalanceSeller === '') {
                 this.pendingBalanceSeller = key
               } else {
@@ -176,7 +178,10 @@ export default {
             return
           }
           if (this.pendingBalanceSeller) {
-            this.pendingSellerBalanceLimitExceeded = true
+            // making the error of pending balance of seller limit the same as seller general balance to high
+            this.sellerLimitError = true
+            // this.pendingSellerBalanceLimitExceeded = true
+            // create a notification logic here
             this.$refs.loadingComponent.hideLoading()
             return
           }
