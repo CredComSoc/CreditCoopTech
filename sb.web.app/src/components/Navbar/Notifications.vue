@@ -99,6 +99,14 @@
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'sellerPendingLimitExceeded'">
+                    <router-link :to="{name:'Chat'}" >
+                        <div id="new-list-content">
+                        <p class="notice-desc"> {{ $t('notifications.seller_pending_limit_exceeded', {'buyer_username': item.fromUser, total_price: item.amount, credit_unit:  $t('org.token')  }) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
                 </div>
             </div>
             <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length > 0">
@@ -185,6 +193,15 @@
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'sellerPendingLimitExceeded'">
+                    <router-link :to="{name:'Chat'}" >
+                        <div id="new-list-content">
+                        <p class="notice-desc"> {{ $t('notifications.seller_pending_limit_exceeded', {'buyer_username': item.fromUser, total_price: item.amount, credit_unit:  $t('org.token')  }) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link> 
+                    </div>
+                    
                 </div>
             </div>
             <div id="previous-notice-list" v-if="this.$store.state.oldNotifications.length === 0 && this.$store.state.newNotifications.length === 0">
