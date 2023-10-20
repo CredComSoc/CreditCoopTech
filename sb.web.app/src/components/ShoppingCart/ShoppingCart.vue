@@ -181,7 +181,6 @@ export default {
             // making the error of pending balance of seller limit the same as seller general balance to high
             this.sellerLimitError = true
             // this.pendingSellerBalanceLimitExceeded = true
-            // create a notification logic here
             this.$refs.loadingComponent.hideLoading()
             return
           }

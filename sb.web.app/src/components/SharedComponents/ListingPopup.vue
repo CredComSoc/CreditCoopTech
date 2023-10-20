@@ -161,7 +161,7 @@ export default {
       var month = date.getMonth() + 1
       var day = date.getDate()
       if (year - currentYear > 50) {
-        return 'Indefinitely'
+        return this.listingObj.status === 'offer' ? this.$i18n.t('shop_items.offer_indefinitely_available') : this.$i18n.t('shop_items.want_indefinitely_needed')
       } else {
         var formattedTime = day + '/' + month + '/' + year
         return formattedTime
