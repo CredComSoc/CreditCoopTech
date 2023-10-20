@@ -3,10 +3,14 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import rrulePlugin from '@fullcalendar/rrule'
 import { createEventId, initUserId, myUserId, initEvents, getLoadedEvents } from './event-utils'
-import { uploadEvent, deleteEvent } from '../../serverFetch'
+import { uploadEvent, deleteEvent, setEventData, updateEvent } from '../../serverFetch'
+import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import { ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
+import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
+
 /*
 The FullCalendar plugin is used to create calendar.
 Modal is used for popup windows. check Modal/Modal.vue
@@ -16,7 +20,9 @@ sb.web.app/src/serverFetch.js has function to talk to database.
 export default {
   components: {
     FullCalendar, 
-    Modal
+    Modal,
+    PopupCard,
+    LoadingComponent
   },
   setup () {
     initUserId()
@@ -31,7 +37,8 @@ export default {
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin 
+          interactionPlugin,
+          rrulePlugin
         ],
         headerToolbar: {
           left: 'prev,next today',
@@ -49,13 +56,25 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         handleInput: this.handleInput
-
       },
       currentEvents: [],
       clickedEvent: '',
       savedDate: [],
       counter: 0,
-      owner: false  
+      owner: false,
+      openCreateMeetingModal: false, 
+      eventType: '',
+      recurringType: '',
+      dayOfWeek: '',
+      dateOfMonth: '',
+      eventDate: {
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: ''
+      },
+      eventId: '',
+      timeLapsError: ''
     }
   },
   methods: {
@@ -71,11 +90,11 @@ export default {
     },
 
     //Helper function to add correct time to event.
-    timeManipulate (savedDate, variabel) { 
+    timeManipulate (savedDate, dateType) { 
       let realtime = ''     
-      if (variabel === 'End') {
+      if (dateType === 'End') {
         realtime = document.getElementById('eventTimeEnd').value + ':00'
-      } else if (variabel === 'Start') {
+      } else if (dateType === 'Start') {
         realtime = document.getElementById('eventTimeStart').value + ':00' 
       } else { realtime = '' }
       const datestring = savedDate + ' ' + realtime
@@ -98,18 +117,22 @@ export default {
 
     // Calls deleteEvent that removes event from database and then removes the evenet from calendar Api.  
     removeEvent () {
-      deleteEvent(this.clickedEvent.event.extendedProps._id)
       this.clickedEvent.event.remove()
+      deleteEvent(this.clickedEvent.event.extendedProps._id) 
     },
      
     //Creates an event and add it to both database and calendar Api. Called on by createevent modal.       
     handleInput () {
+      this.$refs.loadingComponent.showLoading()
       const calendarApi = this.savedDate.view.calendar
       calendarApi.unselect()
-
+      this.showModal = false
       this.savedDate.endStr = this.timeManipulate(this.savedDate.startStr, 'End')
       this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
 
+      if (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value) {
+        this.timeLapsError = true
+      }
       const eventId = createEventId()
       if (this.eventTitle) {
         calendarApi.addEvent({
@@ -121,23 +144,185 @@ export default {
           location: this.eventLocation,
           description: this.eventDescription,
           contact: this.eventContacts,          
-          webpage: this.eventURL, 
+          webpage: this.eventURL,
+          eventType: this.eventType,
+          recurringType: this.recurringType,
+          daysOfWeek: this.recurringType === 'weekly' ? this.dayOfWeek : null,
+          recurrenceRule: this.recurringType === 'monthly' ? 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + this.dateOfMonth : null,
           _startTime: document.getElementById('eventTimeStart').value, 
           _endTime: document.getElementById('eventTimeEnd').value          
-        })  
-
-        // UploadEvent saves event on database, is located in sb.web.app/src/serverFetch.js       
-        uploadEvent(this.eventTitle, this.savedDate.startStr, this.savedDate.endStr, this.savedDate.allDay, 
-          this.eventLocation, this.eventDescription, this.eventContacts, this.eventURL, 
-          document.getElementById('eventTimeStart').value, 
-          document.getElementById('eventTimeEnd').value).then((res) => {
-          if (res.status === 200) {
-            this.isPublished = true 
-          } else {
-            this.error = true
-          }
         }) 
+
+        const uploadEventData = {
+          title: this.eventTitle, 
+          start: this.savedDate.startStr, 
+          end: this.savedDate.endStr, 
+          allDay: this.savedDate.allDay, 
+          location: this.eventLocation, 
+          description: this.eventDescription, 
+          contacts: this.eventContacts, 
+          webpage: this.eventURL, 
+          _startTime: document.getElementById('createEventTimeStart').value, 
+          _endTime: document.getElementById('createEventTimeEnd').value,
+          eventType: 'onetime',
+          recurringType: null,
+          daysOfWeek: null,
+          recurrenceRule: null
+        } 
+
+        
+        // UploadEvent saves event on database, is located in sb.web.app/src/serverFetch.js   
+        if (this.eventId) {
+          updateEvent(this.eventId, { ...uploadEventData }).then(async (res) => {
+            if (res.status === 200) {
+              this.isPublished = true
+              this.resetData()
+              await setEventData()
+              this.calendarOptions.events = this.$store.state.allEvents
+              this.$refs.loadingComponent.hideLoading()
+            } else {
+              this.error = true
+              this.$refs.loadingComponent.hideLoading()
+            }
+          })
+        } else {
+          uploadEvent({ ...uploadEventData }).then(async (res) => {
+            if (res.status === 200) {
+              this.isPublished = true
+              this.resetData()
+              await setEventData()
+              this.calendarOptions.events = this.$store.state.allEvents
+              this.$refs.loadingComponent.hideLoading()
+            } else {
+              this.error = true
+              this.$refs.loadingComponent.hideLoading()
+            }
+          })
+        }  
       }      
+    },
+
+    createEvent () {
+      this.$refs.loadingComponent.showLoading()
+      const eventId = createEventId()
+      this.showModal = false
+      if (this.eventDate.startDate === this.eventDate.endDate && (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value)) {
+        this.timeLapsError = true
+      }
+      if (this.recurringType === 'monthly') {
+        const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth()
+        const day = date.getDate()
+        console.log(this.dateOfMonth)
+        this.eventDate.startDate = new Date(year, month, this.dateOfMonth)
+        this.eventDate.endDate = new Date(year, month, this.dateOfMonth)
+      }
+      if (this.eventTitle) {
+        const dow = [this.dayOfWeek]
+        const uploadEventData = {
+          title: this.eventTitle, 
+          start: new Date(this.eventDate.startDate), 
+          end: new Date(this.eventDate.endDate), 
+          allDay: this.savedDate.allDay, 
+          location: this.eventLocation, 
+          description: this.eventDescription, 
+          contacts: this.eventContacts, 
+          webpage: this.eventURL, 
+          _startTime: document.getElementById('createEventTimeStart').value, 
+          _endTime: document.getElementById('createEventTimeEnd').value,
+          eventType: this.eventType,
+          recurringType: this.recurringType,
+          daysOfWeek: this.recurringType === 'weekly' ? dow : null,
+          recurrenceRule: this.recurringType === 'monthly' ? 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + this.dateOfMonth : null
+        } 
+        // UploadEvent saves event on database, is located in sb.web.app/src/serverFetch.js   
+        if (this.eventId) {
+          updateEvent(this.eventId, { ...uploadEventData }).then(async (res) => {
+            if (res.status === 200) {
+              this.isPublished = true
+              this.resetData()
+              await setEventData()
+              this.calendarOptions.events = this.$store.state.allEvents
+              this.$refs.loadingComponent.hideLoading()
+            } else {
+              this.error = true
+              this.$refs.loadingComponent.hideLoading()
+            }
+          })
+        } else {
+          uploadEvent({ ...uploadEventData }).then(async (res) => {
+            if (res.status === 200) {
+              this.isPublished = true
+              this.resetData()
+              await setEventData()
+              this.calendarOptions.events = this.$store.state.allEvents
+              this.$refs.loadingComponent.hideLoading()
+            } else {
+              this.error = true
+              this.$refs.loadingComponent.hideLoading()
+            }
+          })
+        }
+      }      
+    },
+    resetData () {
+      this.eventTitle = ''
+      this.eventLocation = ''
+      this.eventContacts = ''
+      this.eventURL = ''
+      this.eventDescription = ''
+      this.eventType = ''
+      this.recurringType = ''
+      this.dayOfWeek = ''
+      this.dateOfMonth = ''
+      this.eventDate = {
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: ''
+      }
+      this.eventId = ''
+    },
+    editEvent (clickedEvent) {
+      const event = {
+        title: clickedEvent.event.title,
+        location: clickedEvent.event.extendedProps.location,
+        description: clickedEvent.event.extendedProps.description,
+        contacts: clickedEvent.event.extendedProps.contacts,
+        webpage: clickedEvent.event.extendedProps.webpage,
+        startTime: clickedEvent.event.extendedProps._startTime,
+        endTime: clickedEvent.event.extendedProps._endTime,
+        startDate: new Date(clickedEvent.event.start).toLocaleDateString('en-US', { day: 'numeric', month: 'numeric', year: 'numeric' }),
+        endDate: new Date(clickedEvent.event.end).toLocaleDateString('en-US', { day: 'numeric', month: 'numeric', year: 'numeric' }),
+        eventType: clickedEvent.event.extendedProps.eventType,
+        recurringType: clickedEvent.event.extendedProps.recurringType,
+        daysOfWeek: clickedEvent.event.extendedProps.daysOfWeek,
+        recurrenceRule: clickedEvent.event.extendedProps.recurrenceRule,
+        _id: clickedEvent.event.extendedProps._id
+      }
+      if (event.recurringType || event.startDate !== event.endDate) {
+        this.openCreateMeetingModal = true
+      } else {
+        this.collectInfoModal = true
+      }
+      
+      this.eventTitle = clickedEvent.event.title
+      this.eventLocation = clickedEvent.event.extendedProps.location
+      this.eventContacts = clickedEvent.event.extendedProps.contacts
+      this.eventURL = clickedEvent.event.extendedProps.webpage
+      this.eventDescription = clickedEvent.event.extendedProps.description
+      this.eventType = clickedEvent.event.extendedProps.eventType
+      this.recurringType = clickedEvent.event.extendedProps.recurringType
+      this.dayOfWeek = clickedEvent.event.extendedProps.dow
+      this.dateOfMonth = clickedEvent.event.extendedProps.recurrenceRule
+      this.eventDate.startDate = new Date(clickedEvent.event.start).toISOString().split('T')[0]
+      this.eventDate.endDate = new Date (clickedEvent.event.end).toISOString().split('T')[0]
+      this.eventDate.startTime = clickedEvent.event.extendedProps._startTime
+      this.eventDate.endTime = clickedEvent.event.extendedProps._endTime
+      this.eventId = clickedEvent.event.extendedProps._id
+      console.log(this.eventDate.startDate, this.eventDate.endDate, clickedEvent.event.start.toISOString(), clickedEvent.event.end)
+      // set the modal data and change the event submit button to edit event and create endpoint to update the event.
     }
   } 
 }
@@ -174,6 +359,9 @@ export default {
         </ul>
         </div>
     </div>
+    <div>
+      <button class="create_event" @click="resetData(); openCreateMeetingModal = true">{{$t('event.create_event')}}</button>
+    </div>
     <div class='demo-app-main'>
         <FullCalendar
         class='demo-app-calendar'
@@ -185,7 +373,7 @@ export default {
         </template>
         </FullCalendar>
     <!-- Modal to show events   -->
-    <Modal :open="showModal" @close="showModal = !showModal">        
+    <Modal :open="showModal" :displayCloseButton="false" @close="showModal = !showModal">        
       <h4 v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.title}} </h4>
       <b> {{ $t('location') }}: </b>  <template v-if="this.clickedEvent.event != null"> {{this.clickedEvent.event.extendedProps.location}} </template>            
       <br><b>{{ $t('event.start') }}:</b> <template v-if="this.clickedEvent.event != null">{{this.clickedEvent.event.extendedProps._startTime}}  </template>
@@ -194,7 +382,8 @@ export default {
       <br><b>{{ $t('event.url') }}: </b> <template v-if="this.clickedEvent.event != null"><a :href=" 'http://'+this.clickedEvent.event.extendedProps.webpage">{{this.clickedEvent.event.extendedProps.webpage}}</a>  </template>
       <br>
       <br>          
-      <button v-if="owner" class="button-modal" @click="removeEvent ()">{{ $t('delete') }}</button>
+      <button v-if="owner" class="button-modal-delete" @click="removeEvent(); showModal = false">{{$t('event.delete_event')}}</button> 
+      <button v-if="owner" class="button-modal-edit" @click="editEvent (this.clickedEvent)">{{$t('event.edit_event')}}</button>
     </Modal> 
 
     <!-- Modal to create events   -->
@@ -204,28 +393,106 @@ export default {
           <br><input v-model="eventTitle" placeholder="Title"/> 
         </p>
         <p> {{ $t('event.event_loc') }}: 
-          <br><input v-model="eventLocation" placeholder="Plats" /> 
+          <br><input v-model="eventLocation" :placeholder="$t('place')" /> 
         </p>
         <p> {{ $t('event.contact') }}:
-          <br><input v-model="eventContacts" placeholder="{{ $t('event.event_contact') }}" />
+          <br><input v-model="eventContacts" :placeholder=" $t('event.event_contact') " />
         </p>
         <p> {{ $t('event.url') }}: {{eventURL}} 
           <br><input v-model="eventURL" placeholder="URL" />
         </p>
         <p> {{ $t('event.event_description') }}:  
-          <br><textarea v-model="eventDescription" placeholder="{{ $t('description') }}"> </textarea>
+          <br><textarea v-model="eventDescription" :placeholder=" $t('description')"> </textarea>
         </p>
         <p> 
           {{ $t('event.choose_start') }}: 
-          <input type='time' id='eventTimeStart' name="EventTimeStart"/>
+          <input type='time' id='eventTimeStart' v-model="eventDate.startTime" name="EventTimeStart"/>
           {{ $t('event.choose_end') }}: 
-          <input type='time' id='eventTimeEnd' name="EventTimeEnd"/>
+          <input type='time' id='eventTimeEnd' :min="eventDate.startTime" v-model="eventDate.endTime" name="EventTimeEnd"/>
         </p>          
       </div>
-      <button @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal"> {{ $t('event.create_event') }}</button>
+      <button v-if="!this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal-create"> {{ $t('event.create_event') }}</button>
+      <button v-if="this.eventId" @click="handleInput(); collectInfoModal = !collectInfoModal" class="button-modal-edit-submit"> {{ $t('event.edit_event') }}</button>
     </Modal> 
 
+    <Modal :open="openCreateMeetingModal" @close="openCreateMeetingModal = false">
+      <div>
+        <p> {{ $t('event.event_name') }}: 
+          <br><input v-model="eventTitle" placeholder="Title"/> 
+        </p>
+        <p> {{ $t('event.event_loc') }}: 
+          <br><input v-model="eventLocation" :placeholder="$t('place')" /> 
+        </p>
+        <p> {{ $t('event.contact') }}:
+          <br><input v-model="eventContacts" :placeholder=" $t('event.event_contact') " />
+        </p>
+        <p> {{ $t('event.url') }}: {{eventURL}} 
+          <br><input v-model="eventURL" placeholder="URL" />
+        </p>
+        <p> {{ $t('event.event_description') }}:  
+          <br><textarea v-model="eventDescription" :placeholder=" $t('description')"> </textarea>
+        </p>
+        <span> {{ $t('event.event_type') }}: 
+          <br>
+          <select v-model="eventType" id="payment-type" name="payment-type" :placeholder="$t('event.event_type')">
+            <option value="recurring">{{$t('event.recurring')}}</option>
+            <option value="onetime">{{$t('event.one_time')}}</option>
+          </select>
+        </span>
+        <span v-if="eventType == 'recurring'"> {{ $t('event.recursion_type') }}: 
+          <select v-model="recurringType" id="payment-type" name="payment-type" :placeholder="$t('event.event_type')">
+            <option value="weekly">{{$t('event.weekly')}}</option>
+            <option value="monthly">{{$t('event.monthly')}}</option>
+          </select>
+        </span>
+        <p v-if="recurringType == 'weekly'">
+          {{ $t('event.select_day') }}
+          <br/>
+          <select v-model="dayOfWeek" id="day-selector">
+            <option value="1">{{$t('Monday')}}</option>
+            <option value="2">{{$t('Tuesday')}}</option>
+            <option value="3">{{$t('Wednesday')}}</option>
+            <option value="4">{{$t('Thursday')}}</option>
+            <option value="5">{{$t('Friday')}}</option>
+            <option value="6">{{$t('Saturday')}}</option>
+            <option value="0">{{$t('Sunday')}}</option>
+          </select>
+        </p>
+        <p v-if="recurringType == 'monthly'">
+          {{$t('event.recurring_Date')}}
+          <input id='dateOfMonth' name="dateOfMonth" v-model="dateOfMonth" :placeholder="$t('event.recurring_Date')"/>
+        </p>
+        <p>
+          <span v-if="eventType != 'recurring'"> 
+          {{ $t('event.choose_start') }}: 
+          <input type='date' id='createEventDateStart' name="createEventDateStart" v-model="eventDate.startDate"/>
+          </span>
+          <span>
+          {{ $t('event.choose_start') }}: 
+          <input type='time' id='createEventTimeStart' name="createEventTimeStart" v-model="eventDate.startTime"/>
+          </span>
+          
+        </p>    
+        <p> 
+          <span v-if="eventType != 'recurring'"> 
+          {{ $t('event.choose_end') }}: 
+          <input type='date' id='createEventDateEnd' name="createEventDateEnd" v-model="eventDate.endDate"/>
+          </span>
+          <span>
+          {{ $t('event.choose_end') }}: 
+          <input type='time' id='createEventTimeEnd' name="createEventTimeEnd" v-model="eventDate.endTime"/>
+          </span>
+          
+        </p>         
+      </div>
+      <button v-if="!this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal-create"> {{ $t('event.create_event') }}</button>
+      <button v-if="this.eventId" @click="createEvent(); openCreateMeetingModal = false" class="button-modal-edit-submit"> {{ $t('event.edit_event') }}</button>
+    </Modal>
+
     </div>
+        <PopupCard v-if="this.timeLapsError" :title="$t('event.time_error')" btnLink="/" btnText="Ok" :cardText="$t('event.time_error_body')"/>
+        <LoadingComponent ref="loadingComponent" />
+
   </div>
 </template>
 
@@ -269,11 +536,59 @@ b { /* used for event dates/times */
     margin: 0 auto;
 }
 
-.button-modal {
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 0.3rem;
-  padding: 0.2rem;
+.button-modal-delete {
+  background-color: #f44336; /* Red */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
+.button-modal-edit {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.button-modal-create {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.button-modal-edit-submit {
+  background-color: #babd37; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 
 .modal-split {
   height: 100%;
@@ -293,6 +608,17 @@ background-color: red;
 .modal-left{
 left: 0;
 background-color: green;
+}
+.create_event {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
 }
 </style>
 

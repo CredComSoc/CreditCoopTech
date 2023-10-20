@@ -1289,19 +1289,10 @@ module.exports = function() {
     if (!req.isAuthenticated()) {
       res.sendStatus(401)
     } else {
-            
-      let newEvent = {
-        title: req.body.title,
-        start: new Date(req.body.eventstart),
-        end: new Date(req.body.eventend),
-        allDay: req.body.eventallDay,
-        location: req.body.location,
-        description: req.body.description,
-        contacts: req.body.contacts,
-        webpage: req.body.webpage,
-        _startTime: req.body._startTime,
-        _endTime: req.body._endTime,
-      }
+            let newEvent = req.body
+      // let newEvent = {
+      //  ...data
+      // }
       
       const user = await getUser({'profile.accountName': req.user})
       if (user) {
@@ -1357,6 +1348,18 @@ module.exports = function() {
       })
     })
   })
+  router.get("/event/all", (req, res) => {
+    try {
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        const events = await dbo.collection("events").find({}).toArray()
+        res.status(200).send(events)
+      })
+    } catch (ex) {
+      res.status(400).send({ error: 'Error while fetching events data' })
+      console.log(ex)
+    }
+  });
 
 
   /*****************************************************************************
@@ -1670,6 +1673,24 @@ module.exports = function() {
     } catch (ex) {
       res.status(400).send({ error: 'Error while fetching user balance information' })
       console.log(ex)
+    }
+  });
+  router.put('/event/:id', async (req, res) => {
+    try {
+      const eventId = req.params.id;
+      const eventUpdates = req.body;
+      MongoClient.connect(dbUrl, async (err, db) => {
+        let dbo = db.db(dbFolder);
+        const result = await dbo.collection('events').updateOne({ _id: ObjectId(eventId) }, { $set: eventUpdates });
+        if (result.modifiedCount === 1) {
+          res.status(200).send({ message: 'Event updated successfully' });
+        } else {
+          res.status(400).send({ error: 'Failed to update event' });
+        }
+      });
+    } catch (ex) {
+      console.log(ex);
+      res.status(500).send({ error: ex });
     }
   });
 

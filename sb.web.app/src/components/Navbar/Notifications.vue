@@ -163,7 +163,7 @@
                     <div v-if="item.type == 'sellerLimitExceeded'">
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
-                        <p class="notice-desc"> {{ $t('notifications.seller_limit_exceeded', {'buyer_username': item.fromUser, total_price: item.amount, unit_price:  $t('org.token')  }) }}</p>
+                        <p class="notice-desc"> {{ $t('notifications.seller_limit_exceeded', {'buyer_username': item.fromUser, total_price: item.amount, credit_unit:  $t('org.token')  }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 

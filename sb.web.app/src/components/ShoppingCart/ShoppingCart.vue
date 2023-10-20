@@ -177,6 +177,7 @@ export default {
           }
           if (this.pendingBalanceSeller) {
             this.pendingSellerBalanceLimitExceeded = true
+            // create a notification logic here
             this.$refs.loadingComponent.hideLoading()
             return
           }
