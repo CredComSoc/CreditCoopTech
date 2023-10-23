@@ -154,7 +154,7 @@ export default {
             
             if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
               // new logic to send notification even if it is a outstanding limit
-              await postNotification('sellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
+              await postNotification('sendBalanceSellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
               this.tooMuchBkrMsg = true
               // this.pendingSellerBalanceLimitExceeded = true
