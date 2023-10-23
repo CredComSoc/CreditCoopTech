@@ -297,6 +297,14 @@ export default {
           productOrService.classList.remove('combobox-active')
         }
       }
+      const city = document.getElementById('city-new-article')
+      const innerCityBox = document.getElementById('city-new-article' + '-dropdown')
+      if (box) {
+        if ($event.target.id !== 'city-new-article' && $event.target.id !== 'city-new-article' + '-combo-placeholder' && $event.target.id !== 'city-new-article' + '-dropdown') {
+          innerCityBox.style.display = 'none'
+          city.classList.remove('combobox-active')
+        }
+      }
     }
   }
 }
