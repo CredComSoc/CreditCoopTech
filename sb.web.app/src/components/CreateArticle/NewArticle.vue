@@ -291,7 +291,7 @@ export default {
       }
       const productOrService = document.getElementById('articale-type')
       const innerBox = document.getElementById('articale-type' + '-dropdown')
-      if (box) {
+      if (innerBox) {
         if ($event.target.id !== 'articale-type' && $event.target.id !== 'articale-type' + '-combo-placeholder' && $event.target.id !== 'articale-type' + '-dropdown') {
           innerBox.style.display = 'none'
           productOrService.classList.remove('combobox-active')
@@ -299,7 +299,7 @@ export default {
       }
       const city = document.getElementById('city-new-article')
       const innerCityBox = document.getElementById('city-new-article' + '-dropdown')
-      if (box) {
+      if (innerCityBox) {
         if ($event.target.id !== 'city-new-article' && $event.target.id !== 'city-new-article' + '-combo-placeholder' && $event.target.id !== 'city-new-article' + '-dropdown') {
           innerCityBox.style.display = 'none'
           city.classList.remove('combobox-active')
