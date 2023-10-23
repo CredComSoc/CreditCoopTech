@@ -54,7 +54,7 @@
               <span class="mob-cap">  {{ $t('nav.members') }}  </span>
             </router-link>
           </div>
-          <div id="navbar-faq" @mouseover="displayFAQDropdown" class="navlogo">
+          <div id="navbar-faq" @mouseover="displayFAQDropdown" @mouseout="removeDropDown()" class="navlogo">
             <div id="faq-dropdown" class="dropdown"></div>
             <router-link :to="{name:'FAQ', params:{tab: 'faq'}}">
               <figure id="faq-logo" @mouseover="highlightFAQLogo" class="logo-click">
@@ -101,11 +101,11 @@
             </router-link>
           </div>
 
-          <div id="navbar-profile" @mouseover="displayDropdown" class="navlogo">
+          <div id="navbar-profile" @mouseover="displayDropdown" @mouseout="removeDropDown()" class="navlogo">
               <div id="profile-dropdown" class="dropdown">
                 <router-link :to="{name:'Profile', params:{tab: 'profile'}}">
                   <figure id="profile-logo" @mouseover="highlightLogo" class="logo-click">
-                    <img src="../../assets/navbar_logos/profile.png" alt="profil knapp"/>
+                    <img src="../../assets/navbar_logos/profile.png"/>
                     <figcaption class="l-text">  {{ $t('nav.my_account') }}  </figcaption>
                   </figure>
                 </router-link>
@@ -299,6 +299,12 @@ export default {
         const content = document.getElementById('profile-content')
         content.style.display = 'block'
       }
+    },
+    removeDropDown () {
+      const contentProfile = document.getElementById('profile-content')
+      contentProfile.style.display = 'none'
+      const contentFAQ = document.getElementById('faq-content')
+      contentFAQ.style.display = 'none'
     },
 
     highlightFAQLogo () {
