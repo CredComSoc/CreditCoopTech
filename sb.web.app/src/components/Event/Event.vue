@@ -116,9 +116,12 @@ export default {
     },
 
     // Calls deleteEvent that removes event from database and then removes the evenet from calendar Api.  
-    removeEvent () {
+    async removeEvent () {
+      this.$refs.loadingComponent.showLoading()
       this.clickedEvent.event.remove()
-      deleteEvent(this.clickedEvent.event.extendedProps._id) 
+      await deleteEvent(this.clickedEvent.event.extendedProps._id) 
+      await setEventData()
+      this.$refs.loadingComponent.hideLoading()
     },
      
     //Creates an event and add it to both database and calendar Api. Called on by createevent modal.       
@@ -131,28 +134,11 @@ export default {
       this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
 
       if (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value) {
+        this.$refs.loadingComponent.hideLoading()
         this.timeLapsError = true
       }
       const eventId = createEventId()
       if (this.eventTitle) {
-        calendarApi.addEvent({
-          id: eventId,
-          title: this.eventTitle,
-          start: this.savedDate.startStr,
-          end: this.savedDate.endStr,
-          allDay: this.savedDate.allDay,
-          location: this.eventLocation,
-          description: this.eventDescription,
-          contact: this.eventContacts,          
-          webpage: this.eventURL,
-          eventType: this.eventType,
-          recurringType: this.recurringType,
-          daysOfWeek: this.recurringType === 'weekly' ? this.dayOfWeek : null,
-          recurrenceRule: this.recurringType === 'monthly' ? 'RRULE:FREQ=MONTHLY;BYMONTHDAY=' + this.dateOfMonth : null,
-          _startTime: document.getElementById('eventTimeStart').value, 
-          _endTime: document.getElementById('eventTimeEnd').value          
-        }) 
-
         const uploadEventData = {
           title: this.eventTitle, 
           start: this.savedDate.startStr, 
@@ -207,6 +193,7 @@ export default {
       const eventId = createEventId()
       this.showModal = false
       if (this.eventDate.startDate === this.eventDate.endDate && (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value)) {
+        this.$refs.loadingComponent.hideLoading()
         this.timeLapsError = true
       }
       if (this.recurringType === 'monthly') {
