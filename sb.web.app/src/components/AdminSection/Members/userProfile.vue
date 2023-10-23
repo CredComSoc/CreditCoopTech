@@ -2,8 +2,8 @@
   <div>
     <div className="flexbox-container2 flexbox-item" v-if="!edit">
       <div className="image container-item">
-        <img id="profile-img" v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="profileData.logo" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="!profileData.logo" src="@/assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
         <h5 >{{ $t('user.last_online')}}:</h5>
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
