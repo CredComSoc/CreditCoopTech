@@ -284,10 +284,17 @@ export default {
       const outerBox = document.getElementById('butOrSell-type')
       const box = document.getElementById('butOrSell-type' + '-dropdown')
       if (box) {
-        console.log('here', $event.target.id)
         if ($event.target.id !== 'butOrSell-type' && $event.target.id !== 'butOrSell-type' + '-combo-placeholder' && $event.target.id !== 'butOrSell-type' + '-dropdown') {
           box.style.display = 'none'
           outerBox.classList.remove('combobox-active')
+        }
+      }
+      const productOrService = document.getElementById('articale-type')
+      const innerBox = document.getElementById('articale-type' + '-dropdown')
+      if (box) {
+        if ($event.target.id !== 'articale-type' && $event.target.id !== 'articale-type' + '-combo-placeholder' && $event.target.id !== 'articale-type' + '-dropdown') {
+          innerBox.style.display = 'none'
+          productOrService.classList.remove('combobox-active')
         }
       }
     }
