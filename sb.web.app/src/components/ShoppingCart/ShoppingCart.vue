@@ -131,10 +131,9 @@ export default {
     async completePurchase () {
       this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
-        console.log(this.total)
         this.availableBalance = res.totalAvailableBalance
         
-        if (res.totalAvailableBalance > this.total) {
+        if (res.totalAvailableBalance >= this.total) {
           console.log(res.pendingBalance, this.total, this.$store.state.user.min_limit)
           // very tricky logic. More knowledge of /saldo endpoint to understand
           if ((-res.pendingBalance) + this.total > (-this.$store.state.user.min_limit)) {
@@ -153,22 +152,20 @@ export default {
           for (const [key, value] of Object.entries(totalCosts)) {
             const userSaldo = await getUserAvailableBalance(key)
             const userLimits = await getUserLimits(key)
-            console.log(userSaldo, value)
-            if (userSaldo.pendingBalance + value > userLimits.max) {
-              // new logic to send notification even if it is a outstanding limit
-              await postNotification('sellerPendingLimitExceeded', key, value)
-              if (this.pendingBalanceSeller === '') {
-                this.pendingBalanceSeller = key
-              } else {
-                this.pendingBalanceSeller = this.pendingBalanceSeller + ', ' + key
-              }    
-            }
             if (userSaldo.totalAvailableBalance + userLimits.min + value > userLimits.max) {
               await postNotification('sellerLimitExceeded', key, value)
               if (this.seller === '') {
                 this.seller = key
               } else {
                 this.seller = this.seller + ', ' + key
+              }    
+            } else if (userSaldo.pendingBalance + value > userLimits.max) {
+              // new logic to send notification even if it is a outstanding limit
+              await postNotification('sellerPendingLimitExceeded', key, value)
+              if (this.pendingBalanceSeller === '') {
+                this.pendingBalanceSeller = key
+              } else {
+                this.pendingBalanceSeller = this.pendingBalanceSeller + ', ' + key
               }    
             }
           }

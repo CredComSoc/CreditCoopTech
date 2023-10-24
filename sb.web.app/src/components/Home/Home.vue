@@ -25,8 +25,8 @@ export default {
       members: []
     }
   },
-  mounted: function () {
-    setCartData() //setting cart data on home page load because setting the cart data is removed from the main setData endpoint
+  mounted: async function () {
+    await setCartData() //setting cart data on home page load because setting the cart data is removed from the main setData endpoint
 
     this.shop = this.$store.state.allArticles
     this.members = this.$store.state.allMembers
