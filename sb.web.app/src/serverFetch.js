@@ -76,6 +76,7 @@ export async function logout () {
     },
     credentials: 'include'
   })
+  window.localStorage.removeItem('vuex')
   return true
 }
 
