@@ -418,8 +418,8 @@ export async function postNotification (type, user, amount = 0, itemName = '', i
     fromUser: '',
     seen: false,
     amount: amount,
-    item_name: itemName,
-    item_count: itemCount
+    itemName: itemName,
+    itemCount: itemCount
   }
   const promise = await fetch(EXPRESS_URL + '/notification', {
     method: 'POST',
