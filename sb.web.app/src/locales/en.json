@@ -99,7 +99,20 @@
         "choose_start": "Choose start time",
         "choose_end": "Choose end time",
         "create_event": "Create event",
-        "event_description": "Event description"
+        "event_description": "Event description",
+         "contact": "Contact Details",
+         "delete_event": "Delete Event",
+         "edit_event": "Edit Event",
+         "one_time": "One-time",
+         "recurring": "Recurring",
+         "weekly": "Weekly",
+         "monthly": "Monthly",
+         "select_day": "Select days",
+         "recurring_Date": "Date of recurring",
+         "event_type": "Event type",
+         "recursion_type": "Recursion type",
+         "time_error": "Invalid Time input",
+         "time_error_body": "Selected end time can not be less than selected start time"
     },
     "time": {
         "now": "Now",
@@ -107,7 +120,14 @@
         "yesterday": "Yesterday",
         "never": "Never",
         "days_ago": "days ago",
-        "time": "Time"
+        "time": "Time",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
     },
     "nav": {
         "shop": "Shop",
@@ -187,8 +207,11 @@
         "older": "Older",
         "no_notifications": "No notifications",
         "seller_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
+
         "transaction_cancelled": "{buyer_username} has cancelled their purchase for {number_of_units} units of {item_name}.",
-        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {username} about their intended transfer."
+        "send_balance_seller_balance_too_high": "{username} initiated a transfer request with you for transfer {amount} {credit_unit}, but this could not be processed as it would have taken you beyond your positive credit limit. Please consider following up with {username} about their intended transfer.",
+        "seller_pending_limit_exceeded": "{buyer_username} initiated a purchase request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken your balance plus the sum of your outstanding purchase/transfer requests beyond your positive credit limit. Please consider following up with {buyer_username} about their intended purchase.",
+        "send_balance_seller_pending_limit_exceeded": "{buyer_username} initiated a transfer request with you for {total_price} {credit_unit}, but this could not be processed as it would have taken your balance plus the sum of your outstanding purchase/transfer requests beyond your positive credit limit. Please consider following up with {buyer_username} about their intended transfer."
     },
     "cart": {
         "cart": "cart",
@@ -379,7 +402,7 @@
     "confirm_item_removal":  "Confirm item removal",
     "confirm_item_removal_text": "Are you sure you want to remove this item from the Marketplace?",
     "confirm_item_activation":  "Confirm item activation",
-    "confirm_item_activation_text": "Are you sure you want to activate this item?",
+    "confirm_item_activation_text": "Are you sure you want to activate this item? If so, remember to edit the dates for which it is available after you have done so!",
     "wanted_by": "Wanted by",
     "available_until": "Available until",
     "reset_password": "Reset Password",

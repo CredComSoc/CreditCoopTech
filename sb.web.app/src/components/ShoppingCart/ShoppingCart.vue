@@ -131,10 +131,9 @@ export default {
     async completePurchase () {
       this.$refs.loadingComponent.showLoading()
       getAvailableBalance().then(async (res) => { //saldo(cc-node) + creditline (min_limit in database)
-        console.log(this.total)
         this.availableBalance = res.totalAvailableBalance
         
-        if (res.totalAvailableBalance > this.total) {
+        if (res.totalAvailableBalance >= this.total) {
           console.log(res.pendingBalance, this.total, this.$store.state.user.min_limit)
           // very tricky logic. More knowledge of /saldo endpoint to understand
           if ((-res.pendingBalance) + this.total > (-this.$store.state.user.min_limit)) {
@@ -172,6 +171,14 @@ export default {
               } else {
                 this.seller = this.seller + ', ' + key
               }    
+            } else if (userSaldo.pendingBalance + value.amount > userLimits.max) {
+              // new logic to send notification even if it is a outstanding limit
+              await postNotification('sellerPendingLimitExceeded', key, value.amount, value.itemName, value.quantity)
+              if (this.pendingBalanceSeller === '') {
+                this.pendingBalanceSeller = key
+              } else {
+                this.pendingBalanceSeller = this.pendingBalanceSeller + ', ' + key
+              }    
             }
           }
           if (this.seller) {
@@ -180,7 +187,9 @@ export default {
             return
           }
           if (this.pendingBalanceSeller) {
-            this.pendingSellerBalanceLimitExceeded = true
+            // making the error of pending balance of seller limit the same as seller general balance to high
+            this.sellerLimitError = true
+            // this.pendingSellerBalanceLimitExceeded = true
             this.$refs.loadingComponent.hideLoading()
             return
           }

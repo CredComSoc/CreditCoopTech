@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="removeDropDownElements($event)">
   <div>
     <h2 v-if="!this.$route.path.includes('edit')" class="center-text">{{ $t('shop_items.new_article') }}</h2>
     <h2 v-else class="center-text">{{ $t('shop_items.edit_article') }}</h2>
@@ -278,6 +278,32 @@ export default {
         default:
           this.newArticle['end-date'] += ' 24:00:00'
           break 
+      }
+    },
+    removeDropDownElements ($event) {
+      const outerBox = document.getElementById('butOrSell-type')
+      const box = document.getElementById('butOrSell-type' + '-dropdown')
+      if (box) {
+        if ($event.target.id !== 'butOrSell-type' && $event.target.id !== 'butOrSell-type' + '-combo-placeholder' && $event.target.id !== 'butOrSell-type' + '-dropdown') {
+          box.style.display = 'none'
+          outerBox.classList.remove('combobox-active')
+        }
+      }
+      const productOrService = document.getElementById('articale-type')
+      const innerBox = document.getElementById('articale-type' + '-dropdown')
+      if (innerBox) {
+        if ($event.target.id !== 'articale-type' && $event.target.id !== 'articale-type' + '-combo-placeholder' && $event.target.id !== 'articale-type' + '-dropdown') {
+          innerBox.style.display = 'none'
+          productOrService.classList.remove('combobox-active')
+        }
+      }
+      const city = document.getElementById('city-new-article')
+      const innerCityBox = document.getElementById('city-new-article' + '-dropdown')
+      if (innerCityBox) {
+        if ($event.target.id !== 'city-new-article' && $event.target.id !== 'city-new-article' + '-combo-placeholder' && $event.target.id !== 'city-new-article' + '-dropdown') {
+          innerCityBox.style.display = 'none'
+          city.classList.remove('combobox-active')
+        }
       }
     }
   }

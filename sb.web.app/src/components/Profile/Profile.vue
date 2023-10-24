@@ -134,8 +134,6 @@ export default {
 }
 
 .mobnav {
-  position: sticky;
-  z-index: 5;
   height: fit-content;
   overflow: inherit;
   top: 130px;
