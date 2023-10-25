@@ -2,7 +2,7 @@
     <div>
         <button class="add_button">
             <router-link :to="{name:'AddCategories'}" >
-                {{$t('add_category')}}
+                {{$t('user.add_category')}}
             </router-link>
             </button>
       <table>
@@ -12,7 +12,7 @@
 
             </th>
             <th >
-              {{ $t('billingnamelabel') }}
+              {{ $t('user.billingnamelabel') }}
             </th>
             <th>
               {{ $t('is_active') }}
@@ -32,8 +32,8 @@
                 {{ item.isActive ? 'True': 'False' }}
             </td>
             <td>
-                <button v-if="item.isActive" @click="updateCategories(item['_id'], false)" title="Disable Category" class="fa fa-ban disable-button"></button>
-                <button v-if="!item.isActive" @click="updateCategories(item['_id'], true)" title="Enable Category" class="fa fa-check enable-button"></button>
+                <button v-if="item.isActive" @click="updateCategories(item['_id'], false)" title="$t('disable_category')" class="fa fa-ban disable-button"></button>
+                <button v-if="!item.isActive" @click="updateCategories(item['_id'], true)" title="$t('enable_category')" class="fa fa-check enable-button"></button>
             </td>
           </tr>
         </tbody>

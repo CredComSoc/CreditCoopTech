@@ -8,7 +8,7 @@
         <h5 >{{ getOnlineStatus() }}</h5>
         <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
         <button @click="edit = !edit" id="edit-btn">
-          <span v-html="$t('edit_user')"></span>
+          <span v-html="$t('user.edit_user')"></span>
          </button>
       </div>
 
@@ -58,7 +58,7 @@
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
           <h1>{{ $t('user.general_information') }}</h1>
-          <label for="logo">Logotyp:</label><br/>
+          <label for="logo">{{ $t('user.profile_picture') }}</label><br/>
           <div class="image">
           <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
           <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t(user.alt_profile_logo)" style="object-fit:contain;max-width:120px;max-height:120px;">

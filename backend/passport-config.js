@@ -14,7 +14,6 @@ const { MongoClient } = require("mongodb");
 
       await client.connect();
       const result = await client.db().collection("users").findOne({ email, password });
-      console.log('In authenticate user');
 
       if (result != null) {
         return done(null, result);

@@ -300,7 +300,7 @@ module.exports = function() {
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error.response.data)
         errors.push("Error processing  CC_NODE events")
       }
       
@@ -975,8 +975,7 @@ module.exports = function() {
   router.get("/notifications/byUser", (req, res) => {
     try {
       MongoClient.connect(dbUrl, (err, db) => {
-        let dbo = db.db(dbFolder);
-        // TODO: Fix this when eugene creates a new notification table so get that information to from that table
+        let dbo = db.db(dbFolder);  // { "toUser": req.user }
         const notifications = dbo.collection("notifications").find({ "toUser": req.user }).toArray(function (err, result) {
           if (err) {
             db.close();

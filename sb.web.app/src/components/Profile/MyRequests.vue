@@ -19,7 +19,7 @@
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
         <td id="buttons">
-          <button @click="cancel(item.uuid, item.entries[0].payer, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
+          <button @click="cancel(item.uuid, item, index)" style="background-color: red;"> {{ $t('user.cancelLabel') }} </button>
           <button @click="accept(item.uuid, item.entries[0].payer, index, item.entries[0].quant)" style="background-color: green;"> {{ $t('user.approveLabel') }} </button>
         </td>
 
@@ -63,10 +63,15 @@ export default {
     }
   },
   methods: {
-    cancel (id, payer, index) {
+    cancel (id, item, index) {
       this.statusSwap(index, this.$i18n.t('declined'), 'red')
       cancelRequest(id)
-      postNotification('saleRequestDenied', payer)
+      const payer = item.entries[0].payer
+      const item_count = item.entries[0].metadata.quantity
+      const amount = item.entries[0].quant
+      const item_data = getListing(item)
+      const item_name = item_data.title
+      postNotification('saleRequestDenied', payer, amount, item_name, item_count)
     },
 
     accept (id, payer, index, cost) {

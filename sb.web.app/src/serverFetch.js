@@ -411,14 +411,16 @@ export async function sendMoney (amount, comment, payee) {
  *                 
  *****************************************************************************/
 
-export async function postNotification (type, user, amount = 0) {
+export async function postNotification (type, user, amount = 0, itemName = '', itemCount = 1) {
   const data = { 
     date: '',
     type: type,
     toUser: user,
     fromUser: '',
     seen: false,
-    amount: amount
+    amount: amount,
+    itemName: itemName,
+    itemCount: itemCount
   }
   const promise = await fetch(EXPRESS_URL + '/notification', {
     method: 'POST',

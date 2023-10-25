@@ -80,7 +80,7 @@ const routes = [
     props: true
   },
   {
-    path: '/profile',
+    path: '/profile/:tab',
     name: 'Profile',
     component: Profile,
     props: true

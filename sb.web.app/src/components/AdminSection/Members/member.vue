@@ -11,7 +11,7 @@ do not match the equivalent of the database.
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
-        <h5 class="element-text one">Balance: <br/>{{ getBalance() }}</h5>
+        <h5 class="element-text one">Balance: <br/>{{ balance }}</h5>
         <h5 class="element-text two">Online: <br/>{{ getOnlineStatus() }}</h5>
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
         <div class="button-container">
@@ -40,12 +40,17 @@ export default {
   props: {
     listingObj: Object
   },
+  data () {
+    return {
+      balance: ''
+    }
+  },
   methods: {
     async getBalance () {
       const saldo = await getUserSaldo(this.listingObj)
       const balance = saldo.completed.balance
       const currency = this.$i18n.t('org.tkn')
-      return `${balance} ${currency}`
+      this.balance = `${balance} ${currency}`
     },
     getImgURL () {
       return EXPRESS_URL + '/image/' + this.listingObj.logo
@@ -71,8 +76,18 @@ export default {
     userselected () {
       this.$emit('openProfile', { name: this.listingObj.accountName })
     }
+  },
+  created () {
+    (async () => {
+      try {
+        await this.getBalance()
+      } catch (error) {
+        console.error('Error in getting member balance: \n', error)
+      }
+    })()
   }
 }
+
 </script>
 
 <style scoped>
