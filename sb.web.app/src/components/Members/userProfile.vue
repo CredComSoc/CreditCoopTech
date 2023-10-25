@@ -151,18 +151,17 @@ export default {
           } else {
             const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
             const userLimits = await getUserLimits(this.profileData.accountName)
-            
-            if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
+            if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
+              await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
+              this.$refs.loadingComponent.hideLoading()
+              // receiver balance too high
+              this.tooMuchBkrMsg = true
+            } else if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
               // new logic to send notification even if it is a outstanding limit
               await postNotification('sendBalanceSellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
               this.tooMuchBkrMsg = true
               // this.pendingSellerBalanceLimitExceeded = true
-            } else if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
-              await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
-              this.$refs.loadingComponent.hideLoading()
-              // receiver balance too high
-              this.tooMuchBkrMsg = true
             } else {
               await sendMoney(this.tkn, this.comment, this.profileData.accountName)
               await postNotification('sendRequest', this.profileData.accountName, this.tkn)
