@@ -77,6 +77,11 @@ export default {
       timeLapsError: ''
     }
   },
+  async mounted () {
+    await setEventData()
+    this.calendarOptions.events = this.$store.state.allEvents
+  },
+
   methods: {
     handleWeekendsToggle () {
       this.calendarOptions.weekends = !this.calendarOptions.weekends 
@@ -87,6 +92,7 @@ export default {
       selectInfo.allDay = false       
       this.savedDate = selectInfo
       this.collectInfoModal = true   
+      this.resetData()
     },
 
     //Helper function to add correct time to event.
@@ -127,12 +133,14 @@ export default {
     //Creates an event and add it to both database and calendar Api. Called on by createevent modal.       
     handleInput () {
       this.$refs.loadingComponent.showLoading()
-      const calendarApi = this.savedDate.view.calendar
-      calendarApi.unselect()
+      // const calendarApi = this.savedDate.view.calendar
+      // calendarApi.unselect()
       this.showModal = false
-      this.savedDate.endStr = this.timeManipulate(this.savedDate.startStr, 'End')
-      this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
-
+      if (!this.eventId) {
+        this.savedDate.endStr = this.timeManipulate(this.savedDate.startStr, 'End')
+        this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
+      }
+      
       if (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value) {
         this.$refs.loadingComponent.hideLoading()
         this.timeLapsError = true
@@ -209,8 +217,8 @@ export default {
         const dow = [this.dayOfWeek]
         const uploadEventData = {
           title: this.eventTitle, 
-          start: new Date(this.eventDate.startDate), 
-          end: new Date(this.eventDate.endDate), 
+          start: new Date(Date.parse(this.eventDate.startDate)), 
+          end: new Date(Date.parse(this.eventDate.endDate)), 
           allDay: this.savedDate.allDay, 
           location: this.eventLocation, 
           description: this.eventDescription, 
@@ -293,7 +301,6 @@ export default {
       } else {
         this.collectInfoModal = true
       }
-      
       this.eventTitle = clickedEvent.event.title
       this.eventLocation = clickedEvent.event.extendedProps.location
       this.eventContacts = clickedEvent.event.extendedProps.contacts
@@ -308,7 +315,6 @@ export default {
       this.eventDate.startTime = clickedEvent.event.extendedProps._startTime
       this.eventDate.endTime = clickedEvent.event.extendedProps._endTime
       this.eventId = clickedEvent.event.extendedProps._id
-      console.log(this.eventDate.startDate, this.eventDate.endDate, clickedEvent.event.start.toISOString(), clickedEvent.event.end)
       // set the modal data and change the event submit button to edit event and create endpoint to update the event.
     }
   } 
@@ -477,7 +483,7 @@ export default {
     </Modal>
 
     </div>
-        <PopupCard v-if="this.timeLapsError" :title="$t('event.time_error')" btnLink="/" btnText="Ok" :cardText="$t('event.time_error_body')"/>
+        <PopupCard v-if="this.timeLapsError" :title="$t('event.time_error')" btnLink="/event" btnText="Ok" :cardText="$t('event.time_error_body')"/>
         <LoadingComponent ref="loadingComponent" />
 
   </div>
