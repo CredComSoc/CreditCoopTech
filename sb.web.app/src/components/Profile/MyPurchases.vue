@@ -333,11 +333,17 @@ export default {
       this.$refs.loadingComponent.showLoading()
       this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
       await cancelRequest(id)
-      const itemData = this.getListing(item.entries[0])
-      const itemName = itemData.title
-      const itemCount = item.entries[0].metadata.quantity
-      const amount = item.entries[0].quant
-      await postNotification('transactionCancelled', item.entries[0].payee, amount, itemName, itemCount)
+      // eslint-disable-next-line
+      if (item.entries[0].metadata.id == 0) {
+        const amount = item.entries[0].quant
+        await postNotification('transferRequestCancelled', item.entries[0].payee, amount)
+      } else {
+        const itemData = this.getListing(item.entries[0])
+        const itemName = itemData.title
+        const itemCount = item.entries[0].metadata.quantity
+        const amount = item.entries[0].quant
+        await postNotification('transactionCancelled', item.entries[0].payee, amount, itemName, itemCount)
+      }
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
@@ -347,7 +353,8 @@ export default {
       await cancelRequest(id)
       // eslint-disable-next-line
       if (item.entries[0].metadata.id == 0) {
-        await postNotification('transferRequestDenied', payer)
+        const amount = item.entries[0].quant
+        await postNotification('transferRequestDenied', payer, amount)
       } else {
         const payer = item.entries[0].payer
         const itemData = this.getListing(item.entries[0])
