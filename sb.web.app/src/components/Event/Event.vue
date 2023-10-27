@@ -55,7 +55,12 @@ export default {
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
-        handleInput: this.handleInput
+        handleInput: this.handleInput,
+        eventTimeFormat: { // like '14:30:00'
+          hour: '2-digit',
+          minute: '2-digit',
+          meridiem: 'short'
+        }
       },
       currentEvents: [],
       clickedEvent: '',
@@ -127,6 +132,7 @@ export default {
       this.clickedEvent.event.remove()
       await deleteEvent(this.clickedEvent.event.extendedProps._id) 
       await setEventData()
+      this.calendarOptions.events = this.$store.state.allEvents
       this.$refs.loadingComponent.hideLoading()
     },
      
@@ -144,6 +150,7 @@ export default {
       if (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value) {
         this.$refs.loadingComponent.hideLoading()
         this.timeLapsError = true
+        return
       }
       const eventId = createEventId()
       if (this.eventTitle) {
@@ -203,6 +210,7 @@ export default {
       if (this.eventDate.startDate === this.eventDate.endDate && (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value)) {
         this.$refs.loadingComponent.hideLoading()
         this.timeLapsError = true
+        return
       }
       if (this.recurringType === 'monthly') {
         const date = new Date()
@@ -362,7 +370,8 @@ export default {
         >
         <template v-slot:eventContent='arg'>
             <b>{{ arg.timeText }}</b>
-            <i>{{ arg.event.title }}</i>
+            <i v-if="arg.event.title.length > 6">{{ arg.event.title.slice(0, 6)}}<b>...</b></i>
+            <i v-if="arg.event.title.length <= 6">{{ arg.event.title }}</i>
         </template>
         </FullCalendar>
     <!-- Modal to show events   -->
