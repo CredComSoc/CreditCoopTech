@@ -411,7 +411,7 @@ export async function sendMoney (amount, comment, payee) {
  *                 
  *****************************************************************************/
 
-export async function postNotification (type, user, amount = 0, itemName = '', itemCount = 1) {
+export async function postNotification (type, user, amount = 0, itemName = '', itemCount = 1, limitSurplusAmount = 0) {
   const data = { 
     date: '',
     type: type,
@@ -420,7 +420,8 @@ export async function postNotification (type, user, amount = 0, itemName = '', i
     seen: false,
     amount: amount,
     itemName: itemName,
-    itemCount: itemCount
+    itemCount: itemCount,
+    limitSurplusAmount: limitSurplusAmount
   }
   const promise = await fetch(EXPRESS_URL + '/notification', {
     method: 'POST',

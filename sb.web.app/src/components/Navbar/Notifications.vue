@@ -51,7 +51,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase', {'number_of_units': item.item_count, 'item_name': item.item_name }) }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase', {'number_of_units': item.itemCount, 'item_name': item.itemName }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -60,10 +60,19 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer', {'total_price': item.amount, 'credit_unit': $('org.token')}) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
+                    </div>
+                    <div v-if="item.type == 'transferRequestCancelled'">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
+                        <div id="new-list-content">
+                        <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.cancelled_transfer', {'total_price': item.amount, 'credit_unit': $t('org.token')}) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link>
                     </div>
                     <div v-if="item.type == 'chatMessage'">
                     <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" @click.prevent="">
@@ -86,8 +95,8 @@
                     <div v-if="item.type == 'transactionCancelled'">
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
-                          <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser, 'number_of_units': item.item_count, 'item_name': item.item_name }) }}</p>
-                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                          <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser, 'number_of_units': item.itemCount, 'item_name': item.itemName }) }}</p>
+                          <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
                     </div>
@@ -155,7 +164,7 @@
                     <div v-if="item.type == 'saleRequestDenied'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" >
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_purchase', {'number_of_units': item.itemCount, 'item_name': item.itemName}) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -163,11 +172,20 @@
                     <div v-if="item.type == 'transferRequestDenied'">
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer') }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer', {'total_price': item.amount, 'credit_unit': $t('org.token')}) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
                     </div>
+                    <div v-if="item.type == 'transferRequestCancelled'">
+                    <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
+                        <div id="new-list-content">
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.cancelled_transfer', {'total_price': item.amount, 'credit_unit': $t('org.token')}) }}</p>
+                        <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
+                        </div>
+                    </router-link>
+                    </div>
+
                     <div v-if="item.type == 'chatMessage'">
                     <router-link :to="{name:'Chat', params:{chatID: item.chatID}}" >
                         <div id="new-list-content">
