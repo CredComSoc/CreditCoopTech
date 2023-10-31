@@ -124,7 +124,7 @@ module.exports = function() {
   })
   
   router.get("/:acc_id", async (req, res) => {
-
+    console.log('here')
     const client = new MongoClient(mongoURL);
     try {
       
@@ -139,10 +139,12 @@ module.exports = function() {
           "max"     : result.max_limit,
           "admin"   : result.is_admin
         }
+        
         // The CC-server verifies the user through this endpoint
         res.status(200).send(userData)     
       }
       else {
+        console.log('here, error')
         res.status(404).send()
       }
 
