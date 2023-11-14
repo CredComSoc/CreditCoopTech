@@ -12,7 +12,7 @@
     </a>
     <router-link  v-if="elementInfo.accountName" :to="{ name: 'MemberUserprofile', params: { userprofile: elementInfo.accountName }} ">
       <div v-if="elementInfo.accountName" class="ellipse-container">
-            <img v-if="elementInfo.logo.length === 0" class="ellipse" :src="require(`../../assets/list_images/user.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
+            <img v-if="!elementInfo.logo" class="ellipse" :src="require(`../../assets/list_images/user.png`)" style="object-fit:contain;max-width:240px;max-height:240px;">
             <img v-else class="ellipse" :src="getUserImgURL()" style="object-fit:contain;max-width:240px;max-height:240px;">
             <h4 class="element-title"> {{ formatTitle(elementInfo.accountName) }} </h4>
       </div>
