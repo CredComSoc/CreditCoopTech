@@ -38,7 +38,7 @@
       <form @submit.prevent="sendBkr" v-on:keyup.enter="sendBkr">
         <h1 class="box-text">{{ $t('user.send_token', {token: $t('org.token')} ) }}</h1>
         <div>
-          <label class="box-label">{{ $t('quantity') }}</label>
+          <label class="box-label">{{ $t('transfer_amount') }}</label>
           <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
         </div>
         <div>

@@ -31,8 +31,8 @@
         <div className='filter' v-if="this.filteredTransactions.length > 0">
           <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
           <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
-          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
-          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
+          <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('user.member_label')" id="company-input">
+          <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('item')" id="product-input">
           <!--<input class="box-input filterObject" type="text" v-model="entries" ref="entriesInput" name="entries-filter" placeholder="Max antal rader" id="entries-input">-->
           <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transcations. -->
           <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button><!-- downloadFilterView handles the csv download. -->
@@ -41,7 +41,7 @@
         <tr>
           <th></th>
           <th>{{ $t('Buyer') }}</th>
-          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('Seller') }}</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>

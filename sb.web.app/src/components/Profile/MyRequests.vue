@@ -2,7 +2,7 @@
   <div style="max-height: 50em; overflow: scroll; ">
     <table v-if="requests">
       <tr>
-        <th>{{ $t('business') }}</th>
+        <th>{{ $t('member') }}</th>
         <th>{{ $t('article')}}</th>
         <th>{{ $t('quantity') }}</th>
         <th>{{ $t('price') }}</th>
@@ -32,7 +32,7 @@
         <td>{{item.entries[0].quant / item.entries[0].metadata.quantity}}</td>
         <td>{{item.entries[0].quant}}</td>
         <th>{{item.written}}</th>
-        <td style="color: green;">{{ $t('approved') }}</td>
+        <td style="color: green;">{{ $t('approving') }}</td>
       </tr>
     -->
     </table>
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     cancel (id, item, index) {
-      this.statusSwap(index, this.$i18n.t('declined'), 'red')
+      this.statusSwap(index, this.$i18n.t('declining'), 'red')
       cancelRequest(id)
       const payer = item.entries[0].payer
       const item_count = item.entries[0].metadata.quantity
@@ -83,7 +83,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then((payerBalance) => {
               if (cost <= payerBalance.totalAvailableBalance) {
-                this.statusSwap(index, this.$i18n.t('approved'), 'green')
+                this.statusSwap(index, this.$i18n.t('approving'), 'green')
                 acceptRequest(id)
                 postNotification('saleRequestAccepted', payer)
               } else {

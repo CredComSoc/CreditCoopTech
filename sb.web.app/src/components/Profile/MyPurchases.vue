@@ -6,7 +6,7 @@
       <div style="max-height: 50em; overflow: scroll;  padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
-            <th>{{ $t('business') }}</th>
+            <th>{{ $t('buyer') }}</th>
             <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
@@ -40,7 +40,7 @@
       <div style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
         <table>
           <tr>
-            <th>{{ $t('who') }}</th>
+            <th>{{ $t('seller_name') }}</th>
             <th>{{ $t('article')}}</th>
             <th>{{ $t('quantity') }}</th>
             <th>{{ $t('price') }}</th>
@@ -70,15 +70,15 @@
         <button @click="filterTransactions()">{{ $t('filter') }}</button><!--filter transactions handles all transactions. -->
         <DateFilter class= "DateFilter filterObject" ref="startDateInput" name="start-date-filter" :placeholder="$t('from_date')" @click="handleDate()"/>
         <DateFilter class= "DateFilter filterObject" ref="endDateInput" name="end-date-filter" :placeholder="$t('to_date')" @click="handleDate()"/>
-        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('business')" id="company-input">
-        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('product')" id="product-input">
+        <input class="box-input filterObject" type="text" ref="companyInput" name="company-filter" :placeholder="$t('user.member_label')" id="company-input">
+        <input class="box-input filterObject" type="text" ref="productInput" name="product-filter" :placeholder="$t('item')" id="product-input">
         <button @click="downloadFilterView()">{{ $t('download_as_csv') }}</button> <!-- downloadFilterView handles the csv download. -->
     </div>
       <div style="max-height: 50em; overflow: scroll; padding-top: 20px; padding-bottom: 20px;">
       <table v-if="(!this.filterActive)">
         <tr>
-          <th>{{ $t('Buyer') }}</th>
-          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('buyer') }}</th>
+          <th>{{ $t('seller_name') }}</th>
           <th>{{ $t('article')}}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
@@ -99,14 +99,14 @@
       </table>
       <table v-if="(this.filterActive)">
         <tr>
-          <th>{{ $t('Buyer') }}</th>
-          <th>{{ $t('Salesperson') }}</th>
+          <th>{{ $t('buyer') }}</th>
+          <th>{{ $t('seller_name') }}</th>
           <th>{{ $t('article') }}</th>
           <th>{{ $t('quantity') }}</th>
           <th>{{ $t('price') }}</th>
           <th>{{ $t('amount') }}</th>
           <th>{{ $t('timestamp') }}</th>
-          <!--<th>Faktura</th>-->   
+          <!--<th>{{ $t('invoice') }}</th>-->   
         </tr>
         <tr v-for="(item) in this.filteredTransactions" :key="item"> <!--If the filter is active, We get view all transactions from filtered transactions found below.  -->
           <td>{{item.entries[0].payer}}</td>
@@ -331,7 +331,7 @@ export default {
     async cancel (id, index, item) { //cancel order button
       console.log('Canceling order: ', item)
       this.$refs.loadingComponent.showLoading()
-      this.statusSwap(index, this.$i18n.t('cancelled'), 'in', 'red')
+      this.statusSwap(index, this.$i18n.t('cancelling'), 'in', 'red')
       await cancelRequest(id)
       // eslint-disable-next-line
       if (item.entries[0].metadata.id == 0) {
@@ -349,7 +349,7 @@ export default {
     },
     async startCancelRequest (id, payer, index, item) {
       this.$refs.loadingComponent.showLoading()
-      this.statusSwap(index, this.$i18n.t('declined'), 'out', 'red')
+      this.statusSwap(index, this.$i18n.t('declining'), 'out', 'red')
       await cancelRequest(id)
       // eslint-disable-next-line
       if (item.entries[0].metadata.id == 0) {
@@ -377,7 +377,7 @@ export default {
           } else {
             getUserAvailableBalance(payer).then(async (payerBalance) => {
               if (cost <= payerBalance.totalAvailableBalance) {
-                this.statusSwap(index, this.$i18n.t('approved'), 'out', 'green')
+                this.statusSwap(index, this.$i18n.t('approving'), 'out', 'green')
                 await acceptRequest(id)
                 // eslint-disable-next-line
                 if (item.entries[0].metadata.id == 0) {
