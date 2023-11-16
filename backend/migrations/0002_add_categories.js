@@ -6,71 +6,67 @@ const express_url = config.BACK_END_API_URL
 const FormData = require('form-data');
 let categories = [
     {
-        name: 'food',
+        name: 'Food',
         image_url: './migrations/categories_images/060-food.png'
     },
     {
-        name: 'fiber',
+        name: 'Fiber',
         image_url: './migrations/categories_images/026-cotton.png'
     },
     {
-        name: 'fuel',
+        name: 'Fuel',
         image_url: './migrations/categories_images/028-fossil-fuel.png'
     },
     {
-        name: 'plants',
+        name: 'Plants',
         image_url: './migrations/categories_images/031-plants.png'
     },
     {
-        name: 'animals',
+        name: 'Animals',
         image_url: './migrations/categories_images/032-livestock.png'
     },
     {
-        name: 'farm services',
+        name: 'Farm services',
         image_url: './migrations/categories_images/051-agriculture.png'
     },
     {
-        name: 'farm supplies',
+        name: 'Farm supplies',
         image_url: './migrations/categories_images/024-supplies.png'
     },
     {
-        name: 'general services',
+        name: 'General services',
         image_url: './migrations/categories_images/044-customer-service-1.png'
     },
     {
-        name: 'general products',
+        name: 'General products',
         image_url: './migrations/categories_images/043-box.png'
     },
     {
-        name: 'food',
-        image_url: './migrations/categories_images/060-food.png'
-    },
-    {
-        name: 'building',
+        name: 'Building',
         image_url: './migrations/categories_images/047-brickwall.png'
     },
     {
-        name: 'fixing',
+        name: 'Fixing',
         image_url: './migrations/categories_images/tool-box.png'
     },
     {
-        name: 'healing',
+        name: 'Healing',
         image_url: './migrations/categories_images/017-healing.png'
     },
     {
-        name: 'labor',
+        name: 'Labor',
         image_url: './migrations/categories_images/055-shovel.png'
     },
     {
-        name: 'education',
+        name: 'Education',
         image_url: './migrations/categories_images/012-exchange.png'
     },
     {
-        name: 'knowledge',
+        name: 'Knowledge',
         image_url: './migrations/categories_images/011-education.png'
     },
     {
-        name: 'art',
+        name: 'Art',
         image_url: './migrations/categories_images/005-hobby.png'
     },
 ]

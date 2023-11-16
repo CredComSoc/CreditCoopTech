@@ -6,7 +6,7 @@
       <PopupCard v-if="this.confirmPress" :title="$t('cart.purchase_thanks_header')" btnLink="/" btnText="Ok" :cardText="$t('cart.purchase_thanks_notified')" />
     <PopupCard v-if="this.insufficientBalance" :title="$t('cart.insufficient_credit')" btnLink="/cart" btnText="Ok" :cardText="this.insufficientBalanceMessage"/>
     <PopupCard v-if="this.sellerLimitError" :title="$t('shop.seller_balance_too_high')" btnLink="/cart" btnText="Ok" :cardText="$t('shop.seller_has_reached_limit', {'seller': this.seller})" />
-    <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.transactions_failed_for_items')" />
+    <PopupCard v-if="this.transactionFailed" :title="$t('cart.transaction_failed')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.transaction_failed')" />
     <PopupCard v-if="this.pendingBalanceLimitExceeded" :title="$t('cart.insufficient_credit')" btnLink="/cart" btnText="Ok" :cardText="$t('cart.pending_transaction_limit_exceeded', {'total_price': this.total, 'credit_unit': this.$t('org.token'), 'available_credit': this.actualAvailableCreditWithPending})" />
     <PopupCard v-if="this.pendingSellerBalanceLimitExceeded" :title="$t('shop.seller_balance_too_high')" btnLink="/cart" btnText="Ok" :cardText="$t('shop.seller_pending_balance_exceeded', {'seller': this.pendingBalanceSeller})" />
     <LoadingComponent ref="loadingComponent" />
@@ -236,7 +236,7 @@ export default {
           }
         } else {
           // display insufficient balance msg
-          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total}  ${this.$t('org.token')} ${this.$t('cart.available_credit')} ${this.availableBalance} ${this.$t('org.token')}`
+          this.insufficientBalanceMessage = `${this.$t('cart.not_enough_credit')} ${this.total}  ${this.$t('org.token')} ${this.$t('cart.available_credit')} ${this.availableBalance} ${this.$t('org.token')}.`
           this.insufficientBalance = true
           this.$refs.loadingComponent.hideLoading()
         }

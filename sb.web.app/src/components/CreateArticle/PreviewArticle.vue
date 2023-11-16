@@ -9,12 +9,12 @@
       <PreviewItem :title="$t('shop_items.item_description')" :text='this.savedProgress.longDesc' :images="null" />
       <PreviewItem :title="$t('shop_items.item_type')" :text='this.savedProgress.article' :images="null" />
       <PreviewItem :title="$t('category')" :text='this.savedProgress.category' :images="null" />
-      <PreviewItem :title="$t('time.time')" :text='this.endDate' :images="null" />
+      <PreviewItem :title="$t('shop_items.availability')" :text='this.endDate' :images="null" />
       <PreviewItem :title="$t('shop_items.location')" :text='this.savedProgress.destination' :images="null" />
       <PreviewItem :title="$t('price')" :text="this.savedProgress.price +  '  ' + $t('org.token')" :images="null" />
       <PreviewItem :title="$t('shop_items.images')" :text="null" :images='this.images' />
     </div>
-    <PopupCard v-if="this.isPublished" :title="$t('confirmation')" :cardText="$t('shop_items.item_available_in_shop')" btnLink='/shop' btnText="Ok" />
+    <PopupCard v-if="this.isPublished" :title="$t('shop_items.item_available_title')" :cardText="$t('shop_items.item_available_in_shop')" btnLink='/shop' btnText="Ok" />
   </div>
 </template>
 

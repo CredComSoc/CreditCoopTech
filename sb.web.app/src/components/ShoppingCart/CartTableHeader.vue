@@ -1,7 +1,7 @@
 <template>
   <div id="cart-header">
     <span></span>
-    <h3> {{ $t('product') }} </h3>
+    <h3> {{ $t('item') }} </h3>
     <span></span>
     <h3> {{ $t('quantity') }} </h3>
     <h3> {{ $t('price') }} </h3>

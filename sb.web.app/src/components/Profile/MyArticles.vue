@@ -24,7 +24,7 @@
             <td> 
             <div class="edit">
               <button v-if="(new Date(item['end-date'])).getTime() > Date.now()" @click="remove(item, index)" 
-                style="background-color: red;"> {{ $t('remove')}}</button>
+                style="background-color: red;"> {{ $t('shop.remove')}}</button>
               <!-- <router-link :to="{name:'New_Article', params:{artID: item.id}}"> {{ $t('edit_ads') }} </router-link> -->
             </div> 
           </td> 
