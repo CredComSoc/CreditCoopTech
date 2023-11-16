@@ -56,11 +56,11 @@ export default {
       newArticle: {},
       isPublished: false,
       error: false,
-      popupCardText: this.$i18n.t('shop_items.fields_left_empty') + '\n' + this.$i18n.t('shop_items.fill_them_out'),
-      invalid_date_message: this.$i18n.t('shop_items.invalid_date') + '\n' + this.$i18n.t('shop_items.try_again'),
-      file_size_error_message: this.$i18n.t('shop_items.image_file_extension_must_be') + '\n' + this.$i18n.t('shop_items.smaller_than_2mb'),
-      image_upload_error_message: this.$i18n.t('shop_items.image_upload_failed') + '\n' + this.$i18n.t('shop_items.try_again_later'),
-      invalid_price_message: this.$i18n.t('shop_items.price_positive_integer') + '\n' + this.$i18n.t('shop_items.try_again'),
+      popupCardText: this.$i18n.t('shop_items.fields_left_empty') + this.$i18n.t('shop_items.fill_them_out'),
+      invalid_date_message: this.$i18n.t('shop_items.invalid_date') + this.$i18n.t('shop_items.try_again'),
+      file_size_error_message: this.$i18n.t('shop_items.image_file_extension_must_be') + this.$i18n.t('shop_items.smaller_than_2mb') + this.$i18n.t('shop_items.try_again'),
+      image_upload_error_message: this.$i18n.t('shop_items.image_upload_failed') + this.$i18n.t('shop_items.try_again'),
+      invalid_price_message: this.$i18n.t('shop_items.price_positive_integer') + this.$i18n.t('shop_items.try_again'),
       inEditMode: false
     }
   },
