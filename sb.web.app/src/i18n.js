@@ -14,8 +14,8 @@ function loadLocaleMessages () {
 }
 
 export default createI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  locale: window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en',
+  fallbackLocale: window.localStorage.getItem('VUE_APP_I18N_FALLBACK_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_FALLBACK_LOCALE') : process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages(),
   silentTranslationWarn: true,
   silentFallbackWarn: true
