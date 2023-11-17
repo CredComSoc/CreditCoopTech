@@ -60,7 +60,7 @@
                     <router-link :to="{name:'Profile', params:{tab: 'purchases'}}" @click.prevent="">
                         <div id="new-list-content">
                         <img class="notice-img" src="../../assets/navbar_logos/notice.png" alt="{{ $t('notifications.new_notification') }}"/>
-                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer', {'total_price': item.amount, 'credit_unit': $('org.token')}) }}</p>
+                        <p class="notice-desc">{{ item.fromUser }} {{ $t('notifications.denied_transfer', {'total_price': item.amount, 'credit_unit': $t('org.token')}) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
@@ -206,7 +206,7 @@
                     <div v-if="item.type == 'transactionCancelled'">
                     <router-link :to="{name:'Chat'}" >
                         <div id="new-list-content">
-                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser }) }}</p>
+                        <p class="notice-desc"> {{ $t('notifications.transaction_cancelled', {'buyer_username': item.fromUser, 'number_of_units': item.itemCount, 'item_name': item.itemName }) }}</p>
                         <p class="notice-date"> {{ item.date.split('T')[0] }}</p>
                         </div>
                     </router-link> 
