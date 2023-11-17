@@ -145,6 +145,9 @@ export default {
       if (!this.eventId) {
         this.savedDate.endStr = this.timeManipulate(this.savedDate.startStr, 'End')
         this.savedDate.startStr = this.timeManipulate(this.savedDate.startStr, 'Start')
+      } else {
+        this.savedDate.endStr = this.timeManipulate(this.eventDate.startDate, 'End')
+        this.savedDate.startStr = this.timeManipulate(this.eventDate.endDate, 'Start')
       }
       
       if (document.getElementById('eventTimeEnd').value <= document.getElementById('eventTimeStart').value) {
@@ -155,7 +158,7 @@ export default {
       const eventId = createEventId()
       if (this.eventTitle) {
         const uploadEventData = {
-          title: this.eventTitle, 
+          title: this.eventTitle,
           start: this.savedDate.startStr, 
           end: this.savedDate.endStr, 
           allDay: this.savedDate.allDay, 
@@ -223,10 +226,12 @@ export default {
       }
       if (this.eventTitle) {
         const dow = [this.dayOfWeek]
+        const startTime = document.getElementById('createEventTimeStart').value
+        const endTime = document.getElementById('createEventTimeEnd').value
         const uploadEventData = {
           title: this.eventTitle, 
-          start: new Date(Date.parse(this.eventDate.startDate)), 
-          end: new Date(Date.parse(this.eventDate.endDate)), 
+          start: new Date(Date.parse(this.eventDate.startDate).getFullYear(), Date.parse(this.eventDate.startDate).getMonth(), Date.parse(this.eventDate.startDate).getDate(), startTime.getHours(), startTime.getMinutes()), 
+          end: new Date(Date.parse(this.eventDate.endDate).getFullYear(), Date.parse(this.eventDate.endDate).getMonth(), Date.parse(this.eventDate.endDate).getDate(), endTime.getHours(), endTime.getMinutes()), 
           allDay: this.savedDate.allDay, 
           location: this.eventLocation, 
           description: this.eventDescription, 
