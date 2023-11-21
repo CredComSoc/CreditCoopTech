@@ -151,6 +151,12 @@
         <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
         </button>
+        <div class="navlogo">
+        <select class="language-select" @change="changeLanguage" v-model="language">
+          <option value="en">en</option>
+          <option value="se">se</option>
+        </select>
+      </div>
       </nav>
       <Modal :open="showSignOutModal" :proceedText="$t('nav.confirm_logout')" @proceed="logOut" closeText="No, please go back" @close="showSignOutModal = !showSignOutModal">
         <h4>{{ $t('nav.confirm_sign_out') }}</h4><br />
@@ -183,7 +189,8 @@ export default {
       newNotifications: [],
       oldNotifications: [],
       componentKey: 0,
-      showSignOutModal: ref(false)
+      showSignOutModal: ref(false),
+      language: window.localStorage.getItem('VUE_APP_I18N_LOCALE')
     }
   },
   name: 'Navbar',
@@ -329,7 +336,19 @@ export default {
       this.newNotifications.splice(this.newNotifications.indexOf(notification), 1)
       this.oldNotifications.unshift(notification)
     },
-    setNotificationsToSeen
+    setNotificationsToSeen,
+    changeLanguage (event) {
+      const selectedLanguage = event.target.value
+      this.language = selectedLanguage
+      if (selectedLanguage === 'en') {
+        window.localStorage.setItem('VUE_APP_I18N_LOCALE', 'en')
+        window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'en-LCC')
+      } else {
+        window.localStorage.setItem('VUE_APP_I18N_LOCALE', 'se')
+        window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'se-SB')
+      }
+      this.$i18n.locale = selectedLanguage
+    }
   }
 }
 </script>
@@ -590,6 +609,18 @@ figcaption {
  
   nav a:hover {
     color: grey;
+  }
+  .language-select {
+    position: relative;
+    /* top: 0;
+    right: 0; */
+    margin-right: 20px;
+    margin-top: 25px;
+    display: block;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+
   }
 }
 
