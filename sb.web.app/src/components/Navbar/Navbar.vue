@@ -152,7 +152,7 @@
           <i class="fa fa-bars"></i>
         </button>
       </nav>
-      <Modal :open="showSignOutModal" :proceedText="$t('nav.confirm_logout')" @proceed="logOut" closeText="No, please go back" @close="showSignOutModal = !showSignOutModal">
+      <Modal :open="showSignOutModal" :proceedText="$t('nav.confirm_logout')" @proceed="logOut" closeText="$t('nav.reject_logout')" @close="showSignOutModal = !showSignOutModal">
         <h4>{{ $t('nav.confirm_sign_out') }}</h4><br />
       </Modal>
     </header>
