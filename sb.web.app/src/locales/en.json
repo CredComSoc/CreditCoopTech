@@ -146,6 +146,7 @@
         "sign_out": "Log out",
         "confirm_sign_out": "Are you sure you want to log out?",
         "confirm_logout": "Yes, please log me out",
+        "reject_logout": "No, please go back",
         "trades": "Trades",
         "items": "Items",
         "my_trades": "My trades",
