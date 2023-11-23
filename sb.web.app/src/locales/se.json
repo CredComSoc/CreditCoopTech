@@ -144,7 +144,7 @@
     "events": "evenemang",
     "sign_out": "Logga ut",
     "confirm_sign_out": "Är du säker på att du vill logga ut?",
-    "confirm_logout": "Ja, logga ut mig.",
+    "confirm_logout": "Ja, logga ut mig",
     "reject_logout": "Nej, snälla gå tillbaka",
     "trades": "Genomförda köp/sälj",
     "items": "Artiklar",
