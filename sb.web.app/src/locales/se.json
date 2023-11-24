@@ -219,7 +219,7 @@
     "purchase_thanks_header": "Köpförfrågan har skickats",
     "purchase_thanks_notified": "Tack för din köpförfrågan. Säljaren/säljarna har underrättats och du kommer att få ett meddelande så snart de antingen har godkänt eller avvisat begäran",
     "not_enough_credit": "Du har inte tillräckligt med kredit för att begära detta köp, eftersom det totala priset är",
-    "transaction_failed": "Det gick inte att slutföra transaktionen",
+    "transaction_failed": "Det gick inte att slutföra transaktionen.",
     "transaction_failed_title": "Transaktionen misslyckades",
     "insufficient_credit": "Otillräcklig kredit",
     "available_credit": "och din tillgängliga kredit är",
@@ -269,7 +269,7 @@
     "publish": "Publicera",
     "product_or_service": "Produkt eller tjänst",
     "item_available_title": "Artikeln lades till",
-    "item_available_in_shop": "Artikeln är nu tillgänglig i shopen",
+    "item_available_in_shop": "Artikeln är nu tillgänglig i shopen!",
     "default_images": "Standardbilder"
   },
   "financial": {
