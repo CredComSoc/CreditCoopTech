@@ -7,7 +7,7 @@
   <div id="input-form">
     <div v-if="this.currentStep !== 1" id="create-header" >
       <img v-if="imgURL !== null" class="step-indicator-img" :src="require(`../../assets/link_arrow/${this.imgURL}`)" />
-      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('Back') }}</a>
+      <a href="#" @click=goBackStep><img class="left-arrow" src="../../assets/link_arrow/left_arrow_link.png"/>{{ $t('back') }}</a>
     </div>
     <div id="center">
       <StepOne v-if="this.currentStep === 1" ref='stepOne' :savedProgress="this.newArticle" />
@@ -16,7 +16,7 @@
       <PreviewArticle v-if="this.currentStep === 4" ref='previewArticle' :savedProgress="this.newArticle" :isPublished="this.isPublished" />
     </div>
     <NewArticleFooter :buttonText="nextBtnText" @click="goForwardStep" />
-    <button v-if="this.isEdit" @click="returnHome()" class="edit_button">{{ $t('user.cancelLabel') }}</button>
+    <button v-if="this.inEditMode" @click="returnHome()" class="edit_button">{{ $t('user.cancelLabel') }}</button>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
     <!-- add my loading component -->
     <LoadingComponent ref="loadingComponent" />
@@ -52,7 +52,7 @@ export default {
       backLink: '#',
       currentStep: 1,
       imgURL: 'one_three.png',
-      nextBtnText: this.$i18n.t('Next'),
+      nextBtnText: this.$i18n.t('next'),
       newArticle: {},
       isPublished: false,
       error: false,
@@ -176,7 +176,7 @@ export default {
         this.saveThreeStep()
         this.currentStep = 2
         this.imgURL = 'two_three.png'
-        this.nextBtnText = 'Next'
+        this.nextBtnText = this.$i18n.t('next')
       } else if (this.currentStep === 4) {
         this.currentStep = 3
         this.imgURL = 'three_three.png'

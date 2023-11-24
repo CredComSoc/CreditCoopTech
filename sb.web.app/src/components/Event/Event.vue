@@ -1,5 +1,7 @@
 <script>
 import FullCalendar from '@fullcalendar/vue3'
+import '@fullcalendar/core/sv'
+//import enLocale from '@fullcalendar/core/locales/en'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -45,6 +47,8 @@ export default {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        //locales: allLocales,
+        locale: window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en',
         initialView: 'dayGridMonth',        
         events: this.$store.state.allEvents,
         editable: true,
@@ -85,6 +89,17 @@ export default {
   async mounted () {
     await setEventData()
     this.calendarOptions.events = this.$store.state.allEvents
+  },
+
+  computed: {
+    locale () {
+      const loc = window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en'
+      if (loc === 'en') {
+        return 'en'
+      }
+      return 'sv'
+      //if (loc === 'se') return 'sv'
+    }
   },
 
   methods: {
@@ -456,13 +471,13 @@ export default {
           {{ $t('event.select_day') }}
           <br/>
           <select v-model="dayOfWeek" id="day-selector">
-            <option value="1">{{$t('Monday')}}</option>
-            <option value="2">{{$t('Tuesday')}}</option>
-            <option value="3">{{$t('Wednesday')}}</option>
-            <option value="4">{{$t('Thursday')}}</option>
-            <option value="5">{{$t('Friday')}}</option>
-            <option value="6">{{$t('Saturday')}}</option>
-            <option value="0">{{$t('Sunday')}}</option>
+            <option value="1">{{$t('monday')}}</option>
+            <option value="2">{{$t('tuesday')}}</option>
+            <option value="3">{{$t('wednesday')}}</option>
+            <option value="4">{{$t('thursday')}}</option>
+            <option value="5">{{$t('friday')}}</option>
+            <option value="6">{{$t('saturday')}}</option>
+            <option value="0">{{$t('sunday')}}</option>
           </select>
         </p>
         <p v-if="recurringType == 'monthly'">

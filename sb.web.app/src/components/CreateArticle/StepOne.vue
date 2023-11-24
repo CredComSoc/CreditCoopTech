@@ -2,7 +2,7 @@
   <div>
     <!-- To change character limit on textfields change value for length prop  -->
     <div id="buy-or-sell" class="input">
-      <Combobox ref="buyOrSellInput" name="butOrSell-type" :label="$t('shop_items.want_or_offer')" :options="['Want', 'Offer']" :placeholder="$t('shop_items.to_buy_or_sell')" />
+      <Combobox ref="buyOrSellInput" name="butOrSell-type" :label="$t('shop_items.want_or_offer')" :options="[$t('Want'), $t('Offer')]" :placeholder="$t('shop_items.to_buy_or_sell')" />
     </div>
     <div id="title-field" class="input">
       <TextBox ref="titleInput" id='title' name="title" :placeholder="$t('shop_items.item_title_prompt')" length="30" :label="$t('shop_items.item_title')"/>
@@ -25,7 +25,7 @@
   </div>
     <!-- </div> -->
     <div id="type" class="input">
-      <Combobox ref="typeInput" name="articale-type" :label="$t('shop_items.product_or_service')" :options="['Product', 'Service']" :placeholder="$t('shop.is_item_product_or_service')" />
+      <Combobox ref="typeInput" name="articale-type" :label="$t('shop_items.product_or_service')" :options="[$t('product'), $t('service')]" :placeholder="$t('shop.is_item_product_or_service')" />
     </div>
   </div>
 </template>

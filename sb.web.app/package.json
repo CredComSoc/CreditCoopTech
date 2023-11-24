@@ -12,7 +12,7 @@
     "test:open": "peeky open"
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.0.0",
+    "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^5.11.3",
     "@fullcalendar/interaction": "^5.11.3",
     "@fullcalendar/rrule": "^6.1.9",
