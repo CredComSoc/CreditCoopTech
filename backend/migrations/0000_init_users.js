@@ -95,10 +95,9 @@ async function registerUser (isadmin, username, password, email) {
 // const admin = 'testadmin'
 // const password = '123'
 
-// registerUser(false, "testuser", "testpassword", "test@nowhere.com")
-// registerUser(false, "testuser2", "testpassword", "test2@nowhere.com")
-registerUser(true, "admintest2", "testpassword2", "admin2@nowhere.com")
+//registerUser(false, "testuser4", "testpassword4", "test4@nowhere.com")
+registerUser(false, "testuser5", "testpassword5", "test5@nowhere.com")
+// registerUser(true, "admintest3", "testpassword3", "admin3@nowhere.com")
 // registerUser(false, "testuser3", "testpassword", "test3@nowhere.com")
 
-registerUser(false, "test", "testpassword", "test@gmail.com")
-
+// registerUser(false, "test", "testpassword", "test@gmail.com")
