@@ -7,7 +7,7 @@
     "password_placeholder": "Lösenord",
     "login_button": "Logga in",
     "need_help": "Behövs hjälp?",
-    "contact_us": "Kontakta oss."
+    "contact_us": "Kontakta oss"
   },
   "chat": {
     "title": "Meddelanden",
@@ -18,7 +18,7 @@
     "started_all-member_chat": "Startade chatt för alla medlemmar"
   },
   "user": {
-    "no_users_found": "Inga medlemmar hittades för '{searchWord}'.",
+    "no_users_found": "Inga medlemmar hittades för '{searchWord}'",
     "register": "Registrera",
     "box": "Box",
     "alt_profile_logo": "Profillogotyp",
@@ -141,7 +141,7 @@
     "my_items": "Mina artiklar",
     "my_purchase_requests": "Mina köpförfrågningar",
     "balance": "Balans & kreditgränser",
-    "events": "evenemang",
+    "events": "Evenemang",
     "sign_out": "Logga ut",
     "confirm_sign_out": "Är du säker på att du vill logga ut?",
     "confirm_logout": "Ja, logga ut mig",
@@ -160,13 +160,13 @@
     "seller_has_reached_limit": "Denna köpbegäran kan inte slutföras, eftersom det skulle ta {seller} bortom deras positiva kreditgräns. Säljaren har meddelats, men överväg att följa upp med motparten angående ditt avsedda köp.",
     "purchaseRequestCannotBeApproved": "Begäran om köp kan inte godkännas",
     "is_for_sale": "är till salu eller öppen för köp",
-    "no_product_found": "Inga produkter hittades för '{searchWord}'.",
+    "no_product_found": "Inga produkter hittades för '{searchWord}'",
     "seller_has_approved_notification": "meddelande när säljaren har godkänt din köpförfrågan.",
     "is_item_product_or_service": "Är din vara en produkt eller tjänst?",
     "see_the_shop": "Alla objekt",
     "shop": "shop",
-    "shopSubtitle": "Bläddra bland de senaste önskemålen och erbjudandena.",
-    "shopSubtitleforMembers": "Hitta och interagera med andra medlemmar i Svensk Barter.",
+    "shopSubtitle": "Bläddra bland de senaste önskemålen och erbjudandena",
+    "shopSubtitleforMembers": "Hitta och interagera med andra medlemmar i Svensk Barter",
     "NOTE2MILES": "FORTFARANDE_ATT_GÖRA_HÄR_NEDAN",
     "success": "Framgång!",
     "seller_has_been_notified": "Tack för ditt köp! Säljaren har underrättats. Du kommer att få en",
