@@ -1,6 +1,6 @@
 <script>
 import FullCalendar from '@fullcalendar/vue3'
-import '@fullcalendar/core/sv'
+//import '@fullcalendar/core/sv'
 //import enLocale from '@fullcalendar/core/locales/en'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -48,7 +48,7 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         //locales: allLocales,
-        locale: window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en',
+        //         locale: window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en',
         initialView: 'dayGridMonth',        
         events: this.$store.state.allEvents,
         editable: true,
