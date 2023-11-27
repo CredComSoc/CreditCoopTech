@@ -348,6 +348,7 @@ export default {
         window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'se-SB')
       }
       this.$i18n.locale = selectedLanguage
+      this.$i18n.fallbackLocale = selectedLanguage === 'en' ? 'en-LCC' : 'se-SB' // Set fallback locale
     }
   }
 }
