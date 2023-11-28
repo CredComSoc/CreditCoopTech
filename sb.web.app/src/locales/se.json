@@ -33,7 +33,7 @@
     "description": "Beskrivning",
     "street_address": "Gatuadress",
     "orgnumberlabel": "Organisationsnummer",
-    "town": "Stad/stad",
+    "town": "Stad",
     "Zip code": "Postnummer",
     "billing": "Faktureringsinformation",
     "billingnamelabel": "Kategori",
