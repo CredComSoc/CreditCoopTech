@@ -151,7 +151,7 @@
         <button id="mob-nav-btn" class="icon" @click="openNav">
           <i class="fa fa-bars"></i>
         </button>
-        <div class="navlogo">
+        <div v-if="enableLanguageChange" class="navlogo">
         <select class="language-select" @change="changeLanguage" v-model="language">
           <option value="en">en</option>
           <option value="se">se</option>
@@ -190,7 +190,9 @@ export default {
       oldNotifications: [],
       componentKey: 0,
       showSignOutModal: ref(false),
-      language: window.localStorage.getItem('VUE_APP_I18N_LOCALE')
+      language: window.localStorage.getItem('VUE_APP_I18N_LOCALE'),
+      // eslint-disable-next-line
+      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false // Set enableLanguageChange from env file
     }
   },
   name: 'Navbar',
