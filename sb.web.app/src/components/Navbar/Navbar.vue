@@ -169,12 +169,13 @@
 
 <script>
 // Component that represent the navbar, is responsive for mobile aswell
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { logout, setNotificationsToSeen, getCart } from '../../serverFetch.js'
 import Notifications from './Notifications.vue'
 import Modal from '../Modal/Modal.vue'
 import { ref } from 'vue'
 const router = useRouter()
+const route = useRoute()
 
 export default {
   components: {
@@ -347,6 +348,7 @@ export default {
         window.localStorage.setItem('VUE_APP_I18N_LOCALE', 'se')
         window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'se-SB')
       }
+      if ((this.$route.path).includes('Event')) location.reload()
       this.$i18n.locale = selectedLanguage
     }
   }
