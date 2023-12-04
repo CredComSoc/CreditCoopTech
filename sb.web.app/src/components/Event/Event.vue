@@ -21,7 +21,7 @@ sb.web.app/src/serverFetch.js has function to talk to database.
 */
 export default {
   components: {
-    FullCalendar, 
+    FullCalendar,
     Modal,
     PopupCard,
     LoadingComponent
@@ -47,8 +47,7 @@ export default {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        //locales: allLocales,
-        //         locale: window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en',
+        locale: this.$i18n.locale === 'se' ? 'sv' : 'en',
         initialView: 'dayGridMonth',        
         events: this.$store.state.allEvents,
         editable: true,
@@ -89,17 +88,6 @@ export default {
   async mounted () {
     await setEventData()
     this.calendarOptions.events = this.$store.state.allEvents
-  },
-
-  computed: {
-    locale () {
-      const loc = window.localStorage.getItem('VUE_APP_I18N_LOCALE') ? window.localStorage.getItem('VUE_APP_I18N_LOCALE') : process.env.VUE_APP_I18N_LOCALE || 'en'
-      if (loc === 'en') {
-        return 'en'
-      }
-      return 'sv'
-      //if (loc === 'se') return 'sv'
-    }
   },
 
   methods: {
