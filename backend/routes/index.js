@@ -11,9 +11,14 @@ const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
 const { marked } = require('marked');
 const handlebars = require("handlebars");
+const fs = require('fs').promises;
 const { promisify } = require('util');
 const axios = require('axios').default;
 const config = require('../config');
+
+marked.Renderer.prototype.paragraph = (text) => {
+  return text + '\n';
+};
 
 
 module.exports = function() {
@@ -48,18 +53,18 @@ module.exports = function() {
    *                 
    *****************************************************************************/
 // Function to retrieve email templates
-  function getTemplatesForEmail(subjectTemplate, bodyTemplate, isDynamic, templateData) {
+  async function getTemplatesForEmail(subjectTemplate, bodyTemplate, isDynamic, templateData) {
       try {
         // Read the Markdown template
         const markdownTemplate = await fs.readFile('email-templates.md', 'utf-8');
 
         // Extract the desired template based on the Template tag
         const templateSections = extractTemplates(markdownTemplate);
-        const selectedTemplate_1 = templateSections['PasswordSubject'];
-        const selectedTemplate_2 = templateSections['PasswordBody'];
+        const selectedTemplate_1 = templateSections[subjectTemplate];
+        const selectedTemplate_2 = templateSections[bodyTemplate];
 
         if (!selectedTemplate_1 || !selectedTemplate_2) {
-          return res.status(404).send('Template not found');
+          return {'Error': 'Template not found'};
         }
 
         // convert markdown to html
@@ -79,7 +84,6 @@ module.exports = function() {
 
       } catch (error) {
         console.error("Error retrieving email templates: ", error);
-        res.status(500).send('Internal Server Error');
       }
   }
 
@@ -444,7 +448,7 @@ module.exports = function() {
                 email: newPro.email,
                 password: newPro.password
               }
-              const templates = getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
+              const templates = await getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
 
               const reponse = await sendMail(templates['body'], newUser.email, templates['subject'])
               console.log(reponse)
@@ -1271,7 +1275,7 @@ module.exports = function() {
         FRONTEND_URL: `${FRONTEND_URL}`,
         token: `${token}`
       }
-      const templates = getTemplatesForEmail('PasswordSubject', 'PasswordBody', true, templateData)
+      const templates = await getTemplatesForEmail('PasswordSubject', 'PasswordBody', true, templateData)
 
       const response = await sendMail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
@@ -1300,7 +1304,7 @@ module.exports = function() {
       const templateData = {
         accountName: `${user.profile.accountName}`
       }
-      const templates = getTemplatesForEmail('PasswordResetConfirmationSubject', 'PasswordResetConfirmationBody', true, templateData)
+      const templates = await getTemplatesForEmail('PasswordResetConfirmationSubject', 'PasswordResetConfirmationBody', true, templateData)
 
       const response = await sendMail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
@@ -1681,7 +1685,7 @@ module.exports = function() {
   router.get("/testemail", async (req, res) => {
     // sending test email api
     try {
-      const templates = getTemplatesForEmail('TestSubject', 'TestBody', false, {})
+      const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
 
       const response = await sendMail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
     } catch (error) {
