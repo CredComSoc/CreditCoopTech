@@ -9,9 +9,16 @@ const { GridFsStorage } = require('multer-gridfs-storage');
 const uuid = require('uuid');
 const { MongoClient, ObjectId } = require('mongodb');
 const nodemailer = require('nodemailer')
+const { marked } = require('marked');
+const handlebars = require("handlebars");
+const fs = require('fs').promises;
 const { promisify } = require('util');
 const axios = require('axios').default;
 const config = require('../config');
+
+marked.Renderer.prototype.paragraph = (text) => {
+  return text + '\n';
+};
 
 
 module.exports = function() {
@@ -45,6 +52,78 @@ module.exports = function() {
    *                           Helper Functions
    *                 
    *****************************************************************************/
+// Function to retrieve email templates
+  async function getTemplatesForEmail(subjectTemplate, bodyTemplate, isDynamic, templateData) {
+      try {
+        // Read the Markdown template
+        const markdownTemplate = await fs.readFile('email-templates.md', 'utf-8');
+
+        // Extract the desired template based on the Template tag
+        const templateSections = extractTemplates(markdownTemplate);
+        const selectedTemplate_1 = templateSections[subjectTemplate];
+        const selectedTemplate_2 = templateSections[bodyTemplate];
+
+        if (!selectedTemplate_1 || !selectedTemplate_2) {
+          return {'Error': 'Template not found'};
+        }
+
+        // convert markdown to html
+        if (isDynamic) {
+          const bodyTemplate = compileTemplate(selectedTemplate_2, templateData);
+          const htmlTemplate_1 = marked(selectedTemplate_1);
+          const htmlTemplate_2 = marked(bodyTemplate);
+        } else {
+          const htmlTemplate_1 = marked(selectedTemplate_1);
+          const htmlTemplate_2 = marked(selectedTemplate_2);
+        }
+
+        return {
+          'subject': htmlTemplate_1,
+          'body': htmlTemplate_2
+        }
+
+      } catch (error) {
+        console.error("Error retrieving email templates: ", error);
+      }
+  }
+
+// Function to replace variables in the template
+  function compileTemplate(template, data) {
+    const compiledTemplate = handlebars.compile(template);
+    return compiledTemplate(data);
+  }
+
+
+// Function to send emails
+  async function sendEmail(htmlContent, to, subject) {
+    const mailOptions = {
+      from: support_email,
+      to,
+      subject,
+      html: htmlContent,
+    };
+
+    return email_transporter.sendMail(mailOptions);
+  }
+
+// Function to extract templates based on Template tags
+  function extractTemplates(markdownContent) {
+    const templateSections = {};
+    const lines = markdownContent.split('\n');
+
+    let currentTemplate = '';
+    for (const line of lines) {
+      const templateTagMatch = line.match(/<!-- Template: (.+) -->/);
+      if (templateTagMatch) {
+        currentTemplate = templateTagMatch[1];
+        templateSections[currentTemplate] = '';
+      } else {
+        templateSections[currentTemplate] += line + '\n';
+      }
+    }
+
+    return templateSections;
+  }
 
   async function getUser(user_query) {
     const db = await MongoClient.connect(dbUrl)
@@ -364,24 +443,14 @@ module.exports = function() {
           if (sendWelcomeEmail && email_enabled) {
             try {
               // TODO: May be change the language to english if that is the users are english speaking
-              const reponse = await email_transporter.sendMail({ //send mail to the new user(admin should be able to change this text later)
-                from: support_email, // sender address
+              const templateData = {
+                FRONTEND_URL: `${FRONTEND_URL}`,
+                email: newPro.email,
+                password: newPro.password
+              }
+              const templates = await getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
 
-                to: newUser.email, 
-                subject: 'Welcome to Land Care Trade', // Subject line
-                text: `
-                You are receiving this email because you have requested to join Land Care Trade.
-                Please click the following link or paste it into a browser to complete the sign up process:
-                ${FRONTEND_URL}/login
-
-                Your login details are:
-                Email address: ${newPro.email}
-                Password: ${newPro.password}
-                
-                Best wishes,
-                Land Care Trade
-                `
-              })
+              const reponse = await sendMail(templates['body'], newUser.email, templates['subject'])
               console.log(reponse)
             } catch (error) {
               console.log(error)
@@ -1202,19 +1271,13 @@ module.exports = function() {
     }
     updateUser(user, query)
     if (email_enabled) {
-      
-      await email_transporter.sendMail({
-        from: support_email, // sender address   
-        to: user.email, // list of receivers
-        subject: 'Reset your password for Land Care Trade', // Subject line
-        text: `
-        You have received this email because you (or someone else) has requested that the password associated with this email address at Land Care Trade be reset.
-        Please click the following link or paste it into your browser to complete the process:
-        ${FRONTEND_URL}/reset/${token}
+      const templateData = {
+        FRONTEND_URL: `${FRONTEND_URL}`,
+        token: `${token}`
+      }
+      const templates = await getTemplatesForEmail('PasswordSubject', 'PasswordBody', true, templateData)
 
-        If you have not requested this reset, please ignore this email and your password will remain unchanged.
-      `
-      })
+      const response = await sendMail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
     }
   }) 
@@ -1238,15 +1301,12 @@ module.exports = function() {
     updateUser(user, query)
   
     if (email_enabled) {
-      const resetEmail = {
-        to: user.email,
-        from: support_email,
-        subject: 'Your password for Land Care Trade has been updated',
-        text: `
-        This is a confirmation that the password for your account ${user.profile.accountName} with Land Care Trade has updated".
-        `,
-      };
-      await email_transporter.sendMail(resetEmail);
+      const templateData = {
+        accountName: `${user.profile.accountName}`
+      }
+      const templates = await getTemplatesForEmail('PasswordResetConfirmationSubject', 'PasswordResetConfirmationBody', true, templateData)
+
+      const response = await sendMail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
     }
   })
@@ -1625,13 +1685,9 @@ module.exports = function() {
   router.get("/testemail", async (req, res) => {
     // sending test email api
     try {
-      const response = await email_transporter.sendMail({ 
-        from: support_email, // sender address
+      const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
 
-        to: 'yonasbek4@gmail.com', 
-        subject: 'Welcome to Land Care Trade', // Subject line
-        text: `Test email service`
-      })
+      const response = await sendMail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
     } catch (error) {
       console.log(error)
       res.status(400).send(error)
