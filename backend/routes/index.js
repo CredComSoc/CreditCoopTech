@@ -1624,7 +1624,7 @@ module.exports = function() {
           }
 
         } catch (error) {
-          console.error(error.response.data)
+          console.error(error.response)
         } 
         res.status(200).send(transactions)
       })
