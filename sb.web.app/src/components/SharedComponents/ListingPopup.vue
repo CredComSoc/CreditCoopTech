@@ -8,16 +8,16 @@
       <splide-slide>
         <img :src='getImgURL(this.listingObj.coverImg)' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
-      <splide-slide v-if="this.listingObj.img.length >= 1">
+      <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 1 : false">
         <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
-      <splide-slide  v-if="this.listingObj.img.length >= 2">
+      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 2 : false">
         <img :src='getImgURL(this.listingObj.img[1])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
-      <splide-slide  v-if="this.listingObj.img.length >= 3">
+      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 3 : false">
         <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
-      <splide-slide  v-if="this.listingObj.img.length >= 4">
+      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 4 : false">
         <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
     </splide>
@@ -105,8 +105,8 @@ export default {
         type: 'loop',
         width: '600px',
         gap: '1rem',
-        arrows: this.listingObj.img.length > 0,
-        pagination: this.listingObj.img.length > 0
+        arrows: this.listingObj.img ? this.listingObj.img.length > 0 : false,
+        pagination: this.listingObj.img ? this.listingObj.img.length > 0 : false
       }
     }
   },
