@@ -1579,7 +1579,7 @@ module.exports = function() {
               }
             }
         } catch (error) {
-          console.error(error.response)
+          console.error(error)
         }
         // get transactions
         try {
@@ -1624,7 +1624,7 @@ module.exports = function() {
           }
 
         } catch (error) {
-          console.error(error.response)
+          console.error(error)
         } 
         res.status(200).send(transactions)
       })
