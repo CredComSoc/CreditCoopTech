@@ -65,7 +65,9 @@ export default {
       password: '',
       error: false,
       mailtoClicked: false,
-      loginCount: 0
+      loginCount: 0,
+      // eslint-disable-next-line
+      mainLogo: process.env.VUE_APP_NAME == 'SB' ? '/sb.png' : '/logo.png'
     }
   },
   methods: {
