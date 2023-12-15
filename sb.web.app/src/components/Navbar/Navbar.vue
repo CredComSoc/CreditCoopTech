@@ -80,7 +80,7 @@
           <div id="navbar-home" class="navlogo">
             <figure>
               <router-link :to="{name:'Home'}" >
-                <img src="/nav_logo.png" />
+                <img :src=mainLogo />
               </router-link>
             </figure>
           </div>
@@ -193,7 +193,9 @@ export default {
       showSignOutModal: ref(false),
       language: window.localStorage.getItem('VUE_APP_I18N_LOCALE'),
       // eslint-disable-next-line
-      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false // Set enableLanguageChange from env file
+      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false, // Set enableLanguageChange from env file
+      // eslint-disable-next-line
+      mainLogo: process.env.VUE_APP_NAME == 'SB' ? '/sb.png' : '/nav_logo.png'
     }
   },
   name: 'Navbar',
