@@ -16,7 +16,7 @@
       </splide-slide>
       <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 3 : false">
         <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>Close
+      </splide-slide>
       <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 4 : false">
         <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
