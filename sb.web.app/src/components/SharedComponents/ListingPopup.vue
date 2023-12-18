@@ -16,7 +16,7 @@
       </splide-slide>
       <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 3 : false">
         <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
+      </splide-slide>Close
       <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 4 : false">
         <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
       </splide-slide>
@@ -68,7 +68,7 @@
 
         <div class="spacing"></div>
 
-      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('Close') }}</button>
+      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')">
         <div>
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
