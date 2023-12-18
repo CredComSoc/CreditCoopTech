@@ -68,7 +68,7 @@
 
         <div class="spacing"></div>
 
-      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('Close') }}</button>
+      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
       <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')">
         <div>
           <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
