@@ -2,26 +2,39 @@
   <div>
     <h1><b>{{ $t('created_by') }}</b></h1>
     <div>
-      <p style="font-style: italic;">{{ $t('initial_student_group') }}</p>
+      <p style="font-style: italic;">{{ $t('first_student_group') }}</p>
     </div>
     <div style="max-height: 50em;">
       <table>
         <tr>
         </tr>
-        <tr v-for="item in creators" :key="item">
+        <tr v-for="item in creators1" :key="item">
           <td> {{item}} </td>
 
         </tr>
       </table>
     </div>
     <div>
-      <p style="font-style: italic;"> {{ $t('second_student_group') }}  </p>
+      <p style="font-style: italic;">{{ $t('second_student_group') }}</p>
     </div>
     <div style="max-height: 50em;">
       <table>
         <tr>
         </tr>
         <tr v-for="item in creators2" :key="item">
+          <td> {{item}} </td>
+
+        </tr>
+      </table>
+    </div>    
+    <div>
+      <p style="font-style: italic;"> {{ $t('third_student_group') }}  </p>
+    </div>
+    <div style="max-height: 50em;">
+      <table>
+        <tr>
+        </tr>
+        <tr v-for="item in creators3" :key="item">
           <td> {{item}} </td>
 
         </tr>
@@ -36,8 +49,9 @@
 export default {
   data () {
     return {
-      creators: ['Vincent Ahlström', 'Alicia Bergman', 'Robin Jensen', 'Linus Johansson', 'Kasper Nilsson', 'Viktor Rösler'],
-      creators2: ['Oscar Castenäs', 'Simon Jernström', 'Hanna Häger', 'Rojal Maharyan', 'Pernilla Ljungqvist', 'Alma Wärnsäter', 'Rikard Arnemo']
+      creators1: ['Vincent Ahlström', 'Alicia Bergman', 'Robin Jensen', 'Linus Johansson', 'Kasper Nilsson', 'Viktor Rösler'],
+      creators2: ['Axelia Nilsson', 'Ilona Kröll', 'Alicia Åslund', 'Lisa Bernheim'],
+      creators3: ['Oscar Castenäs', 'Simon Jernström', 'Hanna Häger', 'Rojal Maharyan', 'Pernilla Ljungqvist', 'Alma Wärnsäter', 'Rikard Arnemo']
     }
   }
 }
