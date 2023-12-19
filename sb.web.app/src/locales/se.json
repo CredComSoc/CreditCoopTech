@@ -182,7 +182,7 @@
     "invalid_approval": "Ogiltigt godkännande",
     "purchase_request_cannot_be_approved_buyer": "Köpbegäran kan inte godkännas eftersom den skulle ta {buyer_username} under deras negativa kreditgräns. Överväg att följa upp dem.",
     "purchase_request_cannot_be_approved_seller": "Köpbegäran kan inte godkännas, eftersom ditt saldo då skulle överstiga din positiva kreditgräns med {excess_credit} {credit_unit}.",
-    "pending_purchases": "Du har väntande köp som måste godkännas av säljaren/säljarna innan de slutförs. Du kommer att få meddelande(n) när de har godkänt eller avvisat köpet/köpen.",
+    "pending_purchases": "Du har väntande köp som måste godkännas av säljarna innan de slutförs. Du kommer att få meddelanden när de har godkänt eller avvisat köpen.",
     "seller_pending_balance_exceeded": "Denna köpbegäran kan inte slutföras, eftersom det skulle ta {seller} bortom deras utestående positiva kreditgräns. Överväg att följa upp med motparten om ditt tänkta köp."
   },
   "notifications": {
