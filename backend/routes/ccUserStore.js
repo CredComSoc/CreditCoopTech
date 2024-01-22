@@ -2,6 +2,8 @@ const express = require('express');
 const ObjectId = require('mongodb').ObjectId
 const config = require('../config')
 const { MongoClient } = require("mongodb");
+const cacheMiddleware = require('../middlewares/cacheMiddleware');
+
 
 // Routes required by the Credits Common Node
 // https://gitlab.com/credit-commons-software-stack/cc-node/-/blob/master/AccountStore/accountstore.openapi.yml
@@ -12,7 +14,7 @@ module.exports = function() {
   const mongoURL = config.mongoURL;
   const router = express.Router();
 
-  router.head("/:acc_id", async (req, res) => {
+  router.head("/:acc_id", cacheMiddleware(24), async (req, res) => {
 
     const client = new MongoClient(mongoURL);
     try {
@@ -123,7 +125,7 @@ module.exports = function() {
     }) */
   })
   
-  router.get("/:acc_id", async (req, res) => {
+  router.get("/:acc_id", cacheMiddleware(24), async (req, res) => {
 
     const client = new MongoClient(mongoURL);
     try {
