@@ -7,10 +7,16 @@
         <div class="middle-logo">
           <div class="navlogo">
             <figure>
-              <img src="/logo.png" alt=""/>
+              <img :src=mainLogo />
             </figure>
           </div>
         </div>
+        <div v-if="enableLanguageChange" class="navlogo language">
+        <select class="language-select" @change="changeLanguage" v-model="language">
+          <option value="en">en</option>
+          <option value="se">se</option>
+        </select>
+      </div>
       </nav>
     </header>
   </div>
@@ -67,7 +73,10 @@ export default {
       mailtoClicked: false,
       loginCount: 0,
       // eslint-disable-next-line
-      mainLogo: process.env.VUE_APP_NAME == 'SB' ? '/sb.png' : '/logo.png'
+      mainLogo: process.env.VUE_APP_NAME == 'SB' ? '/sb.png' : '/logo.png',
+      language: window.localStorage.getItem('VUE_APP_I18N_LOCALE'),
+      // eslint-disable-next-line
+      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false // Set enableLanguageChange from env file
     }
   },
   methods: {
@@ -92,6 +101,19 @@ export default {
           this.$refs.loadingComponent.hideLoading()
         } 
       })
+    },
+    changeLanguage (event) {
+      const selectedLanguage = event.target.value
+      this.language = selectedLanguage
+      if (selectedLanguage === 'en') {
+        window.localStorage.setItem('VUE_APP_I18N_LOCALE', 'en')
+        window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'en-LCC')
+      } else {
+        window.localStorage.setItem('VUE_APP_I18N_LOCALE', 'se')
+        window.localStorage.setItem('VUE_APP_I18N_FALLBACK_LOCALE', 'se-SB')
+      }
+      this.$i18n.locale = selectedLanguage
+      this.$i18n.fallbackLocale = selectedLanguage === 'en' ? 'en-LCC' : 'se-SB' // Set fallback locale
     }
   }
 
@@ -188,6 +210,13 @@ button:focus {
   text-align: center;
   color: rgb(27, 77, 2);
   margin-top: 15px;
+}
+.language {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 
