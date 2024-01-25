@@ -18,7 +18,7 @@ export default {
   props: ['companyName'],
   data () {
     return {
-      homeLogo: process.env.VUE_APP_NAME == 'SB' ? '../../assets/svensk_barter_home_page.jpg' : '../../assets/banner_lcc.png'
+      homeLogo: process.env.VUE_APP_NAME === 'SB' ? '../../assets/svensk_barter_home_page.jpg' : '../../assets/banner_lcc.png'
     }
   }
 }
