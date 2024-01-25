@@ -41,9 +41,9 @@
       
     </form>
     <div class="box-link">
-      <a href="mailto:support@landcaretrade.com">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
+      <a :href="contact_link">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
       <div class="box-msg" v-if="this.mailtoClicked">
-          <a href="mailto:support@landcaretrade.com">{{ $t('org.contact_email') }}</a>
+          <a :href="contact_link">{{ $t('org.contact_email') }}</a>
       </div>
       <div class="forgot_link">
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
@@ -76,7 +76,8 @@ export default {
       mainLogo: process.env.VUE_APP_NAME == 'SB' ? '/sb.png' : '/logo.png',
       language: window.localStorage.getItem('VUE_APP_I18N_LOCALE'),
       // eslint-disable-next-line
-      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false // Set enableLanguageChange from env file
+      enableLanguageChange: process.env.VUE_APP_ENABLE_LANGUAGE_CHANGE == 'enable' ? true : false, // Set enableLanguageChange from env file
+      contact_link: this.$i18n.t('org.contact_link')
     }
   },
   methods: {
