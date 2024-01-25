@@ -1,0 +1,24 @@
+{
+  "fees": {
+    "key": "123",
+    "min": "0",
+    "max": "100",
+    "admin": false,
+    "id": "fees"
+  },
+  "cc-test-2": {
+    "url": "http://cc-test-2",
+    "min": "-100",
+    "max": "200",
+    "admin": false,
+    "id": "cc-test-2"
+  },
+  "cc-test-3": {
+    "url": "http://cc-test-3",
+    "min": "-200",
+    "max": "100",
+    "admin": false,
+    "id": "cc-test-3"
+  }
+}
+

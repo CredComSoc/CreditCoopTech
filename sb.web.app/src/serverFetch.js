@@ -48,14 +48,14 @@ export async function getImg (filename) {
  *****************************************************************************/
 
 export async function login (email, password) {
-  //const hashedPassword = hashMyPassword(password)
+  const hashedPassword = hashMyPassword(password)
 
   return await fetch(EXPRESS_URL + '/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email: email, password: password }),
+    body: JSON.stringify({ email: email, password: hashedPassword }),
     credentials: 'include'
   }).then((response) => {
     if (!response.ok) {

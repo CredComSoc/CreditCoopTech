@@ -1,0 +1,51 @@
+components:
+  schemas:
+    SchemaA:
+      type: object
+      properties:
+        propA:
+          type: integer
+          readOnly: true
+        propB:
+          type: string
+          writeOnly: true
+        propC:
+          type: array
+          items:
+            type: string
+        propD:
+          type: array
+          items:
+            type:
+              - string
+              - integer
+              - 'null'
+      required:
+        - propA
+        - propB
+    SchemaB:
+      type: object
+      properties:
+        age:
+          type: integer
+      required:
+        - age
+  parameters:
+    HeaderA:
+      in: header
+      name: Header-A
+      required: true
+      schema:
+        type: string
+        enum:
+          - value A
+          - value B
+        default: value A
+    QueryArgumentA:
+      in: query
+      name: queryArgA
+      description: query argument A
+      example: 10.5
+      schema:
+        type: number
+        format: float

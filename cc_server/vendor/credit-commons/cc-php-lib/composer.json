@@ -1,0 +1,25 @@
+{
+  "name": "credit-commons/cc-php-lib",
+  "description": "Php functions for working with a credit commons node",
+  "type": "library",
+  "license": "GPL-2.0+",
+  "homepage": "https://creditcommons.net",
+  "authors": [
+    {
+      "name": "Matthew Slater",
+      "email": "matslats@fastmail.com",
+      "homepage": "http://matslats.net",
+      "role": "Maintainer"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^6",
+    "php": ">=8"
+  },
+  "autoload": {
+    "psr-4": {
+      "CreditCommons\\": "src",
+      "Examples\\": "examples"
+    }
+  }
+}

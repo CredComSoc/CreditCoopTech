@@ -1,0 +1,1274 @@
+openapi: 3.0.0
+#validate at https://apitools.dev/swagger-parser/online/ or https://editor.swagger.io/
+info:
+  version: '0.2'
+  title: Credit Commons
+  description: An API for recursive mutual credit accounting.
+  contact:
+    name: Matthew Slater
+    url: https://matslats.net/contact
+  license:
+    name: GNU GPL
+tags:
+  - 
+    name: twig
+    description: Required by twig implementations.
+  - 
+    name: twig (optional)
+    description: Optional for twig implementations.
+paths:
+  /:
+    options:
+      operationId: permittedEndpoints
+      summary: Get the available endpoints.
+      description: Different endpoints may be available to different users.
+      tags:
+        - twig (optional)
+      responses:
+        200:
+          description: operationIds of permitted requests for the current user.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: Any flat json response whose properties are unknown.
+                    properties:
+                      additionalProperties:
+                        type: string
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /handshake:
+    get:
+      summary: Ping, with hash check.
+      description: If the request comes from another node, just return an empty array on success. If it comes from a leaf, then ping all the connected nodes and return the results. Every node connection should have matching hashes at all times.
+      operationId: handShake
+      tags:
+        - twig
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of connected nodes
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Handshake"   
+  /account/names:
+    get:
+      summary: Filter accountnames
+      operationId: accountautocompleteWithpath
+      description: Get accounts names on the current ledger or all trunkward ledgers, optionally filtered by name.
+      tags:
+        - twig
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: acc_path
+          in: query
+          description: Partial relative address of an account
+          required: false
+          schema:
+            type: string
+        - name: local
+          in: query
+          description: True to return only leaf accounts, false for only remote accounts.
+          required: false
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: "The max number of results to return."
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The list of relative path names
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - alice
+                      - albany/
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /account/history:
+    get:
+      summary: Get account's balance history (to be removed).
+      description: A series of times and balances, suitable for making a chart. NB it has been proposed that this method is superfluous to the API
+      operationId: AccountHistory
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: acc_path
+          in: query
+          description: Partial relative address of an account
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of times and balances
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AccountHistory"
+                  meta:
+                    type: object
+                    properties:
+                      start:
+                        type: string
+                      end:
+                        type: string
+                      points:
+                        type: integer
+                      min:
+                        type: number
+                        format: integer
+                      max:
+                        type: number
+                        format: integer
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /account/limits:
+    get:
+      summary: Get the min/max limits of the account.
+      description: Every account has min and max balance limits, even if they defaults.
+      operationId: accountLimits
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: acc_path
+          in: query
+          description: Partial relative address of an account
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Min and max balance limits.
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    additionalProperties:
+                      $ref: "#/components/schemas/AccLimits"
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /account/summary:
+    get:
+      summary: Summary of one or all accounts trading activity on a node indicated by the path.
+      description: Balance, pending balance, trade volume, partners etc. Until OpenAPI allows optional path parameters, summaries of all accounts on the current node can be obtained by passing the current node name.
+      operationId: accountSummary
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: acc_path
+          in: query
+          description: Partial relative address of an account
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Summary of trading data
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data: 
+                    type: object
+                    additionalProperties:
+                      $ref: "#/components/schemas/AccountSummary"
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /transaction/{uuid}:
+    get:
+      summary: Retrieve a single transaction from the current node
+      operationId: getTransaction
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: uuid
+          in: path
+          description: The uuid of the one transaction required.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The transaction
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Transaction"   
+                  meta:
+                    type: object
+                    properties:
+                      transitions:
+                        $ref: "#/components/schemas/TransitionCollection"  
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /entries/{uuid}:
+    get:
+      summary: Retrieve entries of single transaction from the current node.
+      operationId: getTransactionEntries
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: uuid
+          in: path
+          description: The uuid of the one transaction required.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The transaction entries
+          content: 
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/EntryFull"    
+                  meta:
+                    type: object
+                    properties:
+                      number_of_results:
+                        type: integer
+                      current_page:
+                        type: integer
+                        description: Starting with 1
+                  links:
+                    $ref: '#/components/schemas/PagerLinks'
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /transaction:
+    post:
+      summary: Propose a transaction.
+      description: A trunkward node cannot propose a transaction on behalf of a leafwards account.
+      operationId: newTransaction
+      requestBody:
+        $ref: '#/components/requestBodies/NewTransaction'
+      responses:
+        "200":
+          $ref: "#/components/responses/Transaction"
+        "201":
+          $ref: "#/components/responses/Transaction"
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /transactions:
+    get:
+      summary: Filter transactions, paged.
+      description: Filter and sort on any field, plus special filters, involving, before, after. @todo Add a path parameter and enable filtering on trunkward nodes.
+      operationId: filterTransactions
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client)
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: String or partial string on which to filter the transaction description.
+          required: false
+          schema:
+            type: string
+        - name: payer
+          in: query
+          description: User ID of the payer.
+          required: false
+          schema:
+            type: string
+        - name: payee
+          in: query
+          description: User ID of the payee.
+          required: false
+          schema:
+            type: string
+        - name: scribe
+          in: query
+          description: User ID of the user which wrote the last transaction state.
+          required: false
+          schema:
+            type: string
+        - name: involving
+          in: query
+          description: Filter where the payer OR payee was in this transaction.
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Workflow state; The reference implementation supports states 'validated', 'pending', 'completed', 'erased'. Transactions in 'erased' state are excluded unless specifically requested. Only the creators of a transaction can see it while in 'validated' state.
+          required: false
+          schema:
+            type: string
+        - name: states
+          in: query
+          description: As state, but selecting multiple. Comma separated.
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: The workflow types of the transactions. (Default types are bill, credit & 3rdparty)
+          required: false
+          schema:
+            type: string
+        - name: types
+          in: query
+          description: As type, but selecting multiple. Comma separated.
+          required: false
+          schema:
+            type: string
+        - name: until
+          in: query
+          description: The date after which the filtered transaction were first written for comparison with a mysql DATETIME value. e.g. 2020-07-25 12:55:54
+          required: false
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: The date before which the filtered transaction were first written for comparison with a mysql DATETIME value. e.g. 2020-07-25 12:55:54
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: name of field on which to sort - any of the above fields.
+          required: false
+          schema:
+            type: string
+            default: written
+        - name: dir
+          in: query
+          description: Direction of sort, asc or desc
+          required: false
+          schema:
+            type: string
+            default: desc
+        - name: limit
+          in: query
+          description: Max number of results to return
+          required: false
+          schema:
+            type: string
+            default: 25
+        - name: offset
+          in: query
+          description: Number of results to skip. @todo replace this with 'page'
+          required: false
+          schema:
+            type: string
+            default: 0
+      responses:
+        "200":
+          description: "Filtered transactions"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: A list of transactions
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
+                  meta:
+                    type: object
+                    properties:
+                      number_of_results:
+                        type: integer
+                      current_page:
+                        type: integer
+                        description: Starting with 1
+                      transitions:
+                        $ref: '#/components/schemas/TransitionCollection'
+                  links:
+                    $ref: '#/components/schemas/PagerLinks'
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /entries:
+    get:
+      summary: Filter transaction entries, paged.
+      description: Filter and sort on any field, plus special filters, involving, before, after.
+      operationId: filterTransactionEntries
+      tags:
+        - twig (optional)
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client)
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: String or partial string on which to filter the transaction description.
+          required: false
+          schema:
+            type: string
+        - name: payer
+          in: query
+          description: User ID of the payer.
+          required: false
+          schema:
+            type: string
+        - name: payee
+          in: query
+          description: User ID of the payee.
+          required: false
+          schema:
+            type: string
+        - name: scribe
+          in: query
+          description: User ID of the user which wrote the last transaction state.
+          required: false
+          schema:
+            type: string
+        - name: involving
+          in: query
+          description: Filter where the payer OR payee was in this transaction.
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Workflow state; The reference implementation supports states 'validated', 'pending', 'completed', 'erased'. Transactions in 'erased' state are excluded unless specifically requested. Only the creators of a transaction can see it while in 'validated' state.
+          required: false
+          schema:
+            type: string
+        - name: states
+          in: query
+          description: As state, but selecting multiple. Comma separated.
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: The workflow types of the transactions. (Default types are bill, credit & 3rdparty)
+          required: false
+          schema:
+            type: string
+        - name: types
+          in: query
+          description: As type, but selecting multiple. Comma separated.
+          required: false
+          schema:
+            type: string
+        - name: until
+          in: query
+          description: The date after which the filtered transaction were first written for comparison with a mysql DATETIME value. e.g. 2020-07-25 12:55:54
+          required: false
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: The date before which the filtered transaction were first written for comparison with a mysql DATETIME value. e.g. 2020-07-25 12:55:54
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: name of field on which to sort - any of the above fields.
+          required: false
+          schema:
+            type: string
+            default: written
+        - name: dir
+          in: query
+          description: Direction of sort, asc or desc
+          required: false
+          schema:
+            type: string
+            default: desc
+        - name: limit
+          in: query
+          description: Max number of results to return
+          required: false
+          schema:
+            type: string
+            default: 25
+        - name: offset
+          in: query
+          description: Number of results to skip. @todo replace this with 'page'
+          required: false
+          schema:
+            type: string
+            default: 0
+      responses:
+        "200":
+          description: "Filtered transaction entries"
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: A list of results, keyed by entry ID
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/EntryFull"
+                  meta:
+                    type: object
+                    properties:
+                      number_of_results:
+                        type: integer
+                      current_page:
+                        type: integer
+                        description: Starting with 1
+                  links:
+                    $ref: '#/components/schemas/PagerLinks'
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /transaction/relay:
+    post:
+      summary: Relay a proposed transaction through the node tree.
+      description: This can only be used as a result of a POST /transaction coming from the leaf at the top of the stream
+      operationId: relayTransaction
+      tags:
+        - twig
+      requestBody:
+        $ref: '#/components/requestBodies/Transaction'
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: No 'state' property was provided so the validated transaction is returned in full, for user confirmation.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Transaction"
+        "201":
+          description: The 'state' property was provided and the transaction was written to that state.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /transaction/{uuid}/{dest_state}:
+    patch:
+      summary: Propose change to transaction state.
+      operationId: stateChange
+      tags:
+        - twig
+      parameters:
+        - name: cc-user
+          in: header
+          description: The hostname of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - name: cc-auth
+          in: header
+          description: The corresponding hash of the calling ledger (if the caller isn't the client).
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: uuid
+          description: The unique id of the temp transaction.
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: dest_state
+          description: The desired workflow state.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The transaction was completely deleted (transactions in validated state only).
+        "201":
+          description: The transaction state was changed.
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /workflows:
+    get:
+      summary: Retrieve (localised) workflows from the trunkward node.
+      operationId: workflows
+      description: For leafwards nodes to know what workflows are available.
+      responses:
+        "200":        
+          description: Here are the workflow objects.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/Workflow'
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /absolutepath:
+    get:
+      summary: Get a list of all the nodes going down to the trunk.
+      operationId: absolutePath
+      responses:
+        200:
+          description: List of node names, from current node to trunk
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data: 
+                    type: array
+                    items:
+                      type: string
+                example:
+                  - branch
+                  - trunk
+        400:
+          $ref: "#/components/responses/UserError"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /about:
+    get:
+      summary: Get information about the conversion rate, currency format, and balance limits of any node.
+      operationId: about
+      parameters:
+        - name: node_path
+          in: query
+          description: Address of a node or account on a node.
+          required: true
+          schema:
+            type: string  
+      # @Todo include the balance limits (of the account or node)
+      responses:
+        "200":
+          description: the conversion ratio, relative to 1
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      format:
+                        type: string
+                        description: An html string.
+                      rate:
+                        type: number
+                        format: integer
+                        description: the exchange rate between the requester and the node at the end of the path.
+        "400":
+          $ref: "#/components/responses/UserError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  requestBodies:
+    NewTransaction:
+      description: The components of a transaction to be built.
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/NewTransaction'
+    Transaction:
+      description: A fully formed transaction
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/Transaction'
+  responses:
+    ServerError:
+      description: Internal/software failure
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CCFailure"
+    UserError:
+      description: Bad data provided.
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CCViolation"
+    Transaction: 
+      description: Transaction with workflow transitions available to the user which are called with the PATCH method.
+      content: 
+        "application/json":
+          schema: 
+            type: object
+            properties:
+              data:
+                $ref: "#/components/schemas/Transaction"
+              meta:
+                type: object
+                properties:
+                  transitions:
+                    $ref: "#/components/schemas/Transitions"
+                    
+  schemas:
+    AccountHistory:
+      type: object
+      description: a list of values summarising the account's trading activity.
+      additionalProperties:
+        type: integer
+      example:
+        "2022-03-11 19:15:26": 0
+        "2022-03-11 19:15:31": "9"
+        "2022-03-11 20:21:29": "9"
+    Workflow:
+      type: object
+      description: An object defining who can move transactions between states.
+      properties:
+        id: 
+          description: The unique identifier of the workflow.
+          type: string
+          example: credit
+        label:
+          description: The name of the workflow.
+          type: string
+          example: MyWorkflow
+        summary:
+          description: Short description of what or who the workflow is for.
+          type: string
+          example: For business payments.
+        active:
+          description: If set to false, no new transactions should use this.
+          type: boolean
+          example: true
+        creation:
+          description: Paramaters for the creation of the transaction.
+          type: object
+          properties:
+            by:
+              type: string
+              description: The relationship of the creator to the transaction, e.g. payer, payee, admin
+            state:
+              $ref: '#/components/schemas/State'
+            label:
+              type: string
+              description: This is the text to put on the form button;
+            confirm:
+              type: boolean
+              description: TRUE if transactions should be confirmed by the creator, in a subsequent operation.
+          example:
+            by: payer
+            state: completed
+            label: Create
+            confirm: 0
+        states:
+          description: States that the transaction might be in.
+          type: object
+#          additionalProperties:
+#            $ref: '#/components/schemas/WorkflowState'
+      required:
+        - label
+        - summary
+        - active
+        - creation
+        - states
+    WorkflowState: 
+      type: object
+      description: A workflow state containing transitions, part of a Worflow object
+      additionalProperties:
+        $ref: '#/components/schemas/WorkflowStateTransition'
+    WorkflowStateTransition:
+      type: object
+      properties: 
+        label:
+          type: string
+          description: The translated label of the transition
+          example: Sign
+        signatories:
+          type: array
+          description: The parties to the transaction permitted to do this transition - payer, payee, admin.
+          items:
+            type: string
+    CCViolation:
+      type: object
+      description: Error object indicating which node the error originated on.
+      required:
+        - class
+        - node
+      properties:
+        class:
+          type: string
+          description: Used to reconstruct the error object on the client.
+          example: UnresolvedAccountnameViolation
+        node:
+          type: string
+          description: The name of the node on which the error was flagged.
+          example: child2
+        additionalProperties:
+          type: string
+    CCFailure:
+      type: object
+      description: Error object indicating which node the error originated on.
+      required:
+        - class
+        - node
+      properties:
+        class:
+          type: string
+          description: Used to reconstruct the error object on the client.
+          example: UnresolvedAccountnameViolation
+        node:
+          type: string
+          description: The name of the node on which the error was flagged.
+          example: child2
+        additionalProperties:
+          type: string
+    Handshake:
+      description: Results of pinging all adjaced nodes. the results keyed by the nodename
+      type: object
+    AccountSummary:
+      type: object
+      description: "Pending and completed summary stats of a single account"
+      properties:
+        completed:
+          $ref: "#/components/schemas/AccountActivity"
+        pending:
+          $ref: "#/components/schemas/AccountActivity"
+    AccLimits:
+      description: Simple object with min & max limits. Null means no limit.
+      type: object
+      properties:
+        min:
+          description: The minium limit.
+          type: number
+          format: integer
+        max:
+          description: The minium limit.
+          type: number
+          format: integer
+      example:
+        min: -100
+        max: 100
+    AccountActivity:
+      type: object
+      description: A summary of transactions
+      properties:
+        balance:
+          type: number
+          description: Sum of all transactions; the gross_in minus gross_out
+          example: -99
+        volume:
+          type: number
+          description: Sum of all transactions; the gross_in plus gross_out
+          example: -99
+        gross_in:
+          type: number
+          description: The total of transactions where this account was the payee
+          example: 900
+        gross_out:
+          type: number
+          description: The total of transactions where this account was the payer
+          example: 999
+        partners:
+          type: number
+          description: The number of different accounts traded with (in this group?)
+          example: 9
+        trades:
+          type: number
+          description: the number of primary entries the account was involved in
+          example: 99
+        entries:
+          type: number
+          description: the number of entries in the database the account was involved in
+          example: 99
+    NewTransaction:
+      type: object
+      description: A proposed transaction sent by a client. If the workflow->created->by is payer or payee, then the server will populate that property by the current user.
+      required:
+        - quant
+        - description
+        - type
+      properties:
+        payee:
+          description: The absolute or relative ledger path to the payee.
+          example: alice
+        payer:
+          description: The absolute or relative ledger path to the payer.
+          type: string
+          example: child2/bob
+        quant:
+          description: Number of local units
+          type: number
+          format: float
+          example: 123.4567
+        description:
+          description: User-entered note about the transaction. (UTF8)
+          type: string
+          example: blah blah
+        type:
+          description: Name of the workflow path to follow. Determines whether payer, payee or both fields are needed.
+          type: string
+          example: bill
+        metadata:
+          description: Class with arbitrary properties
+          type: object
+          additionalProperties: {}
+          example: {"payer_name": "Alice Liddell", "inside_leg": 96, "category": "Horticulture"}
+    Transaction:
+      type: object
+      description: A transaction object. Note that the first of the entries is ALWAYS the main one. The required properties are needed for creating the transaction, the non-required properties expected for display.
+      required:
+        - uuid
+        - type
+        - entries
+      properties:
+        uuid:
+          description: The uuid of the transaction. If not supplied one will be generated.
+          type: string
+          example: a6f5ae5d-3b4b-4e1b-a54a-00e510fd3c99
+        written:
+          description: The first time the transaction was saved
+          type: string
+          example: 2022-02-02 23:38:59
+        type:
+          description: The id of the transaction workflow. Workflow names get be obtained from /workflows
+          type: string
+          example: 3rdparty
+        state:
+          $ref: '#/components/schemas/State'
+        entries:
+          type: array
+          items:
+            oneof:
+              - $ref: "#/components/schemas/Entry"
+              - $ref: "#/components/schemas/FormattedEntry"
+    Entry:
+      type: object
+      description: A single flow of currency between two accounts; Child of the transaction object
+      required:
+        - payer
+        - payee
+        - quant
+        - description
+      properties:
+        payee:
+          description: The absolute or relative ledger path to the payee.
+          type: string
+          example: child1/alice
+        payer:
+          description: The absolute or relative ledger path to the payer.
+          type: string
+          example: child2/bob
+        quant:
+          description: Number of units (trunkward units, if the message is transversal). If this is in a response to a client, the quant is a formatted string.
+          type: number
+          format: float
+          example: 123.4567
+        state:
+          description: The workflow state
+          type: string
+          example: completed
+        description:
+          description: User-entered note about the transaction.
+          type: string
+          example: blah blah
+        metadata:
+          description: Class with arbitrary properties
+          type: object
+          additionalProperties: {}
+          example: {"payer_name": "Alice Liddell", "inside_leg": 96, "category": "Horticulture"}
+    FormattedEntry:
+      type: object
+      description: A single flow of currency between two accounts; Child of the transaction object
+      required:
+        - payer
+        - payee
+        - quant
+        - description
+      properties:
+        payee:
+          description: The absolute or relative ledger path to the payee.
+          type: string
+          example: child1/alice
+        payer:
+          description: The absolute or relative ledger path to the payer.
+          type: string
+          example: child2/bob
+        quant:
+          description: Number of units (trunkward units, if the message is transversal). If this is in a response to a client, the quant is a formatted string.
+          type: string
+          example: $123.45
+        state:
+          description: The workflow state
+          type: string
+          example: completed
+        description:
+          description: User-entered note about the transaction.
+          type: string
+          example: blah blah
+        metadata:
+          description: Class with arbitrary properties
+          type: object
+          additionalProperties: {}
+          example: {"payer_name": "Alice Liddell", "inside_leg": 96, "category": "Horticulture"}
+    EntryFull:
+      type: object
+      description: A single entry, including the transaction headers.
+      required:
+        - uuid
+        - payee
+        - payer
+        - quant
+        - description
+        - author
+        - written
+        - type
+        - state
+        - metadata
+      properties:
+        uuid:
+          description: The unique transversal transaction id
+          type: string
+          example: acbe0c70-9f1e-4c0e-b238-6476c2a7cd22
+        payee:
+          description: The absolute or relative ledger path to the payee.
+          type: string
+          example: child1/alice
+        payer:
+          description: The absolute or relative ledger path to the payee.
+          type: string
+          example: trunk/branch2/bob
+        quant:
+          description: Local units, formatted.
+          type: string
+          example: <strong>L$</strong>123.45
+        description:
+          description: The reason for this entry.
+          type: string
+          example: This is a test
+        author:
+          description: The user who generated this entry.
+          type: string
+          example: admin
+        written:
+          description: The time the last version of the transaction was written
+          type: string
+          example: 2022-02-02 23:38:59
+        type:
+          description: The id of the transaction workflow. Workflow names get be obtained from /workflows
+          type: string
+          example: bill
+        state:
+          $ref: '#/components/schemas/State'
+        metadata:
+          description: Class with arbitrary properties
+          type: object
+          additionalProperties: {}
+          example: {"payer_name": "Alice Liddell", "inside_leg": 96, "category": "Horticulture"}
+    State:
+      type: string
+      description: Any of a list of defined workflow states. This builtin list can be augmented.
+      default: completed
+      enum:
+       - validated
+       - pending
+       - completed
+       - erased
+      example: completed
+    Transitions:
+      type: object
+      description: Transaction workflow transitions available to the user, keyed by uuid.
+      additionalProperties:
+        type: string
+        description: Relative links to be used with the PATCH method. Keyed by the name of the transition from the workflow.
+    TransitionCollection:
+      type: object
+      description: Transaction workflow transitions available to the user, keyed by uuid.
+      additionalProperties:
+        $ref: "#/components/schemas/Transitions"
+        description: A set of links for each transaction, keyed by uuid.
+    PagerLinks:
+      type: object
+      required: {}
+      properties:
+        first:
+          type: string
+        last:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+      example: 
+        first: /transactions?state=completed&payer=admin
+        last: /transactions?state=completed&payer=admin&limit=10&offset=120
+        prev: /transactions?state=completed&payer=admin&limit=10&offset=70
+        next: /transactions?state=completed&payer=admin&limit=10&offset=90

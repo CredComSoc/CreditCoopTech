@@ -11,6 +11,7 @@ max_limit_default = 1000;
 
 async function registerUser (isadmin, username, password, email) {
     console.log("Registering user " + username + " with email " + email)
+    console.log(config.mongoURL)
     const data = new FormData()
     data.append('accountInfo', JSON.stringify({ 
         is_admin: isadmin,
@@ -26,7 +27,7 @@ async function registerUser (isadmin, username, password, email) {
         billingAdress: 'billingAdress',
         orgNumber: 'orgNumber', 
         email: email.toLowerCase(),
-        sendWelcomeEmail: false,
+        sendWelcomeEmail: true,
         phone: 'phone'
     }))
     return await fetch(express_url + '/register', {
@@ -54,9 +55,18 @@ async function registerUser (isadmin, username, password, email) {
 // const admin = 'testadmin'
 // const password = '123'
 
+<<<<<<< Updated upstream
 // registerUser(false, "testuser", "testpassword", "test@nowhere.com")
 // registerUser(false, "testuser2", "testpassword", "test2@nowhere.com")
 // registerUser(true, "admintest", "testpassword", "admin@nowhere.com")
 // registerUser(false, "testuser3", "testpassword", "test3@nowhere.com")
 
 registerUser(false, "testuser4", "testpassword", "test4@nowhere.com")
+=======
+//registerUser(false, "testuser4", "testpassword4", "test4@nowhere.com")
+registerUser(false, "testuser5", "testpassword5", "test5@nowhere.com")
+//registerUser(true, "adminjoe3", "joepassword3", "jmuthui70@gmail.com")
+//registerUser(false, "testuser3", "testpassword", "test3@nowhere.com")
+
+//registerUser(false, "test", "testpassword", "test@gmail.com")
+>>>>>>> Stashed changes

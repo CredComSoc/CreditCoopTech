@@ -1,0 +1,9 @@
+parameters:
+    phpVersion: 70200
+    level: 6
+    paths:
+        - src
+        - tests
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - '#Call to an undefined static method Respect\\Validation\\Validator::numeric\(\).#'

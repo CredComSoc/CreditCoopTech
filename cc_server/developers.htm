@@ -1,0 +1,168 @@
+<html>
+  <head>
+    <title>Instructions for social network developers</title>
+  </head>
+  <body>
+    <h1>Instructions for developers</h1>
+    <h2>Introduction</h2>
+    <p>This document tells you how to connect to this demo node for the 
+      purposes of developing a client. It is being authored on the basis of 
+      ongoing experience.</p>
+    <p>A credit commons node consists of a ledger (i.e. the database),
+     the code for implementing the API, and possibly some business logic, 
+     which means adding extra 'entries' to a transaction. The API does not 
+     allow you to add accounts but you can see the account names and all 
+     existing accounts use the same auth key.</p>
+    <p>This demo setup consists of two connected nodes which comprise a 
+      minimal 'tree' with a <a href="http://twig1.creditcommons.net">twig node</a>
+      and a <a href="http://trunk.creditcommons.net">trunk node</a> to which new
+      twig nodes can be attached. The developer interface at the <a href="/">root
+      of this domain</a> helps you to interact with all endpoints on either 
+      domain.</p>
+    <p>This document describes the three ways that developers can connect to a 
+      Credit Commons node (or tree), and how to connect to this demo system.
+    </p>
+    <p>In all cases if you want to trade with a member in an exchange other than
+      your own, the test users are identified with path's twig1/alice and 
+      twig1/bob. The can be prefixed with the name of the trunk, 'trunk' but the
+      trunk node is redundant in addresses</p>
+    <h2>Implementation modes.</h2>
+    <p>Depending on whether your social network already has a ledger how much 
+      and how much code you can write, you first need to choose between 3 
+      implementation modes.</p>
+    <p>If you don't have a ledger yet, then you need <strong>native</strong> 
+      mode. That means you own your own Credit Commons node, hosted yourself 
+      or by <a href="http://mutualcredit.services">Mutual Credit Services</a>.
+      Your users' apps can connect directly to the node for all their 
+      accounting needs, or your social networking platform can connect with the 
+      user's credentials, so the node knows who it is serving. You need to
+      implement a small API on your platform to validate the account connecting 
+      to the node and to return its balance limits.</p>
+    <p>If your platform already has a ledger and you don't want to go native, 
+      which would involve migration, of course, there are two options. 
+      <strong>Foreign mode</strong> means that you make your platform into a 
+      'twig' Credit Commons node. That means it must implement a part of the 
+      API, including some optional endpoints. This options involves the most 
+      work, especially because you must maintain a hash chain to ensure that 
+      your 'balance of trade' account, is consistent with it's mirror account on
+      the trunkwards node.</p>
+    <p>The final option is a hybrid of the previous two, intended to make it 
+      easier, but it is not really legitimate as ledgers might get out of sync 
+      without checks so it is called <strong>Alien mode</strong>. A platform can
+      connect as a remote account, but authenticate with a normal string instead
+      of the last hash.</p>
+    <p>For all approaches you should find that the classes in cc-php-lib will 
+      save you a lot of time if you are developing in php. Otherwise you might 
+      translate parts of this library as needed and contribute them back. We'll 
+      now handle the three implementation modes in increasing order of difficulty.
+    </p>
+    
+    <h3>Foreign implementation</h3>
+    <p>Your platform wants to outsource accounting to a web service.<p>
+    <p>Contact matslats to create a branch node for you on 
+      http://trunk.creditcommons.net. The node would be named after your 
+community e.g. 'anytown'. </p>
+    <p>You need to implement 5 simple endpoints on your platform to inform the 
+      credit commons ledger about account names and account balance limits. They
+      are document <a href="https://gitlab.com/credit-commons/cc-accountstore-server/-/blob/main/accountstore.openapi.yml">here</a>,
+      with tests in the same repo.</p>
+    <p>Now you can connect to your node http://anytown.creditcommons.net with headers <pre>
+cc-user: acc_id
+cc-auth: auth_key</pre>
+    <p>Read and write to the ledger using the REST API.</p>
+
+    <h3>Alien implementation</h3>
+    <p>You already keep a local ledger, and want to intertrade with the minimum amount of development.</p>
+    <p>Contact matslats with an account name like 'anytown' and auth key asking for a spoof account on this demo server.</p>
+    <p>Connect to your node http://trunk.creditcommons.net with headers <pre>
+cc-user: anytown
+cc-auth: auth_key</pre>
+    <h4>Transaction form</h4><!--same for all-->
+    <p>I recommend having different transaction forms for users to pay and to request, perhaps not even offering both options.
+        The <a href="#workflows">workflows</a> on the trunkward node may limit some permissions.
+      The transaction form must collect at least 1) the account path of the remote wallet and 2) the amount to be paid, making it clear whether the local or remote unit is intended.
+      To help with this is autocompletePaths.js which tries to autocomplete paths as the user types.
+      A second script is planned to show live exchange rates but only after the remote user's exchange has been entered.
+    <h2>Sending a transaction</h2>
+      On submission of the form, during the validation of the form input, construct a CreditCommons\Leaf\NewTransaction. You can add arbitrary fields in the metadata property as required.
+      Remember to convert the quant from local units to trunkward units (typically, by multiplying)
+      POST the object to the trunkward node /transaction endpoint.
+      The response should be either a full transaction object which you may cast into CreditCommons/Leaf/Transaction, or an <a href="#errors">error</a>.
+      The <a href="#workflows">workflows</a> determine whether the transaction has been written or only validated.
+      If it is not validated you may want to show the transactioni to a user on an 'are you sure' page. 
+      The 'transitions' indicates what dest_state or states the current user can move the transaction to (as defined in the workflow).
+      To write the transaction, PATCH it to /transaction/{dest_state}.
+      A 201 response means the transaction should be written locally between the user and the balance of trade account.
+    <p>You should implement at least the following endpoints from the REST API to handle requests from the rest of the network.
+    <dl>
+      <dd>GET account/names</dd>
+      <dt></dt>
+      <dd>POST /transaction</dd>
+      <dt>
+        Upcast the POST into a \CreditCommons\Leaf\Transaction in order to validate it.
+        Use this object to populate a transaction in your native format - remember the 'type' refers to the <a href="#workflows">workflow</a> (by default 'credit' or 'bill'), which tells you whether the payer or payee is local.
+        The transaction->entries[0]->quant is denominated in the trunkward unit so convert it to the local unit, (typically, by dividing).
+        Validate the new transaction object, choose an error from CreditCommons\Exceptions, instantiate it, and send it as the response.
+        If the workflow->creation->confirm is false, save your transaction and Respond with 201 [], meaning that you saved it and added no new entries.
+        If the workflow->creation->confirm is true, save the transaction to a temporary place where it can be looked up by uuid, and return a 200 []. 
+        The duration of 'temporary' is defined in the trunkward node ini file, but is 300 secs by default
+      </dt>
+      <dd>PATCH /transaction</dd>
+      <dt></dt>
+      <dd>GET convert</dd>
+      <dt></dt>
+      <dd>GET handshake</dd>
+      <dt></dt>
+    </dl>
+    <h3>Native implementation</h3>
+    <p>You want your platform to connect to the network as a twig node, i.e. a 
+      node with no child nodes. This means you can use the credit commons API 
+      internally to read and write transactions.</p>
+    <p>For example to create a (remote) transaction, first build an object 
+      inheriting from CreditCommons\Transaction. Instantiate the 
+      CreditCommons\NodeRequester class with the name of the trunk and the last 
+      hash to enable it to connect. Then pass the transaction to 
+      NodeRequester::buildValidateRelayTransaction().
+      The result you get back is any new entries to add to the transaction. If 
+      you agree you can then save the transaction using NodeRequester::transactionChangeState($uuid,
+      $target_state).
+    <p>When you save any remote transaction you need to update the stored hash 
+      needed for future authentication with the trunk node. The last hash is 
+      constructed from the last transaction and ensures your ledger is 
+      consistent with the trunkward node. It is currently not documented but 
+      can be seen in <a href="https://gitlab.com/credit-commons/cc-php-lib/-/blob/master/src/TransversalTransactionTrait.php">TransveralTransationTrait.php</a>. 
+      The first last_hash is an empty string.</p>
+    <p>Look at the API for 'twig' and 'twig optional' endpoints so you know what
+      else to implement when the rest of the network.</p>
+
+    <h2 id="errors">Error handling</h2>
+    <p>Whichever way you use it, you may receive credit commons error 
+objects. These are designed to show which node in the tree threw the 
+error. 
+    <p>Errors with status code 400 (violations) mean that problem was in 
+the request. There are <a href="https://gitlab.com/credit-commons/cc-php-lib/-/tree/master/src/Exceptions">many types of these</a>
+ and each one has extra properties to allow you to generate an error 
+message in your language, and a method to generate an error message in 
+English.</p>
+    <p>If the error is internal to the node i.e. a bug, then the 
+error object thrown will have status code 500 (failure) and the log 
+message from the environment.
+    </p>
+    <p>The most important errors to handle elegantly are the classes
+ 'MinLimitViolation', 'MaxLimitViolation' and DoesNotExistViolation e.g.
+ for account names.
+    </p>
+    
+    <h2 id="workflows">Working with workflows</h2>
+    Each Creditcommons transaction has a 'type' which is the name of a workflow.
+    Workflows can be read from workflows.json file in the web root directory of the trunkward node.
+    Workflows detail how a transaction can move from state to state, and also how it is created, and by whom.
+    Workflow->creation->by says who can create a transaction of that type: payer, payee or admin
+    Workflow->creation->confirm says whether the transaction should be saved as finished as soon as it is validated, or saved into a temporary place until a confirmation comes through.
+    Whenever a transaction is retrieved, it contains a 'transitions' property which says what transactions the current user can do in it.
+    When coding for CES there are only 2 workflows, credit and bill, they both require confirmations, and you assume they won't change.
+    <hr />
+    <p>This documentent is a rough draft because none of this has been done yet.
+      Please contact matslats with suggestions for improving this doc.</p>
+  </body>
+</html>

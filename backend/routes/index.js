@@ -40,6 +40,7 @@ module.exports = function() {
    *****************************************************************************/
 
   async function getUser(user_query) {
+    console.log(dbUrl)
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     const result = await dbo.collection("users").findOne(user_query)

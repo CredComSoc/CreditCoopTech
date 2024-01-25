@@ -1,0 +1,81 @@
+x-nginx: &nginx-latest
+  image: nginx:latest
+
+x-volumes:
+  - &app-vol "../:/app"
+
+version: '3'
+services:
+  express-app:
+    build:
+      context: ./backend  # Set the path to your Express.js app's Dockerfile
+    ports:
+      - "3000:3000"  # Map your app's port to the host machine
+    depends_on:
+      - mongo
+    env_file:
+      - ./backend/.env
+
+  vue-app:
+    build:
+      context: ./sb.web.app  # Set the path to your Express.js app's Dockerfile
+    ports:
+      - "80:80"  # Map your app's port to the host machine
+    depends_on:
+      - express-app
+    environment:
+      VUE_APP_EXPRESS_URL: http://0.0.0.0:3000
+      VUE_APP_CHAT_URL: http://0.0.0.0:3001
+      VUE_APP_I18N_LOCALE: en-LCC
+      VUE_APP_I18N_FALLBACK_LOCALE: en
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Map MongoDB's port to the host machine
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: creditcooptech
+      MONGO_INITDB_ROOT_PASSWORD: credit
+      MONGO_INITDB_DATABASE: vt-web-app
+    volumes:
+      - /Users/eugenemuthui/Documents/MCS/CreditCoopTech/mongo_data:/data/db
+      - /Users/eugenemuthui/Documents/MCS/CreditCoopTech/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  php1:
+    build:
+      context: ./cc_server
+    volumes:
+      - "./cc_server:/app"
+      - ./cc_server/node.ini:/app/node.ini
+      - ./cc_server/accountstore.json:/app/accountstore.json
+      - ./cc_server/workflows.json:/app/workflows.json
+    extra_hosts:
+      host.docker.internal: host-gateway
+
+  cc-server:
+    image: nginx:1.24.0
+    ports:
+      - 8000:80
+    volumes:
+      - "./cc_server/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "./cc_server:/app"
+      - ./cc_server/node.ini:/app/node.ini
+      - ./cc_server/accountstore.json:/app/accountstore.json
+      - ./cc_server/workflows.json:/app/workflows.json
+    extra_hosts:
+      host.docker.internal: host-gateway
+
+  mariadb:
+    image: mariadb:10
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: cc-server
+      MARIADB_ROOT_PASSWORD: secret
+#    volumes:
+#      - ./cc_server/vendor/credit-commons/cc-node/install.sql:/docker-entrypoint-initdb.d/install.sql # used to bootstrap database
+      CC_DATABASES: cc-test-1 # space-separated list of databases to be created
+    volumes:
+      - ./cc_server/init-all-dbs.sh:/docker-entrypoint-initdb.d/init-all-dbs.sh # creates databases
+      - ./cc_server/install.sql:/custom-init-scripts/install.sql # used to bootstrap every database
