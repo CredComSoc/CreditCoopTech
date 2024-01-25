@@ -1,6 +1,6 @@
 <template>
   <div class="banner">
-    <img :src=homeLogo alt="Welcome">
+    <img :src=homeLogo alt="Welcome"/>
     <div class="welcome-container">
         <div class="text-container">
             <h1 id="welcome-text">{{ $t('welcome') }} {{ companyName }}</h1>
