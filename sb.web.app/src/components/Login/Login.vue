@@ -41,9 +41,9 @@
       
     </form>
     <div class="box-link">
-      <!-- <a :href="contact_link">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a> -->
+      <a :href="contact_link">{{ $t('login.need_help') }}<br/>{{ $t('login.contact_us') }}</a>
       <div class="box-msg" v-if="this.mailtoClicked">
-          <!-- <a :href="contact_link">{{ $t('org.contact_email') }}</a> -->
+          <a :href="contact_link">{{ $t('org.contact_email') }}</a>
       </div>
       <div class="forgot_link">
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
