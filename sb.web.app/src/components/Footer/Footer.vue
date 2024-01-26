@@ -3,7 +3,7 @@
         <div class="footer-container">
             <p class="side-items" id="om-sidan"><router-link :to="{name:'About'}">{{ $t('about') }}</router-link></p>
             <p id="middle-item"><router-link :to="{name:'Home'}">{{ $t('home') }}</router-link></p>
-            <p class="side-items"><a :href="contact_link">{{ $t('contact') }}</a></p>
+            <!-- <p class="side-items"><a :href="contact_link">{{ $t('contact') }}</a></p> -->
         </div>
     </footer>
 </template>
