@@ -1,6 +1,6 @@
 <template>
   <div class="banner">
-    <img src="../../assets/svensk_barter_home_page.jpg" alt="Welcome"/>
+    <img :src="homeLogo" alt="Welcome"/>
     <div class="welcome-container">
         <div class="text-container">
             <h1 id="welcome-text">{{ $t('welcome') }} {{ companyName }}</h1>
@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       // eslint-disable-next-line
-    //   homeLogo: process.env.VUE_APP_NAME == 'SB' ? require('../../assets/svensk_barter_home_page.jpg') : require('../../assets/banner_lcc.png')
+      homeLogo: process.env.VUE_APP_NAME == 'SB' ? require('../../assets/svensk_barter_home_page.jpg') : require('../../assets/banner_lcc.png')
     }
   }
 }
