@@ -18,9 +18,8 @@ export default {
   props: ['companyName'],
   data () {
     return {
-      homeLogo: ''
-    // eslint-disable-next-line
-    //   homeLogo: process.env.VUE_APP_NAME == 'SB' ? require('../../assets/svensk_barter_home_page.jpg') : require('../../assets/banner_lcc.png')
+      // eslint-disable-next-line
+      homeLogo: process.env.VUE_APP_NAME == 'SB' ? require('../../assets/svensk_barter_home_page.jpg') : require('../../assets/banner_lcc.png')
     }
   }
 }
