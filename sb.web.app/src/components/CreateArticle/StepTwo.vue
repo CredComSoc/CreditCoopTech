@@ -16,6 +16,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import DatePicker from './DatePicker.vue'
 import Combobox from './Combobox.vue'
@@ -143,10 +144,13 @@ export default {
       this.$refs.priceInput.setValue(this.savedProgress.price)
     }
     getPlaces().then((res) => {
-      this.productPlaces = res.map((place) => {
-        return place.name
-      })
-      this.servicePlaces = [...this.productPlaces, 'Remote', 'Anywhere']
+      this.productPlaces = res.filter((place) =>
+        place.project == process.env.VUE_APP_NAME
+      ).map((projectPlace) => {
+      return projectPlace.name
+    })
+      console.log(this.productPlaces)
+      this.servicePlaces = [...this.productPlaces, this.$i18n.t('remote'), this.$i18n.t('anywhere')]
     }) 
   }  
 }

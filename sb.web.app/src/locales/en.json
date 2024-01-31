@@ -282,6 +282,8 @@
         "this_month": "This Month",
         "this_year": "This Year"
     },
+    "anywhere": "Anywhere",
+    "remote": "Remote",
     "places": "Places",
     "categories": "Categories",
     "add_place": "Add Place",

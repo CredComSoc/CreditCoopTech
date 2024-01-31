@@ -1509,11 +1509,7 @@ module.exports = function() {
   router.post('/places', (req, res) => {
     // Extract the list of names from the request body
     const names = req.body.places
-    const namesDoc = names.map((name) => {
-      return {
-        'name': name
-      }
-    })
+    console.log(names)
 
     // Connect to MongoDB
     MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
@@ -1529,7 +1525,7 @@ module.exports = function() {
       const placesCollection = dbo.collection('place');
 
       // Insert the names into the collection
-      placesCollection.insertMany(namesDoc, (err, result) => {
+      placesCollection.insertMany(names, (err, result) => {
         if (err) {
           console.error('Error occurred while inserting documents into MongoDB', err);
           db.close(); // Close the MongoDB connection

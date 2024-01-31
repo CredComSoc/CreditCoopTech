@@ -78,10 +78,16 @@ export default {
             }
 
             const placesList = this.newPlaces.split(', ');
+            const placeData = placesList.map((place) => {
+                return {
+                    'name': place,
+                    'project': process.env.VUE_APP_NAME
+                }
+            })
             const data = {
-                'places': placesList
+                'places': placeData
             }
-            createNewPlace(data).then((res) => {
+            createNewPlace(placeData).then((res) => {
                 if (!res) {
                     this.popupCardText = "Error occured while adding new places"
                 }
