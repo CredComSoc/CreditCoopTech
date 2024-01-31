@@ -129,6 +129,7 @@ const router = useRouter()
           ++index;
         }
         data.append('name', this.name)
+        data.append('project', process.env.VUE_APP_NAME)
         console.log(data)
         createNewCategories(data).then((res) => {
         if (res.status === 200) {

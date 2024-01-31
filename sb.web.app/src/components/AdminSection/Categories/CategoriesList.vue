@@ -76,7 +76,9 @@ import PopupCard from '@/components/SharedComponents/PopupCard.vue'
     },
     mounted() {
         getCategories().then((res) => {
-      this.categories = res;
+          this.categories = res.filter((category) => {
+        category.ploject == process.env.VUE_APP_NAME
+          })
     })
     },
   };

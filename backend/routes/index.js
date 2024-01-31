@@ -1436,7 +1436,8 @@ module.exports = function() {
       name: req.body.name,
       defaultImage: images,
       defaultMainImage: coverImg,
-      isActive: true
+      isActive: true,
+      project: req.body.project
     }
     try {
       MongoClient.connect(dbUrl, (err, db) => {
