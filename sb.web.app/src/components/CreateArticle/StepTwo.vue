@@ -19,6 +19,8 @@
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import DatePicker from './DatePicker.vue'
 import Combobox from './Combobox.vue'
+import { getPlaces } from '../../serverFetch'
+
 
 export default {
   name: 'StepTwo',
@@ -29,6 +31,12 @@ export default {
   },
   props: ['chosenType', 'savedProgress'],
   emits: ['priceError', 'dateError'],
+  data () {
+    return {
+      productPlaces: [],
+      servicePlaces: []
+    }
+  },
   methods: {
     getStepTwoInputs () {
       let endDate = null
@@ -108,9 +116,9 @@ export default {
     },
     places () {
       if (this.chosenType.toLowerCase() === 'product') {
-        return ['Burlington', 'Rutland', 'Montpelier']
+        return this.productPlaces
       } else {
-        return ['Burlington', 'Rutland', 'Montpelier', 'Anywhere', 'Remote']
+        return this.servicePlaces
       }
     }
   },
@@ -133,7 +141,13 @@ export default {
     } 
     if ('price' in this.savedProgress) {
       this.$refs.priceInput.setValue(this.savedProgress.price)
-    } 
+    }
+    getPlaces().then((res) => {
+      this.productPlaces = res.map((place) => {
+        return place.name
+      })
+      this.servicePlaces = [...this.productPlaces, 'Remote', 'Anywhere']
+    }) 
   }  
 }
 </script>
