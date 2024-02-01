@@ -9,7 +9,7 @@
 
         <span>
         <button id="addNewPlaces" @click="addPlaces">
-            {{ $('add_place') }}
+            {{ $t('add_place') }}
         </button>
         </span>
     </div>
