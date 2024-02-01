@@ -4,7 +4,7 @@
             <router-link :to="{name:'AddCategories'}" >
                 {{$t('user.add_category')}}
             </router-link>
-            </button>
+        </button>
       <table>
         <thead>
           <tr>

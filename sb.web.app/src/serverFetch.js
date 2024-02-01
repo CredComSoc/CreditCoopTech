@@ -941,6 +941,7 @@ export async function getCategories () {
     return null
   })
 }
+
 export async function updateCategoryStatus (data) {
   console.log(data)
   return await fetch(EXPRESS_URL + '/updateCategoryStatus', { 
@@ -955,6 +956,53 @@ export async function updateCategoryStatus (data) {
   }).catch(error => {
     return error
   }) 
+}
+
+export async function createNewPlace (data) {
+  return await fetch(EXPRESS_URL + '/places', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }).then((response) => {
+    return response.json()
+  }).catch(error => {
+    console.error(error)
+    return null
+  })
+}
+
+export async function getPlaces () {
+  return fetch(EXPRESS_URL + '/places', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()
+  }).catch((err) => {
+    console.error(err)
+    return null
+  })
+}
+
+export async function deletePlace (data) {
+  return await fetch(EXPRESS_URL + '/deletePlace', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }).then((response) => {
+    return response.json()
+  }).catch((err) => {
+    console.error(err)
+    return null
+  })
 }
 
 export async function getCartByUser () {
