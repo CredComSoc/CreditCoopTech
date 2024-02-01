@@ -281,6 +281,13 @@
         "this_month": "This Month",
         "this_year": "This Year"
     },
+    "faq": {
+        "title": "Information & Tips",
+        "common_questions": "Frequently Asked Questions",
+        "trading_tips": "Trading Tips",
+        "association_information": "Information",
+        "policy": "Policy"
+    },
     "enable_category": "Enable Category",
     "disable_category": "Disable Category",
     "profile_picture": "Profile picture",

@@ -279,6 +279,13 @@
     "this_month": "Den här månaden",
     "this_year": "Det här året"
   },
+  "faq": {
+    "title": "HANDELSREGLER & TIPS",
+    "common_questions": "Vanliga frågor",
+    "trading_tips": "Bartertips",
+    "association_information": "Handelsregler",
+    "policy": "Integritetspolicy"
+  },
   "enable_category": "Aktivera kategori",
   "disable_category": "Inaktivera kategori",
   "profile_picture": "Profilbild",
