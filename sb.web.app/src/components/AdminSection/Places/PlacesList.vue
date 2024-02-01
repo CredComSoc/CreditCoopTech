@@ -1,0 +1,146 @@
+<template>
+    <div>
+        <span>
+        <label for="placeInput">
+             {{ $t('place_prompt') }}
+            <input placeholder="Place Name" type="text" v-model="newPlaces" id="placeInput" />
+        </label>
+        </span>
+
+        <span>
+        <button id="addNewPlaces" @click="addPlaces">
+            {{ $('add_place') }}
+        </button>
+        </span>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        {{ $t('user.billingnamelabel') }}
+                    </th>
+                    <th>
+                        {{ $t('action') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in places" :key="index">
+                    <td>
+                        {{ index }}
+                    </td>
+                    <td>
+                        <p>{{ item.name }}</p>
+                    </td>
+                    <td>
+                        <button @click="deleteItem(item['_id'])">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="'Categories'" :btnLink="null"
+            :cardText="popupCardText" />
+
+    </div>
+</template>
+
+<script>
+/* eslint-disable */
+import { createNewPlace, getPlaces, deletePlace } from '../../../serverFetch'
+import PopupCard from '@/components/SharedComponents/PopupCard.vue'
+
+export default {
+    name: "PlacesList",
+    components: {
+        PopupCard
+    },
+    data() {
+        return {
+            newPlaces: '',
+            places: [],
+            popupCardText: 'Place name added successfully'
+        }
+    },
+    methods: {
+        addPlaces() {
+            if (!this.newPlaces) {
+                this.popupCardText = "No new places to add!"
+                return
+            }
+
+            const placesList = this.newPlaces.split(', ');
+            const placeData = placesList.map((place) => {
+                return {
+                    'name': place,
+                    'project': process.env.VUE_APP_NAME
+                }
+            })
+            const data = {
+                'places': placeData
+            }
+            createNewPlace(placeData).then((res) => {
+                if (!res) {
+                    this.popupCardText = "Error occured while adding new places"
+                }
+                if (res) {
+                    this.popupCardText = res
+                }
+                this.newPlaces = ''
+                getPlaces().then((res) => {
+                    this.places = res;
+                })
+                this.popupCardText = res.message
+            }).catch((error) => {
+                console.error("Error while adding new places")
+            })
+        },
+        deleteItem(id) {
+            const data = {
+                "id": id
+            }
+            deletePlace(data).then((result, error) => {
+                if (error) {
+                    this.popupCardText = "Error deleting place!"
+                    console.error(error)
+                    return
+                }
+                getPlaces().then((res) => {
+                    this.places = res;
+                })
+                this.popupCardText = res.message
+            });
+        }
+    },
+    mounted() {
+        getPlaces().then((res) => {
+            this.places = res;
+        })
+    }
+}
+</script>
+
+<style scoped>
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>

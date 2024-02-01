@@ -18,6 +18,7 @@
         "started_all-member_chat": "Started all-member chat"
     },
     "user": {
+        "dataManagement": "Manage Data",
         "register": "Register",
         "box": "Box",
         "alt_profile_logo": "Profile picture",
@@ -288,6 +289,12 @@
         "association_information": "Information",
         "policy": "Policy"
     },
+    "anywhere": "Anywhere",
+    "remote": "Remote",
+    "places": "Places",
+    "categories": "Categories",
+    "add_place": "Add Place",
+    "place_prompt": "Enter a comma-separated of place names to add: ",
     "enable_category": "Enable Category",
     "disable_category": "Disable Category",
     "profile_picture": "Profile picture",

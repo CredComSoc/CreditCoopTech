@@ -18,6 +18,7 @@
     "started_all-member_chat": "Startade chatt för alla medlemmar"
   },
   "user": {
+    "dataManagement": "Hantera data",
     "no_users_found": "Inga medlemmar hittades för '{searchWord}'",
     "register": "Registrera",
     "box": "Box",
@@ -286,6 +287,12 @@
     "association_information": "Handelsregler",
     "policy": "Integritetspolicy"
   },
+  "anywhere": "Var som helst",
+  "remote": "Avlägsen",
+  "places": "Platser",
+  "categories": "Kategorier",
+  "add_place": "Lägg till plats",
+  "place_prompt": "Ange ett kommaseparerat av platsnamn att lägga till: ",
   "enable_category": "Aktivera kategori",
   "disable_category": "Inaktivera kategori",
   "profile_picture": "Profilbild",

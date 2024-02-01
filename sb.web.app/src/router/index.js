@@ -22,7 +22,7 @@ import AdminEconomy from '../components/AdminSection/AdminEconomy.vue'
 import NetworkSetting from '../components/AdminSection/NetworkSettings.vue'
 import Event from '../components/Event/Event.vue'
 import CreateNewCategories from '../components/AdminSection/Categories/AddNewCategory.vue'
-import CategoriesList from '../components/AdminSection/Categories/CategoriesList.vue'
+import DataManagement from '../components/AdminSection/DataManagement.vue'
 
 const userRoutes = ['Home', 'Shop', 'Events', 'New_Article', 'Members', 'MemberUserprofile', 'Profile', 'Cart', 'Chat', 'Event']
 const adminRoutes = ['AdminHome', 'AdminChat', 'AdminMembers', 'AdminShop', 'AdminMemberUserprofile', 'AdminAddMember', 'NetworkSetting', 'AddCategories', 'CategoriesList']
@@ -90,6 +90,11 @@ const routes = [
     name: 'Cart',
     component: ShoppingCart,
     props: true
+  },
+  {
+    path: '/datamanagement/:tab',
+    name: 'DataManagement',
+    component: DataManagement
   },
   {
     path: '/FAQ',
@@ -161,11 +166,6 @@ const routes = [
     path: '/addCategories',
     name: 'AddCategories',
     component: CreateNewCategories
-  },
-  {
-    path: '/categories',
-    name: 'CategoriesList',
-    component: CategoriesList
   }
 ]
 

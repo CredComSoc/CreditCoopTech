@@ -1463,16 +1463,16 @@ module.exports = function() {
     const dbo = db.db(dbFolder);
     const result = await dbo.collection("category").find({isActive: true});
     
-   result.toArray(function (err, categories) {
-    if (err) {
-      res.sendStatus(400)
-      db.close()
-    }
-    else {
-      res.status(200).json(categories)
-      db.close()
-    } 
-  })
+    result.toArray(function (err, categories) {
+      if (err) {
+        res.sendStatus(400)
+        db.close()
+      }
+      else {
+        res.status(200).json(categories)
+        db.close()
+      } 
+    })
   })
 
   router.post('/updateCategoryStatus', upload.none(),  (req, res) => {
@@ -1499,6 +1499,106 @@ module.exports = function() {
       res.status(500).send({ exception: ex });
     }
   })
+
+  /*****************************************************************************
+    * 
+    *                                Places
+    *                 
+    *****************************************************************************/
+
+  router.post('/places', (req, res) => {
+    // Extract the list of names from the request body
+    const names = req.body.places
+    console.log(names)
+
+    // Connect to MongoDB
+    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+      if (err) {
+        console.error('Error occurred while connecting to MongoDB', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      // Access the database
+      const dbo = db.db(dbFolder);
+
+      // Access the collection
+      const placesCollection = dbo.collection('place');
+
+      // Insert the names into the collection
+      placesCollection.insertMany(names, (err, result) => {
+        if (err) {
+          console.error('Error occurred while inserting documents into MongoDB', err);
+          db.close(); // Close the MongoDB connection
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        if (result.insertedCount === 0) {
+          console.error("No new places inserted into database");
+          return res.status(400).json({ error: 'No place added to database'})
+        }
+
+        console.log('Places names inserted successfully: ', result.insertedCount);
+        db.close(); // Close the MongoDB connection
+        return res.status(201).json({ message: `${result.insertedCount} names inserted successfully` });
+      });
+    });
+  });
+
+  router.get("/places", async (req, res) => {
+    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+      const dbo = db.db(dbFolder);
+      dbo.collection("place").find({}).toArray((err, result) => {
+
+        if (err) {
+          res.sendStatus(400)
+          db.close()
+        }
+        else {
+          res.status(200).json(result)
+          db.close()
+        }
+      });
+    });
+  });
+  
+  router.post('/deletePlace', (req, res) => {
+    // Extract the list of names from the request body
+    const placeToDelete = req.body.id
+    console.log('Place: ', placeToDelete)
+
+    // Connect to MongoDB
+    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+      if (err) {
+        console.error('Error occurred while connecting to MongoDB', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      // Access the database
+      const dbo = db.db(dbFolder);
+
+      // Access the collection
+      const placesCollection = dbo.collection('place');
+
+      // Delete the names from the collection
+      placesCollection.deleteOne({ _id: ObjectId(placeToDelete) }, (err, result) => {
+        if (err) {
+          console.error('Error occurred while deleting documents from MongoDB', err);
+          client.close(); // Close the MongoDB connection
+          return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        if (result.deletedCount === 0) {
+          console.log("No place found with the provided ID: ", placeToDelete);
+          db.close();
+          return res.status(404).json({error: "Place not found."})
+        }
+        console.log('Names deleted successfully:', result.deletedCount);
+        db.close(); // Close the MongoDB connection
+        return res.status(200).json({ message: `Place deleted successfully` });
+      });
+    });
+  });
+
 
   /*****************************************************************************
   * 

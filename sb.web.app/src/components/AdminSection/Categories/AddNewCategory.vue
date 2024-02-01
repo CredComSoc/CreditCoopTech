@@ -132,14 +132,14 @@ const router = useRouter()
         console.log(data)
         createNewCategories(data).then((res) => {
         if (res.status === 200) {
-            this.$router.push({ name: 'CategoriesList' }) 
+            this.$router.push({ name: 'DataManagement', params: { tab: 'categories' } }) 
         } else {
             this.error = true
         }
       })
       }
     },
-    mounted() {}
+  mounted() {}
   };
   </script>
   
