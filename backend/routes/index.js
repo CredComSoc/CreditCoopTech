@@ -1509,7 +1509,6 @@ module.exports = function() {
   router.post('/places', (req, res) => {
     // Extract the list of names from the request body
     const names = req.body.places
-    console.log(names)
 
     // Connect to MongoDB
     MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
@@ -1545,100 +1544,96 @@ module.exports = function() {
   });
 
   router.get("/places", async (req, res) => {
-    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-      const dbo = db.db(dbFolder);
-      dbo.collection("place").find({}).toArray((err, result) => {
+    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
+      const dbo = db.db(dbFolder)
 
-        if (err) {
-          res.sendStatus(400)
-          db.close()
-        }
-        else {
-          res.status(200).json(result)
-          db.close()
-        }
-      });
-    });
+      try {
+        const results = await dbo.collection("place").find({}).toArray();
+        return res.status(200).json(results)
+      }
+      catch (err) {
+        return res.sendStatus(400)
+      }
+    })
   });
   
-  router.post('/deletePlace', (req, res) => {
-    // Extract the list of names from the request body
-    const placeToDelete = req.body.id
-    console.log('Place: ', placeToDelete)
+    router.post('/deletePlace', (req, res) => {
+      // Extract the list of names from the request body
+      const placeToDelete = req.body.id
 
-    // Connect to MongoDB
-    MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-      if (err) {
-        console.error('Error occurred while connecting to MongoDB', err);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-
-      // Access the database
-      const dbo = db.db(dbFolder);
-
-      // Access the collection
-      const placesCollection = dbo.collection('place');
-
-      // Delete the names from the collection
-      placesCollection.deleteOne({ _id: ObjectId(placeToDelete) }, (err, result) => {
+      // Connect to MongoDB
+      MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
         if (err) {
-          console.error('Error occurred while deleting documents from MongoDB', err);
-          client.close(); // Close the MongoDB connection
+          console.error('Error occurred while connecting to MongoDB', err);
           return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        if (result.deletedCount === 0) {
-          console.log("No place found with the provided ID: ", placeToDelete);
-          db.close();
-          return res.status(404).json({error: "Place not found."})
-        }
-        console.log('Names deleted successfully:', result.deletedCount);
-        db.close(); // Close the MongoDB connection
-        return res.status(200).json({ message: `Place deleted successfully` });
+        // Access the database
+        const dbo = db.db(dbFolder);
+
+        // Access the collection
+        const placesCollection = dbo.collection('place');
+
+        // Delete the names from the collection
+        placesCollection.deleteOne({ _id: ObjectId(placeToDelete) }, (err, result) => {
+          if (err) {
+            console.error('Error occurred while deleting documents from MongoDB', err);
+            client.close(); // Close the MongoDB connection
+            return res.status(500).json({ error: 'Internal Server Error' });
+          }
+
+          if (result.deletedCount === 0) {
+            console.log("No place found with the provided ID: ", placeToDelete);
+            db.close();
+            return res.status(404).json({ error: "Place not found." })
+          }
+          console.log('Names deleted successfully:', result.deletedCount);
+          db.close(); // Close the MongoDB connection
+          return res.status(200).json({ message: `Place deleted successfully` });
+        });
       });
     });
-  });
 
 
-  /*****************************************************************************
-  * 
-  *                                Cart
-  *                 
-  *****************************************************************************/
+    /*****************************************************************************
+    * 
+    *                                Cart
+    *                 
+    *****************************************************************************/
 
-  router.get("/cart/byUser", (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        const carts = await dbo.collection("carts").find({ "cartOwner": req.user }).toArray()
-        res.status(200).send(carts)
-      })
-    } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching cart data' })
-      console.log(ex)
-    }
-  });
+    router.get("/cart/byUser", (req, res) => {
+      try {
+        MongoClient.connect(dbUrl, async (err, db) => {
+          let dbo = db.db(dbFolder);
+          const carts = await dbo.collection("carts").find({ "cartOwner": req.user }).toArray()
+          res.status(200).send(carts)
+        })
+      } catch (ex) {
+        res.status(400).send({ error: 'Error while fetching cart data' })
+        console.log(ex)
+      }
+    });
 
-   /*****************************************************************************
-  * 
-  *                                Transactions
-  *                 
-  *****************************************************************************/
+    /*****************************************************************************
+   * 
+   *                                Transactions
+   *                 
+   *****************************************************************************/
 
-  router.get("/transactions", (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        const allUsers = await dbo.collection("users").find({}).toArray(); // created this variables of users because the old implementation loops through all the transactions that it got from the cc-node and to map the users every time it called the get user api but now it gets it from this variable
-        const user = await dbo.collection("users").findOne({ "profile.accountName": req.user })
-        const userId = user._id.toString()
-        let transactions = {
-          requests: [],
-          pendingPurchases: [],
-          completedTransactions: [],
-        }
-        // get requests
-        try {
+    router.get("/transactions", (req, res) => {
+      try {
+        MongoClient.connect(dbUrl, async (err, db) => {
+          let dbo = db.db(dbFolder);
+          const allUsers = await dbo.collection("users").find({}).toArray(); // created this variables of users because the old implementation loops through all the transactions that it got from the cc-node and to map the users every time it called the get user api but now it gets it from this variable
+          const user = await dbo.collection("users").findOne({ "profile.accountName": req.user })
+          const userId = user._id.toString()
+          let transactions = {
+            requests: [],
+            pendingPurchases: [],
+            completedTransactions: [],
+          }
+          // get requests
+          try {
             const response = await axios.get(CC_NODE_URL + '/transactions', {
               headers: {
                 'cc-user': userId,
@@ -1678,133 +1673,133 @@ module.exports = function() {
                 transactions.requests.push(entry)
               }
             }
-        } catch (error) {
-          console.error(error)
-        }
-        // get transactions
-        try {
-          const response = await axios.get(CC_NODE_URL + '/transactions', {
-            headers: {
-              'cc-user': userId,
-              'cc-auth': '1'
-            },
-            params: {
-              'payer': userId
-            }
-          })
-          let users = {}
-          let entries = response.data.data || []
-          for (const entry of entries) {
-            if ((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
-              const payee = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payee)[0]
-              // const payee = await getUser({ '_id': ObjectId(entry.entries[0].payee) })
-              users[entry.entries[0].payee] = payee.profile.accountName
-            }
-            if ((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
-              const payer = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payer)[0]
-              // const payer = await getUser({ '_id': ObjectId(entry.entries[0].payer) })
-              users[entry.entries[0].payer] = payer.profile.accountName
-            }
-            if ((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
-              const author = allUsers.filter(us => us["_id"].toString() == entry.entries[0].author)[0]
-              // const author = await getUser({ '_id': ObjectId(entry.entries[0].author) })
-              users[entry.entries[0].author] = author.profile.accountName
-            }
-            entry.entries[0].payee = users[entry.entries[0].payee]
-            entry.entries[0].payer = users[entry.entries[0].payer]
-            entry.entries[0].author = users[entry.entries[0].author]
-
-            if (entry.state === 'completed') {
-              entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
-              transactions.completedTransactions.push(entry)
-            } else if (entry.state === 'pending') {
-              entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
-              transactions.pendingPurchases.push(entry)
-            }
+          } catch (error) {
+            console.error(error)
           }
+          // get transactions
+          try {
+            const response = await axios.get(CC_NODE_URL + '/transactions', {
+              headers: {
+                'cc-user': userId,
+                'cc-auth': '1'
+              },
+              params: {
+                'payer': userId
+              }
+            })
+            let users = {}
+            let entries = response.data.data || []
+            for (const entry of entries) {
+              if ((entry.entries[0].payee !== undefined) && !(entry.entries[0].payee in users)) {
+                const payee = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payee)[0]
+                // const payee = await getUser({ '_id': ObjectId(entry.entries[0].payee) })
+                users[entry.entries[0].payee] = payee.profile.accountName
+              }
+              if ((entry.entries[0].payer !== undefined) && !(entry.entries[0].payer in users)) {
+                const payer = allUsers.filter(us => us["_id"].toString() == entry.entries[0].payer)[0]
+                // const payer = await getUser({ '_id': ObjectId(entry.entries[0].payer) })
+                users[entry.entries[0].payer] = payer.profile.accountName
+              }
+              if ((entry.entries[0].author !== undefined) && !(entry.entries[0].author in users)) {
+                const author = allUsers.filter(us => us["_id"].toString() == entry.entries[0].author)[0]
+                // const author = await getUser({ '_id': ObjectId(entry.entries[0].author) })
+                users[entry.entries[0].author] = author.profile.accountName
+              }
+              entry.entries[0].payee = users[entry.entries[0].payee]
+              entry.entries[0].payer = users[entry.entries[0].payer]
+              entry.entries[0].author = users[entry.entries[0].author]
 
-        } catch (error) {
-          console.error(error)
-        } 
-        res.status(200).send(transactions)
-      })
-    } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching Transactions' })
-      console.log(ex)
-    }
-  });
+              if (entry.state === 'completed') {
+                entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
+                transactions.completedTransactions.push(entry)
+              } else if (entry.state === 'pending') {
+                entry.entries[0].quant = cleanQuantityData(entry.entries[0].quant)
+                transactions.pendingPurchases.push(entry)
+              }
+            }
+
+          } catch (error) {
+            console.error(error)
+          }
+          res.status(200).send(transactions)
+        })
+      } catch (ex) {
+        res.status(400).send({ error: 'Error while fetching Transactions' })
+        console.log(ex)
+      }
+    });
 
   
-  /*****************************************************************************
-  * 
-  *                                Article
-  *                 
-  *****************************************************************************/
+    /*****************************************************************************
+    * 
+    *                                Article
+    *                 
+    *****************************************************************************/
 
-  router.get("/articles/all", async (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-      let data = {}
-      let userId;
-      let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-      if (user) {
-        userId = user._id.toString()
+    router.get("/articles/all", async (req, res) => {
+      try {
+        MongoClient.connect(dbUrl, async (err, db) => {
+          let dbo = db.db(dbFolder);
+          let data = {}
+          let userId;
+          let user = await dbo.collection("users").findOne({ "profile.accountName": req.user })
+          if (user) {
+            userId = user._id.toString()
+          }
+          // get article data
+          let articles = await dbo.collection("posts").find({}).toArray()
+          const myArticles = []
+          const allArticles = []
+          for (let article of articles) {
+            const articleUser = await dbo.collection("users").findOne({ '_id': article.userId })
+            if (articleUser) {
+              article.userUploader = articleUser.profile.accountName
+
+              if (userId && article.userId.toString() === userId.toString()) {
+                myArticles.push(article)
+              }
+            }
+            const now = new Date()
+            const chosenDate = article["end-date"]
+            if (now.getTime() < Date.parse(chosenDate)) {
+              allArticles.push(article)
+            }
+          }
+          myArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+          allArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+          data.myArticles = myArticles
+          data.allArticles = allArticles
+          res.status(200).send(data);
+        })
+      } catch (ex) {
+        console.log(ex.response.data)
+        res.status(400).send({ error: 'Error while fetching notifications' })
       }
-     // get article data
-     let articles = await dbo.collection("posts").find({}).toArray()
-     const myArticles = []
-     const allArticles = []
-     for (let article of articles) {
-       const articleUser = await dbo.collection("users").findOne({'_id': article.userId})
-         if (articleUser) {
-           article.userUploader = articleUser.profile.accountName
+    });
 
-           if(userId && article.userId.toString() === userId.toString()) {
-             myArticles.push(article)
-           }
-         }
-         const now = new Date()
-         const chosenDate = article["end-date"]
-         if (now.getTime() < Date.parse(chosenDate)) {
-           allArticles.push(article)
-         }
-     }
-     myArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-     allArticles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-     data.myArticles = myArticles
-     data.allArticles = allArticles
-     res.status(200).send(data);
-    })
-    } catch (ex) {
-      console.log(ex.response.data)
-      res.status(400).send({ error: 'Error while fetching notifications' })
-    }
-  });
+    router.get("/testemail", async (req, res) => {
+      // sending test email api
+      try {
+        const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
 
-  router.get("/testemail", async (req, res) => {
-    // sending test email api
-    try {
-      const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
+        const response = await sendMail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
+      } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+        return
+      }
+    });
 
-      const response = await sendMail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
-    } catch (error) {
-      console.log(error)
-      res.status(400).send(error)
-      return
-    }
-  });
-
-  router.get("/user/balance", (req, res) => {
-    try {
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        let user = await dbo.collection("users").findOne({"profile.accountName": req.user })
-        let data = {
-          balance: 0,
-          creditLimit: 0,
-          creditLine: user.min_limit*-1
-        }
+    router.get("/user/balance", (req, res) => {
+      try {
+        MongoClient.connect(dbUrl, async (err, db) => {
+          let dbo = db.db(dbFolder);
+          let user = await dbo.collection("users").findOne({ "profile.accountName": req.user })
+          let data = {
+            balance: 0,
+            creditLimit: 0,
+            creditLine: user.min_limit * -1
+          }
           if (DISABLE_CC_NODE) {
             return res.status(200).json(balance)
           }
@@ -1813,9 +1808,10 @@ module.exports = function() {
               headers: {
                 'cc-user': user._id.toString(),
                 'cc-auth': '1'
-            }})
+              }
+            })
   
-           let user_data = response.data.data[user._id.toString()]
+            let user_data = response.data.data[user._id.toString()]
             data.balance = user_data.completed.balance
             data.creditLimit = data.creditLine
             if (data.balance < 0) {
@@ -1824,31 +1820,31 @@ module.exports = function() {
             }
           }
           res.status(200).send(data)
-      })
-    } catch (ex) {
-      res.status(400).send({ error: 'Error while fetching user balance information' })
-      console.log(ex)
-    }
-  });
-  router.put('/event/:id', async (req, res) => {
-    try {
-      const eventId = req.params.id;
-      const eventUpdates = req.body;
-      MongoClient.connect(dbUrl, async (err, db) => {
-        let dbo = db.db(dbFolder);
-        const result = await dbo.collection('events').updateOne({ _id: ObjectId(eventId) }, { $set: eventUpdates });
-        if (result.modifiedCount === 1) {
-          res.status(200).send({ message: 'Event updated successfully' });
-        } else {
-          res.status(400).send({ error: 'Failed to update event' });
-        }
-      });
-    } catch (ex) {
-      console.log(ex);
-      res.status(500).send({ error: ex });
-    }
-  });
+        })
+      } catch (ex) {
+        res.status(400).send({ error: 'Error while fetching user balance information' })
+        console.log(ex)
+      }
+    });
+    router.put('/event/:id', async (req, res) => {
+      try {
+        const eventId = req.params.id;
+        const eventUpdates = req.body;
+        MongoClient.connect(dbUrl, async (err, db) => {
+          let dbo = db.db(dbFolder);
+          const result = await dbo.collection('events').updateOne({ _id: ObjectId(eventId) }, { $set: eventUpdates });
+          if (result.modifiedCount === 1) {
+            res.status(200).send({ message: 'Event updated successfully' });
+          } else {
+            res.status(400).send({ error: 'Failed to update event' });
+          }
+        });
+      } catch (ex) {
+        console.log(ex);
+        res.status(500).send({ error: ex });
+      }
+    });
 
 
-return { 'router': router, 'conn': conn }
-};
+    return { 'router': router, 'conn': conn }
+  };
