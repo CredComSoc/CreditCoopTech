@@ -9,7 +9,7 @@
       </div>
       <div v-if="!this.isDatePicker && !this.isDateFilter" class="dropdown-combo">
         <div :id="this.name + '-dropdown'" class="dropdown-content-combo">
-          <p unselectable="on" v-for="i in this.options" :key="i"> {{ i }} </p>
+          <p unselectable="on" v-for="i in this.options" :key="i" @click="setValue(i)"> {{ i }} </p>
         </div>
       </div>
       <input required v-if="this.isDatePicker" :id="this.name + `-date-picker`" ref="dateVal" :placeholder="this.placeholder" onfocus="(this.type = 'date')" class="date-picker" name="date" type="text" @change=setDate>
@@ -25,6 +25,7 @@ export default {
   emits: ['clearNoEndDateCheckbox'],
   methods: {
     handleSelect (id) {
+      console.log('In handleSelect...')
       const outerBox = document.getElementById(id)
       if (!this.isDatePicker) {
         const box = document.getElementById(this.name + '-dropdown')
@@ -78,6 +79,7 @@ export default {
       return new Date(date.split('T')[0]).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
     },
     setValue (newValue) {
+      console.log('In setValue...')
       if (this.isDatePicker || this.isDateFilter) {
         this.$refs.dateVal.type = 'text'
         this.$refs.dateVal.value = this.formatDate(newValue)
@@ -86,6 +88,7 @@ export default {
       } else {
         const selectedVal = document.getElementById(this.name + '-combo-placeholder')
         selectedVal.innerText = newValue
+        console.log('Inner value: ', newValue)
         selectedVal.style.color = 'black'
         this.selectedValue = newValue
       }

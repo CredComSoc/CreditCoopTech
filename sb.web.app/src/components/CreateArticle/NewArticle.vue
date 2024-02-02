@@ -31,7 +31,7 @@ import StepThree from './StepThree.vue'
 import NewArticleFooter from './NewArticleFooter.vue'
 import PreviewArticle from './PreviewArticle.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
-import { uploadArticle, editArticle, deleteCart, EXPRESS_URL, setArticles } from '../../serverFetch'
+import { uploadArticle, editArticle, deleteCart, EXPRESS_URL, setArticles, getPlaces } from '../../serverFetch'
 
 import { isProxy, toRaw } from 'vue'
 import LoadingComponent from '../SharedComponents/LoadingComponent.vue'
@@ -102,6 +102,9 @@ export default {
     } else {
       console.log('Param artID not found!')
     }
+    getPlaces().then(() => {
+      console.log('Place names loaded.')
+    })
   },
   methods: {
     returnHome () {
