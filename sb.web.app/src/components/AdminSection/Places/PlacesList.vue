@@ -87,7 +87,7 @@ export default {
             const data = {
                 'places': placeData
             }
-            createNewPlace(placeData).then((res) => {
+            createNewPlace(data).then((res) => {
                 if (!res) {
                     this.popupCardText = "Error occured while adding new places"
                 }
