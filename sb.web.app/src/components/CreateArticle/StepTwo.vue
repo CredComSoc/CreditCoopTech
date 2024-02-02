@@ -1,4 +1,5 @@
 <template> 
+
 <div>
   <div id="title-field" class="input">
     <DatePicker ref="endDateInput" name="end-date-picker" :label="$t('shop_items.availability')" :placeholder="$t('shop_items.until_when')" @clearNoEndDateCheckbox='clearNoEndDateCheckbox'/><br>
@@ -35,11 +36,12 @@ export default {
   data () {
     return {
       productPlaces: [],
-      servicePlaces: []
+      servicePlaces: [],
+      dataReady: false
     }
   },
   methods: {
-    getStepTwoInputs () {
+    getStepTwoInputs() {
       let endDate = null
       if (!this.$refs.noEndDate.checked) {
         endDate = this.$refs.endDateInput.getInput()
@@ -117,8 +119,10 @@ export default {
     },
     places () {
       if (this.chosenType.toLowerCase() === 'product') {
+        console.log(this.productPlaces)
         return this.productPlaces
       } else {
+        console.log(this.servicePlaces)
         return this.servicePlaces
       }
     }
@@ -143,15 +147,21 @@ export default {
     if ('price' in this.savedProgress) {
       this.$refs.priceInput.setValue(this.savedProgress.price)
     }
+    // this.productPlaces = this.$store.state.places.filter((place) => {
+    //   place.project == process.env.VUE_APP_NAME
+    // }).map((projectPlace) => {
+    //   return projectPlace.name
+    // })
+    // this.servicePlaces = [...this.productPlaces, this.$i18n.t('remote'), this.$i18n.t('anywhere')]
     getPlaces().then((res) => {
       this.productPlaces = res.filter((place) =>
         place.project == process.env.VUE_APP_NAME
       ).map((projectPlace) => {
-      return projectPlace.name
-    })
-      console.log(this.productPlaces)
+        return projectPlace.name
+      })
       this.servicePlaces = [...this.productPlaces, this.$i18n.t('remote'), this.$i18n.t('anywhere')]
-    }) 
+      //this.dataReady = true
+    })
   }  
 }
 </script>

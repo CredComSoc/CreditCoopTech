@@ -26,10 +26,16 @@ const store = new Vuex.Store ({
     activeArticles: [],
     inactiveArticles: [],
 
-    allEvents: []
+    allEvents: [],
+
+    places: []
 
   },
   mutations: {
+
+    setPlaces (state, payload) {
+      state.places = payload
+    },
 
     replaceUser (state, payload) {
       state.user = payload
