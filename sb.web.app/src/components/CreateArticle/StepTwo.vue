@@ -147,20 +147,11 @@ export default {
     if ('price' in this.savedProgress) {
       this.$refs.priceInput.setValue(this.savedProgress.price)
     }
-    // this.productPlaces = this.$store.state.places.filter((place) => {
-    //   place.project == process.env.VUE_APP_NAME
-    // }).map((projectPlace) => {
-    //   return projectPlace.name
-    // })
-    // this.servicePlaces = [...this.productPlaces, this.$i18n.t('remote'), this.$i18n.t('anywhere')]
     getPlaces().then((res) => {
-      this.productPlaces = res.filter((place) =>
-        place.project == process.env.VUE_APP_NAME
-      ).map((projectPlace) => {
+      this.productPlaces = res.map((projectPlace) => {
         return projectPlace.name
       })
       this.servicePlaces = [...this.productPlaces, this.$i18n.t('remote'), this.$i18n.t('anywhere')]
-      //this.dataReady = true
     })
   }  
 }

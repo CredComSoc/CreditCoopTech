@@ -15,6 +15,7 @@ const fs = require('fs').promises;
 const { promisify } = require('util');
 const axios = require('axios').default;
 const config = require('../config');
+const cacheMiddleware = require('../middlewares/cacheMiddleware');
 
 marked.Renderer.prototype.paragraph = (text) => {
   return text + '\n';
@@ -1458,7 +1459,7 @@ module.exports = function() {
     }
   })
 
-  router.get("/categories", async (req, res) => {
+  router.get("/categories", cacheMiddleware(24), async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     const result = await dbo.collection("category").find({isActive: true});
@@ -1543,7 +1544,7 @@ module.exports = function() {
     });
   });
 
-  router.get("/places", async (req, res) => {
+  router.get("/places", cacheMiddleware(24), async (req, res) => {
     MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, async (err, db) => {
       const dbo = db.db(dbFolder)
 
