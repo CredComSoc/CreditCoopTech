@@ -80,8 +80,7 @@ export default {
             const placesList = this.newPlaces.split(', ');
             const placeData = placesList.map((place) => {
                 return {
-                    'name': place,
-                    'project': process.env.VUE_APP_NAME
+                    'name': place
                 }
             })
             const data = {
