@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="add_button">
-            <router-link :to="{name:'AddCategories'}" >
+            <router-link :to="{name:'AddCategories', params: { id: 'new' }}" >
                 {{$t('user.add_category')}}
             </router-link>
         </button>
@@ -34,7 +34,13 @@
             <td>
                 <button v-if="item.isActive" @click="updateCategories(item['_id'], false)" title="$t('disable_category')" class="fa fa-ban disable-button"></button>
                 <button v-if="!item.isActive" @click="updateCategories(item['_id'], true)" title="$t('enable_category')" class="fa fa-check enable-button"></button>
-            </td>
+                <br/>
+                <button title="$t('edit_category')" class="fa fa-edit edit-button">
+                  <router-link :to="{name: 'AddCategories', params: { id: item['_id'] }}">
+                    Edit Category
+                  </router-link>
+                </button>
+              </td>
           </tr>
         </tbody>
       </table>
@@ -60,7 +66,6 @@ import PopupCard from '@/components/SharedComponents/PopupCard.vue'
       };
     },
     methods: {
-
         updateCategories(id, isActive) {
             const data = new FormData();
             data.append("id", id);
@@ -72,6 +77,9 @@ import PopupCard from '@/components/SharedComponents/PopupCard.vue'
                      window.location.reload();
                 }
             })
+      },
+      editCategory(id) {
+        console.log("Editing category")
       },
     },
     mounted() {

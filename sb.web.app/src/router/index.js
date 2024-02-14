@@ -163,7 +163,7 @@ const routes = [
     component: NetworkSetting
   },
   {
-    path: '/addCategories',
+    path: '/addCategories/:id',
     name: 'AddCategories',
     component: CreateNewCategories
   }
