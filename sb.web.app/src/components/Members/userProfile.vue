@@ -39,7 +39,7 @@
         <h1 class="box-text">{{ $t('user.send_token', {token: $t('org.token')} ) }}</h1>
         <div>
           <label class="box-label">{{ $t('transfer_amount') }}</label>
-          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
+          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required v-on:change="validateAmountInput" />
         </div>
         <div>
           <label class="box-label">{{ $t('user.commentLabel') }}</label>
@@ -72,6 +72,7 @@
     <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText', {tkn: this.tkn, accountName: profileData.accountName})"  />
     <PopupCard v-if="this.pendingBalanceLimitExceeded" :title="$t('cart.insufficient_credit')" btnLink="" btnText="Ok" :cardText="$t('cart.pending_transaction_limit_exceeded', {'total_price': this.tkn, 'credit_unit': this.$t('org.token'), 'available_credit': this.actualAvailableCreditWithPending})" />
     <PopupCard v-if="this.pendingSellerBalanceLimitExceeded" :title="$t('shop.seller_balance_too_high')" btnLink="" btnText="Ok" :cardText="$t('user.receiver_pending_balance_exceeded', {'seller': profileData.accountName})" />
+    <PopupCard v-if="this.amountError" :title="$t('shop.credit_input_error')" :btnLink="null" btnText="Ok" :cardText="$t('shop.amount_error_msg')" @closePopup="this.closePopup" />
 
   </div>
   <LoadingComponent ref="loadingComponent" />
@@ -118,11 +119,21 @@ export default {
       pendingBalanceLimitExceeded: false,
       actualAvailableCreditWithPending: 0,
       pendingSellerBalanceLimitExceeded: false,
-      available_credit: 0
-
+      available_credit: 0,
+      amountError: false
     }
   },
   methods: {
+    isNumeric (str) {
+      return Number.isInteger(Number(str)) && Number(str) > 0
+    },
+    validateAmountInput () {
+      const price = this.$refs.tknInput.getInput()
+      if (!this.isNumeric(price)) {
+        this.$refs.tknInput.setValue('0')
+        this.amountError = true
+      }
+    },
     getImgURL () {
       if (this.profileData.logo !== '') {
         this.logoURL = EXPRESS_URL + '/image/' + this.profileData.logo
@@ -188,6 +199,7 @@ export default {
       this.tkn = 0
       this.comment = ''
       this.popupActive = false
+      this.amountError = false
     },
     goToChat () {
       fetch(EXPRESS_URL + '/chat/' + this.profileData.accountName, {
@@ -280,7 +292,6 @@ export default {
     await setArticles()
     this.items.offers = this.$store.state.allArticles.filter(article => (article.status === 'selling' || article.status === 'offer') && article.userUploader === this.$route.params.userprofile)
     this.items.wants = this.$store.state.allArticles.filter(article => (article.status === 'buying' || article.status === 'want') && article.userUploader === this.$route.params.userprofile)
-    console.log(this.items)
   }
 }
 

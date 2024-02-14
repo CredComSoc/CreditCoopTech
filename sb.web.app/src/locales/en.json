@@ -154,6 +154,8 @@
         "my_balance": "Balance"
     },
     "shop": {
+        "credit_input_error": "Transfer Token Amount Error",
+        "amount_error_msg": "Transfer Token Amount must be an integer.",
         "column_categories": "COLUMN FOR CATEGORIES",
         "column_product": "COLUMN FOR PRODUCTS",
         "complete_purchase": "Complete the request",

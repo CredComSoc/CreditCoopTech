@@ -152,6 +152,8 @@
     "my_balance": "Saldo"
   },
   "shop": {
+    "credit_input_error": "Överför tokenbeloppsfel",
+    "amount_error_msg": "Transfer Token-belopp måste vara ett heltal.",
     "column_categories": "KOLUMN FÖR KATEGORIER",
     "column_product": "KOLUMN FÖR PRODUKTER",
     "complete_purchase": "Slutför begäran",
