@@ -1,16 +1,17 @@
 <template>
+  <template v-if="isNew">
     <div>
-        <h1>{{ $t('add_new_category') }}</h1>
+      <h1>{{ $t('add_new_category') }}</h1>
     </div>
     <div id="main">
       <div class="">
         <input ref="name" placeholder="Category Name" type="text" v-model="name"  id="name" />
-      <br/>
+        <br/>
       </div>
       <div class="input-upload">
         <div id="pic">
-        <p>{{ $t('shop_items.choose_file') }}</p>
-    </div>
+          <p>{{ $t('shop_items.choose_file') }}</p>
+        </div>
         <button ref="addFile" id="upload-button" @click="upload">
           {{ $t("browse") }}
         </button>
@@ -32,115 +33,200 @@
       <!-- change to locale -->
     </div>
     <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
-
   </template>
+  <template v-else>
+    <div>
+      <h1>{{ $t('edit_category') }}</h1>
+    </div>
+    <div id="main">
+        <div class="">
+          <input ref="name" placeholder="Category Name" type="text" v-model="item.name"  id="name" />
+          <br/>
+        </div>
+        <div class="input-upload">
+          <div id="pic">
+            <p>{{ $t('shop_items.choose_file') }}</p>
+          </div>
+          <button ref="addFile" id="upload-button" @click="upload">
+            {{ $t("browse") }}
+          </button>
+          <input type="file" id="getFile"  @change="getFile" style="display: none;" :name="this.name" />
+        </div>
+        <div id="images">
+          <UploadedImage
+            @removeImg="this.deleteImg"
+            class="img"
+            :isPreview="false"
+            v-for="img in this.images"
+            :imageURL="img[0]"
+            :key="img[0]"
+            :id="img[1]"
+            :isCoverImg="img[2]"
+          />
+        </div>
+        <button class="btn-submit" @click="editCategory(item['_id'])">{{ $t('submit') }}</button>
+        <!-- change to locale -->
+      </div>
+      <PopupCard v-if="this.error" @closePopup="this.closePopup" btnText="Ok" :title="$t('shop_items.invalid_entry')" :btnLink="null" :cardText="this.popupCardText" />
+  </template>
+</template>
   
 <script>
 /* eslint-disable */
 import UploadedImage from "../../CreateArticle/UploadedImage.vue"
-import { createNewCategories } from '../../../serverFetch'
+import { createNewCategories, getCategories, editCategories, getImg } from '../../../serverFetch'
 import { useRouter } from 'vue-router'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 
 const router = useRouter()
 
-  export default {
-    name: "CreateNewCategories",
-    components: {
-      UploadedImage,
-      PopupCard
-    },
-    props: [],
-    data() {
-      return {
-        error: false,
-        popupCardText: 'Error While Saving New Category',
-        name: '',
-        images: [],
-        imageObjs: [],
-      };
-    },
-    methods: {
-        closePopup () {
+export default {
+  name: "CreateNewCategories",
+  components: {
+    UploadedImage,
+    PopupCard
+  },
+  props: [],
+  data() {
+    return {
+      error: false,
+      popupCardText: 'Error While Saving New Category',
+      name: '',
+      images: [],
+      imageObjs: [],
+      item: {},
+    };
+  },
+  methods: {
+    closePopup() {
       this.error = false
-         },
-      getStepThreeInputs() {
-        const cbs = document.getElementsByClassName("cb");
-        for (var i = 0; i < cbs.length; i++) {
-          if (cbs[i].checked) {
-            this.imageObjs[i].isCoverImg = true;
-          } else {
-            this.imageObjs[i].isCoverImg = false;
-          }
-        }
-      },
-      upload() {
-        document.getElementById("getFile").click();
-      },
-      getFile(e) {
-        const imageObj = e.target.files[0];
-        if (
-          this.validateImageFile(imageObj) &&
-          this.validatedFileSize(imageObj.size)
-        ) {
-          const URLImg = URL.createObjectURL(imageObj);
-          this.images.push([URLImg, this.images.length, false]);
-          this.imageObjs.push(imageObj);
-          if (this.images.length === 5) {
-            document.getElementById("upload-button").disabled = true;
-          }
+    },
+    getStepThreeInputs() {
+      const cbs = document.getElementsByClassName("cb");
+      for (var i = 0; i < cbs.length; i++) {
+        if (cbs[i].checked) {
+          this.imageObjs[i].isCoverImg = true;
         } else {
-          this.$emit("fileSizeError");
+          this.imageObjs[i].isCoverImg = false;
         }
-      },
-      deleteImg(imgId) {
-        for (let i = imgId; i < this.images.length; i++) {
-          if (imgId !== i) {
-            this.images[i][1] = i - 1;
-          }
-        }
-        this.images.splice(imgId, 1);
-        this.imageObjs.splice(imgId, 1);
-        if (this.images.length === 0) {
-          this.$refs.addFile.innerText = this.$i18n.t("browse");
-        }
-  
-        if (this.images.length < 5) {
-          document.getElementById("upload-button").disabled = false;
-        }
-      },
-      // less then 2MB
-      validatedFileSize(byteSize) {
-        return byteSize <= 2000000;
-      },
-      validateImageFile(file) {
-        const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-        return validImageTypes.includes(file.type);
-      },
-      saveCategories() {
-        this.getStepThreeInputs();
-        const data = new FormData();
-        let index = 0;
-        for (const file of this.imageObjs) {
-          if (file.isCoverImg) {
-            data.append("coverImgInd", index)
-          }
-          data.append("file", file, file.name)
-          ++index;
-        }
-        data.append('name', this.name)
-        console.log(data)
-        createNewCategories(data).then((res) => {
-        if (res.status === 200) {
-            this.$router.push({ name: 'DataManagement', params: { tab: 'categories' } }) 
-        } else {
-            this.error = true
-        }
-      })
       }
     },
-  mounted() {}
-  };
+    upload() {
+      document.getElementById("getFile").click();
+    },
+    getFile(e) {
+      const imageObj = e.target.files[0];
+      if (
+        this.validateImageFile(imageObj) &&
+        this.validatedFileSize(imageObj.size)
+      ) {
+        const URLImg = URL.createObjectURL(imageObj);
+        this.images.push([URLImg, this.images.length, false]);
+        this.imageObjs.push(imageObj);
+        if (this.images.length === 5) {
+          document.getElementById("upload-button").disabled = true;
+        }
+      } else {
+        this.$emit("fileSizeError");
+      }
+    },
+    deleteImg(imgId) {
+      for (let i = imgId; i < this.images.length; i++) {
+        if (imgId !== i) {
+          this.images[i][1] = i - 1;
+        }
+      }
+      this.images.splice(imgId, 1);
+      this.imageObjs.splice(imgId, 1);
+      if (this.images.length === 0) {
+        this.$refs.addFile.innerText = this.$i18n.t("browse");
+      }
+
+      if (this.images.length < 5) {
+        document.getElementById("upload-button").disabled = false;
+      }
+    },
+    // less then 2MB
+    validatedFileSize(byteSize) {
+      return byteSize <= 2000000;
+    },
+    validateImageFile(file) {
+      const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+      return validImageTypes.includes(file.type);
+    },
+    saveCategories() {
+      this.getStepThreeInputs();
+      const data = new FormData();
+      let index = 0;
+      for (const file of this.imageObjs) {
+        if (file.isCoverImg) {
+          data.append("coverImgInd", index)
+        }
+        data.append("file", file, file.name)
+        ++index;
+      }
+      data.append('name', this.name)
+      console.log(data)
+      createNewCategories(data).then((res) => {
+        if (res.status === 200) {
+          this.$router.push({ name: 'DataManagement', params: { tab: 'categories' } })
+        } else {
+          this.error = true
+        }
+      })
+    },
+    editCategory(id) {
+      this.getStepThreeInputs();
+      const data = new FormData();
+      let index = 0;
+      for (const file of this.imageObjs) {
+        if (file.isCoverImg) {
+          data.append("coverImgInd", index)
+        }
+        data.append("file", file, file.name)
+        ++index;
+      }
+      data.append('name', this.item.name)
+      data.append('id', id)
+      editCategories(data).then((res) => {
+        if (res.status === 200) {
+          this.$router.push({ name: 'DataManagement', params: { tab: 'categories' } })
+        } else {
+          this.error = true
+        }
+      })
+    }
+  },
+  computed: {
+    isNew() {
+      if (this.$route.params.id === 'new') {
+        return true
+      }
+      return false
+    }
+  },
+  mounted() {
+    if (!this.isNew) {
+      getCategories().then((categories) => {
+        let myItem = categories.filter((cat) => {
+          if (cat._id == this.$route.params.id) {
+            return cat
+          }
+        })
+        this.item = myItem[0]
+        getImg(this.item.defaultMainImage).then((res) => {
+          if (res.ok) {
+            return res.blob()
+          }
+        }).then(data => {
+          const URLImg = URL.createObjectURL(data)
+          this.imageObjs.push(new File([data], this.item.defaultMainImage, { type: 'image/' + this.item.defaultMainImage.split('.').pop() }))
+          this.images.push([URLImg, this.images.length, false])
+        })
+      })
+    }
+  }
+}
   </script>
   
   <style scoped>

@@ -958,6 +958,22 @@ export async function updateCategoryStatus (data) {
   }) 
 }
 
+export async function editCategories (data) {
+  console.log('Edit category: ', data)
+  return await fetch(EXPRESS_URL + '/editCategory', {
+    method: 'POST',
+
+    credentials: 'include',
+    body: data
+  }).then((res) => {
+    return res
+  }).then((success) => {
+    return success
+  }).catch((error) => {
+    return error
+  })
+}
+
 export async function createNewPlace (data) {
   return await fetch(EXPRESS_URL + '/places', {
     method: 'POST',

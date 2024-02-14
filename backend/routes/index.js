@@ -203,7 +203,7 @@ module.exports = function() {
         if (!files[0] || files.length === 0) {
           res.status(404).send('No file exists');
         } else {
-          if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/gif') {
+          if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/gif' || files[0].contentType === 'image/JPG') {
             gfs.openDownloadStreamByName(files[0].filename).pipe(res)
           }
         }
@@ -1459,7 +1459,7 @@ module.exports = function() {
     }
   })
 
-  router.get("/categories", cacheMiddleware(24), async (req, res) => {
+  router.get("/categories", cacheMiddleware(1), async (req, res) => {
     const db = await MongoClient.connect(dbUrl)
     const dbo = db.db(dbFolder);
     const result = await dbo.collection("category").find({isActive: true});
@@ -1493,6 +1493,41 @@ module.exports = function() {
             db.close()
           } 
          })
+      })
+    }
+    catch (ex) {
+      console.log(ex)
+      res.status(500).send({ exception: ex });
+    }
+  })
+
+  router.post('/editCategory', upload.array('file', 5), (req, res) => {
+    let images = req.files.map(obj => obj.filename);
+    let coverImg = images[req.body.coverImgInd];
+    images = images.filter((img) => { return img !== coverImg })
+    let category = {
+      // _id: ObjectId(req.body.id),
+      name: req.body.name,
+      defaultImage: images,
+      defaultMainImage: coverImg,
+      isActive: true
+    }
+    console.log("Category data: ", category)
+    try {
+      let bodyData = req.body;
+      MongoClient.connect(dbUrl, (err, db) => {
+        let dbo = db.db(dbFolder);
+        const query = { "_id": ObjectId(req.body.id) };
+        dbo.collection("category").updateOne(query, { $set: category }, (err, result) => {
+          if (err) {
+            res.status(400).json(false)
+            db.close()
+          }
+          else {
+            res.status(200).json(true)
+            db.close()
+          }
+        })
       })
     }
     catch (ex) {
