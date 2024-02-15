@@ -70,12 +70,12 @@ module.exports = function() {
 
         // convert markdown to html
         if (isDynamic) {
-          const bodyTemplate = compileTemplate(selectedTemplate_2, templateData);
-          const htmlTemplate_1 = marked(selectedTemplate_1);
-          const htmlTemplate_2 = marked(bodyTemplate);
+          var bodyTemplate = compileTemplate(selectedTemplate_2, templateData);
+          var htmlTemplate_1 = marked(selectedTemplate_1);
+          var htmlTemplate_2 = marked(bodyTemplate);
         } else {
-          const htmlTemplate_1 = marked(selectedTemplate_1);
-          const htmlTemplate_2 = marked(selectedTemplate_2);
+          var htmlTemplate_1 = marked(selectedTemplate_1);
+          var htmlTemplate_2 = marked(selectedTemplate_2);
         }
 
         return {
@@ -451,7 +451,7 @@ module.exports = function() {
               }
               const templates = await getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
 
-              const reponse = await sendMail(templates['body'], newUser.email, templates['subject'])
+              const reponse = await sendEmail(templates['body'], newUser.email, templates['subject'])
               console.log(reponse)
             } catch (error) {
               console.log(error)
@@ -1278,7 +1278,7 @@ module.exports = function() {
       }
       const templates = await getTemplatesForEmail('PasswordSubject', 'PasswordBody', true, templateData)
 
-      const response = await sendMail(templates['body'], user.email, templates['subject'])
+      const response = await sendEmail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
     }
   }) 
@@ -1307,7 +1307,7 @@ module.exports = function() {
       }
       const templates = await getTemplatesForEmail('PasswordResetConfirmationSubject', 'PasswordResetConfirmationBody', true, templateData)
 
-      const response = await sendMail(templates['body'], user.email, templates['subject'])
+      const response = await sendEmail(templates['body'], user.email, templates['subject'])
       return res.status(200).send("Email successfully sent")
     }
   })
@@ -1818,7 +1818,7 @@ module.exports = function() {
       try {
         const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
 
-        const response = await sendMail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
+        const response = await sendEmail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
       } catch (error) {
         console.log(error)
         res.status(400).send(error)
