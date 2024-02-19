@@ -11,11 +11,11 @@
           </div>
         </div>
         <div v-if="enableLanguageChange" class="navlogo language">
-        <select class="language-select" @change="changeLanguage" v-model="language">
-          <option value="en">en</option>
-          <option value="se">se</option>
-        </select>
-      </div>
+          <select class="language-select" @change="changeLanguage" v-model="language">
+            <option value="en">en</option>
+            <option value="se">se</option>
+          </select>
+        </div>
       </nav>
     </header>
   </div>
@@ -36,8 +36,8 @@
       <button id="login-button" ><span>&larr; {{ $t('login.login_button') }}</span></button>
     </router-link>
   </div>
+  <LoadingComponent ref="loadingComponent" />
 </div>
-<LoadingComponent ref="loadingComponent" />
 </template>
 
 <script>
@@ -68,25 +68,33 @@ export default {
   methods: {
     async handleSubmit () {
       const uri = window.location.href.split('/')
-      const token = uri[4]
-      if (this.password === this.password2) {
-        this.$refs.loadingComponent.showLoading()
-        resetToken(token, this.password).then((response) => {
-          if (response) {
-            this.error = false
-            this.$refs.loadingComponent.showLoading()
-            setTimeout(() => {
-              this.$router.push({ name: 'Home' }) 
-            }, 1000)
-          } else {
-            this.errorText = this.$i18n.t('password_reset_failed')
-            this.$refs.loadingComponent.showLoading()
-            this.error = true
-          }
-        })
-      } else {
-        this.errorText = this.$i18n.t('passwords_not_matched')
-        this.error = true
+      try {
+        var token = uri[4]
+        console.log('Token is: ', token)
+      
+        if (this.password === this.password2) {
+          this.$refs.loadingComponent.showLoading()
+          resetToken(token, this.password).then((response) => {
+            if (response) {
+              this.error = false
+              this.$refs.loadingComponent.showLoading()
+              setTimeout(() => {
+                this.$router.push({ name: 'Home' }) 
+              }, 1000)
+            } else {
+              this.errorText = this.$i18n.t('password_reset_failed')
+              this.$refs.loadingComponent.showLoading()
+              this.error = true
+            }
+          }).catch((err) => {
+            console.error('Error occured when resetting password: ', err)
+          })
+        } else {
+          this.errorText = this.$i18n.t('passwords_not_matched')
+          this.error = true
+        }
+      } catch (e) {
+        console.error('Error! \n', e)
       }  
     },
     changeLanguage (event) {

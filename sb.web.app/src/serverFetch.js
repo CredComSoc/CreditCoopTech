@@ -753,6 +753,7 @@ export async function resetToken (token, newpass) {
       return res.ok
     })
     .catch(() => {
+      console.error('Could not reset password')
       return false
     })
   return promise

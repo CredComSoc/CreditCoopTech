@@ -89,7 +89,7 @@ export default {
     async submit () {
       var randomstring = Math.random().toString(36).slice(-8) //for password
       //calls a register function in serverfetch
-      const res = await this.register(
+      const res = await register(
         this.profileData.isadmin,
         this.profileData.name, 
         randomstring,
