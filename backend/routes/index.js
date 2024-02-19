@@ -402,7 +402,7 @@ module.exports = function() {
   router.post("/register", upload.single('file'), async (req, res) => { //register a new user
     const newPro = JSON.parse(req.body.accountInfo)
 
-    const sendWelcomeEmail = req.body.sendWelcomeEmail === "true" ? true : false
+    // const sendWelcomeEmail = req.body.sendWelcomeEmail === true ? true : false
     getUser({ email: newPro.email }).then(async (user) => {
       if (user == null) {
         console.log(req.body.accountInfo)
@@ -441,7 +441,7 @@ module.exports = function() {
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
 
-          if (sendWelcomeEmail && email_enabled) {
+          if (email_enabled) {
             try {
               // TODO: May be change the language to english if that is the users are english speaking
               const templateData = {
@@ -460,6 +460,7 @@ module.exports = function() {
                 console.log("could not delete user " + result)
               }
               res.status(404).send('Email could not be sent to this member.')
+              console.error('Could not send welcome email to user...')
 
               db.close()
               return
@@ -1291,9 +1292,11 @@ module.exports = function() {
       return res.status(401).send("Password reset token is invalid or has expired.")
     }
 
+    const newPassword = await encryptPassword(req.body.newpass)
+    console.log(req.body.newpass, newPassword)
     const query = {
       $set: {
-        password: req.body.newpass,
+        password: newPassword,
         resetPasswordToken: null,
         resetPasswordExpires: null
       }
