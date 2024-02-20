@@ -24,6 +24,7 @@ const BACK_END_API_URL = process.env.BACK_END_API_URL
 const CC_NODE_URL = process.env.CC_NODE_URL
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL
 const SUPPORT_EMAIL_PASSWORD = process.env.SUPPORT_EMAIL_PASSWORD
+const PROJECT = process.env.PROJECT
 // only really useful in dev
 const DISABLE_CC_NODE = ['true', 'yes', '1'].includes((process.env.DISABLE_CC_NODE || '').toLowerCase());
 
@@ -32,4 +33,4 @@ console.warn("Connecting to " + mongoURL)
 // regex that a domain starts with "http://localhost" or ends with ".mutualcredit.services
 CORS_WHITE_LIST = [/^http:\/\/localhost/, /\.mutualcredit\.services$/, /\.landcaretrade\.com$/]
 
-module.exports = { mongoURL, FRONT_END_URL, BACK_END_API_URL, CC_NODE_URL, DISABLE_CC_NODE, CORS_WHITE_LIST, SUPPORT_EMAIL, SUPPORT_EMAIL_PASSWORD}
+module.exports = { mongoURL, FRONT_END_URL, BACK_END_API_URL, CC_NODE_URL, DISABLE_CC_NODE, CORS_WHITE_LIST, SUPPORT_EMAIL, SUPPORT_EMAIL_PASSWORD, PROJECT}

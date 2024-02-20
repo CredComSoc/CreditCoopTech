@@ -29,6 +29,7 @@ module.exports = function() {
   const FRONTEND_URL = config.FRONT_END_URL; 
   const CC_NODE_URL = config.CC_NODE_URL; 
   const DISABLE_CC_NODE = config.DISABLE_CC_NODE;
+  const PROJECT = config.PROJECT;
   const router = express.Router();
 
   const support_email = config.SUPPORT_EMAIL
@@ -70,8 +71,9 @@ module.exports = function() {
 
         // convert markdown to html
         if (isDynamic) {
+          var subjectTemplate = compileTemplate(selectedTemplate_1, templateData);
           var bodyTemplate = compileTemplate(selectedTemplate_2, templateData);
-          var htmlTemplate_1 = marked(selectedTemplate_1);
+          var htmlTemplate_1 = marked(subjectTemplate);
           var htmlTemplate_2 = marked(bodyTemplate);
         } else {
           var htmlTemplate_1 = marked(selectedTemplate_1);
@@ -447,7 +449,8 @@ module.exports = function() {
               const templateData = {
                 FRONTEND_URL: `${FRONTEND_URL}`,
                 email: newPro.email,
-                password: newPro.password
+                password: newPro.password,
+                org: `${PROJECT}`
               }
               const templates = await getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
 
@@ -1275,7 +1278,8 @@ module.exports = function() {
     if (email_enabled) {
       const templateData = {
         FRONTEND_URL: `${FRONTEND_URL}`,
-        token: `${token}`
+        token: `${token}`,
+        org: `${PROJECT}`
       }
       const templates = await getTemplatesForEmail('PasswordSubject', 'PasswordBody', true, templateData)
 
@@ -1306,7 +1310,8 @@ module.exports = function() {
   
     if (email_enabled) {
       const templateData = {
-        accountName: `${user.profile.accountName}`
+        accountName: `${user.profile.accountName}`,
+        org: PROJECT
       }
       const templates = await getTemplatesForEmail('PasswordResetConfirmationSubject', 'PasswordResetConfirmationBody', true, templateData)
 
@@ -1819,9 +1824,12 @@ module.exports = function() {
     router.get("/testemail", async (req, res) => {
       // sending test email api
       try {
-        const templates = await getTemplatesForEmail('TestSubject', 'TestBody', false, {})
+        const templateData = {
+          org: `${PROJECT}`
+        }
+        const templates = await getTemplatesForEmail('TestSubject', 'TestBody', true, templateData)
 
-        const response = await sendEmail(templates['body'], 'yonasbek4@gmail.com', templates['subject'])
+        const response = await sendEmail(templates['body'], 'jmuthui70@gmail.com', templates['subject'])
       } catch (error) {
         console.log(error)
         res.status(400).send(error)
