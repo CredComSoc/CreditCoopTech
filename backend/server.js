@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport')
-const session = require('cookie-session')
+const session = require('cookie-session');
+const { CORS_WHITE_LIST } = require('./config');
 
 // const { Socket } = require('socket.io');
 // const path = require('path');
@@ -38,6 +39,7 @@ function initApp(app) {
   indexRouter = require('./routes/index')()
   const ccRequests = require('./routes/ccRequests')()
   const ccUserStore = require('./routes/ccUserStore')()
+
   app.use('/', indexRouter.router)
   app.use('/', ccRequests)
   app.use('/', ccUserStore)
@@ -61,7 +63,11 @@ function stopServer(server) {
 
 function startChat(app) {
   const http = require('http').createServer(app);
-  const io = require('socket.io', {})(http)
+  const io = require('socket.io')(http,{
+    cors : {
+      origin: CORS_WHITE_LIST
+    }
+  });
   
   // FIXME: have to do this in the apache conf for some reason?
   // io.use(cors)
