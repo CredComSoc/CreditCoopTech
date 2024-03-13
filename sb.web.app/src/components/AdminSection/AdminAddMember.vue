@@ -26,13 +26,13 @@
       <div className="container-item">
         <h2>{{ $t('user.billing') }}</h2>
         <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
-        <input name="billingName" v-model="profileData.billingName" required><br/>
+        <input name="billingName" v-model="profileData.billingName" ><br/>
         <label for="billingBox">{{ $t('user.box') }}:</label><br/>
-        <input name="billingBox" v-model="profileData.billingBox" required><br/>
+        <input name="billingBox" v-model="profileData.billingBox"><br/>
         <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
         <input name="billingAddress" v-model="profileData.billingAddress" required><br/>
         <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
-        <input name="orgNumber" v-model="profileData.orgNumber" required><br/><br/>
+        <input name="orgNumber" v-model="profileData.orgNumber"><br/><br/>
         <h2>{{ $t('user.contact') }}</h2>
         <label for="email">{{ $t('user.email') }}:</label><br/>
         <input type="email" id="email" v-model="profileData.email" required><br/>
