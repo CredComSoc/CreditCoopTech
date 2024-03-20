@@ -13,7 +13,8 @@ const { MongoClient } = require("mongodb");
     try {
 
       await client.connect();
-      const result = await client.db().collection("users").findOne({ email, password });
+      const emailLower = email.toLowerCase();
+      const result = await client.db().collection("users").findOne({ emailLower, password });
 
       if (result != null) {
         return done(null, result);
