@@ -409,7 +409,7 @@ module.exports = function() {
       if (user == null) {
         console.log(req.body.accountInfo)
         const newUser = {
-          email: newPro.email,
+          email: newPro.email.toLowerCase(),
           password: await encryptPassword(newPro.password),
           is_active: req.body.is_active === "false" ? false : true,
           min_limit: parseInt(newPro.min_limit),
@@ -1718,7 +1718,7 @@ module.exports = function() {
               }
             }
           } catch (error) {
-            console.error(error)
+            console.error("Error when getting transactions: ", error)
           }
           // get transactions
           try {
@@ -1765,6 +1765,7 @@ module.exports = function() {
           } catch (error) {
             console.error(error)
           }
+          console.log("Transactions: ", transactions)
           res.status(200).send(transactions)
         })
       } catch (ex) {
