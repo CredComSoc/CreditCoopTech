@@ -1718,7 +1718,7 @@ module.exports = function() {
               }
             }
           } catch (error) {
-            console.error(error)
+            console.error("Error when getting transactions: ", error)
           }
           // get transactions
           try {
@@ -1765,6 +1765,7 @@ module.exports = function() {
           } catch (error) {
             console.error(error)
           }
+          console.log("Transactions: ", transactions)
           res.status(200).send(transactions)
         })
       } catch (ex) {

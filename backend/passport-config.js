@@ -63,7 +63,8 @@ const { MongoClient } = require("mongodb");
     passport.use(new LocalStrategy( {usernameField: 'email'},
       async (username, password, done) => {
         try {
-          const user = await getUserByUsername(username);
+          const email = username.toLowerCase();
+          const user = await getUserByUsername(email);
 
           if (!user) {
             return done(null, false, { message: 'Incorrect username.' });
