@@ -5,8 +5,8 @@ Welcome to {{ org }}
 <!-- Template: WelcomeBody -->
 
 You are receiving this email because you have requested to join {{ org }}. <br />
-Please click the following link or paste it into a browser to complete the sign up process: <br />
-{{ FRONTEND_URL }}/login <br /> <br />
+Please click the following link or paste it into a browser to complete the sign up process by setting up a password: <br />
+{{FRONTEND_URL}}/reset/{{token}} <br /> <br />
 
 Your login details are: <br />
 Email address: {{ email}} <br />

@@ -442,6 +442,16 @@ module.exports = function() {
         const dbo = db.db(dbFolder);
         const result = await dbo.collection("users").insertOne(newUser)
         if (result.acknowledged) {
+          const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+
+          const query = {
+            $set: {
+              resetPasswordToken: token,
+              resetPasswordExpires: Date.now() + 3600000
+            }
+          }
+          const user = await getUser({ "email": newUser.email })
+          updateUser(user, query)
 
           if (email_enabled) {
             try {
@@ -449,7 +459,7 @@ module.exports = function() {
               const templateData = {
                 FRONTEND_URL: `${FRONTEND_URL}`,
                 email: newPro.email,
-                password: newPro.password,
+                token: `${token}`,
                 org: `${PROJECT}`
               }
               const templates = await getTemplatesForEmail('WelcomeSubject', 'WelcomeBody', true, templateData)
