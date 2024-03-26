@@ -45,6 +45,9 @@
       <div class="box-msg" v-if="this.mailtoClicked">
           <a :href="contactLink">{{ contactEmail }}</a>
       </div>
+      <div>
+        <p>Please do check your spam folder for any emails from us.</p>
+      </div>
       <div class="forgot_link">
       <router-link :to="{name:'Forgot'}"> {{ $t('reset_password') }} </router-link>
     </div>

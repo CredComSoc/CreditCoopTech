@@ -13,7 +13,8 @@ const { MongoClient } = require("mongodb");
     try {
 
       await client.connect();
-      const result = await client.db().collection("users").findOne({ email, password });
+      const emailLower = email.toLowerCase();
+      const result = await client.db().collection("users").findOne({ emailLower, password });
 
       if (result != null) {
         return done(null, result);
@@ -63,7 +64,8 @@ const { MongoClient } = require("mongodb");
     passport.use(new LocalStrategy( {usernameField: 'email'},
       async (username, password, done) => {
         try {
-          const user = await getUserByUsername(username);
+          const email = username.toLowerCase();
+          const user = await getUserByUsername(email);
 
           if (!user) {
             return done(null, false, { message: 'Incorrect username.' });
