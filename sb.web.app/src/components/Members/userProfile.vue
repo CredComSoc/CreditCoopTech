@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, setArticles, setCartData } from './../../serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, setArticles, setCartData, getAvailableBalancesAndLimits } from './../../serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -142,41 +142,38 @@ export default {
       }
     },
     async sendBkr () {
+      // TODO: get these requests to backend to occur simultaneously
+      // TODO:: Combine the two requests into one for min and saldo
       this.$refs.loadingComponent.showLoading()
       this.tkn = this.$refs.tknInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
       if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
-        const balance = await getAvailableBalance()
-        this.available_credit = balance.totalAvailableBalance
-        if (balance.totalAvailableBalance < this.tkn) {
+        const result = await getAvailableBalancesAndLimits(this.profileData.accountName)
+        const mySaldo = result.requester.saldo
+        const limits = result.requester
+        const totalAvailableBalance = mySaldo.completed.balance - limits.min_limit
+        if (totalAvailableBalance < this.tkn) {
           this.$refs.loadingComponent.hideLoading()
-          // balance too low
           this.notEnoughBkrMsg = true
         } else {
-          // very tricky logic. More knowledge of /saldo endpoint to understand
-          // min limit violation
-          if ((-balance.pendingBalance) + Number(this.tkn) > (-this.$store.state.user.min_limit)) {
+          if ((-mySaldo.pending.balance) + Number(this.tkn) > (-limits.min_limit)) {
             this.$refs.loadingComponent.hideLoading()
-            this.actualAvailableCreditWithPending = Math.abs(this.$store.state.user.min_limit - balance.pendingBalance)
+            this.actualAvailableCreditWithPending = Math.abs(limits.min_limit + mySaldo.pending.balance)
             this.pendingBalanceLimitExceeded = true
           } else {
-            const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
-            const userLimits = await getUserLimits(this.profileData.accountName)
-            if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
+            const userSaldo = result.requestee.saldo
+            const userLimits = result.requestee
+            if (userSaldo.completed.balance + Number(this.tkn) > userLimits.max_limit) {
               await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
-              // receiver balance too high
               this.tooMuchBkrMsg = true
-            } else if (userSaldo.pendingBalance + Number(this.tkn) > userLimits.max) {
-              // new logic to send notification even if it is a outstanding limit
+            } else if (userSaldo.pending.balance + Number(this.tkn) > userLimits.max_limit) {
               await postNotification('sendBalanceSellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
               this.$refs.loadingComponent.hideLoading()
               this.tooMuchBkrMsg = true
-              // this.pendingSellerBalanceLimitExceeded = true
             } else {
               await sendMoney(this.tkn, this.comment, this.profileData.accountName)
               await postNotification('sendRequest', this.profileData.accountName, this.tkn)
-              // await setUserBalance()   set user balance call the api here
               this.$refs.loadingComponent.hideLoading()
               this.isBalanceSent = true
             }
