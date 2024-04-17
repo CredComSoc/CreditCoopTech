@@ -47,9 +47,6 @@ export default {
       images: [],
       imageObjs: [],
       imagesDefault: [],
-      clientId: "329989507288-b6017ej301uatn06fcov43jcnqdghbbj.apps.googleusercontent.com",
-      clientSecret: "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",
-      redirectUri: `${window.location.origin}/add/article`,
       token: null, 
       googleImages: {},
       googleToken: null
