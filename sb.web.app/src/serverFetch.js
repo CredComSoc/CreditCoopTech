@@ -596,6 +596,19 @@ export async function getUserSaldo (user) {
   }
 }
 
+export async function getAvailableBalancesAndLimits (user) {
+  const results = await fetch(EXPRESS_URL + '/balanceAndLimits', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'profile.accountName': user }),
+    credentials: 'include'
+  })
+
+  return results.json()
+}
+
 export async function getUserAvailableBalance (user) {
   const saldo = await getUserSaldo(user)
   const balance = saldo.completed.balance

@@ -1222,6 +1222,86 @@ module.exports = function() {
    *                 
    *****************************************************************************/
 
+  // router.post("/balanceAndLimits", (req, res) => {
+  //   const requester = getUser({ "profile.accountName": req.user }).then(user => {
+  //     if (user != null) {
+  //       return { saldo: user.saldo, min_limit: user.min_limit, max_limit: user.max_limit }
+  //     } else {
+  //       res.status(404).send("The requester profile doesn't exist.")
+  //     }
+  //   })
+  //   const requestee = getUser(req.body).then(user => {
+  //     if (user != null) {
+  //       return { saldo: user.saldo, min_limit: user.min_limit, max_limit: user.max_limit }
+  //     } else {
+  //       res.status(404).send("The requestee profile doesn't exist.")
+  //     }
+  //   })
+  //   console.log('Balance and Limits results: ', requester, requestee)
+  //   res.status(200).json({requester, requestee})
+  // })
+
+  router.post("/balanceAndLimits", async (req, res) => {
+    try {
+      const [requester, requestee] = await Promise.all([
+        getUser({ "profile.accountName": req.user }),
+        getUser(req.body)
+      ])
+
+      if (!requester || !requestee) {
+        return res.status(404).send("One or both user profiles don't exist.")
+      }
+
+      const [requesterSaldo, requesteeSaldo] = await Promise.all([
+        getSaldo(requester._id.toString()),
+        getSaldo(requestee._id.toString())
+      ])
+
+      // Handle potential errors from getSaldo calls (see getSaldo implementation)
+      if (requesterSaldo.error || requesteeSaldo.error) {
+        // Craft a more informative error message based on the specific errors
+        const errorMessage = "Failed to retrieve saldo: " +
+          (requesterSaldo.error || "") +
+          (requesteeSaldo.error ? (" and " + requesteeSaldo.error) : "");
+        return res.status(500).send(errorMessage);
+      }
+
+      const response = {
+        requester: {
+          saldo: requesterSaldo.data,
+          min_limit: requester.min_limit,
+          max_limit: requester.max_limit
+        },
+        requestee: {
+          saldo: requesteeSaldo.data,
+          min_limit: requestee.min_limit,
+          max_limit: requestee.max_limit
+        }
+      }
+      console.log('Balance and Limits results: ', response)
+      res.json(response);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal server error");
+    }
+  });
+
+  // Helper function to encapsulate saldo retrieval logic (assuming axios is used)
+  async function getSaldo(userId) {
+    try {
+      const response = await axios.get(CC_NODE_URL + '/account/summary', {
+        headers: {
+          'cc-user': userId,
+          'cc-auth': '1'
+        }
+      })
+      return { data: response.data.data[userId.toString()] };
+    } catch (error) {
+      return { error: error.message };  // Return error message for handling
+    }
+  }
+
+
   router.get("/limits/min", (req, res) => {
     getUser({ "profile.accountName": req.user }).then(user => {
       if (user != null) {

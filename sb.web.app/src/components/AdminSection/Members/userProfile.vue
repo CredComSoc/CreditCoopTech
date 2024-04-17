@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, profile, updateuserProfile } from '@/serverFetch'
+import { EXPRESS_URL, getAvailableBalance, sendMoney, postNotification, getUserAvailableBalance, getUserLimits, profile, updateuserProfile, getAvailableBalancesAndLimits } from '@/serverFetch'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
 import TextBox from '@/components/SharedComponents/TextBox.vue'
 import TextArea from '@/components/SharedComponents/TextArea.vue'
@@ -178,14 +178,19 @@ export default {
     async sendBkr () {
       this.tkn = this.$refs.tknInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
+      
       if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
-        const saldo = await getAvailableBalance()
-        if (saldo.totalAvailableBalance < this.tkn) {
+        const result = await getAvailableBalancesAndLimits(this.profileData.accountName)
+        const mySaldo = result.requester.saldo
+        const limits = result.requester
+        const totalAvailableBalance = mySaldo.completed.balance - limits.min_limit
+        if (totalAvailableBalance < this.tkn) {
           this.notEnoughBkrMsg = true
         } else {
-          const userSaldo = await getUserAvailableBalance(this.profileData.accountName)
-          const userLimits = await getUserLimits(this.profileData.accountName)
-          if (userSaldo.totalAvailableBalance + userLimits.min + Number(this.tkn) > userLimits.max) {
+          const userSaldo = result.requestee.saldo
+          const userLimits = result.requestee
+          console.log('new max: ', userSaldo.completed.balance + Number(this.tkn))
+          if (userSaldo.completed.balance + Number(this.tkn) > userLimits.max_limit) {
             this.tooMuchBkrMsg = true
           } else {
             await sendMoney(this.tkn, this.comment, this.profileData.accountName)
