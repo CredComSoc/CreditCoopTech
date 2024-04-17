@@ -1,76 +1,81 @@
 <template>
-<div id="title-field">
-  <label :for="this.name" class="input-title"> {{ this.label }} </label>
-  <div  class="input">
-    <div id="pic">
+  <div id="title-field">
+    <label :for="this.name" class="input-title"> {{ this.label }} </label>
+    <div class="input">
+      <div id="pic">
         <p>{{ $t('shop_items.choose_file') }}</p>
+      </div>
+      <button ref="addFile" id="upload-button" @click=upload>{{ $t('browse') }}</button>
+      <button ref="addFile" id="upload-button" @click=getPhotos>Upload from google photos</button>
+
+      <input type='file' id="getFile" @change=getFile :name="this.name">
     </div>
-    <button ref="addFile" id="upload-button" @click=upload>{{ $t('browse') }}</button>
-    <input type='file' id="getFile" @change=getFile :name="this.name">
+    <div id="images">
+      <UploadedImage @removeImg="this.deleteImg" class="img" :textboxLabel="$t('shop_items.item_set_main_image')"
+        :isPreview="false" v-for="(img) in this.images" :imageURL="img[0]" :key="img[0]" :id="img[1]"
+        :isCoverImg="img[2]" />
+    </div>
+    <div id="images_default" v-if="this.imageObjs.length == 0">
+      <h3>{{ $t('default_images') }}</h3>
+      <UploadedImage class="img" :textboxLabel="$t('shop_items.item_set_main_image')" :isPreview="true"
+        v-for="(img) in this.imagesDefault" :imageURL="img[0]" :key="img[0]" :id="img[1]" :isCoverImg="img[2]" />
+    </div>
+    <div v-if="this.googleImages.mediaItems">
+    <GoogleImageDisplay :jsonData="this.googleImages" :token="this.googleToken" @submit="submittedGooglePhotos"  />
   </div>
-  <div id="images"> 
-    <UploadedImage @removeImg="this.deleteImg" class="img" :textboxLabel="$t('shop_items.item_set_main_image')" :isPreview="false"
-    v-for="(img) in this.images"
-          :imageURL="img[0]"
-          :key="img[0]"
-          :id="img[1]"
-          :isCoverImg="img[2]"
-    />
   </div>
-  <div id="images_default" v-if="this.imageObjs.length == 0"> 
-    <h3>{{ $t('default_images') }}</h3>
-    <UploadedImage  class="img" :textboxLabel="$t('shop_items.item_set_main_image')" :isPreview="true"
-    v-for="(img) in this.imagesDefault"
-          :imageURL="img[0]"
-          :key="img[0]"
-          :id="img[1]"
-          :isCoverImg="img[2]"
-    />
-  </div>
-</div> 
 </template>
 
 <script>
 /* eslint-disable */
 import UploadedImage from './UploadedImage.vue'
-import { EXPRESS_URL, getImg } from '../../serverFetch'
+import { authGoogle, getImg, googleToken, getPhotosArray } from '../../serverFetch'
 import Compressor from 'compressorjs';
+import GoogleImageDisplay from './GoogleImageDisplay.vue';
+// import { OAuth2Client } from 'google-auth-library';
+
 
 export default {
   name: 'StepThree',
   components: {
-    UploadedImage
+    UploadedImage,
+    GoogleImageDisplay
   },
   props: ['name', 'label', 'savedProgress'],
-  data () {
+  data() {
     return {
       images: [],
       imageObjs: [],
-      imagesDefault: []
+      imagesDefault: [],
+      clientId: "329989507288-b6017ej301uatn06fcov43jcnqdghbbj.apps.googleusercontent.com",
+      clientSecret: "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",
+      redirectUri: `${window.location.origin}/add/article`,
+      token: null, 
+      googleImages: {},
+      googleToken: null
     }
   },
   methods: {
-    getStepThreeInputs () {
-      if(this.imageObjs.length>0)
-      {
+    getStepThreeInputs() {
+      if (this.imageObjs.length > 0) {
         const cbs = document.getElementsByClassName('cb')
-      for (var i = 0; i < cbs.length; i++) {
-        if (cbs[i].checked) {
-          this.imageObjs[i].isCoverImg = true
-        } else {
-          this.imageObjs[i].isCoverImg = false
+        for (var i = 0; i < cbs.length; i++) {
+          if (cbs[i].checked) {
+            this.imageObjs[i].isCoverImg = true
+          } else {
+            this.imageObjs[i].isCoverImg = false
+          }
         }
-      }
-      return { 
-        img: this.imageObjs
-      }
+        return {
+          img: this.imageObjs
+        }
       }
 
     },
-    upload () {
+    upload() {
       document.getElementById('getFile').click()
     },
-    async getFile (e) {
+    async getFile(e) {
       const imageSelected = e.target.files[0]
       let imageObj = imageSelected
       if (this.validateImageFile(imageObj) && this.validatedFileSize(imageObj.size)) {
@@ -79,10 +84,10 @@ export default {
         this.$emit('fileSizeError')
       }
     },
-    validateStepThree () {
+    validateStepThree() {
       return true
     },
-    deleteImg (imgId) {
+    deleteImg(imgId) {
       for (let i = imgId; i < this.images.length; i++) {
         if (imgId !== i) {
           this.images[i][1] = i - 1
@@ -92,25 +97,25 @@ export default {
       this.imageObjs.splice(imgId, 1)
       if (this.images.length === 0) {
         this.$refs.addFile.innerText = this.$i18n.t('browse')
-      } 
+      }
 
       if (this.images.length < 5) {
         document.getElementById('upload-button').disabled = false
       }
     },
 
-    async compressImage (file) {
+    async compressImage(file) {
       new Compressor(file, {
         quality: 0,
-        success:(result) => {
+        success: (result) => {
           let resNew = new File([result], file.name, { type: file.type })
           const URLImg = URL.createObjectURL(resNew)
-        this.$refs.addFile.innerText = 'Choose more'
-        this.images.push([URLImg, this.images.length, false])
-        this.imageObjs.push(resNew)
-        if (this.images.length === 5) {
-          document.getElementById('upload-button').disabled = true
-        }
+          this.$refs.addFile.innerText = 'Choose more'
+          this.images.push([URLImg, this.images.length, false])
+          this.imageObjs.push(resNew)
+          if (this.images.length === 5) {
+            document.getElementById('upload-button').disabled = true
+          }
         },
         error(err) {
           console.log(err.message);
@@ -118,14 +123,14 @@ export default {
       });
     },
     // less then 2MB
-    validatedFileSize (byteSize) {
+    validatedFileSize(byteSize) {
       return byteSize <= 10000000
     },
-    validateImageFile (file) {
+    validateImageFile(file) {
       const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
       return validImageTypes.includes(file.type)
     },
-    displayImg () {
+    displayImg() {
       this.$refs.addFile.innerText = this.$i18n.t('choose_more')
       for (const img of this.savedProgress.img) {
         const URLImg = URL.createObjectURL(img)
@@ -136,9 +141,43 @@ export default {
           document.getElementById('upload-button').disabled = true
         }
       }
-    }
+    },
+    async login() {
+      try {
+        await authGoogle()
+      } catch (error) {
+        console.error('Login Failed', error);
+      }
+    },
+    async getPhotos() {
+      try {
+        await this.login()
+        await  googleToken().then(async value => {
+        this.googleToken = value.token
+        this.googleImages = await getPhotosArray(value.token)
+        })
+        
+      } catch (error) {
+        console.error('Error fetching photos', error);
+      }
+    },
+
+submittedGooglePhotos(selectedItems) {
+  // Convert selectedItems to image files
+  const imageFiles = selectedItems.map(item => item.file);
+
+  // Call compressImage function for each image file
+  imageFiles.forEach(file => {
+    this.compressImage(file);
+  });
+}
   },
-  mounted () {
+  mounted() {
+    // const code = this.$route.query.code; // Extract the code from the URL
+
+    // if (code) {
+    //   this.exchangeCodeForToken(code);
+    // }
     // in edit mode
     if ('coverImg' in this.savedProgress) {
       if (this.savedProgress.img.length > 0) {
@@ -173,7 +212,7 @@ export default {
             }
           })
         }
-      }     
+      }
     } else if ('img' in this.savedProgress) { // not in edit mode
       this.displayImg()
     } else {
@@ -198,26 +237,25 @@ export default {
             this.imagesDefault.push([URLImg, this.images.length, false])
           })
         }
-      } 
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-
- #title-field {
+#title-field {
   margin-top: 40px;
   display: flex;
   flex-direction: column;
   width: fit-content;
 }
 
-p{
-    margin-left: 3px;
-    color:#bebebe;
-    font-family: 'Ubuntu';
-    font-size: 14px;
+p {
+  margin-left: 3px;
+  color: #bebebe;
+  font-family: 'Ubuntu';
+  font-size: 14px;
 }
 
 .input-title {
@@ -227,26 +265,26 @@ p{
   margin-bottom: 10px;
 }
 
-#pic{
-    height: 35px;
-    width: 400px;
-    border: 2px solid #797979;
-    border-radius: 4px 0px 0px 4px;
-    border-right: white;
-    line-height: 35px;
-    white-space: nowrap;
+#pic {
+  height: 35px;
+  width: 400px;
+  border: 2px solid #797979;
+  border-radius: 4px 0px 0px 4px;
+  border-right: white;
+  line-height: 35px;
+  white-space: nowrap;
 }
 
-#images{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 40px;
-    flex-wrap: wrap;
-    max-width: 480px;
+#images {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 480px;
 }
-#images_default
-{
+
+#images_default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -256,19 +294,19 @@ p{
   margin-top: 30%;
 }
 
-input{
-    display:none;
+input {
+  display: none;
 }
 
-button{
-    display:block;
-    width:80px; 
-    height:35px;
-    border-radius: 0px 4px 4px 0px;
-    background-color: rgb(236, 236, 236) ;
-    border: 2px solid #797979; 
-    font-size: 15px;
-    font-family: 'Ubuntu';
+button {
+  display: block;
+  width: 80px;
+  height: 35px;
+  border-radius: 0px 4px 4px 0px;
+  background-color: rgb(236, 236, 236);
+  border: 2px solid #797979;
+  font-size: 15px;
+  font-family: 'Ubuntu';
 }
 
 .input {
@@ -278,13 +316,15 @@ button{
 }
 
 @media (max-width: 470px) {
-  .input{
+  .input {
     width: 300px;
   }
-  #images{
+
+  #images {
     width: 300px;
   }
-  button{
+
+  button {
     font-size: 12px;
   }
 }
@@ -293,9 +333,9 @@ button{
   #pic {
     width: 350px;
   }
-  #images{
+
+  #images {
     max-width: 430px;
   }
 }
-
 </style>

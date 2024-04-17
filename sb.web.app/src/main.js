@@ -10,7 +10,9 @@ import './assets/style.css'
 import { VueWindowSizePlugin } from 'vue-window-size/option-api'
 import VueSplide from '@splidejs/vue-splide'
 import VueHotjar from 'vue-hotjar-next'
+import GAuth from 'vue3-google-oauth2'
 import i18n from './i18n'
+import googleAuth from './vue-google-oauth'
 
 const app = createApp(App)
 app.use(store)
@@ -19,7 +21,7 @@ app.use(BootstrapVue3)
 app.use(VueWindowSizePlugin)
 app.use(VueSplide)
 app.use(i18n)
-
+app.use(GAuth, googleAuth)
 /*
 app.use(VueHotjar, {
   id: 3081354

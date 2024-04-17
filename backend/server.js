@@ -39,10 +39,12 @@ function initApp(app) {
   indexRouter = require('./routes/index')()
   const ccRequests = require('./routes/ccRequests')()
   const ccUserStore = require('./routes/ccUserStore')()
+  const googleAuth = require('./routes/googleAuth')()
 
   app.use('/', indexRouter.router)
   app.use('/', ccRequests)
   app.use('/', ccUserStore)
+  app.use('/', googleAuth)
 }
 
 function startServer(app, port) {

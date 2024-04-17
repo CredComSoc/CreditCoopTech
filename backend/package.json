@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node app.js",
+    "start": "nodemon --exec babel-node app.js --host",
     "start-prod": "node app.js",
     "test": "mocha --exit",
     "startdb": "mocha --timeout 15000 startdb/startdb.js"
@@ -28,6 +28,7 @@
     "fast-json-stringify": "^3.1.0",
     "fetch-cookie": "^2.0.3",
     "form-data": "^4.0.0",
+    "google-auth-library": "^9.6.1",
     "gridfs": "^1.0.0",
     "gridfs-stream": "^1.1.1",
     "handlebars": "^4.7.8",

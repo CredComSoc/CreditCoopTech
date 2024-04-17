@@ -1211,7 +1211,45 @@ export async function setUserBalance () {
     store.commit('replaceCreditLimit', balance.creditLimit)
   }
 }
+export async function authGoogle () {
+  return await fetch(EXPRESS_URL + '/auth/google', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()   
+  }).catch(() => {
+    return null
+  })
+}
+export async function googleToken () {
+  return await fetch(EXPRESS_URL + '/google/token', { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then((response) => {
+    return response.json()   
+  }).catch(() => {
+    return null
+  })
+}
+export async function getPhotosArray (token, pageToken = null) {
+  let url = 'https://photoslibrary.googleapis.com/v1/mediaItems'
+  if (pageToken) {
+    url += `?pageToken=${pageToken}`
+  }
+  const response = await fetch(url, {
+    headers: new Headers({ Authorization: `Bearer ${token}` })
+  })
 
+  const photos = await response.json()
+  console.log(photos)
+  return photos
+}
 /*****************************************************************************
 * 
 *                                setStoreData
