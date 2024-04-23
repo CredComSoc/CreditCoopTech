@@ -55,8 +55,16 @@ export default {
 
       const allMembersArray = new Map()
       const adminMembersArray = new Map()
+      const inactiveMembersArray = new Map()
 
       for (const member of this.$store.state.allMembers) {
+        if (!member.is_active) {
+          if (!inactiveMembersArray.has('Inactive')) {
+            inactiveMembersArray.set('Inactive', [])
+          }
+          inactiveMembersArray.get('Inactive').push(member)
+          continue
+        }
         const name = member.accountName
     
         let foundSearchword = true
@@ -93,7 +101,7 @@ export default {
       this.allMembersArraySize = allMembersArray.size
       this.adminMembersArraySize = adminMembersArray.size
       const sortedMap = new Map([...allMembersArray].sort((a, b) => String(a[0]).localeCompare(b[0], 'sv')))
-      const finishMap = new Map([...adminMembersArray, ...sortedMap])
+      const finishMap = new Map([...adminMembersArray, ...sortedMap, ...inactiveMembersArray])
 
       this.SearchData = finishMap
     },
@@ -103,7 +111,7 @@ export default {
     }
   },
   mounted: function () {
-    //console.log(this.$store.state.allMembers)
+    console.log(this.$store.state.allMembers)
     this.triggerSearch('')
   }
   

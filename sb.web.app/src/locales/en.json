@@ -18,6 +18,7 @@
         "started_all-member_chat": "Started all-member chat"
     },
     "user": {
+        "active": "Is Active",
         "dataManagement": "Manage Data",
         "register": "Register",
         "box": "Box",

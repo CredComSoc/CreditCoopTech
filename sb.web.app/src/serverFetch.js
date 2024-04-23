@@ -251,7 +251,7 @@ export async function updateProfile (accountName, description, address, city, bi
   })
 }
 
-export async function updateuserProfile (previousname, accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo) {
+export async function updateuserProfile (previousname, accountName, description, address, city, billingName, billingBox, billingAddress, orgNumber, email, phone, logo, isActive) {
   const data = new FormData()
   data.append('accountInfo', JSON.stringify({ 
     accountName: accountName,
@@ -263,7 +263,8 @@ export async function updateuserProfile (previousname, accountName, description,
     billingAddress: billingAddress,
     orgNumber: orgNumber, 
     email: email.toLowerCase(),
-    phone: phone
+    phone: phone,
+    is_active: isActive
   }))
   data.append('file', logo)
   return await fetch(EXPRESS_URL + '/updateuserProfile/' + previousname, {

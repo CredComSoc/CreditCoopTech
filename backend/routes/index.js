@@ -348,7 +348,8 @@ module.exports = function() {
       for (const user of users) {
           let userData = user.profile
           userData.is_admin = user.is_admin
-          userData.email = user.email
+        userData.email = user.email
+        userData.is_active = user.is_active
           allMembers.push(userData)        
       }
       data.allMembers = allMembers
