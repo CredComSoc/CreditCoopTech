@@ -2,14 +2,16 @@
   <div>
     <div className="flexbox-container2 flexbox-item" v-if="!edit">
       <div className="image container-item">
-        <img id="profile-img" v-if="profileData.logo" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <img id="profile-img" v-if="!profileData.logo" src="@/assets/list_images/user.png" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
-        <h5 >{{ $t('user.last_online')}}:</h5>
-        <h5 >{{ getOnlineStatus() }}</h5>
-        <button v-if="show_optional" id="chat-btn" @click="goToChat" > {{ $t('chat.start') }} </button>
+        <img id="profile-img" v-if="profileData.logo" :src="this.logoURL" alt="$t('user.alt_profile_logo')"
+          style="object-fit:contain;max-width:240px;max-height:240px;">
+        <img id="profile-img" v-if="!profileData.logo" src="@/assets/list_images/user.png"
+          alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:240px;max-height:240px;">
+        <h5>{{ $t('user.last_online')}}:</h5>
+        <h5>{{ getOnlineStatus() }}</h5>
+        <button v-if="show_optional" id="chat-btn" @click="goToChat"> {{ $t('chat.start') }} </button>
         <button @click="edit = !edit" id="edit-btn">
           <span v-html="$t('user.edit_user')"></span>
-         </button>
+        </button>
       </div>
 
       <div className="right container-item">
@@ -26,13 +28,17 @@
         <p> {{profileData.city}} </p>
 
         <h1> {{ $t('user.billing') }} </h1>
-        <p> {{profileData.billing.name}}<br/>{{profileData.billing.box}}<br/>{{profileData.billing.address}}<br/> {{profileData.billing.orgNumber}} </p>
+        <p> {{profileData.billing.name}}<br />{{profileData.billing.box}}<br />{{profileData.billing.address}}<br />
+          {{profileData.billing.orgNumber}} </p>
       </div>
       <div className="right container-item">
         <div>
           <h1> {{ $t('user.contact') }} </h1>
-          <p :key="profileData"> {{"Email: " + profileData.email}}<br/><br/> {{"Tel: " + profileData.phone}} </p>
-        </div> 
+          <p :key="profileData"> {{"Email: " + profileData.email}}<br /><br /> {{"Tel: " + profileData.phone}} </p>
+
+          <h1>{{ $t('user.active') }}</h1>
+          <p><input type="checkbox" id="checkbox" v-model="profileData.is_active" disabled /></p>
+        </div>
       </div>
     </div>
     <div class="sendmoney-box" v-if="show_optional && !edit">
@@ -40,7 +46,8 @@
         <h1 class="box-text">{{ $t('send') }} {{ $t('org.token') }}</h1>
         <div>
           <label class="box-label">{{ $t('transfer_amount') }}</label>
-          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true" required/>
+          <TextBox class="box-input" placeholder="0" ref="tknInput" id="tkn-input" pattern="\d*" disabled="true"
+            required />
         </div>
         <div>
           <label class="box-label">{{ $t('user.commentLabel') }}</label>
@@ -49,61 +56,77 @@
         <button id="send-btn">{{ $t('send') }}</button>
       </form>
     </div>
-    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink="" btnText="Ok" :cardText="$t('user.tknSentMessageCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
-    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionUnderCardText')" />
-    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup" :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok" :cardText="$t('user.tknFailedTransactionOverCardText', {accountName: profileData.accountName})" />
-    <PopupCard v-if="this.chatError" :title="$('user.failed_chat_PopupTitle')" :cardText="$t('user.failed_chat_CardText', {accountName: user.member_label})" btnLink="#" btnText="Ok" />
-    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')" btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText')"  />
-  <div v-if="edit">
+    <PopupCard v-if="this.tknSentMsg" @closePopup="this.closePopup" :title="$('user.sentMessagePopupTitle')" btnLink=""
+      btnText="Ok"
+      :cardText="$t('user.tknSentMessageCardText', {amt: this.tkn, token: $t('org.token'), accountName: profileData.accountName})" />
+    <PopupCard v-if="this.notEnoughBkrMsg" @closePopup="this.closePopup"
+      :title="$('user.failed_transaction_underMessagePopupTitle')" btnText="Ok"
+      :cardText="$t('user.tknFailedTransactionUnderCardText')" />
+    <PopupCard v-if="this.tooMuchBkrMsg" @closePopup="this.closePopup"
+      :title="$('user.failed_transaction_overMessagePopupTitle')" btnText="Ok"
+      :cardText="$t('user.tknFailedTransactionOverCardText', {accountName: profileData.accountName})" />
+    <PopupCard v-if="this.chatError" :title="$('user.failed_chat_PopupTitle')"
+      :cardText="$t('user.failed_chat_CardText', {accountName: user.member_label})" btnLink="#" btnText="Ok" />
+    <PopupCard v-if="this.invalidNumberOfBkr" :title="$('user.failed_transaction_invalid_numberMessagePopupTitle')"
+      btnLink="#" btnText="Ok" :cardText="$t('user.tknFailedTransactionInvalidNumberCardText')" />
+    <div v-if="edit">
       <form className="flexbox-container2" @submit.prevent="">
         <div className="container-item">
           <h1>{{ $t('user.general_information') }}</h1>
-          <label for="logo">{{ $t('user.profile_picture') }}</label><br/>
+          <label for="logo">{{ $t('user.profile_picture') }}</label><br />
           <div class="image">
-          <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')" style="object-fit:contain;max-width:120px;max-height:120px;">
-          <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t(user.alt_profile_logo)" style="object-fit:contain;max-width:120px;max-height:120px;">
+            <img v-if="profileData.logo !== ''" :src="this.logoURL" alt="$t('user.alt_profile_logo')"
+              style="object-fit:contain;max-width:120px;max-height:120px;">
+            <img v-if="profileData.logo === ''" src="@/assets/list_images/user.png" alt="$t(user.alt_profile_logo)"
+              style="object-fit:contain;max-width:120px;max-height:120px;">
           </div>
-          <input type="file" name="logo" @change="addLogo"><br/>
-          <label for="name">{{ $t('user.business') }}:</label><br/>
-          <input type="text" id="name" v-model="profileData.accountName" required><br/>
-          <label for="description">{{ $t('user.description') }}:</label><br/>
-          <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br/>
-          <label for="address">{{ $t('user.street_address') }}:</label><br/>
-          <input type="text" id="address" v-model="profileData.address" required><br/>
-          <label for="location">{{ $t('user.town') }}:</label><br/>
-          <input type="text" id="location" v-model="profileData.city" required><br/>
+          <input type="file" name="logo" @change="addLogo"><br />
+          <label for="name">{{ $t('user.business') }}:</label><br />
+          <input type="text" id="name" v-model="profileData.accountName" required><br />
+          <label for="description">{{ $t('user.description') }}:</label><br />
+          <textarea name="description" rows="5" cols="30" v-model="profileData.description" required></textarea><br />
+          <label for="address">{{ $t('user.street_address') }}:</label><br />
+          <input type="text" id="address" v-model="profileData.address" required><br />
+          <label for="location">{{ $t('user.town') }}:</label><br />
+          <input type="text" id="location" v-model="profileData.city" required><br />
         </div>
         <div className="container-item">
           <h1>{{ $t('user.billing') }}</h1>
-          <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br/>
-          <input name="billingName" v-model="profileData.billing.name" required><br/>
-          <label for="billingBox">{{ $t('user.box') }}:</label><br/>
-          <input name="billingBox" v-model="profileData.billing.box" required><br/>
-          <label for="billingAddress">{{ $t('user.street_address') }}:</label><br/>
-          <input name="billingAddress" v-model="profileData.billing.address" required><br/>
-          <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br/>
-          <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br/><br/>
+          <label for="billingName">{{ $t('user.billingnamelabel') }}:</label><br />
+          <input name="billingName" v-model="profileData.billing.name" required><br />
+          <label for="billingBox">{{ $t('user.box') }}:</label><br />
+          <input name="billingBox" v-model="profileData.billing.box" required><br />
+          <label for="billingAddress">{{ $t('user.street_address') }}:</label><br />
+          <input name="billingAddress" v-model="profileData.billing.address" required><br />
+          <label for="orgNumber">{{ $t('user.orgnumberlabel') }}:</label><br />
+          <input name="orgNumber" v-model="profileData.billing.orgNumber" required><br /><br />
           <h1>{{ $t('user.contact') }}</h1>
-          <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br/>
-          <input type="email" id="email" v-model="profileData.email" required><br/>
-          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br/>
-          <input type="tel" id="phone" v-model="profileData.phone" required><br/><br/>
+          <label for="email">{{ $t('user.emailcontactlabel') }}:</label><br />
+          <input type="email" id="email" v-model="profileData.email" required><br />
+          <label for="phone">{{ $t('user.telephonecontactlabel') }}:</label><br />
+          <input type="tel" id="phone" v-model="profileData.phone" required><br /><br />
+          <h1>{{ $t('user.active') }}</h1>
+          <p><input type="checkbox" id="checkbox" v-model="profileData.is_active" required/></p>
           <button @click="submit" class="buttonflex">
-            <p style="padding-right:7px" > {{ $t('user.saveLabel') }}: </p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <p style="padding-right:7px"> {{ $t('user.saveLabel') }}: </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="30"
+              height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
               <circle cx="12" cy="14" r="2" />
               <polyline points="14 4 14 8 8 8 8 4" />
-          </svg>
+            </svg>
           </button>
-          <button @click="edit = !edit" class="buttonflex"> 
-            <p style="padding-right:0px" > {{ $t('user.cancelLabel') }} </p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <button @click="edit = !edit" class="buttonflex">
+            <p style="padding-right:0px"> {{ $t('user.cancelLabel') }} </p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="30" height="30"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
+            </svg>
           </button>
         </div>
       </form>
@@ -161,7 +184,8 @@ export default {
         this.profileData.billing.orgNumber, 
         this.profileData.email, 
         this.profileData.phone,
-        this.profileData.logo
+        this.profileData.logo,
+        this.profileData.is_active
       )
       if (this.localUrl) {
         this.logoURL = this.localURL
@@ -176,29 +200,45 @@ export default {
       }
     },
     async sendBkr () {
+      // TODO: get these requests to backend to occur simultaneously
+      // TODO:: Combine the two requests into one for min and saldo
+      this.$refs.loadingComponent.showLoading()
       this.tkn = this.$refs.tknInput.getInput()
       this.comment = this.$refs.commentInput.getInput()
-      
       if (this.tkn && Number.isInteger(Number(this.tkn)) && Number(this.tkn) > 0) {
         const result = await getAvailableBalancesAndLimits(this.profileData.accountName)
         const mySaldo = result.requester.saldo
         const limits = result.requester
         const totalAvailableBalance = mySaldo.completed.balance - limits.min_limit
         if (totalAvailableBalance < this.tkn) {
+          this.$refs.loadingComponent.hideLoading()
           this.notEnoughBkrMsg = true
         } else {
-          const userSaldo = result.requestee.saldo
-          const userLimits = result.requestee
-          console.log('new max: ', userSaldo.completed.balance + Number(this.tkn))
-          if (userSaldo.completed.balance + Number(this.tkn) > userLimits.max_limit) {
-            this.tooMuchBkrMsg = true
+          if ((-mySaldo.pending.balance) + Number(this.tkn) > (-limits.min_limit)) {
+            this.$refs.loadingComponent.hideLoading()
+            this.actualAvailableCreditWithPending = Math.abs(limits.min_limit + mySaldo.pending.balance)
+            this.pendingBalanceLimitExceeded = true
           } else {
-            await sendMoney(this.tkn, this.comment, this.profileData.accountName)
-            postNotification('sendRequest', this.profileData.accountName, this.tkn)
-            this.tknSentMsg = true
+            const userSaldo = result.requestee.saldo
+            const userLimits = result.requestee
+            if (userSaldo.completed.balance + Number(this.tkn) > userLimits.max_limit) {
+              await postNotification('sendBalanceSellerBalanceTooHigh', this.profileData.accountName, Number(this.tkn))
+              this.$refs.loadingComponent.hideLoading()
+              this.tooMuchBkrMsg = true
+            } else if (userSaldo.pending.balance + Number(this.tkn) > userLimits.max_limit) {
+              await postNotification('sendBalanceSellerPendingLimitExceeded', this.profileData.accountName, Number(this.tkn))
+              this.$refs.loadingComponent.hideLoading()
+              this.tooMuchBkrMsg = true
+            } else {
+              await sendMoney(this.tkn, this.comment, this.profileData.accountName)
+              await postNotification('sendRequest', this.profileData.accountName, this.tkn)
+              this.$refs.loadingComponent.hideLoading()
+              this.isBalanceSent = true
+            }
           }
         }
       } else {
+        this.$refs.loadingComponent.hideLoading()
         this.invalidNumberOfBkr = true
       }
     },
