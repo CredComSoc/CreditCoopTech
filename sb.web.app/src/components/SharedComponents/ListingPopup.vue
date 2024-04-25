@@ -1,92 +1,94 @@
 <template>
-<div>
-  <div @click="$emit('closePopup')" class="popup">
-    
-  </div>
-  <div class="popup-inner">
-    <splide :options="options">
-      <splide-slide>
-        <img :src='getImgURL(this.listingObj.coverImg)' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
-      <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 1 : false">
-        <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
-      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 2 : false">
-        <img :src='getImgURL(this.listingObj.img[1])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
-      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 3 : false">
-        <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
-      <splide-slide  v-if="this.listingObj.img? this.listingObj.img.length >= 4 : false">
-        <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
-      </splide-slide>
-    </splide>
-    
+  <div>
+    <div @click="$emit('closePopup')" class="popup">
+
+    </div>
+    <div class="popup-inner">
+      <splide :options="options">
+        <splide-slide>
+          <img :src='getImgURL(this.listingObj.coverImg)' style="object-fit:contain;max-width:280px;max-height:280px;">
+        </splide-slide>
+        <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 1 : false">
+          <img :src='getImgURL(this.listingObj.img[0])' style="object-fit:contain;max-width:280px;max-height:280px;">
+        </splide-slide>
+        <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 2 : false">
+          <img :src='getImgURL(this.listingObj.img[1])' style="object-fit:contain;max-width:280px;max-height:280px;">
+        </splide-slide>
+        <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 3 : false">
+          <img :src='getImgURL(this.listingObj.img[2])' style="object-fit:contain;max-width:280px;max-height:280px;">
+        </splide-slide>
+        <splide-slide v-if="this.listingObj.img? this.listingObj.img.length >= 4 : false">
+          <img :src='getImgURL(this.listingObj.img[3])' style="object-fit:contain;max-width:280px;max-height:280px;">
+        </splide-slide>
+      </splide>
+
       <div class="textContent">
         <h5>{{listingObj.title}}</h5>
         <div class="article-info">
           <h5 v-if="listingObj.status === 'selling' || listingObj.status === 'offer'">{{ $t('Offer') }}</h5>
-          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('Want') }}</h5>    
+          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('Want') }}</h5>
           <p>{{listingObj.userUploader}}</p>
 
-          <h5>{{ $t('location') }}</h5>  
+          <h5>{{ $t('location') }}</h5>
           <p>{{listingObj.destination}}</p>
 
-          <h5>{{ $t('type') }}</h5> 
+          <h5>{{ $t('type') }}</h5>
           <p v-if="listingObj.article.toLowerCase() === 'product'">{{ $t('product') }}</p>
           <p v-if="listingObj.article.toLowerCase() === 'service'">{{ $t('service') }}</p>
 
-          <h5>{{$t('category')}}</h5> 
+          <h5>{{$t('category')}}</h5>
           <p>{{listingObj.category}}</p>
 
-          <h5>{{ $t('user.description') }}</h5> 
+          <h5>{{ $t('user.description') }}</h5>
           <p>{{listingObj.longDesc}}</p>
-          
-          <h5>{{ $t('list_price') }}</h5> 
+
+          <h5>{{ $t('list_price') }}</h5>
           <p>{{listingObj.price}} {{ $t('org.token') }}</p>
 
-          <h5 v-if="listingObj.status === 'selling' || listingObj.status === 'offer'">{{ $t('available_until') }}</h5> 
-          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('wanted_by') }}</h5> 
+          <h5 v-if="listingObj.status === 'selling' || listingObj.status === 'offer'">{{ $t('available_until') }}</h5>
+          <h5 v-if="listingObj.status === 'buying' || listingObj.status === 'want'">{{ $t('wanted_by') }}</h5>
           <p>{{parseDate(listingObj["end-date"])}}</p>
 
-          <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')" >
-            <h5>{{ $t('quantity') }}</h5> 
+          <div
+            v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase() && (listingObj.status === 'selling' || listingObj.status === 'offer')">
+            <h5>{{ $t('quantity') }}</h5>
             <div class="quant">
               <div @click="decreaseAmount">
-                <img src="../../assets/cart_images/sub.png" >
+                <img src="../../assets/cart_images/sub.png">
               </div>
               <p class="amountText"> {{amount}} </p>
               <div @click="increaseAmount">
-                <img src="../../assets/cart_images/add.png" >
+                <img src="../../assets/cart_images/add.png">
               </div>
             </div>
 
-            <h5>{{ $t('total_price') }}</h5> 
-            <p>{{amount * listingObj.price}} {{ $t('org.token') }}</p>          
+            <h5>{{ $t('total_price') }}</h5>
+            <p>{{amount * listingObj.price}} {{ $t('org.token') }}</p>
           </div>
         </div>
 
         <div class="spacing"></div>
 
-      <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
-      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase()">
-        <div>
-          <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
+        <div class="interactContent" style="display: flex; justify-content: space-around;">
+          <div
+            v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase()">
+            <button class="cartBtn" @click="placeInCart(); $emit('closePopup');">{{ $t('add_to_cart') }}</button>
+          </div>
+          <div v-else>
+            <button class="cartBtn" @click="editItem(); $emit('closePopup');">{{ $t('edit_item') }}</button>
+          </div>
+          <div v-if="this.$store.state.user.profile.accountName.toLowerCase() !== listingObj.userUploader.toLowerCase()">
+            <button class="chattBtn" @click="goToChat">{{ $t('chat.start') }}</button>
+          </div>
+          <div>
+            <button class="closeBtn" @click="$emit('closePopup')">{{ $t('close') }}</button>
+          </div>
         </div>
-      </div>
-      <div class="interactContent" v-else>
-        <div>
-          <button class="cartBtn" @click="editItem(); $emit('closePopup');">{{ $t('edit_item') }}</button>
-        </div>
-      </div>
-      <div class="interactContent" v-if="this.$store.state.user.profile.accountName.toLowerCase()!== listingObj.userUploader.toLowerCase() && (listingObj.status === 'buying' || listingObj.status === 'want')">
-        <div>
-          <button class="chattBtn" @click="goToChat">{{ $t('chat.start') }}</button>
-        </div>
+
+
       </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 import { EXPRESS_URL, profile } from '../../serverFetch'

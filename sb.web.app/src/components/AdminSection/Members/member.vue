@@ -4,15 +4,15 @@ do not match the equivalent of the database.
 -->
 <template>
   <div>
-    <div class="button" >
-      <div class="element-container" @click="enterProfile"> 
+    <div class="button">
+      <div class="element-container" :class="'inactive'" @click="enterProfile">  <!-- TODO: Fix styling to highlight inactive accounts-->
         <div class="imgContainer">
           <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
-        <h5 class="element-text one">Balance: <br/>{{ balance }}</h5>
-        <h5 class="element-text two">Online: <br/>{{ getOnlineStatus() }}</h5>
+        <h5 class="element-text one">Balance: <br />{{ balance }}</h5>
+        <h5 class="element-text two">Online: <br />{{ getOnlineStatus() }}</h5>
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
         <div class="button-container">
           <button @click="userselected">{{ $t('user.profile') }}</button>
@@ -21,15 +21,15 @@ do not match the equivalent of the database.
           <button @click="null">{{ $t('user.purchase_requests') }}</button> <!-- Not implemented yet-->
         </div>
       </div>
-      
+
     </div>
-<!--
+    <!--
   <router-link :to="{ name: 'MemberUserprofile', params: { userprofile: listingObj.accountName }} ">
     
     </router-link>
 -->
   </div>
-  
+
 </template>
 
 <script>
@@ -42,7 +42,8 @@ export default {
   },
   data () {
     return {
-      balance: ''
+      balance: '',
+      isActive: this.listingObj.is_active
     }
   },
   methods: {
@@ -182,6 +183,10 @@ export default {
       border: 0px solid #585F66;
       border-radius: 4px;
       padding: 5px 10px;
+    }
+
+    .inactive {
+      background: #0bec0700;
     }
 
 </style>

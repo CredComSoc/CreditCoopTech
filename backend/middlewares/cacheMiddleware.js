@@ -13,7 +13,7 @@ const cacheMiddleware = (duration) => (req, res, next) => {
     res.sendResponse = res.send;
     res.send = (body) => {
         responseCache[key] = body;
-        setTimeout(() => { delete responseCache[key]; }, duration * 3600); // Cache expiration
+        setTimeout(() => { delete responseCache[key]; }, duration * 3600000); // Cache expiration
         res.sendResponse(body);
     };
 

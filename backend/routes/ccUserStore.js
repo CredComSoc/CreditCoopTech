@@ -14,7 +14,7 @@ module.exports = function() {
   const mongoURL = config.mongoURL;
   const router = express.Router();
 
-  router.head("/:acc_id", cacheMiddleware(24), async (req, res) => {
+  router.head("/:acc_id", cacheMiddleware(1), async (req, res) => {
 
     const client = new MongoClient(mongoURL);
     try {
