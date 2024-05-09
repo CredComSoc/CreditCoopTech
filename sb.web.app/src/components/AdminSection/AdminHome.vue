@@ -34,7 +34,9 @@ export default {
       popupActive: false,
       listingObjPopup: Object,
       showProfile: false,
-      profileName: ''
+      profileName: '',
+      allMembersArraySize: 0,
+      adminMembersArraySize: 0
     }
   },
   components: {
