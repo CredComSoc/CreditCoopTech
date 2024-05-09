@@ -1,11 +1,24 @@
 
 <template>
   <div class="container_all_listings">
+    <h3>Active Users</h3>
     <ul>
       <div v-for="city in searchData" :key="city">
-          <li v-for="member in city[1]" :key="member.title">
-            <Member :listingObj="member" @openProfile="this.openProfile"/>
-          </li>
+        <li v-for="member in city[1]" :key="member.title">
+          <div v-if="member.is_active">
+            <Member :listingObj="member" @openProfile="this.openProfile" />
+          </div>
+        </li>
+      </div>
+    </ul>
+    <h3>Inactive Users</h3>
+    <ul>
+      <div v-for="city in searchData" :key="city">
+        <li v-for="member in city[1]" :key="member.title">
+          <div v-if="!member.is_active">
+            <Member :listingObj="member" @openProfile="this.openProfile" />
+          </div>
+        </li>
       </div>
     </ul>
   </div>
