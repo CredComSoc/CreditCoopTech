@@ -9,7 +9,7 @@ const FRONTEND_URI = config.FRONT_END_URL + '/add/article';
 const client = new OAuth2Client(
   config.GOOGLE_CLIENT_ID,
   config.GOOGLE_CLIENT_SECRET,
-  `http://localhost:3000/auth/google/callback`
+  `https://credcomstaging.mutualcredit.services/auth/google/callback`
 );
 
 
