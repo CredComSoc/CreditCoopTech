@@ -28,9 +28,9 @@ module.exports = function () {
       // return res.json(resp)
       
       //  res.redirect(url);
-      await axios.post(url)
+      // await axios.post(url)
       console.log(url)
-      res.status(200)
+      res.status(200).json(resp)
     }
     catch(ex) {
       console.log(ex)

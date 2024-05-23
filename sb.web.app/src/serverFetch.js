@@ -1233,38 +1233,38 @@ export async function setUserBalance () {
     store.commit('replaceCreditLimit', balance.creditLimit)
   }
 }
-export async function authGoogle () {
-  return await fetch(EXPRESS_URL + '/auth/google', { 
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include'
-  }).then((response) => {
-    return response.json()   
-  }).catch(() => {
-    return null
-  })
-}
 // export async function authGoogle () {
-//   await fetch(EXPRESS_URL + '/auth/google', {
+//   return await fetch(EXPRESS_URL + '/auth/google', { 
 //     method: 'GET',
 //     headers: {
 //       'Content-Type': 'application/json'
 //     },
 //     credentials: 'include'
-//   }).then(async (response) => {
-//     console.log(response)
-//     const data = await response.json()
-//     console.log('Google url', data)
-//     await fetch(data.url, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     })
+//   }).then((response) => {
+//     return response.json()   
+//   }).catch(() => {
+//     return null
 //   })
 // }
+export async function authGoogle () {
+  await fetch(EXPRESS_URL + '/auth/google', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }).then(async (response) => {
+    console.log(response)
+    const data = await response.json()
+    console.log('Google url', data)
+    await fetch(data.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  })
+}
 export async function googleToken () {
   return await fetch(EXPRESS_URL + '/google/token', { 
     method: 'GET',
