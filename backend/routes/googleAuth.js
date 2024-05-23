@@ -9,7 +9,7 @@ const FRONTEND_URI = config.FRONT_END_URL + '/add/article';
 const client = new OAuth2Client(
   config.GOOGLE_CLIENT_ID,
   config.GOOGLE_CLIENT_SECRET,
-  `https://credcomstaging.mutualcredit.services/auth/google/callback`
+  `https://api.credcomstaging.mutualcredit.services/auth/google/callback`
 );
 
 
@@ -25,9 +25,9 @@ module.exports = function () {
         scope: 'https://www.googleapis.com/auth/photoslibrary.readonly',
       });
       const resp = {'url': url}
-      return res.json(resp)
-      // console.log(url)
-      //  res.redirect(url);
+      // return res.json(resp)
+      console.log(url)
+       res.redirect(url);
     }
     catch(ex) {
       console.log(ex)
