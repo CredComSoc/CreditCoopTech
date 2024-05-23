@@ -18,7 +18,7 @@ module.exports = function () {
   const router = express.Router();
   // Redirect to Google's OAuth 2.0 server
  
-  router.get('/auth/google', (req, res) => {
+  router.get('/auth/google', async (req, res) => {
     try {
       const url = client.generateAuthUrl({
         access_type: 'offline',
@@ -27,7 +27,8 @@ module.exports = function () {
       const resp = {'url': url}
       // return res.json(resp)
       console.log(url)
-       res.redirect(url);
+      //  res.redirect(url);
+      return await axios.post(url)
     }
     catch(ex) {
       console.log(ex)
