@@ -26,9 +26,11 @@ module.exports = function () {
       });
       const resp = {'url': url}
       // return res.json(resp)
-      console.log(url)
+      
       //  res.redirect(url);
-      return await axios.post(url)
+      await axios.post(url)
+      console.log(url)
+      res.status(200)
     }
     catch(ex) {
       console.log(ex)
