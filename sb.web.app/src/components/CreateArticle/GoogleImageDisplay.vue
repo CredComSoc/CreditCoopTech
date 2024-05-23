@@ -46,36 +46,37 @@ export default {
             }
         },
         async submitSelection() {
-    // Temporary array to hold image URLs
-    let temp = [];
+            // Temporary array to hold image URLs
+            let temp = [];
 
-    // Use a for...of loop to handle asynchronous operations
-    for (const item of this.selectedItems) {
-        try {
-            // Fetch the image from the product URL
-            const response = await fetch(item.productUrl);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch: ${response.statusText}`);
+            // Use a for...of loop to handle asynchronous operations
+            for (const item of this.selectedItems) {
+                try {
+                    // Fetch the image from the product URL
+                    const response = await fetch(item.baseUrl, {
+                        headers: new Headers({ Authorization: `Bearer ${this.token}` })
+                    })
+                    // const response = await fetch(item.productUrl);
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch: ${response.statusText}`);
+                    }
+                    const blob = await response.blob();
+
+                    // Create a local URL from the blob
+                    const imageUrl = URL.createObjectURL(blob);
+                    temp.push({ imageUrl });
+                    } catch (error) {
+                        console.error('Error fetching image:', error);
+                }
             }
-            const blob = await response.blob();
-
-            // Create a local URL from the blob
-            const imageUrl = URL.createObjectURL(blob);
-            temp.push({ imageUrl });
-        } catch (error) {
-            console.error('Error fetching image:', error);
+            // Log the temporary array after all items have been processed
+            console.log(temp, 'selected items');
+            // Emit an event with the selected items after processing is complete
+            this.$emit('submit', temp);
         }
-    }
-
-    // Log the temporary array after all items have been processed
-    console.log(temp, 'selected items');
-
-    // Emit an event with the selected items after processing is complete
-    this.$emit('submit', this.selectedItems);
-}
-
-    }, mounted() {
-        console.log('images', this.jsonData)
+    },
+    mounted() {
+        // console.log('images', this.jsonData)
     }
 };
 </script>

@@ -1,10 +1,19 @@
 import JsSHA from 'jssha'
 import store from './store'
+// const { OAuth2Client } = require('google-auth-library');
 
 export const EXPRESS_URL = process.env.VUE_APP_EXPRESS_URL
 export const CHAT_URL = process.env.VUE_APP_CHAT_URL
+// export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+// export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 const standardCreditLine = -5000
 const standardMaxAmount = 20000
+
+// const client = new OAuth2Client(
+//   GOOGLE_CLIENT_ID,
+//   GOOGLE_CLIENT_SECRET,
+//   `http://localhost:3000/auth/google/callback`
+// );
 
 console.log(EXPRESS_URL)
 /*****************************************************************************
@@ -1224,17 +1233,36 @@ export async function setUserBalance () {
     store.commit('replaceCreditLimit', balance.creditLimit)
   }
 }
+// export async function authGoogle () {
+//   return await fetch(EXPRESS_URL + '/auth/google', { 
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     credentials: 'include'
+//   }).then((response) => {
+//     return response.json()   
+//   }).catch(() => {
+//     return null
+//   })
+// }
 export async function authGoogle () {
-  return await fetch(EXPRESS_URL + '/auth/google', { 
+  await fetch(EXPRESS_URL + '/auth/google', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'include'
-  }).then((response) => {
-    return response.json()   
-  }).catch(() => {
-    return null
+  }).then(async (response) => {
+    console.log(response)
+    const data = await response.json()
+    console.log('Google url', data)
+    await fetch(data.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
   })
 }
 export async function googleToken () {

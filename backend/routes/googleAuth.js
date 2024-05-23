@@ -24,8 +24,10 @@ module.exports = function () {
         access_type: 'offline',
         scope: 'https://www.googleapis.com/auth/photoslibrary.readonly',
       });
-      console.log(url)
-       res.redirect(url);
+      const resp = {'url': url}
+      return res.json(resp)
+      // console.log(url)
+      //  res.redirect(url);
     }
     catch(ex) {
       console.log(ex)

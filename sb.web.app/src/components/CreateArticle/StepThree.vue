@@ -161,11 +161,12 @@ export default {
 
 submittedGooglePhotos(selectedItems) {
   // Convert selectedItems to image files
-  const imageFiles = selectedItems.map(item => item.file);
+  const imageUrls = selectedItems.map(item => item.productUrl);
 
   // Call compressImage function for each image file
-  imageFiles.forEach(file => {
-    this.compressImage(file);
+  imageUrls.forEach(url => {
+    // this.compressImage(file);
+    this.images.push([url, this.images.length, false])
   });
 }
   },
