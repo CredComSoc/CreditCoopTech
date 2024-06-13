@@ -1,0 +1,151 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Landcare Trade API",
+        "description": "API for Landcare Trade, handling transactions, balance queries, and more.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.landcaretrade.com/"
+        },
+        {
+            "url": "https://chat.landcaretrade.com/"
+        }
+    ],
+    "paths": {
+        "/purchases": {
+            "get": {
+                "summary": "Retrieve purchase transactions",
+                "responses": {
+                    "200": {
+                        "description": "List of purchase transactions"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/sales": {
+            "get": {
+                "summary": "Retrieve sales transactions",
+                "responses": {
+                    "200": {
+                        "description": "List of sales transactions"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/balance": {
+            "get": {
+                "summary": "Get user balance",
+                "responses": {
+                    "200": {
+                        "description": "Balance information"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/createTransaction": {
+            "post": {
+                "summary": "Create a new transaction",
+                "responses": {
+                    "201": {
+                        "description": "Transaction successfully created"
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/transactions": {
+            "get": {
+                "summary": "Retrieve user transactions",
+                "responses": {
+                    "200": {
+                        "description": "List of transactions"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/saldo": {
+            "get": {
+                "summary": "Get account summary",
+                "responses": {
+                    "200": {
+                        "description": "Account summary information"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Post account summary request",
+                "responses": {
+                    "200": {
+                        "description": "Account summary information"
+                    },
+                    "400": {
+                        "description": "Invalid request data"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/chat/histories": {
+            "get": {
+                "summary": "Retrieve all chat histories for the authenticated user",
+                "parameters": [
+                    {
+                        "name": "chatid",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID of a specific chat history (optional)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with chat histories"
+                    },
+                    "401": {
+                        "description": "Unauthorized if the user is not authenticated"
+                    }
+                }
+            }
+        },
+        "/chat/history/{id}": {
+            "get": {
+                "summary": "Retrieve the chat history for a specific chat ID",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/chat/{user}": {
+            "get": {
+                "summary": "Check if a chat exists between the authenticated user and specified user",
+                "parameters": [],
+                "responses": {}
+            }
+        }
+    }
+}

@@ -35,6 +35,9 @@ function initApp(app) {
   app.use(passport.initialize())
   app.use(passport.session())
   require('./passport-config').initialize(passport)
+  
+  // Serve static files from the 'public' directory - openapi docs
+  app.use(express.static('public'));
 
   indexRouter = require('./routes/index')()
   const ccRequests = require('./routes/ccRequests')()
@@ -43,6 +46,11 @@ function initApp(app) {
   app.use('/', indexRouter.router)
   app.use('/', ccRequests)
   app.use('/', ccUserStore)
+
+  // Serve index.html from the root '/'
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
 }
 
 function startServer(app, port) {
