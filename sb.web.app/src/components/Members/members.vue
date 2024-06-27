@@ -30,7 +30,9 @@ export default {
       SearchData: [],
       singleListingData: [],
       popupActive: false,
-      listingObjPopup: Object
+      listingObjPopup: Object,
+      allMembersArraySize: 0,
+      adminMembersArraySize: 0
     }
   },
 
@@ -53,6 +55,9 @@ export default {
       const adminMembersArray = new Map()
 
       for (const member of this.$store.state.allMembers) {
+        if (!member.is_active) {
+          continue
+        }
         const name = member.accountName
     
         let foundSearchword = true

@@ -5,12 +5,15 @@ do not match the equivalent of the database.
 <template>
   <div>
     <div class="button">
-      <div class="element-container" :class="'inactive'" @click="enterProfile">  <!-- TODO: Fix styling to highlight inactive accounts-->
+      <div :class="{ 'element-container': isActive, 'inactive': !isActive }" @click="enterProfile">
+        <!-- TODO: Fix styling to highlight inactive accounts-->
         <div class="imgContainer">
           <img v-if="this.listingObj.logo !== ''" :src='getImgURL()' />
           <img v-if="this.listingObj.logo == ''" src='@/assets/list_images/user.png' />
         </div>
         <h4 class="element-title"> {{ listingObj.accountName }} </h4>
+        <h5 class="element-text one">Balance: <br />{{ balance }}</h5>
+        <h5 class="element-text two">Online: <br />{{ getOnlineStatus() }}</h5>
         <h5 class="element-text one">Balance: <br />{{ balance }}</h5>
         <h5 class="element-text two">Online: <br />{{ getOnlineStatus() }}</h5>
         <h5 class="element-text tre"> {{ listingObj.phone }} </h5>
@@ -81,6 +84,7 @@ export default {
   created () {
     (async () => {
       try {
+        this.isActive = this.listingObj.is_active
         await this.getBalance()
       } catch (error) {
         console.error('Error in getting member balance: \n', error)
@@ -119,6 +123,7 @@ export default {
         width: 15%;
         font-weight: bold;
     }
+
     /*class="element-text"*/
     .element-text {
         font-size: 100%;
@@ -186,7 +191,14 @@ export default {
     }
 
     .inactive {
-      background: #0bec0700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: auto;
+      background: #2b494983;
+      white-space: nowrap;
+      padding: 4px;
     }
 
 </style>

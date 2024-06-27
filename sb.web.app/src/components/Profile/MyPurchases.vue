@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { cancelRequest, acceptRequest, postNotification, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData, setUserBalance } from '../../serverFetch'
+import { cancelRequest, acceptRequest, postNotification, getAvailableBalancesAndLimits, getAvailableBalance, getUserAvailableBalance, getLimits, setTransactionsData, setUserBalance } from '../../serverFetch'
 import Listing from '@/components/SharedComponents/Listing.vue'
 import DateFilter from './DateFilter.vue'
 import PopupCard from '@/components/SharedComponents/PopupCard.vue'
@@ -366,37 +366,40 @@ export default {
       await setTransactionsData()
       this.$refs.loadingComponent.hideLoading()
     },
-    accept (id, payer, index, cost, item) { 
+    async accept (id, payer, index, cost, item) { 
       this.$refs.loadingComponent.showLoading()
-      getAvailableBalance().then((balance) => {
-        getLimits().then((limits) => {
-          this.max_limit = limits.max
-          if (balance.totalAvailableBalance + limits.min + cost > limits.max) {
-            this.$refs.loadingComponent.hideLoading()
-            this.payeeTooMuchTkn = true
+      const result = await getAvailableBalancesAndLimits(payer)
+      const mySaldo = result.requester.saldo
+      const limits = result.requester
+      this.max_limit = limits.max_limit
+      const availableBalance = mySaldo.completed.balance
+      console.log('Figure new A: ', availableBalance + cost)
+      if (availableBalance + cost > limits.max_limit) {
+        this.$refs.loadingComponent.hideLoading()
+        this.payeeTooMuchTkn = true
+      } else {
+        const userSaldo = result.requestee.saldo
+        const userLimits = result.requestee
+        const userAvailableBalance = userSaldo.completed.balance - userLimits.min_limit
+        console.log('Figure new B: ', userAvailableBalance)
+        if (cost < userAvailableBalance) {
+          this.statusSwap(index, this.$i18n.t('approving'), 'out', 'green')
+          await acceptRequest(id)
+          // eslint-disable-next-line
+          if (item.entries[0].metadata.id == 0) {
+            await postNotification('transferRequestAccepted', payer)
           } else {
-            getUserAvailableBalance(payer).then(async (payerBalance) => {
-              if (cost <= payerBalance.totalAvailableBalance) {
-                this.statusSwap(index, this.$i18n.t('approving'), 'out', 'green')
-                await acceptRequest(id)
-                // eslint-disable-next-line
-                if (item.entries[0].metadata.id == 0) {
-                  await postNotification('transferRequestAccepted', payer)
-                } else {
-                  await postNotification('saleRequestAccepted', payer)
-                }
-                await setTransactionsData()
-                await setUserBalance()
-                this.$refs.loadingComponent.hideLoading()
-              } else {
-                this.$refs.loadingComponent.hideLoading()
-                this.payer = payer
-                this.payerNotEnoughTkn = true
-              } 
-            })
+            await postNotification('saleRequestAccepted', payer)
           }
-        })
-      })
+          this.$refs.loadingComponent.hideLoading()
+          await setTransactionsData()
+          await setUserBalance()
+        } else {
+          this.$refs.loadingComponent.hideLoading()
+          this.payer = payer
+          this.payerNotEnoughTkn = true
+        }
+      }
     },
     closePopup () {
       this.payerNotEnoughTkn = false
